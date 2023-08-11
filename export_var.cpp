@@ -1,22 +1,12 @@
-#include "dump.hpp"
+#include "export_var.hpp"
 
-#include <string>
+#include <bits/stdc++.h>
 
 namespace ssk_debug {
 
 using namespace std;
 
 void replaceAll(string&, string, string);
-
-template <>
-string export_var(bool value) {
-  return value ? "true" : "false";
-}
-
-template <>
-string export_var(const char* value) {
-  return export_var((string)value);
-}
 
 template <>
 string export_var(string value) {

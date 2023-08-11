@@ -1,5 +1,7 @@
 #pragma once
 
+#include "export_var.hpp"
+
 #define _dump1(arg1) #arg1 " => " << ssk_debug::export_var(arg1)
 #define _dump2(arg1, ...) _dump1(arg1) << ", " << _dump1(__VA_ARGS__)
 #define _dump3(arg1, ...) _dump1(arg1) << ", " << _dump2(__VA_ARGS__)
@@ -24,25 +26,3 @@
   clog << "[dump()] " << _get_dump_func(size)(__VA_ARGS__) << endl
 
 #define dump(...) _dump(_va_args_size(__VA_ARGS__), __VA_ARGS__)
-
-#include <string>
-
-namespace ssk_debug {
-
-using namespace std;
-
-template <typename T>
-string export_var(T value) {
-  return to_string(value);
-}
-
-template <>
-string export_var(string value);
-
-template <>
-string export_var(const char* value);
-
-template <>
-string export_var(bool value);
-
-}  // namespace ssk_debug
