@@ -3,6 +3,7 @@
 #include <bits/stdc++.h>
 
 #include "export_iterable.hpp"
+#include "export_map.hpp"
 #include "export_tuple.hpp"
 
 namespace ssk_debug {
@@ -10,7 +11,7 @@ namespace ssk_debug {
 using namespace std;
 
 template <typename T>
-string export_var(T value);
+string export_var(T);
 
 template <typename T>
 inline auto export_var_real(T value) -> decltype(to_string(value)) {
@@ -21,6 +22,11 @@ template <typename T,
           enable_if_t<iterable::is_iterable<T>, nullptr_t> = nullptr>
 inline string export_var_real(T value) {
   return export_iterable(value, "");
+}
+
+template <typename T1, typename T2>
+string export_var_real(map<T1, T2> value) {
+  return export_map(value);
 }
 
 template <typename... Args>
