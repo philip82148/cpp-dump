@@ -8,19 +8,17 @@ using namespace std;
 
 void replaceAll(string&, string, string);
 
-string export_var_real(string value) {
-  if (value.find('\n') == string::npos) {
-    replaceAll(value, R"(\)", R"(\\)");
-    replaceAll(value, R"(")", R"(\")");
+string export_var_real(string value, string) {
+  replaceAll(value, R"(\)", R"(\\)");
 
-    return '"' + value + '"';
-  }
+  if (value.find(R"(")") == string::npos && value.find("\n") == string::npos)
+    return R"(")" + value + R"(")";
 
-  return R"(""")"
-         "\n" +
-         value +
-         "\n"
-         R"(""")";
+  replaceAll(value, R"(`)", R"(\`)");
+
+  return "\n"
+         R"(`)" +
+         value + R"(`)";
 }
 
 void replaceAll(string& value, string search, string replace) {
