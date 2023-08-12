@@ -8,13 +8,13 @@ using namespace std;
 
 struct iterable {
  private:
-  template <typename U>
-  static constexpr auto Func(U&& v) -> decltype(begin(v), end(v), true_type());
+  template <typename T>
+  static constexpr auto Func(T&& t) -> decltype(begin(t), end(t), true_type());
   static constexpr false_type Func(...);
 
-  template <typename U>
-  static constexpr auto Member(U&& v)
-      -> decltype(v.begin(), v.end(), true_type());
+  template <typename T>
+  static constexpr auto Member(T&& t)
+      -> decltype(t.begin(), t.end(), true_type());
   static constexpr false_type Member(...);
 
  public:
@@ -26,22 +26,31 @@ struct iterable {
   template <typename T>
   using ChildType = decltype(*begin(declval<T>()));
 
-  template <typename U>
-  static auto begin(U&& v) {
-    if constexpr (decltype(Func(declval<U>()))::value) {
-      return begin(std::forward<U>(v));
-    } else if constexpr (decltype(Member(declval<U>()))::value) {
-      return v.begin();
+  template <typename T>
+  static auto begin(T&& t) {
+    if constexpr (decltype(Func(declval<T>()))::value) {
+      using std::begin;
+
+      return begin(std::forward<T>(t));
+    } else if constexpr (decltype(Member(declval<T>()))::value) {
+      return t.begin();
     }
   }
 
-  template <typename U>
-  static auto end(U&& v) {
-    if constexpr (decltype(Func(declval<U>()))::value) {
-      return end(std::forward<U>(v));
-    } else if (decltype(Member(declval<U>()))::value) {
-      return v.end();
+  template <typename T>
+  static auto end(T&& t) {
+    if constexpr (decltype(Func(declval<T>()))::value) {
+      using std::end;
+
+      return end(std::forward<T>(t));
+    } else if (decltype(Member(declval<T>()))::value) {
+      return t.end();
     }
+  }
+
+  template <typename T>
+  static auto size(T&& t) {
+    return distance(begin(t), end(t));
   }
 };
 
