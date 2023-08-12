@@ -2,7 +2,8 @@
 
 #include "export_var.hpp"
 
-#define _dump1(arg1) #arg1 " => " << ssk_debug::export_var(arg1)
+#define _dump1(arg1) \
+#arg1 " => " << [&]() -> string { try { return ssk_debug::export_var(arg1); } catch (exception &e) { return e.what(); } }()
 #define _dump2(arg1, ...) _dump1(arg1) << ", " << _dump1(__VA_ARGS__)
 #define _dump3(arg1, ...) _dump1(arg1) << ", " << _dump2(__VA_ARGS__)
 #define _dump4(arg1, ...) _dump1(arg1) << ", " << _dump3(__VA_ARGS__)
