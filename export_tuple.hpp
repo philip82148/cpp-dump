@@ -2,25 +2,19 @@
 
 #include <bits/stdc++.h>
 
-#include "export_var.hpp"
-#include "iterable.hpp"
-
 namespace ssk_debug {
 
 using namespace std;
 
-template <typename... Args>
-string export_tuple(tuple<Args...>, string);
-
-template <const int i, const int size, typename... Args>
-string export_tuple_aux(tuple<Args...>, string);
+template <typename T>
+string export_var(T, string);
 
 template <typename... Args>
-string export_tuple(tuple<Args...> value, string indent) {
-  return "( " +
-         export_tuple_aux<0, tuple_size<tuple<Args...>>::value>(value, indent) +
-         " )";
-}
+constexpr bool is_tuple = false;
+template <typename T1, typename T2>
+constexpr bool is_tuple<pair<T1, T2>> = true;
+template <typename... Args>
+constexpr bool is_tuple<tuple<Args...>> = true;
 
 template <const int i, const int size, typename... Args>
 string export_tuple_aux(tuple<Args...> value, string indent) {
@@ -30,6 +24,18 @@ string export_tuple_aux(tuple<Args...> value, string indent) {
   } else {
     return export_var(get<i>(value), indent);
   }
+}
+
+template <typename... Args>
+string export_tuple(tuple<Args...> value, string indent) {
+  return "( " +
+         export_tuple_aux<0, tuple_size<tuple<Args...>>::value>(value, indent) +
+         " )";
+}
+
+template <typename T1, typename T2>
+inline string export_tuple(pair<T1, T2> value, string indent) {
+  return export_tuple(make_tuple(value.first, value.second), indent);
 }
 
 }  // namespace ssk_debug
