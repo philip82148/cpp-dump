@@ -8,8 +8,7 @@ using namespace std;
 
 void replaceAll(string&, string, string);
 
-template <>
-string export_var(string value) {
+string export_var_real(string value) {
   if (value.find('\n') == string::npos) {
     replaceAll(value, R"(\)", R"(\\)");
     replaceAll(value, R"(")", R"(\")");
