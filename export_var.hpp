@@ -13,39 +13,21 @@ string export_var(T, string = "");
 
 #include "export_iterable.hpp"
 #include "export_map.hpp"
+#include "export_set.hpp"
 #include "export_tuple.hpp"
+#include "export_xixo.hpp"
 
 namespace ssk_debug {
 
 using namespace std;
 
+inline string export_var_real(bool value, string) {
+  return value ? "true" : "false";
+}
+
 template <typename T>
 inline auto export_var_real(T value, string) -> decltype(to_string(value)) {
   return to_string(value);
-}
-
-template <typename T>
-inline auto export_var_real(T value, string indent)
-    -> enable_if_t<is_iterable<T>, string> {
-  return export_iterable(value, indent);
-}
-
-template <typename T>
-inline auto export_var_real(T value, string indent)
-    -> enable_if_t<is_map<T>, string> {
-  return export_map(value, indent);
-}
-
-template <typename T>
-inline auto export_var_real(T value, string indent)
-    -> enable_if_t<is_set<T>, string> {
-  return export_set(value, indent);
-}
-
-template <typename T>
-inline auto export_var_real(T value, string indent)
-    -> enable_if_t<is_tuple<T>, string> {
-  return export_tuple(value, indent);
 }
 
 string export_var_real(string, string);
@@ -58,8 +40,34 @@ inline string export_var_real(char value, string) {
   return "'" + string{value} + "'";
 }
 
-inline string export_var_real(bool value, string) {
-  return value ? "true" : "false";
+template <typename T>
+inline auto export_var_real(T value, string indent)
+    -> enable_if_t<is_set<T>, string> {
+  return export_set(value, indent);
+}
+
+template <typename T>
+inline auto export_var_real(T value, string indent)
+    -> enable_if_t<is_map<T>, string> {
+  return export_map(value, indent);
+}
+
+template <typename T>
+inline auto export_var_real(T value, string indent)
+    -> enable_if_t<is_tuple<T>, string> {
+  return export_tuple(value, indent);
+}
+
+template <typename T>
+inline auto export_var_real(T value, string indent)
+    -> enable_if_t<is_iterable<T>, string> {
+  return export_iterable(value, indent);
+}
+
+template <typename T>
+inline auto export_var_real(T value, string indent)
+    -> enable_if_t<is_xixo<T>, string> {
+  return export_xixo(value, indent);
 }
 
 template <typename T>

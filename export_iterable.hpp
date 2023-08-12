@@ -5,6 +5,7 @@
 #include "export_map.hpp"
 #include "export_set.hpp"
 #include "export_tuple.hpp"
+#include "export_xixo.hpp"
 
 namespace ssk_debug {
 
@@ -36,7 +37,7 @@ constexpr bool is_iterable = (is_func_iterable<T> ||
 
 template <typename T>
 constexpr bool is_iterable_like =
-    is_iterable<T> || is_map<T> || is_set<T> || is_tuple<T>;
+    is_iterable<T> || is_map<T> || is_set<T> || is_tuple<T> || is_xixo<T>;
 
 template <typename T, enable_if_t<is_func_iterable<T>, nullptr_t> = nullptr>
 inline auto begin(T&& t) {
