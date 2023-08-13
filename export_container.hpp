@@ -16,22 +16,9 @@ template <typename T>
 inline constexpr bool is_container = is_iterable<T> && !is_map<T> && !is_set<T>;
 
 template <typename T>
-inline auto __export_empty_container(std::string)
-    -> std::enable_if_t<!is_container<iterable_elem_type<T>>, std::string> {
-  return "[ ]";
-}
-
-template <typename T>
-inline auto __export_empty_container(std::string indent)
-    -> std::enable_if_t<is_container<iterable_elem_type<T>>, std::string> {
-  return "[ " + __export_empty_container<iterable_elem_type<T>>(indent) + " ]";
-}
-
-template <typename T>
 auto export_container(T value, std::string indent) -> std::enable_if_t<
     is_container<T> && !is_iterable_like<iterable_elem_type<T>>, std::string> {
-  // 中身が空の時
-  if (is_empty_iterable(value)) return __export_empty_container<T>(indent);
+  if (is_empty_iterable(value)) return "[ ]";
 
   std::string content = "";
 
@@ -47,8 +34,7 @@ auto export_container(T value, std::string indent) -> std::enable_if_t<
 template <typename T>
 auto export_container(T value, std::string indent)
     -> std::enable_if_t<is_iterable_like<iterable_elem_type<T>>, std::string> {
-  // 中身が空の時
-  if (is_empty_iterable(value)) return __export_empty_container<T>(indent);
+  if (is_empty_iterable(value)) return "[ ]";
 
   std::string content = "";
 

@@ -20,7 +20,7 @@ constexpr bool is_map<std::unordered_map<T1, T2>> = true;
 template <typename T>
 auto export_map(T value, std::string indent)
     -> std::enable_if_t<is_map<T>, std::string> {
-  if (value.size() == 0) return "{ }";
+  if (value.empty()) return "{ }";
 
   std::string content = "";
 

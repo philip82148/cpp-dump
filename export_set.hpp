@@ -20,7 +20,7 @@ constexpr bool is_set<std::unordered_set<T>> = true;
 template <typename T>
 auto export_set(T value, std::string indent)
     -> std::enable_if_t<is_set<T>, std::string> {
-  if (value.size() == 0) return "{ }";
+  if (value.empty()) return "{ }";
 
   std::string content = "";
 

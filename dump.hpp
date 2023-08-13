@@ -3,7 +3,7 @@
 #include "export_var.hpp"
 
 #define __dump1(arg1) \
-#arg1 " => " << [&]() -> std::string { try { return cpp_dump::export_var(arg1); } catch (exception &e) { return e.what(); } }()
+#arg1 " => " << [&]() -> std::string { try { return cpp_dump::export_var(arg1); } catch (std::exception &e) { return e.what(); } }()
 #define __dump2(arg1, ...) __dump1(arg1) << ", " << __dump1(__VA_ARGS__)
 #define __dump3(arg1, ...) __dump1(arg1) << ", " << __dump2(__VA_ARGS__)
 #define __dump4(arg1, ...) __dump1(arg1) << ", " << __dump3(__VA_ARGS__)
