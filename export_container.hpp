@@ -9,7 +9,7 @@
 
 namespace cpp_dump {
 
-extern inline const int MAX_LINE_WIDTH;
+extern inline const int MAX_ITERABLE_LINE_WIDTH;
 
 template <typename T>
 std::string export_var(T &&, std::string);
@@ -43,7 +43,7 @@ rollback:
     if (elem_string.find("\n") == std::string::npos) {
       elems += elem_string;
 
-      if (elems.length() + 4 <= MAX_LINE_WIDTH) continue;
+      if (elems.length() + 4 <= MAX_ITERABLE_LINE_WIDTH) continue;
     }
 
     shift_indent = true;

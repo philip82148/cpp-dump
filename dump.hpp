@@ -35,6 +35,8 @@ namespace cpp_dump {
 
 inline const int MAX_LINE_WIDTH = 80;
 
+inline const int MAX_ITERABLE_LINE_WIDTH = 40;
+
 inline auto __first_line_length(std::string value) {
   auto lf_pos = value.find("\n");
 
@@ -67,16 +69,19 @@ inline __last_line_length_type __dump_value_string(
     return __last_line_length(output, last_line_length);
   }
 
-  if (output_first_line_length <= MAX_LINE_WIDTH) {
-    std::clog << "\n " << output;
+  if (last_line_length > 9) {
+    std::clog << "\n         ";
 
-    return __last_line_length(output, 1);
+    if (9 + output_first_line_length <= MAX_LINE_WIDTH) {
+      std::clog << output;
+
+      return __last_line_length(output, 9);
+    }
   }
 
-  output = expr + "\n => " + value_string;
-  std::clog << "\n " << output;
+  std::clog << expr << "\n           => " << value_string;
 
-  return __last_line_length(output, 1);
+  return __last_line_length(value_string, 14);
 }
 
 inline void __dump_aux(__last_line_length_type) {}
@@ -87,7 +92,7 @@ void __dump_aux(__last_line_length_type last_line_length, std::string expr,
   std::clog << ", ";
   last_line_length += 2;
 
-  std::string value_string = export_var(value);
+  std::string value_string = export_var(value, "         ");
   last_line_length = __dump_value_string(last_line_length, expr, value_string);
 
   __dump_aux(last_line_length, args...);
@@ -97,7 +102,7 @@ template <typename T, typename... Args>
 void __dump(std::string expr, T &&value, Args &&...args) {
   std::clog << "[dump()] ";
 
-  std::string value_string = export_var(value);
+  std::string value_string = export_var(value, "         ");
   auto last_line_length = __dump_value_string(9, expr, value_string);
 
   __dump_aux(last_line_length, args...);
