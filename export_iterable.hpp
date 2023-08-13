@@ -7,7 +7,7 @@
 #include "export_tuple.hpp"
 #include "export_xixo.hpp"
 
-namespace ssk_debug {
+namespace cpp_dump {
 
 using namespace std;
 
@@ -126,4 +126,4 @@ auto export_iterable(T value, string indent)
   return "[" + content + "]";
 }
 
-}  // namespace ssk_debug
+}  // namespace cpp_dump

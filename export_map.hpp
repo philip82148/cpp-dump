@@ -2,7 +2,7 @@
 
 #include <bits/stdc++.h>
 
-namespace ssk_debug {
+namespace cpp_dump {
 
 using namespace std;
 
@@ -33,4 +33,4 @@ auto export_map(T value, string indent) -> enable_if_t<is_map<T>, string> {
   return "{" + content + "}";
 }
 
-}  // namespace ssk_debug
+}  // namespace cpp_dump

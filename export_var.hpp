@@ -2,14 +2,14 @@
 
 #include <bits/stdc++.h>
 
-namespace ssk_debug {
+namespace cpp_dump {
 
 using namespace std;
 
 template <typename T>
 string export_var(T, string = "");
 
-}  // namespace ssk_debug
+}  // namespace cpp_dump
 
 #include "export_iterable.hpp"
 #include "export_map.hpp"
@@ -17,7 +17,7 @@ string export_var(T, string = "");
 #include "export_tuple.hpp"
 #include "export_xixo.hpp"
 
-namespace ssk_debug {
+namespace cpp_dump {
 
 using namespace std;
 
@@ -75,4 +75,4 @@ inline string export_var(T value, string indent) {
   return export_var_real(value, indent);
 }
 
-}  // namespace ssk_debug
+}  // namespace cpp_dump

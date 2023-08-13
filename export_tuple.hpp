@@ -2,7 +2,7 @@
 
 #include <bits/stdc++.h>
 
-namespace ssk_debug {
+namespace cpp_dump {
 
 using namespace std;
 
@@ -38,4 +38,4 @@ inline string export_tuple(pair<T1, T2> value, string indent) {
   return export_tuple(make_tuple(value.first, value.second), indent);
 }
 
-}  // namespace ssk_debug
+}  // namespace cpp_dump

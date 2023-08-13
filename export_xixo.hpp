@@ -2,7 +2,7 @@
 
 #include <bits/stdc++.h>
 
-namespace ssk_debug {
+namespace cpp_dump {
 
 using namespace std;
 
@@ -51,4 +51,4 @@ auto export_xixo(T value, string) -> enable_if_t<is_stack<T>, string> {
 template <typename T>
 constexpr bool is_xixo = is_queue<T> || is_priority_queue<T> || is_stack<T>;
 
-}  // namespace ssk_debug
+}  // namespace cpp_dump

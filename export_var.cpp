@@ -2,7 +2,7 @@
 
 #include <bits/stdc++.h>
 
-namespace ssk_debug {
+namespace cpp_dump {
 
 using namespace std;
 
@@ -29,4 +29,4 @@ void replaceAll(string& value, string search, string replace) {
   }
 }
 
-}  // namespace ssk_debug
+}  // namespace cpp_dump
