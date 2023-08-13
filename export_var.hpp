@@ -11,7 +11,7 @@ string export_var(T, string = "");
 
 }  // namespace cpp_dump
 
-#include "export_iterable.hpp"
+#include "export_container.hpp"
 #include "export_map.hpp"
 #include "export_set.hpp"
 #include "export_tuple.hpp"
@@ -60,8 +60,8 @@ inline auto export_var_real(T value, string indent)
 
 template <typename T>
 inline auto export_var_real(T value, string indent)
-    -> enable_if_t<is_iterable<T>, string> {
-  return export_iterable(value, indent);
+    -> enable_if_t<is_container<T>, string> {
+  return export_container(value, indent);
 }
 
 template <typename T>
