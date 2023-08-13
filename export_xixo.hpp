@@ -8,15 +8,18 @@
 namespace cpp_dump {
 
 template <typename T>
-std::string export_var(T, std::string);
+std::string export_var(T &&, std::string);
 
 template <typename T>
-constexpr bool is_queue = false;
+constexpr bool __is_queue = false;
 template <typename T>
-constexpr bool is_queue<std::queue<T>> = true;
+constexpr bool __is_queue<std::queue<T>> = true;
 
 template <typename T>
-auto export_xixo(T value, std::string)
+constexpr bool is_queue = __is_queue<std::remove_reference_t<T>>;
+
+template <typename T>
+auto export_xixo(T &&value, std::string)
     -> std::enable_if_t<is_queue<T>, std::string> {
   if (value.empty()) return "std::queue{ size= 0 }";
 
@@ -25,12 +28,16 @@ auto export_xixo(T value, std::string)
 }
 
 template <typename T>
-constexpr bool is_priority_queue = false;
+constexpr bool __is_priority_queue = false;
 template <typename T>
-constexpr bool is_priority_queue<std::priority_queue<T>> = true;
+constexpr bool __is_priority_queue<std::priority_queue<T>> = true;
 
 template <typename T>
-auto export_xixo(T value, std::string)
+constexpr bool is_priority_queue =
+    __is_priority_queue<std::remove_reference_t<T>>;
+
+template <typename T>
+auto export_xixo(T &&value, std::string)
     -> std::enable_if_t<is_priority_queue<T>, std::string> {
   if (value.empty()) return "std::priority_queue{ size= 0 }";
 
@@ -39,12 +46,15 @@ auto export_xixo(T value, std::string)
 }
 
 template <typename T>
-constexpr bool is_stack = false;
+constexpr bool __is_stack = false;
 template <typename T>
-constexpr bool is_stack<std::stack<T>> = true;
+constexpr bool __is_stack<std::stack<T>> = true;
 
 template <typename T>
-auto export_xixo(T value, std::string)
+constexpr bool is_stack = __is_stack<std::remove_reference_t<T>>;
+
+template <typename T>
+auto export_xixo(T &&value, std::string)
     -> std::enable_if_t<is_stack<T>, std::string> {
   if (value.empty()) return "std::stack{ size= 0 }";
 
