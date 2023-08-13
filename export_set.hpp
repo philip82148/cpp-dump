@@ -1,26 +1,28 @@
 #pragma once
 
-#include <bits/stdc++.h>
+#include <set>
+#include <string>
+#include <type_traits>
+#include <unordered_set>
 
 namespace cpp_dump {
 
-using namespace std;
-
 template <typename T>
-string export_var(T, string);
+std::string export_var(T, std::string);
 
 template <typename T>
 constexpr bool is_set = false;
 template <typename T>
-constexpr bool is_set<set<T>> = true;
+constexpr bool is_set<std::set<T>> = true;
 template <typename T>
-constexpr bool is_set<unordered_set<T>> = true;
+constexpr bool is_set<std::unordered_set<T>> = true;
 
 template <typename T>
-auto export_set(T value, string indent) -> enable_if_t<is_set<T>, string> {
+auto export_set(T value, std::string indent)
+    -> std::enable_if_t<is_set<T>, std::string> {
   if (value.size() == 0) return "{ }";
 
-  string content = "";
+  std::string content = "";
 
   for (auto v : value) {
     if (content != "") content += ", ";

@@ -1,13 +1,12 @@
 #pragma once
 
-#include <bits/stdc++.h>
+#include <string>
+#include <type_traits>
 
 namespace cpp_dump {
 
-using namespace std;
-
 template <typename T>
-string export_var(T, string = "");
+std::string export_var(T, std::string = "");
 
 }  // namespace cpp_dump
 
@@ -21,58 +20,59 @@ namespace cpp_dump {
 
 using namespace std;
 
-inline string export_var_real(bool value, string) {
+inline std::string __export_var(bool value, std::string) {
   return value ? "true" : "false";
 }
 
 template <typename T>
-inline auto export_var_real(T value, string) -> decltype(to_string(value)) {
-  return to_string(value);
+inline auto __export_var(T value, std::string)
+    -> decltype(std::to_string(value)) {
+  return std::to_string(value);
 }
 
-string export_var_real(string, string);
+std::string __export_var(std::string, std::string);
 
-inline string export_var_real(const char* value, string indent) {
-  return export_var_real((string)(value), indent);
+inline std::string __export_var(const char* value, std::string indent) {
+  return __export_var((std::string)(value), indent);
 }
 
-inline string export_var_real(char value, string) {
-  return "'" + string{value} + "'";
+inline std::string __export_var(char value, std::string) {
+  return "'" + std::string{value} + "'";
 }
 
 template <typename T>
-inline auto export_var_real(T value, string indent)
-    -> enable_if_t<is_set<T>, string> {
+inline auto __export_var(T value, std::string indent)
+    -> std::enable_if_t<is_set<T>, std::string> {
   return export_set(value, indent);
 }
 
 template <typename T>
-inline auto export_var_real(T value, string indent)
-    -> enable_if_t<is_map<T>, string> {
+inline auto __export_var(T value, std::string indent)
+    -> std::enable_if_t<is_map<T>, std::string> {
   return export_map(value, indent);
 }
 
 template <typename T>
-inline auto export_var_real(T value, string indent)
-    -> enable_if_t<is_tuple<T>, string> {
+inline auto __export_var(T value, std::string indent)
+    -> std::enable_if_t<is_tuple<T>, std::string> {
   return export_tuple(value, indent);
 }
 
 template <typename T>
-inline auto export_var_real(T value, string indent)
-    -> enable_if_t<is_container<T>, string> {
+inline auto __export_var(T value, std::string indent)
+    -> std::enable_if_t<is_container<T>, std::string> {
   return export_container(value, indent);
 }
 
 template <typename T>
-inline auto export_var_real(T value, string indent)
-    -> enable_if_t<is_xixo<T>, string> {
+inline auto __export_var(T value, std::string indent)
+    -> std::enable_if_t<is_xixo<T>, std::string> {
   return export_xixo(value, indent);
 }
 
 template <typename T>
-inline string export_var(T value, string indent) {
-  return export_var_real(value, indent);
+inline std::string export_var(T value, std::string indent) {
+  return __export_var(value, indent);
 }
 
 }  // namespace cpp_dump

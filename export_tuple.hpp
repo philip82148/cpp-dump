@@ -1,41 +1,41 @@
 #pragma once
 
-#include <bits/stdc++.h>
+#include <string>
+#include <tuple>
 
 namespace cpp_dump {
 
-using namespace std;
-
 template <typename T>
-string export_var(T, string);
+std::string export_var(T, std::string);
 
 template <typename... Args>
 constexpr bool is_tuple = false;
 template <typename T1, typename T2>
-constexpr bool is_tuple<pair<T1, T2>> = true;
+constexpr bool is_tuple<std::pair<T1, T2>> = true;
 template <typename... Args>
-constexpr bool is_tuple<tuple<Args...>> = true;
+constexpr bool is_tuple<std::tuple<Args...>> = true;
 
 template <const int i, const int size, typename... Args>
-string export_tuple_aux(tuple<Args...> value, string indent) {
+std::string __export_tuple(std::tuple<Args...> value, std::string indent) {
   if constexpr (i < size - 1) {
-    return export_var(get<i>(value), indent) + ", " +
-           export_tuple_aux<i + 1, size>(value, indent);
+    return export_var(std::get<i>(value), indent) + ", " +
+           __export_tuple<i + 1, size>(value, indent);
   } else {
-    return export_var(get<i>(value), indent);
+    return export_var(std::get<i>(value), indent);
   }
 }
 
 template <typename... Args>
-string export_tuple(tuple<Args...> value, string indent) {
+std::string export_tuple(std::tuple<Args...> value, std::string indent) {
   return "( " +
-         export_tuple_aux<0, tuple_size<tuple<Args...>>::value>(value, indent) +
+         __export_tuple<0, std::tuple_size_v<std::tuple<Args...>>>(value,
+                                                                   indent) +
          " )";
 }
 
 template <typename T1, typename T2>
-inline string export_tuple(pair<T1, T2> value, string indent) {
-  return export_tuple(make_tuple(value.first, value.second), indent);
+inline std::string export_tuple(std::pair<T1, T2> value, std::string indent) {
+  return export_tuple(std::make_tuple(value.first, value.second), indent);
 }
 
 }  // namespace cpp_dump

@@ -1,29 +1,29 @@
 #include "export_var.hpp"
 
-#include <bits/stdc++.h>
+#include <string>
 
 namespace cpp_dump {
 
-using namespace std;
+void __replace_string(std::string&, std::string, std::string);
 
-void replaceAll(string&, string, string);
+std::string __export_var(std::string value, std::string) {
+  __replace_string(value, R"(\)", R"(\\)");
 
-string export_var_real(string value, string) {
-  replaceAll(value, R"(\)", R"(\\)");
-
-  if (value.find(R"(")") == string::npos && value.find("\n") == string::npos)
+  if (value.find(R"(")") == std::string::npos &&
+      value.find("\n") == std::string::npos)
     return R"(")" + value + R"(")";
 
-  replaceAll(value, R"(`)", R"(\`)");
+  __replace_string(value, R"(`)", R"(\`)");
 
   return "\n"
          R"(`)" +
          value + R"(`)";
 }
 
-void replaceAll(string& value, string search, string replace) {
-  string::size_type pos = 0;
-  while ((pos = value.find(search, pos)) != string::npos) {
+void __replace_string(std::string& value, std::string search,
+                      std::string replace) {
+  std::string::size_type pos = 0;
+  while ((pos = value.find(search, pos)) != std::string::npos) {
     value.replace(pos, search.length(), replace);
     pos += replace.length();
   }
