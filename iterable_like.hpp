@@ -18,11 +18,11 @@ inline constexpr std::false_type __is_iterable(...);
 
 template <typename T>
 inline constexpr bool is_iterable =
-    decltype(__is_iterable(std::declval<T>()))::value;
+    decltype(__is_iterable(std::declval<std::remove_cvref_t<T>>()))::value;
 
 template <typename T>
-using iterable_elem_type = std::remove_const_t<
-    std::remove_reference_t<decltype(*std::begin(std::declval<T>()))>>;
+using iterable_elem_type = std::remove_cvref_t<decltype(*std::begin(
+    std::declval<std::remove_cvref_t<T>>()))>;
 
 template <typename T>
 inline bool is_empty_iterable(T &&t) {
@@ -30,7 +30,8 @@ inline bool is_empty_iterable(T &&t) {
 }
 
 template <typename T>
-inline constexpr bool is_string = std::is_convertible_v<T, std::string>;
+inline constexpr bool is_string =
+    std::is_convertible_v<std::remove_cvref_t<T>, std::string>;
 
 template <typename T>
 inline constexpr bool __is_map = false;
@@ -40,7 +41,15 @@ template <typename T1, typename T2>
 inline constexpr bool __is_map<std::unordered_map<T1, T2>> = true;
 
 template <typename T>
-inline constexpr bool is_map = __is_map<std::remove_reference_t<T>>;
+inline constexpr bool is_map = __is_map<std::remove_cvref_t<T>>;
+
+template <typename T>
+using map_key_type =
+    std::remove_cvref_t<decltype(std::declval<iterable_elem_type<T>>().first)>;
+
+template <typename T>
+using map_value_type =
+    std::remove_cvref_t<decltype(std::declval<iterable_elem_type<T>>().second)>;
 
 template <typename T>
 inline constexpr bool __is_set = false;
@@ -50,7 +59,7 @@ template <typename T>
 inline constexpr bool __is_set<std::unordered_set<T>> = true;
 
 template <typename T>
-inline constexpr bool is_set = __is_set<std::remove_reference_t<T>>;
+inline constexpr bool is_set = __is_set<std::remove_cvref_t<T>>;
 
 template <typename T>
 inline constexpr bool is_container =
@@ -62,7 +71,7 @@ template <typename... Args>
 inline constexpr bool __is_tuple<std::tuple<Args...>> = true;
 
 template <typename T>
-inline constexpr bool is_tuple = __is_tuple<std::remove_reference_t<T>>;
+inline constexpr bool is_tuple = __is_tuple<std::remove_cvref_t<T>>;
 
 template <typename... Args>
 inline constexpr bool __is_pair = false;
@@ -70,7 +79,7 @@ template <typename T1, typename T2>
 inline constexpr bool __is_pair<std::pair<T1, T2>> = true;
 
 template <typename T>
-inline constexpr bool is_pair = __is_pair<std::remove_reference_t<T>>;
+inline constexpr bool is_pair = __is_pair<std::remove_cvref_t<T>>;
 
 template <typename T>
 inline constexpr bool is_tuple_like = is_tuple<T> || is_pair<T>;
@@ -81,7 +90,7 @@ template <typename T>
 inline constexpr bool __is_queue<std::queue<T>> = true;
 
 template <typename T>
-inline constexpr bool is_queue = __is_queue<std::remove_reference_t<T>>;
+inline constexpr bool is_queue = __is_queue<std::remove_cvref_t<T>>;
 
 template <typename T>
 inline constexpr bool __is_priority_queue = false;
@@ -90,7 +99,7 @@ inline constexpr bool __is_priority_queue<std::priority_queue<T>> = true;
 
 template <typename T>
 inline constexpr bool is_priority_queue =
-    __is_priority_queue<std::remove_reference_t<T>>;
+    __is_priority_queue<std::remove_cvref_t<T>>;
 
 template <typename T>
 inline constexpr bool __is_stack = false;
@@ -98,7 +107,7 @@ template <typename T>
 inline constexpr bool __is_stack<std::stack<T>> = true;
 
 template <typename T>
-inline constexpr bool is_stack = __is_stack<std::remove_reference_t<T>>;
+inline constexpr bool is_stack = __is_stack<std::remove_cvref_t<T>>;
 
 template <typename T>
 inline constexpr bool is_xixo =

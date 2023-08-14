@@ -29,7 +29,7 @@ inline auto export_tuple_like(T &&value, std::string indent)
     -> std::enable_if_t<is_tuple<T>, std::string> {
   std::string value_string =
       "( " +
-      __export_tuple_like<0, std::tuple_size_v<std::remove_reference_t<T>>>(
+      __export_tuple_like<0, std::tuple_size_v<std::remove_cvref_t<T>>>(
           value, indent, ", ") +
       " )";
 
@@ -39,7 +39,7 @@ inline auto export_tuple_like(T &&value, std::string indent)
 
   std::string new_indent = indent + "  ";
   return "(\n" + new_indent +
-         __export_tuple_like<0, std::tuple_size_v<std::remove_reference_t<T>>>(
+         __export_tuple_like<0, std::tuple_size_v<std::remove_cvref_t<T>>>(
              value, new_indent, ",\n" + new_indent) +
          "\n" + indent + ")";
 }

@@ -19,8 +19,6 @@ std::string export_var(T &&, std::string = "");
 
 namespace cpp_dump {
 
-using namespace std;
-
 inline std::string __export_var(bool value, std::string) {
   return value ? "true" : "false";
 }
@@ -33,7 +31,9 @@ inline auto __export_var(T &&value, std::string)
 
 std::string __export_var(std::string, std::string);
 
-inline std::string __export_var(const char *value, std::string indent) {
+template <typename T>
+inline auto __export_var(T &&value, std::string indent)
+    -> std::enable_if_t<is_string<T>, std::string> {
   return __export_var((std::string)(value), indent);
 }
 
