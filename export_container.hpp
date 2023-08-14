@@ -8,7 +8,7 @@
 
 namespace cpp_dump {
 
-extern inline const int MAX_LINE_WIDTH;
+extern inline const int max_line_width;
 
 template <typename T>
 std::string export_var(T &&, std::string, size_t);
@@ -35,10 +35,10 @@ rollback:
 
     std::string elem_string =
         export_var(elem_value, indent, first_line_length + elems.length() + 2);
-    if (!__has_lf(elem_string)) {
+    if (!_has_lf(elem_string)) {
       elems += elem_string;
 
-      if (first_line_length + elems.length() + 4 <= MAX_LINE_WIDTH) continue;
+      if (first_line_length + elems.length() + 4 <= max_line_width) continue;
     }
 
     shift_indent = true;

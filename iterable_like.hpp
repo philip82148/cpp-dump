@@ -12,17 +12,16 @@
 namespace cpp_dump {
 
 template <typename T>
-inline constexpr auto __is_iterable(T &&t)
-    -> decltype(std::begin(t), std::end(t), std::true_type());
-inline constexpr std::false_type __is_iterable(...);
+inline constexpr auto _is_iterable(T &&t) -> decltype(std::begin(t), std::end(t), std::true_type());
+inline constexpr std::false_type _is_iterable(...);
 
 template <typename T>
 inline constexpr bool is_iterable =
-    decltype(__is_iterable(std::declval<std::remove_cvref_t<T>>()))::value;
+    decltype(_is_iterable(std::declval<std::remove_cvref_t<T>>()))::value;
 
 template <typename T>
-using iterable_elem_type = std::remove_cvref_t<decltype(*std::begin(
-    std::declval<std::remove_cvref_t<T>>()))>;
+using iterable_elem_type =
+    std::remove_cvref_t<decltype(*std::begin(std::declval<std::remove_cvref_t<T>>()))>;
 
 template <typename T>
 inline bool is_empty_iterable(T &&t) {
@@ -30,91 +29,84 @@ inline bool is_empty_iterable(T &&t) {
 }
 
 template <typename T>
-inline constexpr bool is_string =
-    std::is_convertible_v<std::remove_cvref_t<T>, std::string>;
+inline constexpr bool is_string = std::is_convertible_v<std::remove_cvref_t<T>, std::string>;
 
 template <typename T>
-inline constexpr bool __is_map = false;
+inline constexpr bool _is_map = false;
 template <typename T1, typename T2>
-inline constexpr bool __is_map<std::map<T1, T2>> = true;
+inline constexpr bool _is_map<std::map<T1, T2>> = true;
 template <typename T1, typename T2>
-inline constexpr bool __is_map<std::unordered_map<T1, T2>> = true;
+inline constexpr bool _is_map<std::unordered_map<T1, T2>> = true;
 
 template <typename T>
-inline constexpr bool is_map = __is_map<std::remove_cvref_t<T>>;
+inline constexpr bool is_map = _is_map<std::remove_cvref_t<T>>;
 
 template <typename T>
-using map_key_type =
-    std::remove_cvref_t<decltype(std::declval<iterable_elem_type<T>>().first)>;
+using map_key_type = std::remove_cvref_t<decltype(std::declval<iterable_elem_type<T>>().first)>;
 
 template <typename T>
-using map_value_type =
-    std::remove_cvref_t<decltype(std::declval<iterable_elem_type<T>>().second)>;
+using map_value_type = std::remove_cvref_t<decltype(std::declval<iterable_elem_type<T>>().second)>;
 
 template <typename T>
-inline constexpr bool __is_set = false;
+inline constexpr bool _is_set = false;
 template <typename T>
-inline constexpr bool __is_set<std::set<T>> = true;
+inline constexpr bool _is_set<std::set<T>> = true;
 template <typename T>
-inline constexpr bool __is_set<std::unordered_set<T>> = true;
+inline constexpr bool _is_set<std::unordered_set<T>> = true;
 
 template <typename T>
-inline constexpr bool is_set = __is_set<std::remove_cvref_t<T>>;
+inline constexpr bool is_set = _is_set<std::remove_cvref_t<T>>;
 
 template <typename T>
-inline constexpr bool is_container =
-    is_iterable<T> && !is_string<T> && !is_map<T> && !is_set<T>;
+inline constexpr bool is_container = is_iterable<T> && !is_string<T> && !is_map<T> && !is_set<T>;
 
 template <typename... Args>
-inline constexpr bool __is_tuple = false;
+inline constexpr bool _is_tuple = false;
 template <typename... Args>
-inline constexpr bool __is_tuple<std::tuple<Args...>> = true;
+inline constexpr bool _is_tuple<std::tuple<Args...>> = true;
 
 template <typename T>
-inline constexpr bool is_tuple = __is_tuple<std::remove_cvref_t<T>>;
+inline constexpr bool is_tuple = _is_tuple<std::remove_cvref_t<T>>;
 
 template <typename... Args>
-inline constexpr bool __is_pair = false;
+inline constexpr bool _is_pair = false;
 template <typename T1, typename T2>
-inline constexpr bool __is_pair<std::pair<T1, T2>> = true;
+inline constexpr bool _is_pair<std::pair<T1, T2>> = true;
 
 template <typename T>
-inline constexpr bool is_pair = __is_pair<std::remove_cvref_t<T>>;
+inline constexpr bool is_pair = _is_pair<std::remove_cvref_t<T>>;
 
 template <typename T>
 inline constexpr bool is_tuple_like = is_tuple<T> || is_pair<T>;
 
 template <typename T>
-inline constexpr bool __is_queue = false;
+inline constexpr bool _is_queue = false;
 template <typename T>
-inline constexpr bool __is_queue<std::queue<T>> = true;
+inline constexpr bool _is_queue<std::queue<T>> = true;
 
 template <typename T>
-inline constexpr bool is_queue = __is_queue<std::remove_cvref_t<T>>;
+inline constexpr bool is_queue = _is_queue<std::remove_cvref_t<T>>;
 
 template <typename T>
-inline constexpr bool __is_priority_queue = false;
+inline constexpr bool _is_priority_queue = false;
 template <typename T>
-inline constexpr bool __is_priority_queue<std::priority_queue<T>> = true;
+inline constexpr bool _is_priority_queue<std::priority_queue<T>> = true;
 
 template <typename T>
-inline constexpr bool is_priority_queue =
-    __is_priority_queue<std::remove_cvref_t<T>>;
+inline constexpr bool is_priority_queue = _is_priority_queue<std::remove_cvref_t<T>>;
 
 template <typename T>
-inline constexpr bool __is_stack = false;
+inline constexpr bool _is_stack = false;
 template <typename T>
-inline constexpr bool __is_stack<std::stack<T>> = true;
+inline constexpr bool _is_stack<std::stack<T>> = true;
 
 template <typename T>
-inline constexpr bool is_stack = __is_stack<std::remove_cvref_t<T>>;
+inline constexpr bool is_stack = _is_stack<std::remove_cvref_t<T>>;
 
 template <typename T>
-inline constexpr bool is_xixo =
-    is_queue<T> || is_priority_queue<T> || is_stack<T>;
+inline constexpr bool is_xixo = is_queue<T> || is_priority_queue<T> || is_stack<T>;
 
 template <typename T>
-inline constexpr bool is_iterable_like =
-    is_iterable<T> || is_tuple_like<T> || is_xixo<T>;
+inline constexpr bool is_iterable_like = is_iterable<T> || is_tuple_like<T> || is_xixo<T>;
 
 }  // namespace cpp_dump

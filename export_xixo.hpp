@@ -16,9 +16,8 @@ auto export_xixo(T &&value, std::string indent, size_t first_line_length)
   if (value.empty()) return "std::queue{ size= 0 }";
 
   std::string output = "std::queue{ front= ";
-  output +=
-      export_var(value.front(), indent, first_line_length + output.length()) +
-      ", size= " + std::to_string(value.size()) + " }";
+  output += export_var(value.front(), indent, first_line_length + output.length()) +
+            ", size= " + std::to_string(value.size()) + " }";
 
   return output;
 }
@@ -29,9 +28,8 @@ auto export_xixo(T &&value, std::string indent, size_t first_line_length)
   if (value.empty()) return "std::priority_queue{ size= 0 }";
 
   std::string output = "std::priority_queue{ top= ";
-  output +=
-      export_var(value.top(), indent, first_line_length + output.length()) +
-      ", size= " + std::to_string(value.size()) + " }";
+  output += export_var(value.top(), indent, first_line_length + output.length()) +
+            ", size= " + std::to_string(value.size()) + " }";
 
   return output;
 }
@@ -42,9 +40,8 @@ auto export_xixo(T &&value, std::string indent, size_t first_line_length)
   if (value.empty()) return "std::stack{ size= 0 }";
 
   std::string output = "std::stack{ top= ";
-  output +=
-      export_var(value.top(), indent, first_line_length + output.length()) +
-      ", size= " + std::to_string(value.size()) + " }";
+  output += export_var(value.top(), indent, first_line_length + output.length()) +
+            ", size= " + std::to_string(value.size()) + " }";
 
   return output;
 }
