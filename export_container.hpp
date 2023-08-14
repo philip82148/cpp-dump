@@ -3,9 +3,7 @@
 #include <string>
 #include <type_traits>
 
-#include "export_map.hpp"
-#include "export_set.hpp"
-#include "iterable.hpp"
+#include "iterable_like.hpp"
 
 namespace cpp_dump {
 
@@ -15,18 +13,13 @@ template <typename T>
 std::string export_var(T &&, std::string);
 
 template <typename T>
-inline constexpr bool is_string = std::is_convertible_v<T, std::string>;
-
-template <typename T>
-inline constexpr bool is_container =
-    is_iterable<T> && !is_string<T> && !is_map<T> && !is_set<T>;
-
-template <typename T>
 auto export_container(T &&value, std::string indent)
     -> std::enable_if_t<is_container<T>, std::string> {
   if (is_empty_iterable(value)) return "[ ]";
 
-  bool shift_indent = false;
+  bool shift_indent = is_iterable_like<iterable_elem_type<T>>;
+  // 中身がiterable_likeのでも常に長さに応じて改行するかどうかを決める場合は次
+  // bool shift_indent = false;
   std::string new_indent = indent + "  ";
 
 rollback:
@@ -53,24 +46,5 @@ rollback:
 
   return "[ " + elems + " ]";
 }
-
-// template <typename T>
-// auto export_container(T value, std::string indent)
-//     -> std::enable_if_t<is_iterable_like<iterable_elem_type<T>>, std::string>
-//     {
-//   if (is_empty_iterable(value)) return "[ ]";
-
-//   std::string content = "";
-
-//   std::string newIndent = indent + "  ";
-//   for (auto v : value) {
-//     if (content != "") content += ",";
-
-//     content += "\n" + newIndent + export_var(v, newIndent);
-//   }
-//   content += "\n" + indent;
-
-//   return "[" + content + "]";
-// }
 
 }  // namespace cpp_dump

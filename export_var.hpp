@@ -15,6 +15,7 @@ std::string export_var(T &&, std::string = "");
 #include "export_set.hpp"
 #include "export_tuple_like.hpp"
 #include "export_xixo.hpp"
+#include "iterable_like.hpp"
 
 namespace cpp_dump {
 

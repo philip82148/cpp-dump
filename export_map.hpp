@@ -1,9 +1,9 @@
 #pragma once
 
-#include <map>
 #include <string>
 #include <type_traits>
-#include <unordered_map>
+
+#include "iterable_like.hpp"
 
 namespace cpp_dump {
 
@@ -13,21 +13,13 @@ template <typename T>
 std::string export_var(T &&, std::string);
 
 template <typename T>
-inline constexpr bool __is_map = false;
-template <typename T1, typename T2>
-inline constexpr bool __is_map<std::map<T1, T2>> = true;
-template <typename T1, typename T2>
-inline constexpr bool __is_map<std::unordered_map<T1, T2>> = true;
-
-template <typename T>
-inline constexpr bool is_map = __is_map<std::remove_reference_t<T>>;
-
-template <typename T>
 auto export_map(T &&value, std::string indent)
     -> std::enable_if_t<is_map<T>, std::string> {
   if (value.empty()) return "{ }";
 
-  bool shift_indent = false;
+  bool shift_indent = is_iterable_like<iterable_elem_type<T>>;
+  // 中身がiterable_likeのでも常に長さに応じて改行するかどうかを決める場合は次
+  // bool shift_indent = false;
   std::string new_indent = indent + "  ";
 
 rollback:
