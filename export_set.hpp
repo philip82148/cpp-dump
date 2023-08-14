@@ -4,16 +4,17 @@
 #include <type_traits>
 
 #include "iterable_like.hpp"
+#include "utility.hpp"
 
 namespace cpp_dump {
 
-extern inline const int MAX_ITERABLE_LINE_WIDTH;
+extern inline const int MAX_LINE_WIDTH;
 
 template <typename T>
-std::string export_var(T &&, std::string);
+std::string export_var(T &&, std::string, size_t);
 
 template <typename T>
-auto export_set(T &&value, std::string indent)
+auto export_set(T &&value, std::string indent, size_t first_line_length)
     -> std::enable_if_t<is_set<T>, std::string> {
   if (value.empty()) return "{ }";
 
@@ -32,11 +33,12 @@ rollback:
       continue;
     }
 
-    std::string elem_string = export_var(elem_value, indent);
-    if (elem_string.find("\n") == std::string::npos) {
+    std::string elem_string =
+        export_var(elem_value, indent, first_line_length + elems.length() + 2);
+    if (!__has_lf(elem_string)) {
       elems += elem_string;
 
-      if (elems.length() + 4 <= MAX_ITERABLE_LINE_WIDTH) continue;
+      if (first_line_length + elems.length() + 4 <= MAX_LINE_WIDTH) continue;
     }
 
     shift_indent = true;

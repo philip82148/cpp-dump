@@ -1,11 +1,11 @@
-#include "export_var.hpp"
+#pragma once
 
 #include <string>
 
 namespace cpp_dump {
 
-void __replace_string(std::string &value, std::string search,
-                      std::string replace) {
+inline void __replace_string(std::string &value, std::string search,
+                             std::string replace) {
   std::string::size_type pos = 0;
   while ((pos = value.find(search, pos)) != std::string::npos) {
     value.replace(pos, search.length(), replace);
@@ -13,7 +13,7 @@ void __replace_string(std::string &value, std::string search,
   }
 }
 
-std::string __export_var(std::string value, std::string) {
+inline std::string export_string(std::string value) {
   __replace_string(value, R"(\)", R"(\\)");
 
   if (value.find(R"(")") == std::string::npos &&

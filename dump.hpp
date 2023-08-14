@@ -5,6 +5,7 @@
 #include <utility>
 
 #include "export_var.hpp"
+#include "utility.hpp"
 
 #define __expand1(arg1) #arg1, (arg1)
 #define __expand2(arg1, ...) __expand1(arg1), __expand1(__VA_ARGS__)
@@ -35,77 +36,123 @@ namespace cpp_dump {
 
 inline const int MAX_LINE_WIDTH = 80;
 
-inline const int MAX_ITERABLE_LINE_WIDTH = 40;
+template <typename T>
+size_t __dump_recursive_aux(size_t last_line_length, std::string expr,
+                            T &&value) {
+  const std::string indent11 = "           ";
 
-inline auto __first_line_length(std::string value) {
-  auto lf_pos = value.find("\n");
+  if (__has_lf(expr) && last_line_length > 9) {
+    std::clog << "\n" << indent11;
+    last_line_length = 11;
+  }
 
-  if (lf_pos == std::string::npos) return value.length();
+  struct prefix_and_value_string {
+    std::string prefix;
+    std::string value_string;
+    bool over_max_line_width;
+    bool value_string_has_lf;
 
-  return lf_pos;
-}
+    prefix_and_value_string(std::string prefix, std::string value_string,
+                            bool over_max_width, bool value_string_has_lf)
+        : prefix(prefix),
+          value_string(value_string),
+          over_max_line_width(over_max_width),
+          value_string_has_lf(value_string_has_lf) {}
+  };
 
-inline auto __last_line_length(std::string value,
-                               int additional_first_line_length = 0) {
-  auto lf_pos = value.rfind("\n");
+  auto get_prefix_and_value_string =
+      [=, &value](std::string prefix) -> prefix_and_value_string {
+    auto new_last_line_length = __last_line_length(prefix, last_line_length);
 
-  if (lf_pos == std::string::npos)
-    return additional_first_line_length + value.length();
+    std::string value_string =
+        export_var(value, indent11, new_last_line_length);
 
-  return value.length() - lf_pos - 1;
-}
+    bool over_max_line_width =
+        new_last_line_length + __first_line_length(value_string) >
+        MAX_LINE_WIDTH;
 
-using __last_line_length_type = decltype(__last_line_length(""));
+    bool value_string_has_lf = __has_lf(value_string);
 
-inline __last_line_length_type __dump_value_string(
-    __last_line_length_type last_line_length, std::string expr,
-    std::string value_string) {
-  std::string output = expr + " => " + value_string;
-  auto output_first_line_length = __first_line_length(output);
+    return {prefix, value_string, over_max_line_width, value_string_has_lf};
+  };
 
-  if (last_line_length + output_first_line_length <= MAX_LINE_WIDTH) {
+  auto output = [=](prefix_and_value_string &pattern) -> size_t {
+    std::string output = pattern.prefix + pattern.value_string;
     std::clog << output;
 
     return __last_line_length(output, last_line_length);
-  }
+  };
 
-  if (last_line_length > 9) {
-    std::clog << "\n         ";
+  prefix_and_value_string pattern1 = get_prefix_and_value_string(expr + " => ");
+  if (!pattern1.over_max_line_width) {
+    if (pattern1.value_string_has_lf) {
+      if (last_line_length <= 11) {
+        prefix_and_value_string pattern3b =
+            get_prefix_and_value_string(expr + "\n" + indent11 + "=> ");
 
-    if (9 + output_first_line_length <= MAX_LINE_WIDTH) {
-      std::clog << output;
+        if (!pattern3b.value_string_has_lf) return output(pattern3b);
+      } else {
+        prefix_and_value_string pattern2 =
+            get_prefix_and_value_string("\n" + indent11 + expr + " => ");
 
-      return __last_line_length(output, 9);
+        if (!pattern2.value_string_has_lf) return output(pattern2);
+
+        prefix_and_value_string pattern3a = get_prefix_and_value_string(
+            "\n" + indent11 + expr + "\n" + indent11 + "=> ");
+
+        if (!pattern3a.value_string_has_lf) return output(pattern3a);
+      }
     }
+
+    return output(pattern1);
   }
 
-  std::clog << expr << "\n           => " << value_string;
+  if (last_line_length <= 11) {
+    prefix_and_value_string pattern3b =
+        get_prefix_and_value_string(expr + "\n" + indent11 + "=> ");
 
-  return __last_line_length(value_string, 14);
+    return output(pattern3b);
+  }
+
+  prefix_and_value_string pattern2 =
+      get_prefix_and_value_string("\n" + indent11 + expr + " => ");
+  if (!pattern2.over_max_line_width) {
+    if (pattern2.value_string_has_lf) {
+      prefix_and_value_string pattern3a = get_prefix_and_value_string(
+          "\n" + indent11 + expr + "\n" + indent11 + "=> ");
+
+      if (!pattern3a.value_string_has_lf) return output(pattern3a);
+    }
+
+    return output(pattern2);
+  }
+
+  prefix_and_value_string pattern3a = get_prefix_and_value_string(
+      "\n" + indent11 + expr + "\n" + indent11 + "=> ");
+
+  return output(pattern3a);
 }
 
-inline void __dump_aux(__last_line_length_type) {}
+inline void __dump_recursive(size_t) {}
 
 template <typename T, typename... Args>
-void __dump_aux(__last_line_length_type last_line_length, std::string expr,
-                T &&value, Args &&...args) {
+inline void __dump_recursive(size_t last_line_length, std::string expr,
+                             T &&value, Args &&...args) {
   std::clog << ", ";
   last_line_length += 2;
 
-  std::string value_string = export_var(value, "         ");
-  last_line_length = __dump_value_string(last_line_length, expr, value_string);
+  last_line_length = __dump_recursive_aux(last_line_length, expr, value);
 
-  __dump_aux(last_line_length, args...);
+  __dump_recursive(last_line_length, args...);
 }
 
 template <typename T, typename... Args>
 void __dump(std::string expr, T &&value, Args &&...args) {
   std::clog << "[dump()] ";
 
-  std::string value_string = export_var(value, "         ");
-  auto last_line_length = __dump_value_string(9, expr, value_string);
+  auto last_line_length = __dump_recursive_aux(9, expr, value);
 
-  __dump_aux(last_line_length, args...);
+  __dump_recursive(last_line_length, args...);
   std::clog << std::endl;
 }
 

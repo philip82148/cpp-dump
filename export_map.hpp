@@ -4,16 +4,17 @@
 #include <type_traits>
 
 #include "iterable_like.hpp"
+#include "utility.hpp"
 
 namespace cpp_dump {
 
-extern inline const int MAX_ITERABLE_LINE_WIDTH;
+extern inline const int MAX_LINE_WIDTH;
 
 template <typename T>
-std::string export_var(T &&, std::string);
+std::string export_var(T &&, std::string, size_t);
 
 template <typename T>
-auto export_map(T &&value, std::string indent)
+auto export_map(T &&value, std::string indent, size_t first_line_length)
     -> std::enable_if_t<is_map<T>, std::string> {
   if (value.empty()) return "{ }";
 
@@ -24,30 +25,49 @@ auto export_map(T &&value, std::string indent)
   std::string new_indent = indent + "  ";
 
 rollback:
-  std::string elems = "";
+  std::string output = "{ ";
+  bool is_first = true;
   for (auto elem_pair : value) {
-    if (elems != "") elems += ", ";
+    if (is_first) {
+      is_first = false;
+    } else {
+      output += ", ";
+    }
 
     if (shift_indent) {
-      elems += "\n" + new_indent + export_var(elem_pair.first, new_indent) +
-               ": " + export_var(elem_pair.second, new_indent);
+      std::string prefix =
+          "\n" + new_indent + export_var(elem_pair.first, new_indent) + ": ";
+
+      output += prefix + export_var(elem_pair.second, new_indent,
+                                    __last_line_length(prefix));
       continue;
     }
 
-    std::string elem_string = export_var(elem_pair.first, indent) + ": " +
-                              export_var(elem_pair.second, indent);
-    if (elem_string.find("\n") == std::string::npos) {
-      elems += elem_string;
+    std::string prefix = export_var(elem_pair.first, indent,
+                                    first_line_length + output.length()) +
+                         ": ";
 
-      if (elems.length() + 4 <= MAX_ITERABLE_LINE_WIDTH) continue;
+    std::string elem_string =
+        prefix +
+        export_var(elem_pair.second, indent,
+                   first_line_length + output.length() + prefix.length());
+    if (!__has_lf(elem_string)) {
+      output += elem_string;
+
+      if (first_line_length + output.length() + 2 <= MAX_LINE_WIDTH) continue;
     }
 
     shift_indent = true;
     goto rollback;
   }
-  if (shift_indent) return "{" + elems + "\n" + indent + "}";
 
-  return "{ " + elems + " }";
+  if (shift_indent) {
+    output += "\n" + indent + "}";
+  } else {
+    output += " }";
+  }
+
+  return output;
 }
 
 }  // namespace cpp_dump
