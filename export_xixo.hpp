@@ -4,8 +4,11 @@
 #include <type_traits>
 
 #include "iterable_like.hpp"
+#include "utility.hpp"
 
 namespace cpp_dump {
+
+extern inline const int max_line_width;
 
 template <typename T>
 std::string export_var(T &&, std::string);
@@ -19,6 +22,13 @@ auto export_xixo(T &&value, std::string indent, size_t first_line_length)
   output += export_var(value.front(), indent, first_line_length + output.length()) +
             ", size= " + std::to_string(value.size()) + " }";
 
+  if (!_has_lf(output) && output.length() < max_line_width) return output;
+
+  std::string new_indent = indent + "  ";
+  output = "std::queue{\n" + new_indent + "front= ";
+  output += export_var(value.front(), new_indent, first_line_length + output.length()) + ",\n" +
+            new_indent + "size= " + std::to_string(value.size()) + "\n" + indent + "}";
+
   return output;
 }
 
@@ -31,6 +41,13 @@ auto export_xixo(T &&value, std::string indent, size_t first_line_length)
   output += export_var(value.top(), indent, first_line_length + output.length()) +
             ", size= " + std::to_string(value.size()) + " }";
 
+  if (!_has_lf(output) && output.length() < max_line_width) return output;
+
+  std::string new_indent = indent + "  ";
+  output = "std::priority_queue{\n" + new_indent + "top= ";
+  output += export_var(value.top(), new_indent, first_line_length + output.length()) + ",\n" +
+            new_indent + "size= " + std::to_string(value.size()) + "\n" + indent + "}";
+
   return output;
 }
 
@@ -42,6 +59,11 @@ auto export_xixo(T &&value, std::string indent, size_t first_line_length)
   std::string output = "std::stack{ top= ";
   output += export_var(value.top(), indent, first_line_length + output.length()) +
             ", size= " + std::to_string(value.size()) + " }";
+
+  std::string new_indent = indent + "  ";
+  output = "std::stack{\n" + new_indent + "top= ";
+  output += export_var(value.top(), new_indent, first_line_length + output.length()) + ",\n" +
+            new_indent + "size= " + std::to_string(value.size()) + "\n" + indent + "}";
 
   return output;
 }

@@ -35,12 +35,13 @@ namespace cpp_dump {
 inline const int max_line_width = 80;
 
 template <typename T>
-size_t _dump_recursive_aux(size_t last_line_length, std::string expr, T &&value) {
+size_t _dump_one(size_t last_line_length, std::string expr, T &&value) {
+  const std::string indent9 = "         ";
   const std::string indent11 = "           ";
 
   if (_has_lf(expr) && last_line_length > 9) {
-    std::clog << "\n" << indent11;
-    last_line_length = 11;
+    std::clog << "\n" << indent9;
+    last_line_length = 9;
   }
 
   struct prefix_and_value_string {
@@ -48,13 +49,6 @@ size_t _dump_recursive_aux(size_t last_line_length, std::string expr, T &&value)
     std::string value_string;
     bool over_max_line_width;
     bool value_string_has_lf;
-
-    prefix_and_value_string(std::string prefix, std::string value_string, bool over_max_width,
-                            bool value_string_has_lf)
-        : prefix(prefix),
-          value_string(value_string),
-          over_max_line_width(over_max_width),
-          value_string_has_lf(value_string_has_lf) {}
   };
 
   auto get_prefix_and_value_string = [=, &value](std::string prefix) -> prefix_and_value_string {
@@ -77,52 +71,53 @@ size_t _dump_recursive_aux(size_t last_line_length, std::string expr, T &&value)
     return _last_line_length(output, last_line_length);
   };
 
-  prefix_and_value_string pattern1 = get_prefix_and_value_string(expr + " => ");
-  if (!pattern1.over_max_line_width) {
-    if (pattern1.value_string_has_lf) {
-      if (last_line_length <= 11) {
-        prefix_and_value_string pattern3b =
-            get_prefix_and_value_string(expr + "\n" + indent11 + "=> ");
+  prefix_and_value_string pattern1a = get_prefix_and_value_string(expr + " => ");
+  if (!pattern1a.over_max_line_width) {
+    if (!pattern1a.value_string_has_lf) return output(pattern1a);
 
-        if (!pattern3b.value_string_has_lf) return output(pattern3b);
-      } else {
-        prefix_and_value_string pattern2 =
-            get_prefix_and_value_string("\n" + indent11 + expr + " => ");
+    if (last_line_length <= 9) {
+      prefix_and_value_string pattern2a =
+          get_prefix_and_value_string(expr + "\n" + indent11 + "=> ");
 
-        if (!pattern2.value_string_has_lf) return output(pattern2);
+      if (!pattern2a.value_string_has_lf) return output(pattern2a);
 
-        prefix_and_value_string pattern3a =
-            get_prefix_and_value_string("\n" + indent11 + expr + "\n" + indent11 + "=> ");
-
-        if (!pattern3a.value_string_has_lf) return output(pattern3a);
-      }
+      return output(pattern1a);
     }
 
-    return output(pattern1);
-  }
+    prefix_and_value_string pattern1b = get_prefix_and_value_string("\n" + indent9 + expr + " => ");
 
-  if (last_line_length <= 11) {
-    prefix_and_value_string pattern3b = get_prefix_and_value_string(expr + "\n" + indent11 + "=> ");
+    if (pattern1b.value_string_has_lf) {
+      prefix_and_value_string pattern2b =
+          get_prefix_and_value_string("\n" + indent9 + expr + "\n" + indent11 + "=> ");
 
-    return output(pattern3b);
-  }
-
-  prefix_and_value_string pattern2 = get_prefix_and_value_string("\n" + indent11 + expr + " => ");
-  if (!pattern2.over_max_line_width) {
-    if (pattern2.value_string_has_lf) {
-      prefix_and_value_string pattern3a =
-          get_prefix_and_value_string("\n" + indent11 + expr + "\n" + indent11 + "=> ");
-
-      if (!pattern3a.value_string_has_lf) return output(pattern3a);
+      if (!pattern2b.value_string_has_lf) return output(pattern2b);
     }
 
-    return output(pattern2);
+    return output(pattern1b);
   }
 
-  prefix_and_value_string pattern3a =
-      get_prefix_and_value_string("\n" + indent11 + expr + "\n" + indent11 + "=> ");
+  if (last_line_length <= 9) {
+    prefix_and_value_string pattern2a = get_prefix_and_value_string(expr + "\n" + indent11 + "=> ");
 
-  return output(pattern3a);
+    return output(pattern2a);
+  }
+
+  prefix_and_value_string pattern1b = get_prefix_and_value_string("\n" + indent9 + expr + " => ");
+  if (!pattern1b.over_max_line_width) {
+    if (pattern1b.value_string_has_lf) {
+      prefix_and_value_string pattern2b =
+          get_prefix_and_value_string("\n" + indent9 + expr + "\n" + indent11 + "=> ");
+
+      if (!pattern2b.value_string_has_lf) return output(pattern2b);
+    }
+
+    return output(pattern1b);
+  }
+
+  prefix_and_value_string pattern2b =
+      get_prefix_and_value_string("\n" + indent9 + expr + "\n" + indent11 + "=> ");
+
+  return output(pattern2b);
 }
 
 inline void _dump_recursive(size_t) {}
@@ -132,7 +127,7 @@ inline void _dump_recursive(size_t last_line_length, std::string expr, T &&value
   std::clog << ", ";
   last_line_length += 2;
 
-  last_line_length = _dump_recursive_aux(last_line_length, expr, value);
+  last_line_length = _dump_one(last_line_length, expr, value);
 
   _dump_recursive(last_line_length, args...);
 }
@@ -141,10 +136,10 @@ template <typename T, typename... Args>
 void _dump(std::string expr, T &&value, Args &&...args) {
   std::clog << "[dump()] ";
 
-  auto last_line_length = _dump_recursive_aux(9, expr, value);
+  auto last_line_length = _dump_one(9, expr, value);
 
   _dump_recursive(last_line_length, args...);
-  std::clog << std::endl;
+  std::clog << "\n" << std::endl;
 }
 
 }  // namespace cpp_dump
