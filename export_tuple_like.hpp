@@ -3,7 +3,7 @@
 #include <string>
 #include <type_traits>
 
-#include "iterable_like.hpp"
+#include "type_check.hpp"
 #include "utility.hpp"
 
 namespace cpp_dump {
