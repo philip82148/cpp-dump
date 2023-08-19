@@ -35,7 +35,7 @@ namespace cpp_dump {
 inline const int max_line_width = 80;
 
 template <typename T>
-size_t _dump_one(size_t last_line_length, std::string expr, T &&value) {
+size_t _dump_one(std::string expr, T &&value, size_t last_line_length) {
   const std::string indent9 = "         ";
   const std::string indent11 = "           ";
 
@@ -127,7 +127,7 @@ inline void _dump_recursive(size_t last_line_length, std::string expr, T &&value
   std::clog << ", ";
   last_line_length += 2;
 
-  last_line_length = _dump_one(last_line_length, expr, value);
+  last_line_length = _dump_one(expr, value, last_line_length);
 
   _dump_recursive(last_line_length, args...);
 }
@@ -136,7 +136,7 @@ template <typename T, typename... Args>
 void _dump(std::string expr, T &&value, Args &&...args) {
   std::clog << "[dump()] ";
 
-  auto last_line_length = _dump_one(9, expr, value);
+  auto last_line_length = _dump_one(expr, value, 9);
 
   _dump_recursive(last_line_length, args...);
   std::clog << "\n" << std::endl;

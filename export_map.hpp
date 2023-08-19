@@ -14,7 +14,7 @@ template <typename T>
 std::string export_var(T &&, std::string, size_t);
 
 template <typename T>
-auto export_map(T &&value, std::string indent, size_t first_line_length)
+auto export_map(T &&value, std::string indent, size_t last_line_length)
     -> std::enable_if_t<is_map<T>, std::string> {
   if (value.empty()) return "{ }";
 
@@ -34,22 +34,24 @@ rollback:
     }
 
     if (shift_indent) {
-      std::string prefix = "\n" + new_indent + export_var(elem_pair.first, new_indent) + ": ";
+      std::string key_string = "\n" + new_indent + export_var(elem_pair.first, new_indent) + ": ";
+      std::string value_string =
+          export_var(elem_pair.second, new_indent, _last_line_length(key_string));
 
-      output += prefix + export_var(elem_pair.second, new_indent, _last_line_length(prefix));
+      output += key_string + value_string;
       continue;
     }
 
-    std::string prefix =
-        export_var(elem_pair.first, indent, first_line_length + output.length()) + ": ";
+    std::string key_string =
+        export_var(elem_pair.first, indent, last_line_length + output.length()) + ": ";
+    std::string value_string = export_var(elem_pair.second, indent,
+                                          last_line_length + output.length() + key_string.length());
 
-    std::string elem_string =
-        prefix +
-        export_var(elem_pair.second, indent, first_line_length + output.length() + prefix.length());
+    std::string elem_string = key_string + value_string;
     if (!_has_lf(elem_string)) {
       output += elem_string;
 
-      if (first_line_length + output.length() + 2 <= max_line_width) continue;
+      if (last_line_length + (output + " }").length() <= max_line_width) continue;
     }
 
     shift_indent = true;

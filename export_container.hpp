@@ -14,7 +14,7 @@ template <typename T>
 std::string export_var(T &&, std::string, size_t);
 
 template <typename T>
-auto export_container(T &&value, std::string indent, size_t first_line_length)
+auto export_container(T &&value, std::string indent, size_t last_line_length)
     -> std::enable_if_t<is_container<T>, std::string> {
   if (is_empty_iterable(value)) return "[ ]";
 
@@ -24,29 +24,38 @@ auto export_container(T &&value, std::string indent, size_t first_line_length)
   std::string new_indent = indent + "  ";
 
 rollback:
-  std::string elems = "";
-  for (auto elem_value : value) {
-    if (elems != "") elems += ", ";
+  std::string output = "[ ";
+  bool is_first = true;
+  for (auto elem : value) {
+    if (is_first) {
+      is_first = false;
+    } else {
+      output += ", ";
+    }
 
     if (shift_indent) {
-      elems += "\n" + new_indent + export_var(elem_value, new_indent);
+      output += "\n" + new_indent + export_var(elem, new_indent);
       continue;
     }
 
-    std::string elem_string =
-        export_var(elem_value, indent, first_line_length + elems.length() + 2);
+    std::string elem_string = export_var(elem, indent, last_line_length + output.length());
     if (!_has_lf(elem_string)) {
-      elems += elem_string;
+      output += elem_string;
 
-      if (first_line_length + elems.length() + 4 <= max_line_width) continue;
+      if (last_line_length + (output + " ]").length() <= max_line_width) continue;
     }
 
     shift_indent = true;
     goto rollback;
   }
-  if (shift_indent) return "[" + elems + "\n" + indent + "]";
 
-  return "[ " + elems + " ]";
+  if (shift_indent) {
+    output += "\n" + indent + "]";
+  } else {
+    output += " ]";
+  }
+
+  return output;
 }
 
 }  // namespace cpp_dump

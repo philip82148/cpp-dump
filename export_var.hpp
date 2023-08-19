@@ -27,51 +27,51 @@ inline auto _export_var(T &&value, std::string, size_t) -> decltype(std::to_stri
   return std::to_string(value);
 }
 
+inline std::string _export_var(char value, std::string, size_t) {
+  return "'" + std::string{value} + "'";
+}
+
 template <typename T>
 inline auto _export_var(T &&value, std::string, size_t)
     -> std::enable_if_t<is_string<T>, std::string> {
   return export_string(value);
 }
 
-inline std::string _export_var(char value, std::string, size_t) {
-  return "'" + std::string{value} + "'";
-}
-
 template <typename T>
-inline auto _export_var(T &&value, std::string indent, size_t first_line_length)
+inline auto _export_var(T &&value, std::string indent, size_t last_line_length)
     -> std::enable_if_t<is_set<T>, std::string> {
-  return export_set(value, indent, first_line_length);
+  return export_set(value, indent, last_line_length);
 }
 
 template <typename T>
-inline auto _export_var(T &&value, std::string indent, size_t first_line_length)
+inline auto _export_var(T &&value, std::string indent, size_t last_line_length)
     -> std::enable_if_t<is_map<T>, std::string> {
-  return export_map(value, indent, first_line_length);
+  return export_map(value, indent, last_line_length);
 }
 
 template <typename T>
-inline auto _export_var(T &&value, std::string indent, size_t first_line_length)
+inline auto _export_var(T &&value, std::string indent, size_t last_line_length)
     -> std::enable_if_t<is_tuple_like<T>, std::string> {
-  return export_tuple_like(value, indent, first_line_length);
+  return export_tuple_like(value, indent, last_line_length);
 }
 
 template <typename T>
-inline auto _export_var(T &&value, std::string indent, size_t first_line_length)
+inline auto _export_var(T &&value, std::string indent, size_t last_line_length)
     -> std::enable_if_t<is_container<T>, std::string> {
-  return export_container(value, indent, first_line_length);
+  return export_container(value, indent, last_line_length);
 }
 
 template <typename T>
-inline auto _export_var(T &&value, std::string indent, size_t first_line_length)
+inline auto _export_var(T &&value, std::string indent, size_t last_line_length)
     -> std::enable_if_t<is_xixo<T>, std::string> {
-  return export_xixo(value, indent, first_line_length);
+  return export_xixo(value, indent, last_line_length);
 }
 
 template <typename T>
-inline std::string export_var(T &&value, std::string indent, size_t first_line_length) {
-  if (first_line_length == 0) first_line_length = indent.length();
+inline std::string export_var(T &&value, std::string indent, size_t last_line_length) {
+  if (last_line_length == 0) last_line_length = indent.length();
 
-  return _export_var(value, indent, first_line_length);
+  return _export_var(value, indent, last_line_length);
 }
 
 }  // namespace cpp_dump
