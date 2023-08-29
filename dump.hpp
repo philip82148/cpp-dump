@@ -35,14 +35,14 @@ namespace cpp_dump {
 inline const int max_line_width = 80;
 
 template <typename T>
-bool _dump_one(std::string &output, bool value_string_in_one_line, std::string expr, T &&value) {
+bool _dump_one(std::string &output, bool no_newline_in_value_string, std::string expr, T &&value) {
   const std::string indent9 = "         ";
   const std::string indent11 = "           ";
 
   if (output.length() == 0) {
     output = "[dump()] ";
   } else {
-    if (value_string_in_one_line) {
+    if (no_newline_in_value_string) {
       output += ", ";
     } else {
       output += ",\n" + indent9;
@@ -52,44 +52,72 @@ bool _dump_one(std::string &output, bool value_string_in_one_line, std::string e
   struct prefix_and_value_string {
     std::string prefix;
     std::string value_string;
+    bool value_string_has_newline;
     bool over_max_line_width;
-    bool value_string_has_lf;
   };
 
-  auto get_prefix_and_value_string = [&](std::string prefix,
+  auto get_prefix_and_value_string = [&, no_newline_in_value_string](
+                                         std::string prefix,
                                          std::string indent) -> prefix_and_value_string {
     auto last_line_length = _last_line_length(output + prefix);
 
-    std::string value_string = export_var(value, indent, last_line_length);
+    std::string value_string =
+        export_var(value, indent, last_line_length, no_newline_in_value_string);
+
+    bool value_string_has_newline = _has_newline(value_string);
 
     bool over_max_line_width = last_line_length + _first_line_length(value_string) > max_line_width;
 
-    bool value_string_has_lf = _has_lf(value_string);
-
-    return {prefix, value_string, over_max_line_width, value_string_has_lf};
+    return {prefix, value_string, value_string_has_newline, over_max_line_width};
   };
 
   auto append_output = [&](prefix_and_value_string &pattern) -> void {
     output += pattern.prefix + pattern.value_string;
   };
 
-  if (!value_string_in_one_line) {
+  if (no_newline_in_value_string) {
     prefix_and_value_string pattern1a = get_prefix_and_value_string(expr + " => ", indent9);
 
-    if (!pattern1a.over_max_line_width) {
-      if (!pattern1a.value_string_has_lf) {
-        append_output(pattern1a);
-        return true;
-      }
+    if (!pattern1a.value_string_has_newline && !pattern1a.over_max_line_width) {
+      append_output(pattern1a);
+      return true;
+    }
 
+    if (_last_line_length(output) <= 9) {
       prefix_and_value_string pattern1b =
           get_prefix_and_value_string(expr + "\n" + indent11 + "=> ", indent11);
 
-      if (!pattern1b.value_string_has_lf) {
+      if (!pattern1b.value_string_has_newline) {
         append_output(pattern1b);
         return true;
       }
 
+      return false;
+    }
+
+    prefix_and_value_string pattern2a =
+        get_prefix_and_value_string("\n" + indent9 + expr + " => ", indent9);
+
+    if (!pattern2a.value_string_has_newline && !pattern2a.over_max_line_width) {
+      append_output(pattern2a);
+      return true;
+    }
+
+    prefix_and_value_string pattern2b =
+        get_prefix_and_value_string("\n" + indent9 + expr + "\n" + indent11 + "=> ", indent11);
+
+    if (!pattern2b.value_string_has_newline) {
+      append_output(pattern2b);
+      return true;
+    }
+
+    return false;
+  }
+
+  prefix_and_value_string pattern1a = get_prefix_and_value_string(expr + " => ", indent9);
+
+  if (!pattern1a.over_max_line_width) {
+    if (!pattern1a.value_string_has_newline) {
       append_output(pattern1a);
       return true;
     }
@@ -97,65 +125,39 @@ bool _dump_one(std::string &output, bool value_string_in_one_line, std::string e
     prefix_and_value_string pattern1b =
         get_prefix_and_value_string(expr + "\n" + indent11 + "=> ", indent11);
 
-    append_output(pattern1b);
-    return true;
-  }
-
-  prefix_and_value_string pattern1a = get_prefix_and_value_string(expr + " => ", indent9);
-
-  if (!pattern1a.over_max_line_width && !pattern1a.value_string_has_lf) {
-    append_output(pattern1a);
-    return true;
-  }
-
-  if (_last_line_length(output) <= 9) {
-    prefix_and_value_string pattern1b =
-        get_prefix_and_value_string(expr + "\n" + indent11 + "=> ", indent11);
-
-    if (!pattern1b.value_string_has_lf) {
+    if (!pattern1b.value_string_has_newline) {
       append_output(pattern1b);
       return true;
     }
 
-    return false;
-  }
-
-  prefix_and_value_string pattern2a =
-      get_prefix_and_value_string("\n" + indent9 + expr + " => ", indent9);
-
-  if (!pattern2a.over_max_line_width && !pattern2a.value_string_has_lf) {
-    append_output(pattern2a);
+    append_output(pattern1a);
     return true;
   }
 
-  prefix_and_value_string pattern2b =
-      get_prefix_and_value_string("\n" + indent9 + expr + "\n" + indent11 + "=> ", indent11);
+  prefix_and_value_string pattern1b =
+      get_prefix_and_value_string(expr + "\n" + indent11 + "=> ", indent11);
 
-  if (!pattern2b.value_string_has_lf) {
-    append_output(pattern2b);
-    return true;
-  }
-
-  return false;
+  append_output(pattern1b);
+  return true;
 }
 
 inline bool _dump_recursive(std::string &, bool) { return true; }
 
 template <typename T, typename... Args>
-inline bool _dump_recursive(std::string &output, bool value_string_in_one_line, std::string expr,
+inline bool _dump_recursive(std::string &output, bool no_newline_in_value_string, std::string expr,
                             T &&value, Args &&...args) {
-  return _dump_one(output, value_string_in_one_line, expr, value) &&
-         _dump_recursive(output, value_string_in_one_line, args...);
+  return _dump_one(output, no_newline_in_value_string, expr, value) &&
+         _dump_recursive(output, no_newline_in_value_string, args...);
 }
 
 template <typename... Args>
 void _dump(Args &&...args) {
-  bool value_string_in_one_line = true;
+  bool no_newline_in_value_string = true;
 
 rollback:
   std::string output = "";
-  if (!_dump_recursive(output, value_string_in_one_line, args...)) {
-    value_string_in_one_line = false;
+  if (!_dump_recursive(output, no_newline_in_value_string, args...)) {
+    no_newline_in_value_string = false;
     goto rollback;
   }
 

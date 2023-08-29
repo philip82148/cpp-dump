@@ -2,6 +2,8 @@
 
 #include <string>
 
+#include "utility.hpp"
+
 namespace cpp_dump {
 
 inline void _replace_string(std::string &value, std::string search, std::string replace) {
@@ -12,13 +14,17 @@ inline void _replace_string(std::string &value, std::string search, std::string 
   }
 }
 
-inline std::string export_string(std::string value) {
+inline std::string export_string(std::string value, std::string, size_t, bool fail_on_newline) {
   _replace_string(value, R"(\)", R"(\\)");
 
-  if (value.find(R"(")") == std::string::npos && value.find("\n") == std::string::npos)
+  if (!_has_newline(value) && value.find(R"(")") == std::string::npos)
     return R"(")" + value + R"(")";
 
   _replace_string(value, R"(`)", R"(\`)");
+
+  if (!_has_newline(value)) return R"(`)" + value + R"(`)";
+
+  if (fail_on_newline) return "\n";
 
   return "\n"
          R"(`)" +

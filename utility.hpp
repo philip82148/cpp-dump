@@ -4,7 +4,7 @@
 
 namespace cpp_dump {
 
-inline bool _has_lf(std::string value) { return value.find("\n") != std::string::npos; }
+inline bool _has_newline(std::string value) { return value.find("\n") != std::string::npos; }
 
 inline size_t _first_line_length(std::string value) {
   auto lf_pos = value.find("\n");

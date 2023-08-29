@@ -11,16 +11,19 @@ namespace cpp_dump {
 extern inline const int max_line_width;
 
 template <typename T>
-std::string export_var(T &&, std::string, size_t);
+std::string export_var(T &&, std::string, size_t, bool);
 
 template <typename T>
-auto export_set(T &&value, std::string indent, size_t last_line_length)
+auto export_set(T &&value, std::string indent, size_t last_line_length, bool fail_on_newline)
     -> std::enable_if_t<is_set<T>, std::string> {
   if (value.empty()) return "{ }";
 
   bool shift_indent = is_iterable_like<iterable_elem_type<T>>;
-  // 中身がiterable_likeのでも常に長さに応じて改行するかどうかを決める場合は次
+  // 中身がiterable_likeでも常に長さに応じて改行するかどうかを決める場合は次
   // bool shift_indent = false;
+
+  if (shift_indent && fail_on_newline) return "\n";
+
   std::string new_indent = indent + "  ";
 
 rollback:
@@ -34,16 +37,20 @@ rollback:
     }
 
     if (shift_indent) {
-      output += "\n" + new_indent + export_var(elem, new_indent);
+      output +=
+          "\n" + new_indent + export_var(elem, new_indent, new_indent.length(), fail_on_newline);
       continue;
     }
 
-    std::string elem_string = export_var(elem, indent, last_line_length + output.length());
-    if (!_has_lf(elem_string)) {
+    std::string elem_string =
+        export_var(elem, indent, last_line_length + output.length(), fail_on_newline);
+    if (!_has_newline(elem_string)) {
       output += elem_string;
 
       if (last_line_length + (output + " }").length() <= max_line_width) continue;
     }
+
+    if (fail_on_newline) return "\n";
 
     shift_indent = true;
     goto rollback;
