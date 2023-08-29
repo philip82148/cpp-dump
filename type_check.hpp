@@ -107,6 +107,13 @@ template <typename T>
 inline constexpr bool is_xixo = is_queue<T> || is_priority_queue<T> || is_stack<T>;
 
 template <typename T>
-inline constexpr bool is_iterable_like = is_iterable<T> || is_tuple_like<T> || is_xixo<T>;
+inline constexpr bool is_object = (std::is_union_v<std::remove_cvref_t<T>> ||
+                                   std::is_class_v<std::remove_cvref_t<T>>)&&!is_string<T> &&
+                                  !is_set<T> && !is_map<T> && !is_tuple_like<T> &&
+                                  !is_container<T> && !is_xixo<T>;
+
+template <typename T>
+inline constexpr bool is_iterable_like =
+    is_iterable<T> || is_tuple_like<T> || is_xixo<T> || is_object<T>;
 
 }  // namespace cpp_dump

@@ -70,6 +70,10 @@ inline auto _export_var(T &&value, std::string indent, size_t last_line_length,
 }
 
 template <typename T>
+inline auto _export_var(T &&value, std::string indent, size_t last_line_length,
+                        bool fail_on_newline) -> std::enable_if_t<is_object<T>, std::string>;
+
+template <typename T>
 inline std::string export_var(T &&value, std::string indent, size_t last_line_length,
                               bool fail_on_newline) {
   return _export_var(value, indent, last_line_length, fail_on_newline);

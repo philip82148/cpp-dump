@@ -4,31 +4,13 @@
 #include <string>
 #include <utility>
 
+#include "define_export_object_macro.hpp"
+#include "expand_va_macro.hpp"
 #include "export_var.hpp"
 #include "utility.hpp"
 
-#define EXPAND_VA_ARGS1_(arg1) #arg1, (arg1)
-#define EXPAND_VA_ARGS2_(arg1, ...) EXPAND_VA_ARGS1_(arg1), EXPAND_VA_ARGS1_(__VA_ARGS__)
-#define EXPAND_VA_ARGS3_(arg1, ...) EXPAND_VA_ARGS1_(arg1), EXPAND_VA_ARGS2_(__VA_ARGS__)
-#define EXPAND_VA_ARGS4_(arg1, ...) EXPAND_VA_ARGS1_(arg1), EXPAND_VA_ARGS3_(__VA_ARGS__)
-#define EXPAND_VA_ARGS5_(arg1, ...) EXPAND_VA_ARGS1_(arg1), EXPAND_VA_ARGS4_(__VA_ARGS__)
-#define EXPAND_VA_ARGS6_(arg1, ...) EXPAND_VA_ARGS1_(arg1), EXPAND_VA_ARGS5_(__VA_ARGS__)
-#define EXPAND_VA_ARGS7_(arg1, ...) EXPAND_VA_ARGS1_(arg1), EXPAND_VA_ARGS6_(__VA_ARGS__)
-#define EXPAND_VA_ARGS8_(arg1, ...) EXPAND_VA_ARGS1_(arg1), EXPAND_VA_ARGS7_(__VA_ARGS__)
-#define EXPAND_VA_ARGS9_(arg1, ...) EXPAND_VA_ARGS1_(arg1), EXPAND_VA_ARGS8_(__VA_ARGS__)
-#define EXPAND_VA_ARGS10_(arg1, ...) EXPAND_VA_ARGS1_(arg1), EXPAND_VA_ARGS9_(__VA_ARGS__)
-#define EXPAND_VA_ARGS11_(arg1, ...) EXPAND_VA_ARGS1_(arg1), EXPAND_VA_ARGS10_(__VA_ARGS__)
-#define EXPAND_VA_ARGS12_(arg1, ...) EXPAND_VA_ARGS1_(arg1), EXPAND_VA_ARGS11_(__VA_ARGS__)
-
-#define VA_ARGS_SIZE_AUX_(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, \
-                          arg12, size, ...)                                                   \
-  size
-#define VA_ARGS_SIZE_(...) VA_ARGS_SIZE_AUX_(__VA_ARGS__, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1)
-
-#define GET_EXPAND_VA_ARGS_MACRO_(size) EXPAND_VA_ARGS##size##_
-#define EXPAND_VA_ARGS_(size, ...) GET_EXPAND_VA_ARGS_MACRO_(size)(__VA_ARGS__)
-
-#define dump(...) cpp_dump::_dump(EXPAND_VA_ARGS_(VA_ARGS_SIZE_(__VA_ARGS__), __VA_ARGS__))
+#define CPP_DUMP_EXPAND_EXPR_FOR_DUMP_(expr) #expr, (expr)
+#define dump(...) cpp_dump::_dump(CPP_DUMP_EXPAND_VA_(CPP_DUMP_EXPAND_EXPR_FOR_DUMP_, __VA_ARGS__))
 
 namespace cpp_dump {
 
