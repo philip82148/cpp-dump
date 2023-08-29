@@ -8,7 +8,7 @@
 
 namespace cpp_dump {
 
-extern inline const int max_line_width;
+extern inline int max_line_width;
 
 template <typename T>
 std::string export_var(T &&, std::string, size_t, bool);

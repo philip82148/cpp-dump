@@ -32,7 +32,7 @@
 
 namespace cpp_dump {
 
-inline const int max_line_width = 80;
+inline int max_line_width = 160;
 
 template <typename T>
 bool _dump_one(std::string &output, bool no_newline_in_value_string, std::string expr, T &&value) {

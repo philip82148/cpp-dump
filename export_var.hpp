@@ -5,8 +5,8 @@
 
 namespace cpp_dump {
 
-// template <typename T>
-// std::string export_var(T &&, std::string = "", size_t = 0, bool = false);
+template <typename T>
+std::string export_var(T &&, std::string = "", size_t = 0, bool = false);
 
 }  // namespace cpp_dump
 
