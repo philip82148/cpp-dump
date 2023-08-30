@@ -12,7 +12,8 @@
 namespace cpp_dump {
 
 template <typename T>
-inline constexpr auto _is_iterable(T &&t) -> decltype(std::begin(t), std::end(t), std::true_type());
+inline constexpr auto _is_iterable(const T &t)
+    -> decltype(std::begin(t), std::end(t), std::true_type());
 inline constexpr std::false_type _is_iterable(...);
 
 template <typename T>
@@ -24,7 +25,7 @@ using iterable_elem_type =
     std::remove_cvref_t<decltype(*std::begin(std::declval<std::remove_cvref_t<T>>()))>;
 
 template <typename T>
-inline bool is_empty_iterable(T &&t) {
+inline bool is_empty_iterable(const T &t) {
   return std::distance(std::begin(t), std::end(t)) == 0;
 }
 

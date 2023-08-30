@@ -11,11 +11,11 @@ namespace cpp_dump {
 extern inline int max_line_width;
 
 template <typename T>
-std::string export_var(T &&, std::string, size_t, bool);
+std::string export_var(const T &, std::string, size_t, bool);
 
 template <typename T>
-auto export_container(T &&value, std::string indent, size_t last_line_length, bool fail_on_newline)
-    -> std::enable_if_t<is_container<T>, std::string> {
+auto export_container(const T &value, std::string indent, size_t last_line_length,
+                      bool fail_on_newline) -> std::enable_if_t<is_container<T>, std::string> {
   if (is_empty_iterable(value)) return "[ ]";
 
   bool shift_indent = is_iterable_like<iterable_elem_type<T>>;

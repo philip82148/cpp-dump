@@ -17,7 +17,8 @@ namespace cpp_dump {
 inline int max_line_width = 160;
 
 template <typename T>
-bool _dump_one(std::string &output, bool no_newline_in_value_string, std::string expr, T &&value) {
+bool _dump_one(std::string &output, bool no_newline_in_value_string, std::string expr,
+               const T &value) {
   const std::string indent9 = "         ";
   const std::string indent11 = "           ";
 
@@ -127,13 +128,13 @@ inline bool _dump_recursive(std::string &, bool) { return true; }
 
 template <typename T, typename... Args>
 inline bool _dump_recursive(std::string &output, bool no_newline_in_value_string, std::string expr,
-                            T &&value, Args &&...args) {
+                            const T &value, const Args &...args) {
   return _dump_one(output, no_newline_in_value_string, expr, value) &&
          _dump_recursive(output, no_newline_in_value_string, args...);
 }
 
 template <typename... Args>
-void _dump(Args &&...args) {
+void _dump(const Args &...args) {
   bool no_newline_in_value_string = true;
 
 rollback:

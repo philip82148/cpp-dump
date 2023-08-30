@@ -11,10 +11,10 @@ namespace cpp_dump {
 extern inline int max_line_width;
 
 template <typename T>
-std::string export_var(T &&, std::string, size_t, bool);
+std::string export_var(const T &, std::string, size_t, bool);
 
 template <typename T>
-auto export_map(T &&value, std::string indent, size_t last_line_length, bool fail_on_newline)
+auto export_map(const T &value, std::string indent, size_t last_line_length, bool fail_on_newline)
     -> std::enable_if_t<is_map<T>, std::string> {
   if (value.empty()) return "{ }";
 
