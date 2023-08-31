@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <sstream>
 #include <string>
 #include <type_traits>
 
@@ -39,6 +40,15 @@ inline auto _export_var(const T &value, const std::string &, size_t, bool)
 
 inline std::string _export_var(char value, const std::string &, size_t, bool) {
   return "'" + std::string{value} + "'";
+}
+
+template <typename T>
+inline auto _export_var(const T &value, const std::string &, size_t, bool)
+    -> std::enable_if_t<is_pointer<T>, std::string> {
+  std::ostringstream ss;
+  ss << std::hex << value;
+
+  return value == nullptr ? "nullptr" : "*" + ss.str();
 }
 
 template <typename T>

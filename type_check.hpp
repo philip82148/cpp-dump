@@ -42,6 +42,9 @@ template <typename T>
 inline constexpr bool is_string = std::is_convertible_v<std::remove_cvref_t<T>, std::string>;
 
 template <typename T>
+inline constexpr bool is_pointer = std::is_pointer_v<T> && !is_string<T>;
+
+template <typename T>
 inline constexpr bool _is_map = false;
 template <typename T1, typename T2>
 inline constexpr bool _is_map<std::map<T1, T2>> = true;
