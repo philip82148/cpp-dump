@@ -11,10 +11,10 @@ namespace cpp_dump {
 extern inline int max_line_width;
 
 template <typename T>
-std::string export_var(const T &, std::string, size_t, bool);
+std::string export_var(const T &, const std::string &, size_t, bool);
 
 template <const size_t i, const size_t size, typename T>
-inline auto _export_tuple_like_in_one_line(const T &value, std::string indent,
+inline auto _export_tuple_like_in_one_line(const T &value, const std::string &indent,
                                            size_t last_line_length)
     -> std::enable_if_t<is_tuple<T>, std::string> {
   std::string output = export_var(std::get<i>(value), indent, last_line_length, true);
@@ -29,7 +29,7 @@ inline auto _export_tuple_like_in_one_line(const T &value, std::string indent,
 }
 
 template <const size_t i, const size_t size, typename T>
-inline auto _export_tuple_like_in_lines(const T &value, std::string indent)
+inline auto _export_tuple_like_in_lines(const T &value, const std::string &indent)
     -> std::enable_if_t<is_tuple<T>, std::string> {
   std::string output = export_var(std::get<i>(value), indent, indent.length(), false);
 
@@ -41,7 +41,7 @@ inline auto _export_tuple_like_in_lines(const T &value, std::string indent)
 }
 
 template <typename T>
-inline auto export_tuple_like(const T &value, std::string indent, size_t last_line_length,
+inline auto export_tuple_like(const T &value, const std::string &indent, size_t last_line_length,
                               bool fail_on_newline) -> std::enable_if_t<is_tuple<T>, std::string> {
   std::string value_string =
       "( " +
@@ -61,7 +61,7 @@ inline auto export_tuple_like(const T &value, std::string indent, size_t last_li
 }
 
 template <typename T>
-inline auto export_tuple_like(const T &value, std::string indent, size_t last_line_length,
+inline auto export_tuple_like(const T &value, const std::string &indent, size_t last_line_length,
                               bool fail_on_newline) -> std::enable_if_t<is_pair<T>, std::string> {
   return export_tuple_like(std::make_tuple(value.first, value.second), indent, last_line_length,
                            fail_on_newline);

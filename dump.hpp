@@ -17,7 +17,7 @@ namespace cpp_dump {
 inline int max_line_width = 160;
 
 template <typename T>
-bool _dump_one(std::string &output, bool no_newline_in_value_string, std::string expr,
+bool _dump_one(std::string &output, bool no_newline_in_value_string, const std::string &expr,
                const T &value) {
   const std::string indent9 = "         ";
   const std::string indent11 = "           ";
@@ -40,8 +40,8 @@ bool _dump_one(std::string &output, bool no_newline_in_value_string, std::string
   };
 
   auto get_prefix_and_value_string = [&, no_newline_in_value_string](
-                                         std::string prefix,
-                                         std::string indent) -> prefix_and_value_string {
+                                         const std::string &prefix,
+                                         const std::string &indent) -> prefix_and_value_string {
     auto last_line_length = _last_line_length(output + prefix);
 
     std::string value_string =
@@ -54,7 +54,7 @@ bool _dump_one(std::string &output, bool no_newline_in_value_string, std::string
     return {prefix, value_string, value_string_has_newline, over_max_line_width};
   };
 
-  auto append_output = [&](prefix_and_value_string &pattern) -> void {
+  auto append_output = [&](const prefix_and_value_string &pattern) -> void {
     output += pattern.prefix + pattern.value_string;
   };
 
@@ -127,8 +127,8 @@ bool _dump_one(std::string &output, bool no_newline_in_value_string, std::string
 inline bool _dump_recursive(std::string &, bool) { return true; }
 
 template <typename T, typename... Args>
-inline bool _dump_recursive(std::string &output, bool no_newline_in_value_string, std::string expr,
-                            const T &value, const Args &...args) {
+inline bool _dump_recursive(std::string &output, bool no_newline_in_value_string,
+                            const std::string &expr, const T &value, const Args &...args) {
   return _dump_one(output, no_newline_in_value_string, expr, value) &&
          _dump_recursive(output, no_newline_in_value_string, args...);
 }

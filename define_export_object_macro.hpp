@@ -13,10 +13,10 @@
   extern inline int max_line_width;                                                             \
                                                                                                 \
   template <typename T>                                                                         \
-  std::string export_var(const T &, std::string, size_t, bool);                                 \
+  std::string export_var(const T &, const std::string &, size_t, bool);                         \
                                                                                                 \
   template <typename T>                                                                         \
-  auto export_object(const T &value, std::string indent, size_t last_line_length,               \
+  auto export_object(const T &value, const std::string &indent, size_t last_line_length,        \
                      bool fail_on_newline)                                                      \
       -> std::enable_if_t<std::is_same_v<std::remove_cvref_t<T>, type>, std::string> {          \
     std::string new_indent = indent + "  ";                                                     \
@@ -26,7 +26,7 @@
     std::string output;                                                                         \
     bool is_first;                                                                              \
                                                                                                 \
-    auto append_output = [&](std::string property_name, auto property) -> void {                \
+    auto append_output = [&](const std::string &property_name, const auto &property) -> void {  \
       if (is_first) {                                                                           \
         is_first = false;                                                                       \
       } else {                                                                                  \
@@ -72,7 +72,7 @@
   namespace cpp_dump {                                                                           \
                                                                                                  \
   template <typename T>                                                                          \
-  inline auto _export_var(const T &value, std::string indent, size_t last_line_length,           \
+  inline auto _export_var(const T &value, const std::string &indent, size_t last_line_length,    \
                           bool fail_on_newline) -> std::enable_if_t<is_object<T>, std::string> { \
     return export_object(value, indent, last_line_length, fail_on_newline);                      \
   }                                                                                              \
