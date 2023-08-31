@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2023 Ryota Sasaki.
+ *
+ * This source code is licensed under the MIT license found in the LICENSE file in the root
+ * directory of this source tree.
+ */
+
 #pragma once
 
 #include <map>
@@ -5,9 +12,11 @@
 #include <set>
 #include <stack>
 #include <string>
+#include <tuple>
 #include <type_traits>
 #include <unordered_map>
 #include <unordered_set>
+#include <utility>
 
 namespace cpp_dump {
 

@@ -1,10 +1,17 @@
+/*
+ * Copyright (c) 2023 Ryota Sasaki.
+ *
+ * This source code is licensed under the MIT license found in the LICENSE file in the root
+ * directory of this source tree.
+ */
+
 #pragma once
 
 #include <string>
 #include <type_traits>
 
-#include "type_check.hpp"
-#include "utility.hpp"
+#include "./type_check.hpp"
+#include "./utility.hpp"
 
 namespace cpp_dump {
 

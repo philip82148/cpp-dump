@@ -1,10 +1,17 @@
+/*
+ * Copyright (c) 2023 Ryota Sasaki.
+ *
+ * This source code is licensed under the MIT license found in the LICENSE file in the root
+ * directory of this source tree.
+ */
+
 #pragma once
 
 #include <string>
 #include <type_traits>
 
-#include "expand_va_macro.hpp"
-#include "utility.hpp"
+#include "./expand_va_macro.hpp"
+#include "./utility.hpp"
 
 #define CPP_DUMP_APPEND_OUTPUT_(property) append_output(#property, value.property)
 #define CPP_DUMP_DEFINE_EXPORT_OBJECT(type, ...)                                                \

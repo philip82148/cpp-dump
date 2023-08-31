@@ -1,10 +1,17 @@
+/*
+ * Copyright (c) 2023 Ryota Sasaki.
+ *
+ * This source code is licensed under the MIT license found in the LICENSE file in the root
+ * directory of this source tree.
+ */
+
 #pragma once
 
 #include <string>
 #include <type_traits>
 
-#include "type_check.hpp"
-#include "utility.hpp"
+#include "./type_check.hpp"
+#include "./utility.hpp"
 
 namespace cpp_dump {
 
@@ -14,8 +21,8 @@ template <typename T>
 std::string export_var(const T &, const std::string &, size_t, bool);
 
 template <typename T>
-auto export_xixo(const T &value, const std::string &indent, size_t last_line_length, bool fail_on_newline)
-    -> std::enable_if_t<is_queue<T>, std::string> {
+auto export_xixo(const T &value, const std::string &indent, size_t last_line_length,
+                 bool fail_on_newline) -> std::enable_if_t<is_queue<T>, std::string> {
   if (value.empty()) return "std::queue{ size= 0 }";
 
   std::string prefix = "std::queue{ front= ";
@@ -39,8 +46,8 @@ auto export_xixo(const T &value, const std::string &indent, size_t last_line_len
 }
 
 template <typename T>
-auto export_xixo(const T &value, const std::string &indent, size_t last_line_length, bool fail_on_newline)
-    -> std::enable_if_t<is_priority_queue<T>, std::string> {
+auto export_xixo(const T &value, const std::string &indent, size_t last_line_length,
+                 bool fail_on_newline) -> std::enable_if_t<is_priority_queue<T>, std::string> {
   if (value.empty()) return "std::priority_queue{ size= 0 }";
 
   std::string prefix = "std::priority_queue{ top= ";
@@ -64,8 +71,8 @@ auto export_xixo(const T &value, const std::string &indent, size_t last_line_len
 }
 
 template <typename T>
-auto export_xixo(const T &value, const std::string &indent, size_t last_line_length, bool fail_on_newline)
-    -> std::enable_if_t<is_stack<T>, std::string> {
+auto export_xixo(const T &value, const std::string &indent, size_t last_line_length,
+                 bool fail_on_newline) -> std::enable_if_t<is_stack<T>, std::string> {
   if (value.empty()) return "std::stack{ size= 0 }";
 
   std::string prefix = "std::stack{ top= ";

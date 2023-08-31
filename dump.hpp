@@ -1,13 +1,20 @@
+/*
+ * Copyright (c) 2023 Ryota Sasaki.
+ *
+ * This source code is licensed under the MIT license found in the LICENSE file in the root
+ * directory of this source tree.
+ */
+
 #pragma once
 
 #include <iostream>
 #include <string>
 #include <utility>
 
-#include "define_export_object_macro.hpp"
-#include "expand_va_macro.hpp"
-#include "export_var.hpp"
-#include "utility.hpp"
+#include "./define_export_object_macro.hpp"
+#include "./expand_va_macro.hpp"
+#include "./export_var.hpp"
+#include "./utility.hpp"
 
 #define CPP_DUMP_EXPAND_EXPR_FOR_DUMP_(expr) #expr, (expr)
 #define dump(...) cpp_dump::_dump(CPP_DUMP_EXPAND_VA_(CPP_DUMP_EXPAND_EXPR_FOR_DUMP_, __VA_ARGS__))

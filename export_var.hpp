@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2023 Ryota Sasaki.
+ *
+ * This source code is licensed under the MIT license found in the LICENSE file
+ * in the root directory of this source tree.
+ */
+
 #pragma once
 
 #include <string>
@@ -10,13 +17,13 @@ std::string export_var(const T &, const std::string & = "", size_t = 0, bool = f
 
 }  // namespace cpp_dump
 
-#include "export_container.hpp"
-#include "export_map.hpp"
-#include "export_set.hpp"
-#include "export_string.hpp"
-#include "export_tuple_like.hpp"
-#include "export_xixo.hpp"
-#include "type_check.hpp"
+#include "./export_container.hpp"
+#include "./export_map.hpp"
+#include "./export_set.hpp"
+#include "./export_string.hpp"
+#include "./export_tuple_like.hpp"
+#include "./export_xixo.hpp"
+#include "./type_check.hpp"
 
 namespace cpp_dump {
 
