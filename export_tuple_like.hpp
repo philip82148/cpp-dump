@@ -52,8 +52,7 @@ inline auto export_tuple_like(const T &value, const std::string &indent, size_t 
                               bool fail_on_newline) -> std::enable_if_t<is_tuple<T>, std::string> {
   std::string value_string =
       "( " +
-      _export_tuple_like_in_one_line<0, std::tuple_size_v<std::remove_cvref_t<T>>>(
-          value, indent, last_line_length + 2) +
+      _export_tuple_like_in_one_line<0, std::tuple_size_v<T>>(value, indent, last_line_length + 2) +
       " )";
 
   if (!_has_newline(value_string) && value_string.length() <= max_line_width) return value_string;
@@ -62,15 +61,14 @@ inline auto export_tuple_like(const T &value, const std::string &indent, size_t 
 
   std::string new_indent = indent + "  ";
   return "(\n" + new_indent +
-         _export_tuple_like_in_lines<0, std::tuple_size_v<std::remove_cvref_t<T>>>(value,
-                                                                                   new_indent) +
-         "\n" + indent + ")";
+         _export_tuple_like_in_lines<0, std::tuple_size_v<T>>(value, new_indent) + "\n" + indent +
+         ")";
 }
 
 template <typename T>
 inline auto export_tuple_like(const T &value, const std::string &indent, size_t last_line_length,
                               bool fail_on_newline) -> std::enable_if_t<is_pair<T>, std::string> {
-  return export_tuple_like(std::make_tuple(value.first, value.second), indent, last_line_length,
+  return export_tuple_like(std::tie(value.first, value.second), indent, last_line_length,
                            fail_on_newline);
 }
 

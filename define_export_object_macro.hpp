@@ -25,7 +25,7 @@
   template <typename T>                                                                         \
   auto export_object(const T &value, const std::string &indent, size_t last_line_length,        \
                      bool fail_on_newline)                                                      \
-      -> std::enable_if_t<std::is_same_v<std::remove_cvref_t<T>, type>, std::string> {          \
+      -> std::enable_if_t<std::is_same_v<T, type>, std::string> {                               \
     std::string new_indent = indent + "  ";                                                     \
                                                                                                 \
     bool shift_indent = false;                                                                  \

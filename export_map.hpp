@@ -25,7 +25,8 @@ auto export_map(const T &value, const std::string &indent, size_t last_line_leng
                 bool fail_on_newline) -> std::enable_if_t<is_map<T>, std::string> {
   if (value.empty()) return "{ }";
 
-  bool shift_indent = is_iterable_like<map_key_type<T>> || is_iterable_like<map_value_type<T>>;
+  bool shift_indent =
+      is_iterable_like<typename T::key_type> || is_iterable_like<typename T::mapped_type>;
   // 中身がiterable_likeでも常に長さに応じて改行するかどうかを決める場合は次
   // bool shift_indent = false;
 
