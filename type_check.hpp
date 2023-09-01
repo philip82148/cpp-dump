@@ -11,7 +11,7 @@
 #include <queue>
 #include <set>
 #include <stack>
-#include <string>
+#include <string_view>
 #include <tuple>
 #include <type_traits>
 #include <unordered_map>
@@ -40,7 +40,7 @@ inline bool is_empty_iterable(const T &t) {
 }
 
 template <typename T>
-inline constexpr bool is_string = std::is_convertible_v<T, std::string>;
+inline constexpr bool is_string = std::is_convertible_v<T, std::string_view>;
 
 template <typename T>
 inline constexpr bool is_pointer = std::is_pointer_v<remove_cref<T>> && !is_string<T>;

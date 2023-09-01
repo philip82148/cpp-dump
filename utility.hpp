@@ -8,25 +8,26 @@
 #pragma once
 
 #include <string>
+#include <string_view>
 
 namespace cpp_dump {
 
-inline bool _has_newline(const std::string &value) { return value.find("\n") != std::string::npos; }
+inline bool _has_newline(std::string_view s) { return s.find("\n") != std::string::npos; }
 
-inline size_t _first_line_length(const std::string &value) {
-  auto lf_pos = value.find("\n");
+inline size_t _first_line_length(std::string_view s) {
+  auto lf_pos = s.find("\n");
 
-  if (lf_pos == std::string::npos) return value.length();
+  if (lf_pos == std::string::npos) return s.length();
 
   return lf_pos;
 }
 
-inline size_t _last_line_length(const std::string &value, int additional_first_line_length = 0) {
-  auto lf_pos = value.rfind("\n");
+inline size_t _last_line_length(std::string_view s, int additional_first_line_length = 0) {
+  auto lf_pos = s.rfind("\n");
 
-  if (lf_pos == std::string::npos) return additional_first_line_length + value.length();
+  if (lf_pos == std::string::npos) return additional_first_line_length + s.length();
 
-  return value.length() - lf_pos - 1;
+  return s.length() - lf_pos - 1;
 }
 
 }  // namespace cpp_dump
