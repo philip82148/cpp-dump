@@ -7,7 +7,6 @@
 
 #pragma once
 
-#include <sstream>
 #include <string>
 #include <type_traits>
 
@@ -20,6 +19,7 @@ namespace cpp_dump {
 
 #include "./export_container.hpp"
 #include "./export_map.hpp"
+#include "./export_pointer.hpp"
 #include "./export_set.hpp"
 #include "./export_string.hpp"
 #include "./export_tuple_like.hpp"
@@ -43,12 +43,10 @@ inline std::string _export_var(char value, const std::string &, size_t, size_t, 
 }
 
 template <typename T>
-inline auto _export_var(const T &value, const std::string &, size_t, size_t, bool)
+inline auto _export_var(const T &value, const std::string &indent, size_t last_line_length,
+                        size_t current_depth, bool fail_on_newline)
     -> std::enable_if_t<is_pointer<T>, std::string> {
-  std::ostringstream ss;
-  ss << std::hex << value;
-
-  return value == nullptr ? "nullptr" : "*" + ss.str();
+  return export_pointer(value, indent, last_line_length, current_depth, fail_on_newline);
 }
 
 template <typename T>

@@ -46,6 +46,10 @@ template <typename T>
 inline constexpr bool is_pointer = std::is_pointer_v<remove_cref<T>> && !is_string<T>;
 
 template <typename T>
+inline constexpr bool is_void_pointer =
+    std::is_same_v<remove_cref<T>, void *> || std::is_same_v<remove_cref<T>, const void *>;
+
+template <typename T>
 inline constexpr bool _is_map = false;
 template <typename T1, typename T2>
 inline constexpr bool _is_map<std::map<T1, T2>> = true;
@@ -115,10 +119,9 @@ template <typename T>
 inline constexpr bool is_xixo = is_queue<T> || is_priority_queue<T> || is_stack<T>;
 
 template <typename T>
-inline constexpr bool is_object = (std::is_union_v<remove_cref<T>> ||
-                                   std::is_class_v<remove_cref<T>>)&&!is_string<T> &&
-                                  !is_set<T> && !is_map<T> && !is_tuple_like<T> &&
-                                  !is_container<T> && !is_xixo<T>;
+inline constexpr bool is_object =
+    (std::is_union_v<remove_cref<T>> || std::is_class_v<remove_cref<T>>)&&!is_string<T> &&
+    !is_set<T> && !is_map<T> && !is_tuple_like<T> && !is_container<T> && !is_xixo<T>;
 
 template <typename T>
 inline constexpr bool is_iterable_like =
