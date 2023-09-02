@@ -8,12 +8,12 @@
 #pragma once
 
 #include <string>
-#include <type_traits>
 
 #include "./expand_va_macro.hpp"
+#include "./type_check.hpp"
 #include "./utility.hpp"
 
-#define CPP_DUMP_APPEND_OUTPUT_(property) append_output(#property, value.property)
+#define CPP_DUMP_EXPAND_FOR_EXPORT_OBJECT_(property) append_output(#property, value.property)
 #define CPP_DUMP_DEFINE_EXPORT_OBJECT(type, ...)                                                \
   namespace cpp_dump {                                                                          \
                                                                                                 \
@@ -65,7 +65,7 @@
     output = #type "{ ";                                                                        \
     is_first = true;                                                                            \
                                                                                                 \
-    CPP_DUMP_EXPAND_VA_(CPP_DUMP_APPEND_OUTPUT_, __VA_ARGS__);                                  \
+    CPP_DUMP_EXPAND_VA_(CPP_DUMP_EXPAND_FOR_EXPORT_OBJECT_, __VA_ARGS__);                       \
                                                                                                 \
     if (!shift_indent) {                                                                        \
       output += " }";                                                                           \

@@ -166,6 +166,16 @@ template <typename T>
 inline constexpr bool is_exportable_object =
     _detail::_is_exportable_object<_detail::_remove_cref<T>>;
 
+namespace _detail {
+
+template <typename>
+inline constexpr bool _is_exportable_enum = false;
+
+}
+
+template <typename T>
+inline constexpr bool is_exportable_enum = _detail::_is_exportable_enum<_detail::_remove_cref<T>>;
+
 template <typename T>
 inline constexpr bool is_iterable_like =
     is_iterable<T> || is_tuple_like<T> || is_xixo<T> || is_exportable_object<T>;
@@ -173,6 +183,7 @@ inline constexpr bool is_iterable_like =
 template <typename T>
 inline constexpr bool is_exportable =
     is_arithmetic<T> || is_string<T> || is_pointer<T> || is_map<T> || is_set<T> ||
-    is_container<T> || is_tuple_like<T> || is_xixo<T> || is_exportable_object<T>;
+    is_container<T> || is_tuple_like<T> || is_xixo<T> || is_exportable_object<T> ||
+    is_exportable_enum<T>;
 
 }  // namespace cpp_dump

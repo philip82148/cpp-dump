@@ -12,6 +12,7 @@
 
 #include "./export_arithmetic.hpp"
 #include "./export_container.hpp"
+#include "./export_enum.hpp"
 #include "./export_map.hpp"
 #include "./export_object.hpp"
 #include "./export_pointer.hpp"
@@ -49,8 +50,10 @@ std::string export_var(const T &value, const std::string &indent, size_t last_li
     return export_tuple_like(value, indent, last_line_length, current_depth, fail_on_newline);
   } else if constexpr (is_xixo<T>) {
     return export_xixo(value, indent, last_line_length, current_depth, fail_on_newline);
-  } else {
+  } else if constexpr (is_exportable_object<T>) {
     return export_object(value, indent, last_line_length, current_depth, fail_on_newline);
+  } else {
+    return export_enum(value, indent, last_line_length, current_depth, fail_on_newline);
   }
 }
 
