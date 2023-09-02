@@ -11,10 +11,10 @@
 #include <string>
 #include <utility>
 
-#include "./define_export_object_macro.hpp"
-#include "./expand_va_macro.hpp"
-#include "./export_var.hpp"
-#include "./utility.hpp"
+#include "hpp/define_export_object_macro.hpp"
+#include "hpp/expand_va_macro.hpp"
+#include "hpp/export_var.hpp"
+#include "hpp/utility.hpp"
 
 #define CPP_DUMP_EXPAND_EXPR_FOR_DUMP_(expr) #expr, (expr)
 #define dump(...) cpp_dump::_dump(CPP_DUMP_EXPAND_VA_(CPP_DUMP_EXPAND_EXPR_FOR_DUMP_, __VA_ARGS__))
