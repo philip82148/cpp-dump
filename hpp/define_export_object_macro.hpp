@@ -21,12 +21,15 @@
                                                                                                   \
   extern inline size_t max_depth;                                                                 \
                                                                                                   \
+  template <>                                                                                     \
+  inline constexpr bool _is_exportable_object<type> = true;                                       \
+                                                                                                  \
   template <typename T>                                                                           \
   std::string export_var(const T &, const std::string &, size_t, size_t, bool);                   \
                                                                                                   \
   template <typename T>                                                                           \
-  auto export_object(const T &value, const std::string &indent, size_t last_line_length,          \
-                     size_t current_depth, bool fail_on_newline)                                  \
+  inline auto export_object(const T &value, const std::string &indent, size_t last_line_length,   \
+                            size_t current_depth, bool fail_on_newline)                           \
       -> std::enable_if_t<std::is_same_v<T, type>, std::string> {                                 \
     if (current_depth >= max_depth) return #type "{ ... }";                                       \
                                                                                                   \
@@ -86,7 +89,7 @@
   template <typename T>                                                                       \
   inline auto _export_var(const T &value, const std::string &indent, size_t last_line_length, \
                           size_t current_depth, bool fail_on_newline)                         \
-      -> std::enable_if_t<is_object<T>, std::string> {                                        \
+      -> std::enable_if_t<is_exportable_object<T>, std::string> {                             \
     return export_object(value, indent, last_line_length, current_depth, fail_on_newline);    \
   }                                                                                           \
                                                                                               \

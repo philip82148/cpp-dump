@@ -23,8 +23,8 @@ template <typename T>
 std::string export_var(const T &, const std::string &, size_t, size_t, bool);
 
 template <typename T>
-auto export_container(const T &value, const std::string &indent, size_t last_line_length,
-                      size_t current_depth, bool fail_on_newline)
+inline auto export_container(const T &value, const std::string &indent, size_t last_line_length,
+                             size_t current_depth, bool fail_on_newline)
     -> std::enable_if_t<is_container<T>, std::string> {
   if (is_empty_iterable(value)) return "[ ]";
 
