@@ -14,6 +14,8 @@
 
 namespace cpp_dump {
 
+namespace _detail {
+
 inline std::string export_arithmetic(bool value, const std::string &, size_t, size_t, bool) {
   return value ? "true" : "false";
 }
@@ -27,5 +29,7 @@ inline auto export_arithmetic(const T &value, const std::string &, size_t, size_
     -> std::enable_if_t<is_arithmetic<T>, std::string> {
   return std::to_string(value);
 }
+
+}  // namespace _detail
 
 }  // namespace cpp_dump

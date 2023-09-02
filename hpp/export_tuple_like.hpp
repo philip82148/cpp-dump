@@ -19,6 +19,8 @@ extern inline size_t max_line_width;
 
 extern inline size_t max_depth;
 
+namespace _detail {
+
 template <typename T>
 std::string export_var(const T &, const std::string &, size_t, size_t, bool);
 
@@ -27,7 +29,7 @@ inline auto _export_tuple_like_in_one_line(const T &value, const std::string &in
                                            size_t last_line_length, size_t next_depth)
     -> std::enable_if_t<is_tuple<T>, std::string> {
   std::string output = export_var(std::get<i>(value), indent, last_line_length, next_depth, true);
-  if (_has_newline(output)) return "\n";
+  if (has_newline(output)) return "\n";
 
   if constexpr (i < size - 1) {
     return output + ", " +
@@ -68,7 +70,7 @@ inline auto export_tuple_like(const T &value, const std::string &indent, size_t 
                                    value, indent, last_line_length + 2, next_depth) +
                                " )";
 
-    if (!_has_newline(value_string) && value_string.length() <= max_line_width) return value_string;
+    if (!has_newline(value_string) && value_string.length() <= max_line_width) return value_string;
 
     if (fail_on_newline) return "\n";
 
@@ -86,5 +88,7 @@ inline auto export_tuple_like(const T &value, const std::string &indent, size_t 
   return export_tuple_like(std::tie(value.first, value.second), indent, last_line_length,
                            current_depth, fail_on_newline);
 }
+
+}  // namespace _detail
 
 }  // namespace cpp_dump

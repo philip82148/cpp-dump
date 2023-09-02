@@ -13,6 +13,7 @@
 #include "./export_arithmetic.hpp"
 #include "./export_container.hpp"
 #include "./export_map.hpp"
+#include "./export_object.hpp"
 #include "./export_pointer.hpp"
 #include "./export_set.hpp"
 #include "./export_string.hpp"
@@ -22,65 +23,7 @@
 
 namespace cpp_dump {
 
-template <typename T>
-inline auto _export_var(const T &value, const std::string &indent, size_t last_line_length,
-                        size_t current_depth, bool fail_on_newline)
-    -> std::enable_if_t<is_arithmetic<T>, std::string> {
-  return export_arithmetic(value, indent, last_line_length, current_depth, fail_on_newline);
-}
-
-template <typename T>
-inline auto _export_var(const T &value, const std::string &indent, size_t last_line_length,
-                        size_t current_depth, bool fail_on_newline)
-    -> std::enable_if_t<is_string<T>, std::string> {
-  return export_string(value, indent, last_line_length, current_depth, fail_on_newline);
-}
-
-template <typename T>
-inline auto _export_var(const T &value, const std::string &indent, size_t last_line_length,
-                        size_t current_depth, bool fail_on_newline)
-    -> std::enable_if_t<is_pointer<T>, std::string> {
-  return export_pointer(value, indent, last_line_length, current_depth, fail_on_newline);
-}
-
-template <typename T>
-inline auto _export_var(const T &value, const std::string &indent, size_t last_line_length,
-                        size_t current_depth, bool fail_on_newline)
-    -> std::enable_if_t<is_map<T>, std::string> {
-  return export_map(value, indent, last_line_length, current_depth, fail_on_newline);
-}
-
-template <typename T>
-inline auto _export_var(const T &value, const std::string &indent, size_t last_line_length,
-                        size_t current_depth, bool fail_on_newline)
-    -> std::enable_if_t<is_set<T>, std::string> {
-  return export_set(value, indent, last_line_length, current_depth, fail_on_newline);
-}
-
-template <typename T>
-inline auto _export_var(const T &value, const std::string &indent, size_t last_line_length,
-                        size_t current_depth, bool fail_on_newline)
-    -> std::enable_if_t<is_container<T>, std::string> {
-  return export_container(value, indent, last_line_length, current_depth, fail_on_newline);
-}
-
-template <typename T>
-inline auto _export_var(const T &value, const std::string &indent, size_t last_line_length,
-                        size_t current_depth, bool fail_on_newline)
-    -> std::enable_if_t<is_tuple_like<T>, std::string> {
-  return export_tuple_like(value, indent, last_line_length, current_depth, fail_on_newline);
-}
-
-template <typename T>
-inline auto _export_var(const T &value, const std::string &indent, size_t last_line_length,
-                        size_t current_depth, bool fail_on_newline)
-    -> std::enable_if_t<is_xixo<T>, std::string> {
-  return export_xixo(value, indent, last_line_length, current_depth, fail_on_newline);
-}
-
-template <typename T>
-inline auto _export_var(const T &, const std::string &, size_t, size_t, bool)
-    -> std::enable_if_t<is_exportable_object<T>, std::string>;
+namespace _detail {
 
 template <typename T>
 std::string export_var(const T &value, const std::string &indent, size_t last_line_length,
@@ -90,7 +33,32 @@ std::string export_var(const T &value, const std::string &indent, size_t last_li
                 "Please use CPP_DUMP_DEFINE_EXPORT_OBJECT(type, properties...) macro and "
                 "CPP_DUMP_REGISTER_EXPORT_OBJECT() macro to support the type.");
 
-  return _export_var(value, indent, last_line_length, current_depth, fail_on_newline);
+  if constexpr (is_arithmetic<T>) {
+    return export_arithmetic(value, indent, last_line_length, current_depth, fail_on_newline);
+  } else if constexpr (is_string<T>) {
+    return export_string(value, indent, last_line_length, current_depth, fail_on_newline);
+  } else if constexpr (is_pointer<T>) {
+    return export_pointer(value, indent, last_line_length, current_depth, fail_on_newline);
+  } else if constexpr (is_map<T>) {
+    return export_map(value, indent, last_line_length, current_depth, fail_on_newline);
+  } else if constexpr (is_set<T>) {
+    return export_set(value, indent, last_line_length, current_depth, fail_on_newline);
+  } else if constexpr (is_container<T>) {
+    return export_container(value, indent, last_line_length, current_depth, fail_on_newline);
+  } else if constexpr (is_tuple_like<T>) {
+    return export_tuple_like(value, indent, last_line_length, current_depth, fail_on_newline);
+  } else if constexpr (is_xixo<T>) {
+    return export_xixo(value, indent, last_line_length, current_depth, fail_on_newline);
+  } else {
+    return export_object(value, indent, last_line_length, current_depth, fail_on_newline);
+  }
+}
+
+}  // namespace _detail
+
+template <typename T>
+std::string export_var(const T &value) {
+  return _detail::export_var(value, "", 0, 1, false);
 }
 
 }  // namespace cpp_dump

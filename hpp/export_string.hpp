@@ -16,6 +16,8 @@
 
 namespace cpp_dump {
 
+namespace _detail {
+
 inline void _replace_string(std::string &subject, std::string_view search,
                             std::string_view replace) {
   std::string::size_type pos = 0;
@@ -32,11 +34,11 @@ inline auto export_string(const T &value, const std::string &, size_t, size_t, b
 
   _replace_string(str, R"(\)", R"(\\)");
 
-  if (!_has_newline(str) && str.find(R"(")") == std::string::npos) return R"(")" + str + R"(")";
+  if (!has_newline(str) && str.find(R"(")") == std::string::npos) return R"(")" + str + R"(")";
 
   _replace_string(str, R"(`)", R"(\`)");
 
-  if (!_has_newline(str)) return R"(`)" + str + R"(`)";
+  if (!has_newline(str)) return R"(`)" + str + R"(`)";
 
   if (fail_on_newline) return "\n";
 
@@ -44,5 +46,7 @@ inline auto export_string(const T &value, const std::string &, size_t, size_t, b
          R"(`)" +
          str + R"(`)";
 }
+
+}  // namespace _detail
 
 }  // namespace cpp_dump

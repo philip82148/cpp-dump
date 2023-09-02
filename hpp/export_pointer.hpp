@@ -17,6 +17,8 @@ namespace cpp_dump {
 
 extern inline size_t max_depth;
 
+namespace _detail {
+
 template <typename T>
 std::string export_var(const T &, const std::string &, size_t, size_t, bool);
 
@@ -38,5 +40,7 @@ inline auto export_pointer(const T &value, const std::string &indent, size_t las
            export_var(*value, indent, last_line_length + 1, current_depth + 1, fail_on_newline);
   }
 }
+
+}  // namespace _detail
 
 }  // namespace cpp_dump

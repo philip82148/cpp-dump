@@ -19,6 +19,8 @@ extern inline size_t max_line_width;
 
 extern inline size_t max_depth;
 
+namespace _detail {
+
 template <typename T>
 std::string export_var(const T &, const std::string &, size_t, size_t, bool);
 
@@ -38,7 +40,7 @@ inline auto export_xixo(const T &value, const std::string &indent, size_t last_l
       export_var(value.front(), indent, last_line_length + prefix.length(), next_depth, true) +
       ", size= " + std::to_string(value.size()) + " }";
 
-  if (!_has_newline(output) && output.length() <= max_line_width) return output;
+  if (!has_newline(output) && output.length() <= max_line_width) return output;
 
   if (fail_on_newline) return "\n";
 
@@ -68,7 +70,7 @@ inline auto export_xixo(const T &value, const std::string &indent, size_t last_l
       export_var(value.top(), indent, last_line_length + prefix.length(), next_depth, true) +
       ", size= " + std::to_string(value.size()) + " }";
 
-  if (!_has_newline(output) && output.length() <= max_line_width) return output;
+  if (!has_newline(output) && output.length() <= max_line_width) return output;
 
   if (fail_on_newline) return "\n";
 
@@ -98,7 +100,7 @@ inline auto export_xixo(const T &value, const std::string &indent, size_t last_l
       export_var(value.top(), indent, last_line_length + prefix.length(), next_depth, true) +
       ", size= " + std::to_string(value.size()) + " }";
 
-  if (!_has_newline(output) && output.length() <= max_line_width) return output;
+  if (!has_newline(output) && output.length() <= max_line_width) return output;
 
   if (fail_on_newline) return "\n";
 
@@ -111,5 +113,7 @@ inline auto export_xixo(const T &value, const std::string &indent, size_t last_l
 
   return output;
 }
+
+}  // namespace _detail
 
 }  // namespace cpp_dump

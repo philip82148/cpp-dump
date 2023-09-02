@@ -12,9 +12,11 @@
 
 namespace cpp_dump {
 
-inline bool _has_newline(std::string_view s) { return s.find("\n") != std::string::npos; }
+namespace _detail {
 
-inline size_t _first_line_length(std::string_view s) {
+inline bool has_newline(std::string_view s) { return s.find("\n") != std::string::npos; }
+
+inline size_t get_first_line_length(std::string_view s) {
   auto lf_pos = s.find("\n");
 
   if (lf_pos == std::string::npos) return s.length();
@@ -22,12 +24,14 @@ inline size_t _first_line_length(std::string_view s) {
   return lf_pos;
 }
 
-inline size_t _last_line_length(std::string_view s, int additional_first_line_length = 0) {
+inline size_t get_last_line_length(std::string_view s, int additional_first_line_length = 0) {
   auto lf_pos = s.rfind("\n");
 
   if (lf_pos == std::string::npos) return additional_first_line_length + s.length();
 
   return s.length() - lf_pos - 1;
 }
+
+}  // namespace _detail
 
 }  // namespace cpp_dump

@@ -11,19 +11,21 @@
 #include <string>
 #include <utility>
 
-#include "hpp/define_export_object_macro.hpp"
 #include "hpp/expand_va_macro.hpp"
 #include "hpp/export_var.hpp"
 #include "hpp/utility.hpp"
 
 #define CPP_DUMP_EXPAND_EXPR_FOR_DUMP_(expr) #expr, (expr)
-#define dump(...) cpp_dump::_dump(CPP_DUMP_EXPAND_VA_(CPP_DUMP_EXPAND_EXPR_FOR_DUMP_, __VA_ARGS__))
+#define dump(...) \
+  cpp_dump::_detail::_dump(CPP_DUMP_EXPAND_VA_(CPP_DUMP_EXPAND_EXPR_FOR_DUMP_, __VA_ARGS__))
 
 namespace cpp_dump {
 
 inline size_t max_line_width = 160;
 
 inline size_t max_depth = 5;
+
+namespace _detail {
 
 template <typename T>
 bool _dump_one(std::string &output, bool no_newline_in_value_string, const std::string &expr,
@@ -51,14 +53,15 @@ bool _dump_one(std::string &output, bool no_newline_in_value_string, const std::
   auto get_prefix_and_value_string = [&, no_newline_in_value_string](
                                          const std::string &prefix,
                                          const std::string &indent) -> prefix_and_value_string {
-    auto last_line_length = _last_line_length(output + prefix);
+    auto last_line_length = get_last_line_length(output + prefix);
 
     std::string value_string =
-        export_var(value, indent, last_line_length, 0, no_newline_in_value_string);
+        export_var(value, indent, last_line_length, 1, no_newline_in_value_string);
 
-    bool value_string_has_newline = _has_newline(value_string);
+    bool value_string_has_newline = has_newline(value_string);
 
-    bool over_max_line_width = last_line_length + _first_line_length(value_string) > max_line_width;
+    bool over_max_line_width =
+        last_line_length + get_first_line_length(value_string) > max_line_width;
 
     return {prefix, value_string, value_string_has_newline, over_max_line_width};
   };
@@ -75,7 +78,7 @@ bool _dump_one(std::string &output, bool no_newline_in_value_string, const std::
       return true;
     }
 
-    if (_last_line_length(output) <= 9) {
+    if (get_last_line_length(output) <= 9) {
       prefix_and_value_string pattern1b =
           get_prefix_and_value_string(expr + "\n" + indent11 + "=> ", indent11);
 
@@ -155,5 +158,7 @@ rollback:
 
   std::clog << output << std::endl;
 }
+
+}  // namespace _detail
 
 }  // namespace cpp_dump

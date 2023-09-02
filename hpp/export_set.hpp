@@ -19,6 +19,8 @@ extern inline size_t max_line_width;
 
 extern inline size_t max_depth;
 
+namespace _detail {
+
 template <typename T>
 std::string export_var(const T &, const std::string &, size_t, size_t, bool);
 
@@ -57,7 +59,7 @@ rollback:
 
     std::string elem_string =
         export_var(elem, indent, last_line_length + output.length(), next_depth, true);
-    if (!_has_newline(elem_string)) {
+    if (!has_newline(elem_string)) {
       output += elem_string;
 
       if (last_line_length + (output + " }").length() <= max_line_width) continue;
@@ -77,5 +79,7 @@ rollback:
 
   return output;
 }
+
+}  // namespace _detail
 
 }  // namespace cpp_dump
