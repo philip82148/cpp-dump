@@ -133,4 +133,9 @@ template <typename T>
 inline constexpr bool is_iterable_like =
     is_iterable<T> || is_tuple_like<T> || is_xixo<T> || is_exportable_object<T>;
 
+template <typename T>
+inline constexpr bool is_exportable =
+    is_arithmetic<T> || is_string<T> || is_pointer<T> || is_map<T> || is_set<T> ||
+    is_container<T> || is_tuple_like<T> || is_xixo<T> || is_exportable_object<T>;
+
 }  // namespace cpp_dump
