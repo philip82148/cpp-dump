@@ -15,15 +15,20 @@
 
 namespace cpp_dump {
 
-extern inline int max_line_width;
+extern inline size_t max_line_width;
+
+extern inline size_t max_depth;
 
 template <typename T>
-std::string export_var(const T &, const std::string &, size_t, bool);
+std::string export_var(const T &, const std::string &, size_t, size_t, bool);
 
 template <typename T>
 auto export_container(const T &value, const std::string &indent, size_t last_line_length,
-                      bool fail_on_newline) -> std::enable_if_t<is_container<T>, std::string> {
+                      size_t current_depth, bool fail_on_newline)
+    -> std::enable_if_t<is_container<T>, std::string> {
   if (is_empty_iterable(value)) return "[ ]";
+
+  if (current_depth >= max_depth) return "[ ... ]";
 
   bool shift_indent = is_iterable_like<iterable_elem_type<T>>;
   // 中身がiterable_likeでも常に長さに応じて改行するかどうかを決める場合は次
@@ -32,11 +37,12 @@ auto export_container(const T &value, const std::string &indent, size_t last_lin
   if (shift_indent && fail_on_newline) return "\n";
 
   std::string new_indent = indent + "  ";
+  size_t next_depth = current_depth + 1;
 
 rollback:
   std::string output = "[ ";
   bool is_first = true;
-  for (auto elem : value) {
+  for (auto &elem : value) {
     if (is_first) {
       is_first = false;
     } else {
@@ -45,12 +51,12 @@ rollback:
 
     if (shift_indent) {
       output +=
-          "\n" + new_indent + export_var(elem, new_indent, new_indent.length(), fail_on_newline);
+          "\n" + new_indent + export_var(elem, new_indent, new_indent.length(), next_depth, false);
       continue;
     }
 
     std::string elem_string =
-        export_var(elem, indent, last_line_length + output.length(), fail_on_newline);
+        export_var(elem, indent, last_line_length + output.length(), next_depth, true);
     if (!_has_newline(elem_string)) {
       output += elem_string;
 

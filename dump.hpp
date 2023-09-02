@@ -21,7 +21,9 @@
 
 namespace cpp_dump {
 
-inline int max_line_width = 160;
+inline size_t max_line_width = 160;
+
+inline size_t max_depth = 5;
 
 template <typename T>
 bool _dump_one(std::string &output, bool no_newline_in_value_string, const std::string &expr,
@@ -52,7 +54,7 @@ bool _dump_one(std::string &output, bool no_newline_in_value_string, const std::
     auto last_line_length = _last_line_length(output + prefix);
 
     std::string value_string =
-        export_var(value, indent, last_line_length, no_newline_in_value_string);
+        export_var(value, indent, last_line_length, 0, no_newline_in_value_string);
 
     bool value_string_has_newline = _has_newline(value_string);
 

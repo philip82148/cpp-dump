@@ -26,7 +26,7 @@ inline void _replace_string(std::string &subject, std::string_view search,
 }
 
 template <typename T>
-inline auto export_string(const T &value, const std::string &, size_t, bool fail_on_newline)
+inline auto export_string(const T &value, const std::string &, size_t, size_t, bool fail_on_newline)
     -> std::enable_if_t<is_string<T>, std::string> {
   std::string str{value};
 

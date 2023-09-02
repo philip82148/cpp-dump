@@ -15,15 +15,20 @@
 
 namespace cpp_dump {
 
-extern inline int max_line_width;
+extern inline size_t max_line_width;
+
+extern inline size_t max_depth;
 
 template <typename T>
-std::string export_var(const T &, const std::string &, size_t, bool);
+std::string export_var(const T &, const std::string &, size_t, size_t, bool);
 
 template <typename T>
 auto export_map(const T &value, const std::string &indent, size_t last_line_length,
-                bool fail_on_newline) -> std::enable_if_t<is_map<T>, std::string> {
+                size_t current_depth, bool fail_on_newline)
+    -> std::enable_if_t<is_map<T>, std::string> {
   if (value.empty()) return "{ }";
+
+  if (current_depth >= max_depth) return "{ ... }";
 
   bool shift_indent =
       is_iterable_like<typename T::key_type> || is_iterable_like<typename T::mapped_type>;
@@ -33,11 +38,12 @@ auto export_map(const T &value, const std::string &indent, size_t last_line_leng
   if (shift_indent && fail_on_newline) return "\n";
 
   std::string new_indent = indent + "  ";
+  size_t next_depth = current_depth + 1;
 
 rollback:
   std::string output = "{ ";
   bool is_first = true;
-  for (auto elem_pair : value) {
+  for (auto &elem_pair : value) {
     if (is_first) {
       is_first = false;
     } else {
@@ -47,20 +53,20 @@ rollback:
     if (shift_indent) {
       std::string key_string =
           "\n" + new_indent +
-          export_var(elem_pair.first, new_indent, new_indent.length(), fail_on_newline) + ": ";
-      std::string value_string =
-          export_var(elem_pair.second, new_indent, _last_line_length(key_string), fail_on_newline);
+          export_var(elem_pair.first, new_indent, new_indent.length(), next_depth, false) + ": ";
+      std::string value_string = export_var(elem_pair.second, new_indent,
+                                            _last_line_length(key_string), next_depth, false);
 
       output += key_string + value_string;
       continue;
     }
 
     std::string key_string =
-        export_var(elem_pair.first, indent, last_line_length + output.length(), fail_on_newline) +
+        export_var(elem_pair.first, indent, last_line_length + output.length(), next_depth, true) +
         ": ";
     std::string value_string =
         export_var(elem_pair.second, indent,
-                   last_line_length + output.length() + key_string.length(), fail_on_newline);
+                   last_line_length + output.length() + key_string.length(), next_depth, true);
 
     std::string elem_string = key_string + value_string;
     if (!_has_newline(elem_string)) {
