@@ -30,9 +30,15 @@ template <typename T>
 std::string export_var(const T &value, const std::string &indent, size_t last_line_length,
                        size_t current_depth, bool fail_on_newline) {
   static_assert(is_exportable<T>, "The type is not supported.");
-  static_assert(!((std::is_class_v<T> || std::is_union_v<T>)&&!is_exportable<T>),
-                "Please use CPP_DUMP_DEFINE_EXPORT_OBJECT(type, properties...) macro and "
-                "CPP_DUMP_REGISTER_EXPORT_OBJECT() macro to support the type.");
+  if constexpr (!is_exportable<T>) {
+    static_assert(
+        !(std::is_class_v<T> || std::is_union_v<T>),
+        "Please use CPP_DUMP_DEFINE_EXPORT_OBJECT(type, members...) macro to support the type.");
+
+    static_assert(
+        !std::is_enum_v<T>,
+        "Please use CPP_DUMP_DEFINE_EXPORT_ENUM(type, members...) macro to support the type.");
+  }
 
   if constexpr (is_arithmetic<T>) {
     return export_arithmetic(value, indent, last_line_length, current_depth, fail_on_newline);

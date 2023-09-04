@@ -25,10 +25,10 @@ template <typename T>
 std::string export_var(const T &, const std::string &, size_t, size_t, bool);
 
 template <typename T>
-inline auto export_set(const T &value, const std::string &indent, size_t last_line_length,
+inline auto export_set(const T &set, const std::string &indent, size_t last_line_length,
                        size_t current_depth, bool fail_on_newline)
     -> std::enable_if_t<is_set<T>, std::string> {
-  if (value.empty()) return "{ }";
+  if (set.empty()) return "{ }";
 
   if (current_depth >= max_depth) return "{ ... }";
 
@@ -44,7 +44,7 @@ inline auto export_set(const T &value, const std::string &indent, size_t last_li
 rollback:
   std::string output = "{ ";
   bool is_first = true;
-  for (auto &elem : value) {
+  for (auto &elem : set) {
     if (is_first) {
       is_first = false;
     } else {

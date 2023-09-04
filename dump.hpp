@@ -17,7 +17,7 @@
 
 #define CPP_DUMP_EXPAND_FOR_DUMP_(expr) #expr, (expr)
 #define dump(...) \
-  cpp_dump::_detail::_dump(CPP_DUMP_EXPAND_VA_(CPP_DUMP_EXPAND_FOR_DUMP_, __VA_ARGS__))
+  cpp_dump::_detail::dump_(CPP_DUMP_EXPAND_VA_(CPP_DUMP_EXPAND_FOR_DUMP_, __VA_ARGS__))
 
 namespace cpp_dump {
 
@@ -50,9 +50,9 @@ bool _dump_one(std::string &output, bool no_newline_in_value_string, const std::
     bool over_max_line_width;
   };
 
-  auto get_prefix_and_value_string = [&, no_newline_in_value_string](
-                                         const std::string &prefix,
-                                         const std::string &indent) -> prefix_and_value_string {
+  auto make_prefix_and_value_string = [&, no_newline_in_value_string](
+                                          const std::string &prefix,
+                                          const std::string &indent) -> prefix_and_value_string {
     auto last_line_length = get_last_line_length(output + prefix);
 
     std::string value_string =
@@ -71,7 +71,7 @@ bool _dump_one(std::string &output, bool no_newline_in_value_string, const std::
   };
 
   if (no_newline_in_value_string) {
-    prefix_and_value_string pattern1a = get_prefix_and_value_string(expr + " => ", indent9);
+    prefix_and_value_string pattern1a = make_prefix_and_value_string(expr + " => ", indent9);
 
     if (!pattern1a.value_string_has_newline && !pattern1a.over_max_line_width) {
       append_output(pattern1a);
@@ -80,7 +80,7 @@ bool _dump_one(std::string &output, bool no_newline_in_value_string, const std::
 
     if (get_last_line_length(output) <= 9) {
       prefix_and_value_string pattern1b =
-          get_prefix_and_value_string(expr + "\n" + indent11 + "=> ", indent11);
+          make_prefix_and_value_string(expr + "\n" + indent11 + "=> ", indent11);
 
       if (!pattern1b.value_string_has_newline) {
         append_output(pattern1b);
@@ -91,7 +91,7 @@ bool _dump_one(std::string &output, bool no_newline_in_value_string, const std::
     }
 
     prefix_and_value_string pattern2a =
-        get_prefix_and_value_string("\n" + indent9 + expr + " => ", indent9);
+        make_prefix_and_value_string("\n" + indent9 + expr + " => ", indent9);
 
     if (!pattern2a.value_string_has_newline && !pattern2a.over_max_line_width) {
       append_output(pattern2a);
@@ -99,7 +99,7 @@ bool _dump_one(std::string &output, bool no_newline_in_value_string, const std::
     }
 
     prefix_and_value_string pattern2b =
-        get_prefix_and_value_string("\n" + indent9 + expr + "\n" + indent11 + "=> ", indent11);
+        make_prefix_and_value_string("\n" + indent9 + expr + "\n" + indent11 + "=> ", indent11);
 
     if (!pattern2b.value_string_has_newline) {
       append_output(pattern2b);
@@ -109,7 +109,7 @@ bool _dump_one(std::string &output, bool no_newline_in_value_string, const std::
     return false;
   }
 
-  prefix_and_value_string pattern1a = get_prefix_and_value_string(expr + " => ", indent9);
+  prefix_and_value_string pattern1a = make_prefix_and_value_string(expr + " => ", indent9);
 
   if (!pattern1a.over_max_line_width) {
     if (!pattern1a.value_string_has_newline) {
@@ -118,7 +118,7 @@ bool _dump_one(std::string &output, bool no_newline_in_value_string, const std::
     }
 
     prefix_and_value_string pattern1b =
-        get_prefix_and_value_string(expr + "\n" + indent11 + "=> ", indent11);
+        make_prefix_and_value_string(expr + "\n" + indent11 + "=> ", indent11);
 
     if (!pattern1b.value_string_has_newline) {
       append_output(pattern1b);
@@ -130,7 +130,7 @@ bool _dump_one(std::string &output, bool no_newline_in_value_string, const std::
   }
 
   prefix_and_value_string pattern1b =
-      get_prefix_and_value_string(expr + "\n" + indent11 + "=> ", indent11);
+      make_prefix_and_value_string(expr + "\n" + indent11 + "=> ", indent11);
 
   append_output(pattern1b);
   return true;
@@ -146,7 +146,7 @@ inline bool _dump_recursive(std::string &output, bool no_newline_in_value_string
 }
 
 template <typename... Args>
-void _dump(const Args &...args) {
+void dump_(const Args &...args) {
   bool no_newline_in_value_string = true;
 
 rollback:

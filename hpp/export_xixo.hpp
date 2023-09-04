@@ -25,10 +25,10 @@ template <typename T>
 std::string export_var(const T &, const std::string &, size_t, size_t, bool);
 
 template <typename T>
-inline auto export_xixo(const T &value, const std::string &indent, size_t last_line_length,
+inline auto export_xixo(const T &queue, const std::string &indent, size_t last_line_length,
                         size_t current_depth, bool fail_on_newline)
     -> std::enable_if_t<is_queue<T>, std::string> {
-  if (value.empty()) return "std::queue{ size= 0 }";
+  if (queue.empty()) return "std::queue{ size= 0 }";
 
   if (current_depth >= max_depth) return "std::queue{ ... }";
 
@@ -37,8 +37,8 @@ inline auto export_xixo(const T &value, const std::string &indent, size_t last_l
   std::string prefix = "std::queue{ front= ";
   std::string output =
       prefix +
-      export_var(value.front(), indent, last_line_length + prefix.length(), next_depth, true) +
-      ", size= " + std::to_string(value.size()) + " }";
+      export_var(queue.front(), indent, last_line_length + prefix.length(), next_depth, true) +
+      ", size= " + std::to_string(queue.size()) + " }";
 
   if (!has_newline(output) && output.length() <= max_line_width) return output;
 
@@ -48,17 +48,17 @@ inline auto export_xixo(const T &value, const std::string &indent, size_t last_l
 
   prefix = new_indent + "front= ";
   output = "std::queue{\n" + prefix +
-           export_var(value.front(), new_indent, prefix.length(), next_depth, false) + ",\n" +
-           new_indent + "size= " + std::to_string(value.size()) + "\n" + indent + "}";
+           export_var(queue.front(), new_indent, prefix.length(), next_depth, false) + ",\n" +
+           new_indent + "size= " + std::to_string(queue.size()) + "\n" + indent + "}";
 
   return output;
 }
 
 template <typename T>
-inline auto export_xixo(const T &value, const std::string &indent, size_t last_line_length,
+inline auto export_xixo(const T &pq, const std::string &indent, size_t last_line_length,
                         size_t current_depth, bool fail_on_newline)
     -> std::enable_if_t<is_priority_queue<T>, std::string> {
-  if (value.empty()) return "std::priority_queue{ size= 0 }";
+  if (pq.empty()) return "std::priority_queue{ size= 0 }";
 
   if (current_depth >= max_depth) return "std::priority_queue{ ... }";
 
@@ -66,9 +66,8 @@ inline auto export_xixo(const T &value, const std::string &indent, size_t last_l
 
   std::string prefix = "std::priority_queue{ top= ";
   std::string output =
-      prefix +
-      export_var(value.top(), indent, last_line_length + prefix.length(), next_depth, true) +
-      ", size= " + std::to_string(value.size()) + " }";
+      prefix + export_var(pq.top(), indent, last_line_length + prefix.length(), next_depth, true) +
+      ", size= " + std::to_string(pq.size()) + " }";
 
   if (!has_newline(output) && output.length() <= max_line_width) return output;
 
@@ -78,17 +77,17 @@ inline auto export_xixo(const T &value, const std::string &indent, size_t last_l
 
   prefix = new_indent + "top= ";
   output = "std::priority_queue{\n" + prefix +
-           export_var(value.top(), new_indent, prefix.length(), next_depth, false) + ",\n" +
-           new_indent + "size= " + std::to_string(value.size()) + "\n" + indent + "}";
+           export_var(pq.top(), new_indent, prefix.length(), next_depth, false) + ",\n" +
+           new_indent + "size= " + std::to_string(pq.size()) + "\n" + indent + "}";
 
   return output;
 }
 
 template <typename T>
-inline auto export_xixo(const T &value, const std::string &indent, size_t last_line_length,
+inline auto export_xixo(const T &stack, const std::string &indent, size_t last_line_length,
                         size_t current_depth, bool fail_on_newline)
     -> std::enable_if_t<is_stack<T>, std::string> {
-  if (value.empty()) return "std::stack{ size= 0 }";
+  if (stack.empty()) return "std::stack{ size= 0 }";
 
   if (current_depth >= max_depth) return "std::stack{ ... }";
 
@@ -97,8 +96,8 @@ inline auto export_xixo(const T &value, const std::string &indent, size_t last_l
   std::string prefix = "std::stack{ top= ";
   std::string output =
       prefix +
-      export_var(value.top(), indent, last_line_length + prefix.length(), next_depth, true) +
-      ", size= " + std::to_string(value.size()) + " }";
+      export_var(stack.top(), indent, last_line_length + prefix.length(), next_depth, true) +
+      ", size= " + std::to_string(stack.size()) + " }";
 
   if (!has_newline(output) && output.length() <= max_line_width) return output;
 
@@ -108,8 +107,8 @@ inline auto export_xixo(const T &value, const std::string &indent, size_t last_l
 
   prefix = new_indent + "top= ";
   output = "std::stack{\n" + prefix +
-           export_var(value.top(), new_indent, prefix.length(), next_depth, false) + ",\n" +
-           new_indent + "size= " + std::to_string(value.size()) + "\n" + indent + "}";
+           export_var(stack.top(), new_indent, prefix.length(), next_depth, false) + ",\n" +
+           new_indent + "size= " + std::to_string(stack.size()) + "\n" + indent + "}";
 
   return output;
 }

@@ -23,21 +23,21 @@ template <typename T>
 std::string export_var(const T &, const std::string &, size_t, size_t, bool);
 
 template <typename T>
-inline auto export_pointer(const T &value, const std::string &indent, size_t last_line_length,
+inline auto export_pointer(const T &pointer, const std::string &indent, size_t last_line_length,
                            size_t current_depth, bool fail_on_newline)
     -> std::enable_if_t<is_pointer<T>, std::string> {
-  if (value == nullptr) return "nullptr";
+  if (pointer == nullptr) return "nullptr";
 
   if constexpr (is_void_pointer<T>) {
     std::ostringstream ss;
-    ss << std::hex << value;
+    ss << std::hex << pointer;
 
     return ss.str();
   } else {
     if (current_depth >= max_depth) return "*...";
 
     return "*" +
-           export_var(*value, indent, last_line_length + 1, current_depth + 1, fail_on_newline);
+           export_var(*pointer, indent, last_line_length + 1, current_depth + 1, fail_on_newline);
   }
 }
 
