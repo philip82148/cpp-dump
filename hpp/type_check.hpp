@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <bitset>
 #include <map>
 #include <queue>
 #include <set>
@@ -178,6 +179,18 @@ inline constexpr bool is_xixo = is_queue<T> || is_priority_queue<T> || is_stack<
 namespace _detail {
 
 template <typename>
+inline constexpr bool _is_bitset = false;
+template <size_t N>
+inline constexpr bool _is_bitset<std::bitset<N>> = true;
+
+}  // namespace _detail
+
+template <typename T>
+inline constexpr bool is_bitset = _detail::_is_bitset<_detail::_remove_cref<T>>;
+
+namespace _detail {
+
+template <typename>
 inline constexpr bool _is_exportable_object = false;
 
 }
@@ -203,7 +216,7 @@ inline constexpr bool is_iterable_like = is_container<T> || is_map<T> || is_set<
 template <typename T>
 inline constexpr bool is_exportable =
     is_arithmetic<T> || is_string<T> || is_pointer<T> || is_map<T> || is_set<T> ||
-    is_container<T> || is_tuple_like<T> || is_xixo<T> || is_exportable_object<T> ||
+    is_container<T> || is_tuple_like<T> || is_xixo<T> || is_bitset<T> || is_exportable_object<T> ||
     is_exportable_enum<T>;
 
 }  // namespace cpp_dump

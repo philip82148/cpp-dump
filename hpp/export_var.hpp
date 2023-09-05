@@ -11,6 +11,7 @@
 #include <type_traits>
 
 #include "./export_arithmetic.hpp"
+#include "./export_bitset.hpp"
 #include "./export_container.hpp"
 #include "./export_enum.hpp"
 #include "./export_map.hpp"
@@ -40,7 +41,9 @@ std::string export_var(const T &value, const std::string &indent, size_t last_li
         "Please use CPP_DUMP_DEFINE_EXPORT_ENUM(type, members...) macro to support the type.");
   }
 
-  if constexpr (is_arithmetic<T>) {
+  if constexpr (is_exportable_object<T>) {
+    return export_object(value, indent, last_line_length, current_depth, fail_on_newline);
+  } else if constexpr (is_arithmetic<T>) {
     return export_arithmetic(value, indent, last_line_length, current_depth, fail_on_newline);
   } else if constexpr (is_string<T>) {
     return export_string(value, indent, last_line_length, current_depth, fail_on_newline);
@@ -56,8 +59,8 @@ std::string export_var(const T &value, const std::string &indent, size_t last_li
     return export_tuple_like(value, indent, last_line_length, current_depth, fail_on_newline);
   } else if constexpr (is_xixo<T>) {
     return export_xixo(value, indent, last_line_length, current_depth, fail_on_newline);
-  } else if constexpr (is_exportable_object<T>) {
-    return export_object(value, indent, last_line_length, current_depth, fail_on_newline);
+  } else if constexpr (is_bitset<T>) {
+    return export_bitset(value, indent, last_line_length, current_depth, fail_on_newline);
   } else {
     return export_enum(value, indent, last_line_length, current_depth, fail_on_newline);
   }
