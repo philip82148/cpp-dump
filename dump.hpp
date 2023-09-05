@@ -15,9 +15,9 @@
 #include "hpp/export_var.hpp"
 #include "hpp/utility.hpp"
 
-#define CPP_DUMP_EXPAND_FOR_DUMP_(expr) #expr, (expr)
-#define dump(...) \
-  cpp_dump::_detail::dump_(CPP_DUMP_EXPAND_VA_(CPP_DUMP_EXPAND_FOR_DUMP_, __VA_ARGS__))
+#define CPP_DUMP_EXPAND_FOR_CPP_DUMP_(expr) #expr, (expr)
+#define cpp_dump(...) \
+  cpp_dump::_detail::cpp_dump_(CPP_DUMP_EXPAND_VA_(CPP_DUMP_EXPAND_FOR_CPP_DUMP_, __VA_ARGS__))
 
 namespace cpp_dump {
 
@@ -30,16 +30,16 @@ namespace _detail {
 template <typename T>
 bool _dump_one(std::string &output, bool no_newline_in_value_string, const std::string &expr,
                const T &value) {
+  const std::string indent7 = "       ";
   const std::string indent9 = "         ";
-  const std::string indent11 = "           ";
 
   if (output.length() == 0) {
-    output = "[dump()] ";
+    output = "[dump] ";
   } else {
     if (no_newline_in_value_string) {
       output += ", ";
     } else {
-      output += ",\n" + indent9;
+      output += ",\n" + indent7;
     }
   }
 
@@ -70,17 +70,45 @@ bool _dump_one(std::string &output, bool no_newline_in_value_string, const std::
     output += pattern.prefix + pattern.value_string;
   };
 
+  // for dump_recursive_without_expr(), which is for cpp_dump::dump() (function)
+  if (expr == "") {
+    prefix_and_value_string pattern1 = make_prefix_and_value_string("", indent7);
+
+    if (!no_newline_in_value_string) {
+      append_output(pattern1);
+      return true;
+    }
+
+    if (!pattern1.value_string_has_newline && !pattern1.over_max_line_width) {
+      append_output(pattern1);
+      return true;
+    }
+
+    if (get_last_line_length(output) <= indent7.length()) return false;
+
+    prefix_and_value_string pattern2 = make_prefix_and_value_string("\n" + indent7, indent7);
+
+    if (!pattern2.value_string_has_newline && !pattern2.over_max_line_width) {
+      append_output(pattern2);
+      return true;
+    }
+
+    return false;
+  }
+
+  // below for dump_recursive_with_expr(), which is for cpp_dump() (macro)
+
   if (no_newline_in_value_string) {
-    prefix_and_value_string pattern1a = make_prefix_and_value_string(expr + " => ", indent9);
+    prefix_and_value_string pattern1a = make_prefix_and_value_string(expr + " => ", indent7);
 
     if (!pattern1a.value_string_has_newline && !pattern1a.over_max_line_width) {
       append_output(pattern1a);
       return true;
     }
 
-    if (get_last_line_length(output) <= 9) {
+    if (get_last_line_length(output) <= indent7.length()) {
       prefix_and_value_string pattern1b =
-          make_prefix_and_value_string(expr + "\n" + indent11 + "=> ", indent11);
+          make_prefix_and_value_string(expr + "\n" + indent9 + "=> ", indent9);
 
       if (!pattern1b.value_string_has_newline) {
         append_output(pattern1b);
@@ -91,7 +119,7 @@ bool _dump_one(std::string &output, bool no_newline_in_value_string, const std::
     }
 
     prefix_and_value_string pattern2a =
-        make_prefix_and_value_string("\n" + indent9 + expr + " => ", indent9);
+        make_prefix_and_value_string("\n" + indent7 + expr + " => ", indent7);
 
     if (!pattern2a.value_string_has_newline && !pattern2a.over_max_line_width) {
       append_output(pattern2a);
@@ -99,7 +127,7 @@ bool _dump_one(std::string &output, bool no_newline_in_value_string, const std::
     }
 
     prefix_and_value_string pattern2b =
-        make_prefix_and_value_string("\n" + indent9 + expr + "\n" + indent11 + "=> ", indent11);
+        make_prefix_and_value_string("\n" + indent7 + expr + "\n" + indent9 + "=> ", indent9);
 
     if (!pattern2b.value_string_has_newline) {
       append_output(pattern2b);
@@ -109,7 +137,7 @@ bool _dump_one(std::string &output, bool no_newline_in_value_string, const std::
     return false;
   }
 
-  prefix_and_value_string pattern1a = make_prefix_and_value_string(expr + " => ", indent9);
+  prefix_and_value_string pattern1a = make_prefix_and_value_string(expr + " => ", indent7);
 
   if (!pattern1a.over_max_line_width) {
     if (!pattern1a.value_string_has_newline) {
@@ -118,7 +146,7 @@ bool _dump_one(std::string &output, bool no_newline_in_value_string, const std::
     }
 
     prefix_and_value_string pattern1b =
-        make_prefix_and_value_string(expr + "\n" + indent11 + "=> ", indent11);
+        make_prefix_and_value_string(expr + "\n" + indent9 + "=> ", indent9);
 
     if (!pattern1b.value_string_has_newline) {
       append_output(pattern1b);
@@ -130,28 +158,39 @@ bool _dump_one(std::string &output, bool no_newline_in_value_string, const std::
   }
 
   prefix_and_value_string pattern1b =
-      make_prefix_and_value_string(expr + "\n" + indent11 + "=> ", indent11);
+      make_prefix_and_value_string(expr + "\n" + indent9 + "=> ", indent9);
 
   append_output(pattern1b);
   return true;
 }
 
-inline bool _dump_recursive(std::string &, bool) { return true; }
+inline bool _dump_recursive_with_expr(std::string &, bool) { return true; }
 
 template <typename T, typename... Args>
-inline bool _dump_recursive(std::string &output, bool no_newline_in_value_string,
-                            const std::string &expr, const T &value, const Args &...args) {
+inline bool _dump_recursive_with_expr(std::string &output, bool no_newline_in_value_string,
+                                      const std::string &expr, const T &value,
+                                      const Args &...args) {
   return _dump_one(output, no_newline_in_value_string, expr, value) &&
-         _dump_recursive(output, no_newline_in_value_string, args...);
+         _dump_recursive_with_expr(output, no_newline_in_value_string, args...);
 }
 
+inline bool _dump_recursive_without_expr(std::string &, bool) { return true; }
+
+template <typename T, typename... Args>
+inline bool _dump_recursive_without_expr(std::string &output, bool no_newline_in_value_string,
+                                         const T &value, const Args &...args) {
+  return _dump_one(output, no_newline_in_value_string, "", value) &&
+         _dump_recursive_without_expr(output, no_newline_in_value_string, args...);
+}
+
+// function called by cpp_dump() macro
 template <typename... Args>
-void dump_(const Args &...args) {
+void cpp_dump_(const Args &...args) {
   bool no_newline_in_value_string = true;
 
 rollback:
   std::string output = "";
-  if (!_dump_recursive(output, no_newline_in_value_string, args...)) {
+  if (!_dump_recursive_with_expr(output, no_newline_in_value_string, args...)) {
     no_newline_in_value_string = false;
     goto rollback;
   }
@@ -160,5 +199,19 @@ rollback:
 }
 
 }  // namespace _detail
+
+template <typename... Args>
+void dump(const Args &...args) {
+  bool no_newline_in_value_string = true;
+
+rollback:
+  std::string output = "";
+  if (!_detail::_dump_recursive_without_expr(output, no_newline_in_value_string, args...)) {
+    no_newline_in_value_string = false;
+    goto rollback;
+  }
+
+  std::clog << output << std::endl;
+}
 
 }  // namespace cpp_dump
