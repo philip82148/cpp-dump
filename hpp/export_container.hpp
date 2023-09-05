@@ -44,7 +44,7 @@ inline auto export_container(const T &container, const std::string &indent, size
 rollback:
   std::string output = "[ ";
   bool is_first = true;
-  for (auto &elem : container) {
+  for (const auto &elem : container) {
     if (is_first) {
       is_first = false;
     } else {

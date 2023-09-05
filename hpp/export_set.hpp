@@ -44,7 +44,7 @@ inline auto export_set(const T &set, const std::string &indent, size_t last_line
 rollback:
   std::string output = "{ ";
   bool is_first = true;
-  for (auto &elem : set) {
+  for (const auto &elem : set) {
     if (is_first) {
       is_first = false;
     } else {

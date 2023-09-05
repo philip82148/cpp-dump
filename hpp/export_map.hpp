@@ -45,7 +45,7 @@ inline auto export_map(const T &map, const std::string &indent, size_t last_line
 rollback:
   std::string output = "{ ";
   bool is_first = true;
-  for (auto &elem_pair : map) {
+  for (const auto &elem_pair : map) {
     if (is_first) {
       is_first = false;
     } else {
