@@ -26,12 +26,32 @@ template <typename T>
 using _remove_cref = std::remove_const_t<std::remove_reference_t<T>>;
 
 template <typename T>
-auto _is_iterable(const T &t) -> decltype(std::begin(t), std::end(t), std::true_type());
+auto _begin(const T &t, int) -> decltype(begin(t)) {
+  return begin(t);
+}
+
+template <typename T>
+auto _begin(const T &t, long) -> decltype(std::begin(t)) {
+  return std::begin(t);
+}
+
+template <typename T>
+auto _end(const T &t, int) -> decltype(end(t)) {
+  return end(t);
+}
+
+template <typename T>
+auto _end(const T &t, long) -> decltype(std::end(t)) {
+  return std::end(t);
+}
+
+template <typename T>
+auto _is_iterable(const T &t) -> decltype(_begin(t, 0), _end(t, 0), std::true_type());
 std::false_type _is_iterable(...);
 
 template <typename T>
 inline bool is_empty_iterable(const T &t) {
-  return std::distance(std::begin(t), std::end(t)) == 0;
+  return std::distance(_begin(t, 0), _end(t, 0)) == 0;
 }
 
 }  // namespace _detail
@@ -40,7 +60,7 @@ template <typename T>
 inline constexpr bool is_iterable = decltype(_detail::_is_iterable(std::declval<T>()))::value;
 
 template <typename T>
-using iterable_elem_type = _detail::_remove_cref<decltype(*std::begin(std::declval<T>()))>;
+using iterable_elem_type = _detail::_remove_cref<decltype(*_detail::_begin(std::declval<T>(), 0))>;
 
 template <typename T>
 inline constexpr bool is_arithmetic = std::is_arithmetic_v<_detail::_remove_cref<T>>;
