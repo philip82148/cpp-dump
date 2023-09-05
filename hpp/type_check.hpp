@@ -47,8 +47,10 @@ auto _end(const T &t, long) -> decltype(std::end(t)) {
 }
 
 template <typename T>
-auto _is_iterable(const T &t) -> decltype(_begin(t, 0), _end(t, 0), std::true_type());
-std::false_type _is_iterable(...);
+auto _is_iterable(int)
+    -> decltype(_begin(std::declval<T>(), 0), _end(std::declval<T>(), 0), std::true_type());
+template <typename>
+std::false_type _is_iterable(long);
 
 template <typename T>
 inline bool is_empty_iterable(const T &t) {
@@ -58,7 +60,7 @@ inline bool is_empty_iterable(const T &t) {
 }  // namespace _detail
 
 template <typename T>
-inline constexpr bool is_iterable = decltype(_detail::_is_iterable(std::declval<T>()))::value;
+inline constexpr bool is_iterable = decltype(_detail::_is_iterable<T>(0))::value;
 
 template <typename T>
 using iterable_elem_type = _detail::_remove_cref<decltype(*_detail::_begin(std::declval<T>(), 0))>;
@@ -67,17 +69,14 @@ template <typename T>
 inline constexpr bool is_arithmetic = std::is_arithmetic_v<_detail::_remove_cref<T>>;
 
 template <typename T>
-inline constexpr bool is_string =
-    std::is_convertible_v<T, std::string_view> && !std::is_null_pointer_v<_detail::_remove_cref<T>>;
+inline constexpr bool is_null_pointer = std::is_null_pointer_v<_detail::_remove_cref<T>>;
 
 template <typename T>
-inline constexpr bool is_pointer = (std::is_pointer_v<_detail::_remove_cref<T>> && !is_string<T>) ||
-                                   std::is_null_pointer_v<_detail::_remove_cref<T>>;
+inline constexpr bool is_string = std::is_convertible_v<T, std::string_view> && !is_null_pointer<T>;
 
 template <typename T>
-inline constexpr bool is_void_pointer = std::is_same_v<_detail::_remove_cref<T>, void *> ||
-                                        std::is_same_v<_detail::_remove_cref<T>, const void *> ||
-                                        std::is_null_pointer_v<_detail::_remove_cref<T>>;
+inline constexpr bool is_pointer =
+    (std::is_pointer_v<_detail::_remove_cref<T>> && !is_string<T>) || is_null_pointer<T>;
 
 namespace _detail {
 

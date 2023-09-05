@@ -28,7 +28,7 @@ inline auto export_pointer(const T &pointer, const std::string &indent, size_t l
     -> std::enable_if_t<is_pointer<T>, std::string> {
   if (pointer == nullptr) return "nullptr";
 
-  if constexpr (is_void_pointer<T>) {
+  if constexpr (is_null_pointer<T> || !is_exportable<std::remove_pointer_t<T>>) {
     std::ostringstream ss;
     ss << std::hex << pointer;
 
