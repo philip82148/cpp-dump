@@ -19,6 +19,9 @@
 #define cpp_dump(...) \
   cpp_dump::_detail::cpp_dump_(CPP_DUMP_EXPAND_VA_(CPP_DUMP_EXPAND_FOR_CPP_DUMP_, __VA_ARGS__))
 
+#define CPP_DUMP_SET_OPTIONS(max_line_width, max_depth) \
+  cpp_dump::set_options(max_line_width, max_depth)
+
 namespace cpp_dump {
 
 inline size_t max_line_width = 160;
@@ -212,6 +215,11 @@ rollback:
   }
 
   std::clog << output << std::endl;
+}
+
+inline void set_options(size_t max_line_width, size_t max_depth) {
+  cpp_dump::max_line_width = max_line_width;
+  cpp_dump::max_depth = max_depth;
 }
 
 }  // namespace cpp_dump
