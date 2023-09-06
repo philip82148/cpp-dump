@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <algorithm>
 #include <bitset>
 #include <string>
 #include <type_traits>
@@ -30,8 +31,8 @@ inline auto export_bitset(const T &bitset, const std::string &, size_t, size_t, 
   std::string bitset_str = bitset.to_string();
 
   std::string output;
-  for (long end = bitset_str.length(); end > 0; end -= 4) {
-    size_t begin = std::max(end - 4, 0l);
+  for (int end = bitset_str.length(); end > 0; end -= 4) {
+    size_t begin = std::max(end - 4, 0);
     if (output == "") {
       output = bitset_str.substr(begin, end - begin);
     } else {
