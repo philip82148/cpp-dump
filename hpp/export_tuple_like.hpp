@@ -8,7 +8,9 @@
 #pragma once
 
 #include <string>
+#include <tuple>
 #include <type_traits>
+#include <utility>
 
 #include "./type_check.hpp"
 #include "./utility.hpp"
@@ -24,10 +26,10 @@ namespace _detail {
 template <typename T>
 std::string export_var(const T &, const std::string &, size_t, size_t, bool);
 
-template <const size_t i, const size_t size, typename T>
-inline auto _export_tuple_like_in_one_line(const T &tuple, const std::string &indent,
-                                           size_t last_line_length, size_t next_depth)
-    -> std::enable_if_t<is_tuple<T>, std::string> {
+template <const size_t i, const size_t size, typename... Args>
+inline std::string _export_tuple_like_in_one_line(const std::tuple<Args...> &tuple,
+                                                  const std::string &indent,
+                                                  size_t last_line_length, size_t next_depth) {
   std::string output = export_var(std::get<i>(tuple), indent, last_line_length, next_depth, true);
   if (has_newline(output)) return "\n";
 
@@ -40,10 +42,9 @@ inline auto _export_tuple_like_in_one_line(const T &tuple, const std::string &in
   }
 }
 
-template <const size_t i, const size_t size, typename T>
-inline auto _export_tuple_like_in_lines(const T &tuple, const std::string &indent,
-                                        size_t next_depth)
-    -> std::enable_if_t<is_tuple<T>, std::string> {
+template <const size_t i, const size_t size, typename... Args>
+inline std::string _export_tuple_like_in_lines(const std::tuple<Args...> &tuple,
+                                               const std::string &indent, size_t next_depth) {
   std::string output = export_var(std::get<i>(tuple), indent, indent.length(), next_depth, false);
 
   if constexpr (i < size - 1) {
@@ -54,11 +55,13 @@ inline auto _export_tuple_like_in_lines(const T &tuple, const std::string &inden
   }
 }
 
-template <typename T>
-inline auto export_tuple_like(const T &tuple, const std::string &indent, size_t last_line_length,
-                              size_t current_depth, bool fail_on_newline)
-    -> std::enable_if_t<is_tuple<T>, std::string> {
-  if constexpr (std::tuple_size_v<T> == 0) {
+template <typename... Args>
+inline std::string export_tuple_like(const std::tuple<Args...> &tuple, const std::string &indent,
+                                     size_t last_line_length, size_t current_depth,
+                                     bool fail_on_newline) {
+  constexpr size_t tuple_size = std::tuple_size_v<std::tuple<Args...>>;
+
+  if constexpr (tuple_size == 0) {
     return "( )";
   } else {
     if (current_depth >= max_depth) return "( ... )";
@@ -66,7 +69,7 @@ inline auto export_tuple_like(const T &tuple, const std::string &indent, size_t 
     size_t next_depth = current_depth + 1;
 
     std::string output = "( " +
-                         _export_tuple_like_in_one_line<0, std::tuple_size_v<T>>(
+                         _export_tuple_like_in_one_line<0, tuple_size>(
                              tuple, indent, last_line_length + 2, next_depth) +
                          " )";
 
@@ -76,15 +79,15 @@ inline auto export_tuple_like(const T &tuple, const std::string &indent, size_t 
 
     std::string new_indent = indent + "  ";
     return "(\n" + new_indent +
-           _export_tuple_like_in_lines<0, std::tuple_size_v<T>>(tuple, new_indent, next_depth) +
-           "\n" + indent + ")";
+           _export_tuple_like_in_lines<0, tuple_size>(tuple, new_indent, next_depth) + "\n" +
+           indent + ")";
   }
 }
 
-template <typename T>
-inline auto export_tuple_like(const T &pair, const std::string &indent, size_t last_line_length,
-                              size_t current_depth, bool fail_on_newline)
-    -> std::enable_if_t<is_pair<T>, std::string> {
+template <typename T1, typename T2>
+inline std::string export_tuple_like(const std::pair<T1, T2> &pair, const std::string &indent,
+                                     size_t last_line_length, size_t current_depth,
+                                     bool fail_on_newline) {
   return export_tuple_like(std::tie(pair.first, pair.second), indent, last_line_length,
                            current_depth, fail_on_newline);
 }

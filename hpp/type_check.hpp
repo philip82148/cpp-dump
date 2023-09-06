@@ -112,68 +112,32 @@ inline constexpr bool is_container = is_iterable<T> && !is_string<T> && !is_map<
 namespace _detail {
 
 template <typename>
-inline constexpr bool _is_tuple = false;
+inline constexpr bool _is_tuple_like = false;
 template <typename... Args>
-inline constexpr bool _is_tuple<std::tuple<Args...>> = true;
-
-}  // namespace _detail
-
-template <typename T>
-inline constexpr bool is_tuple = _detail::_is_tuple<_detail::_remove_cref<T>>;
-
-namespace _detail {
-
-template <typename>
-inline constexpr bool _is_pair = false;
+inline constexpr bool _is_tuple_like<std::tuple<Args...>> = true;
 template <typename T1, typename T2>
-inline constexpr bool _is_pair<std::pair<T1, T2>> = true;
+inline constexpr bool _is_tuple_like<std::pair<T1, T2>> = true;
 
 }  // namespace _detail
 
 template <typename T>
-inline constexpr bool is_pair = _detail::_is_pair<_detail::_remove_cref<T>>;
-
-template <typename T>
-inline constexpr bool is_tuple_like = is_tuple<T> || is_pair<T>;
+inline constexpr bool is_tuple_like = _detail::_is_tuple_like<_detail::_remove_cref<T>>;
 
 namespace _detail {
 
 template <typename>
-inline constexpr bool _is_queue = false;
+inline constexpr bool _is_xixo = false;
 template <typename T>
-inline constexpr bool _is_queue<std::queue<T>> = true;
+inline constexpr bool _is_xixo<std::queue<T>> = true;
+template <typename T>
+inline constexpr bool _is_xixo<std::priority_queue<T>> = true;
+template <typename T>
+inline constexpr bool _is_xixo<std::stack<T>> = true;
 
 }  // namespace _detail
 
 template <typename T>
-inline constexpr bool is_queue = _detail::_is_queue<_detail::_remove_cref<T>>;
-
-namespace _detail {
-
-template <typename>
-inline constexpr bool _is_priority_queue = false;
-template <typename T>
-inline constexpr bool _is_priority_queue<std::priority_queue<T>> = true;
-
-}  // namespace _detail
-
-template <typename T>
-inline constexpr bool is_priority_queue = _detail::_is_priority_queue<_detail::_remove_cref<T>>;
-
-namespace _detail {
-
-template <typename>
-inline constexpr bool _is_stack = false;
-template <typename T>
-inline constexpr bool _is_stack<std::stack<T>> = true;
-
-}  // namespace _detail
-
-template <typename T>
-inline constexpr bool is_stack = _detail::_is_stack<_detail::_remove_cref<T>>;
-
-template <typename T>
-inline constexpr bool is_xixo = is_queue<T> || is_priority_queue<T> || is_stack<T>;
+inline constexpr bool is_xixo = _detail::_is_xixo<_detail::_remove_cref<T>>;
 
 namespace _detail {
 

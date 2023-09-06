@@ -15,7 +15,7 @@
 #include "hpp/export_var.hpp"
 #include "hpp/utility.hpp"
 
-#define CPP_DUMP_EXPAND_FOR_CPP_DUMP_(expr) #expr, (expr)
+#define CPP_DUMP_EXPAND_FOR_CPP_DUMP_(expr) #expr, expr
 #define cpp_dump(...) \
   cpp_dump::_detail::cpp_dump_(CPP_DUMP_EXPAND_VA_(CPP_DUMP_EXPAND_FOR_CPP_DUMP_, __VA_ARGS__))
 

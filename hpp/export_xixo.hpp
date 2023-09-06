@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <queue>
+#include <stack>
 #include <string>
 #include <type_traits>
 
@@ -25,9 +27,9 @@ template <typename T>
 std::string export_var(const T &, const std::string &, size_t, size_t, bool);
 
 template <typename T>
-inline auto export_xixo(const T &queue, const std::string &indent, size_t last_line_length,
-                        size_t current_depth, bool fail_on_newline)
-    -> std::enable_if_t<is_queue<T>, std::string> {
+inline std::string export_xixo(const std::queue<T> &queue, const std::string &indent,
+                               size_t last_line_length, size_t current_depth,
+                               bool fail_on_newline) {
   if (queue.empty()) return "std::queue{ size= 0 }";
 
   if (current_depth >= max_depth) return "std::queue{ ... }";
@@ -55,9 +57,9 @@ inline auto export_xixo(const T &queue, const std::string &indent, size_t last_l
 }
 
 template <typename T>
-inline auto export_xixo(const T &pq, const std::string &indent, size_t last_line_length,
-                        size_t current_depth, bool fail_on_newline)
-    -> std::enable_if_t<is_priority_queue<T>, std::string> {
+inline std::string export_xixo(const std::priority_queue<T> &pq, const std::string &indent,
+                               size_t last_line_length, size_t current_depth,
+                               bool fail_on_newline) {
   if (pq.empty()) return "std::priority_queue{ size= 0 }";
 
   if (current_depth >= max_depth) return "std::priority_queue{ ... }";
@@ -84,9 +86,9 @@ inline auto export_xixo(const T &pq, const std::string &indent, size_t last_line
 }
 
 template <typename T>
-inline auto export_xixo(const T &stack, const std::string &indent, size_t last_line_length,
-                        size_t current_depth, bool fail_on_newline)
-    -> std::enable_if_t<is_stack<T>, std::string> {
+inline std::string export_xixo(const std::stack<T> &stack, const std::string &indent,
+                               size_t last_line_length, size_t current_depth,
+                               bool fail_on_newline) {
   if (stack.empty()) return "std::stack{ size= 0 }";
 
   if (current_depth >= max_depth) return "std::stack{ ... }";
