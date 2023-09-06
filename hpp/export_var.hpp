@@ -17,6 +17,7 @@
 #include "./export_map.hpp"
 #include "./export_object.hpp"
 #include "./export_pointer.hpp"
+#include "./export_ref.hpp"
 #include "./export_set.hpp"
 #include "./export_string.hpp"
 #include "./export_tuple_like.hpp"
@@ -40,6 +41,8 @@ std::string export_var(const T &value, const std::string &indent, size_t last_li
     return export_string(value, indent, last_line_length, current_depth, fail_on_newline);
   } else if constexpr (is_pointer<T>) {
     return export_pointer(value, indent, last_line_length, current_depth, fail_on_newline);
+  } else if constexpr (is_ref<T>) {
+    return export_ref(value, indent, last_line_length, current_depth, fail_on_newline);
   } else if constexpr (is_map<T>) {
     return export_map(value, indent, last_line_length, current_depth, fail_on_newline);
   } else if constexpr (is_set<T>) {

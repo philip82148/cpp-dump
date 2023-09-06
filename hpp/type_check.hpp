@@ -8,7 +8,9 @@
 #pragma once
 
 #include <bitset>
+#include <functional>
 #include <map>
+#include <memory>
 #include <queue>
 #include <set>
 #include <stack>
@@ -74,9 +76,49 @@ inline constexpr bool is_null_pointer = std::is_null_pointer_v<_detail::_remove_
 template <typename T>
 inline constexpr bool is_string = std::is_convertible_v<T, std::string_view> && !is_null_pointer<T>;
 
+namespace _detail {
+
+template <typename>
+inline constexpr bool _is_smart_pointer = false;
 template <typename T>
-inline constexpr bool is_pointer =
-    (std::is_pointer_v<_detail::_remove_cref<T>> && !is_string<T>) || is_null_pointer<T>;
+inline constexpr bool _is_smart_pointer<std::unique_ptr<T>> = true;
+template <typename T>
+inline constexpr bool _is_smart_pointer<std::shared_ptr<T>> = true;
+template <typename T>
+inline constexpr bool _is_smart_pointer<std::weak_ptr<T>> = true;
+
+}  // namespace _detail
+
+template <typename T>
+inline constexpr bool is_smart_pointer = _detail::_is_smart_pointer<_detail::_remove_cref<T>>;
+
+template <typename T>
+inline constexpr bool is_pointer = (std::is_pointer_v<_detail::_remove_cref<T>> && !is_string<T>) ||
+                                   is_null_pointer<T> || is_smart_pointer<T>;
+
+namespace _detail {
+
+template <typename T>
+auto _remove_pointer(int) -> std::enable_if_t<is_smart_pointer<T>, typename T::element_type>;
+template <typename T>
+auto _remove_pointer(long) -> std::remove_pointer_t<T>;
+
+}  // namespace _detail
+
+template <typename T>
+using remove_pointer = decltype(_detail::_remove_pointer<_detail::_remove_cref<T>>(0));
+
+namespace _detail {
+
+template <typename>
+inline constexpr bool _is_ref = false;
+template <typename T>
+inline constexpr bool _is_ref<std::reference_wrapper<T>> = true;
+
+}  // namespace _detail
+
+template <typename T>
+inline constexpr bool is_ref = _detail::_is_ref<_detail::_remove_cref<T>>;
 
 namespace _detail {
 
@@ -178,7 +220,7 @@ inline constexpr bool is_iterable_like = is_container<T> || is_map<T> || is_set<
 
 template <typename T>
 inline constexpr bool is_exportable =
-    is_arithmetic<T> || is_string<T> || is_pointer<T> || is_map<T> || is_set<T> ||
+    is_arithmetic<T> || is_string<T> || is_pointer<T> || is_ref<T> || is_map<T> || is_set<T> ||
     is_container<T> || is_tuple_like<T> || is_xixo<T> || is_bitset<T> || is_exportable_object<T> ||
     is_exportable_enum<T>;
 
