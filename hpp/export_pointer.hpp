@@ -44,8 +44,7 @@ inline auto export_pointer(const T &pointer, const std::string &indent, size_t l
   } else {
     if (current_depth >= max_depth) return "*...";
 
-    return "*" +
-           export_var(*pointer, indent, last_line_length + 1, current_depth + 1, fail_on_newline);
+    return "*" + export_var(*pointer, indent, last_line_length + 1, current_depth, fail_on_newline);
   }
 }
 
