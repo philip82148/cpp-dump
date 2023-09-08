@@ -62,6 +62,9 @@ std::string export_var(const T &value, const std::string &indent, size_t last_li
 
 }  // namespace _detail
 
+/**
+ * Return a string representation of a variable.
+ */
 template <typename T>
 std::string export_var(const T &value) {
   return _detail::export_var(value, "", 0, 1, false);
