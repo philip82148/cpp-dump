@@ -16,6 +16,7 @@
 #include "./export_enum.hpp"
 #include "./export_map.hpp"
 #include "./export_object.hpp"
+#include "./export_optional.hpp"
 #include "./export_pointer.hpp"
 #include "./export_ref.hpp"
 #include "./export_set.hpp"
@@ -43,6 +44,8 @@ std::string export_var(const T &value, const std::string &indent, size_t last_li
     return export_pointer(value, indent, last_line_length, current_depth, fail_on_newline);
   } else if constexpr (is_ref<T>) {
     return export_ref(value, indent, last_line_length, current_depth, fail_on_newline);
+  } else if constexpr (is_optional<T>) {
+    return export_optional(value, indent, last_line_length, current_depth, fail_on_newline);
   } else if constexpr (is_map<T>) {
     return export_map(value, indent, last_line_length, current_depth, fail_on_newline);
   } else if constexpr (is_set<T>) {

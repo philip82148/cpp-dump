@@ -11,6 +11,7 @@
 #include <functional>
 #include <map>
 #include <memory>
+#include <optional>
 #include <queue>
 #include <set>
 #include <stack>
@@ -107,6 +108,16 @@ template <typename T>
 inline constexpr bool is_ref = _is_ref<_remove_cref<T>>;
 
 template <typename>
+inline constexpr bool _is_optional = false;
+template <typename T>
+inline constexpr bool _is_optional<std::optional<T>> = true;
+template <>
+inline constexpr bool _is_optional<std::nullopt_t> = true;
+
+template <typename T>
+inline constexpr bool is_optional = _is_optional<_remove_cref<T>>;
+
+template <typename>
 inline constexpr bool _is_map = false;
 template <typename T1, typename T2>
 inline constexpr bool _is_map<std::map<T1, T2>> = true;
@@ -177,9 +188,9 @@ inline constexpr bool is_iterable_like = is_container<T> || is_map<T> || is_set<
 
 template <typename T>
 inline constexpr bool is_exportable =
-    is_arithmetic<T> || is_string<T> || is_pointer<T> || is_ref<T> || is_map<T> || is_set<T> ||
-    is_container<T> || is_tuple_like<T> || is_xixo<T> || is_bitset<T> || is_exportable_object<T> ||
-    is_exportable_enum<T>;
+    is_arithmetic<T> || is_string<T> || is_pointer<T> || is_ref<T> || is_optional<T> || is_map<T> ||
+    is_set<T> || is_container<T> || is_tuple_like<T> || is_xixo<T> || is_bitset<T> ||
+    is_exportable_object<T> || is_exportable_enum<T>;
 
 }  // namespace _detail
 
