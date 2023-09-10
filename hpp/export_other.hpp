@@ -66,7 +66,8 @@ inline std::string export_other(const std::variant<Args...> &variant, const std:
                                 bool fail_on_newline) {
   return std::visit(
       [=, &indent](const auto &value) -> std::string {
-        return export_var(value, indent, last_line_length, current_depth, fail_on_newline);
+        return "|" +
+               export_var(value, indent, last_line_length + 1, current_depth, fail_on_newline);
       },
       variant);
 }
