@@ -51,7 +51,7 @@ auto _end(const T &t, long) -> decltype(std::end(t)) {
 
 template <typename T>
 auto _is_iterable(int)
-    -> decltype(_begin(std::declval<T>(), 0), _end(std::declval<T>(), 0), std::true_type());
+    -> decltype(_begin(std::declval<T>(), 0) != _end(std::declval<T>(), 0), std::true_type());
 template <typename>
 std::false_type _is_iterable(long);
 
@@ -63,7 +63,7 @@ using iterable_elem_type = _remove_cref<decltype(*_begin(std::declval<T>(), 0))>
 
 template <typename T>
 inline bool is_empty_iterable(const T &t) {
-  return std::distance(_begin(t, 0), _end(t, 0)) == 0;
+  return !(_begin(t, 0) != _end(t, 0));
 }
 
 template <typename T>
@@ -122,28 +122,40 @@ inline constexpr bool _is_map = false;
 template <typename... Args>
 inline constexpr bool _is_map<std::map<Args...>> = true;
 template <typename... Args>
-inline constexpr bool _is_map<std::multimap<Args...>> = true;
-template <typename... Args>
 inline constexpr bool _is_map<std::unordered_map<Args...>> = true;
+
+template <typename>
+inline constexpr bool _is_multimap = false;
 template <typename... Args>
-inline constexpr bool _is_map<std::unordered_multimap<Args...>> = true;
+inline constexpr bool _is_multimap<std::multimap<Args...>> = true;
+template <typename... Args>
+inline constexpr bool _is_multimap<std::unordered_multimap<Args...>> = true;
 
 template <typename T>
-inline constexpr bool is_map = _is_map<_remove_cref<T>>;
+inline constexpr bool is_multimap = _is_multimap<_remove_cref<T>>;
+
+template <typename T>
+inline constexpr bool is_map = _is_map<_remove_cref<T>> || is_multimap<T>;
 
 template <typename>
 inline constexpr bool _is_set = false;
 template <typename... Args>
 inline constexpr bool _is_set<std::set<Args...>> = true;
 template <typename... Args>
-inline constexpr bool _is_set<std::multiset<Args...>> = true;
-template <typename... Args>
 inline constexpr bool _is_set<std::unordered_set<Args...>> = true;
+
+template <typename>
+inline constexpr bool _is_multiset = false;
 template <typename... Args>
-inline constexpr bool _is_set<std::unordered_multiset<Args...>> = true;
+inline constexpr bool _is_multiset<std::multiset<Args...>> = true;
+template <typename... Args>
+inline constexpr bool _is_multiset<std::unordered_multiset<Args...>> = true;
 
 template <typename T>
-inline constexpr bool is_set = _is_set<_remove_cref<T>>;
+inline constexpr bool is_multiset = _is_multiset<_remove_cref<T>>;
+
+template <typename T>
+inline constexpr bool is_set = _is_set<_remove_cref<T>> || is_multiset<T>;
 
 template <typename T>
 inline constexpr bool is_container = is_iterable<T> && !is_string<T> && !is_map<T> && !is_set<T>;

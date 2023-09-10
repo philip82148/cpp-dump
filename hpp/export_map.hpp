@@ -32,8 +32,8 @@ inline auto export_map(const T &map, const std::string &indent, size_t last_line
 
   if (current_depth >= max_depth) return "{ ... }";
 
-  bool shift_indent =
-      is_iterable_like<typename T::key_type> || is_iterable_like<typename T::mapped_type>;
+  bool shift_indent = is_multimap<T> || is_iterable_like<typename T::key_type> ||
+                      is_iterable_like<typename T::mapped_type>;
   // 中身がiterable_likeでも常に長さに応じて改行するかどうかを決める場合は次
   // bool shift_indent = false;
 
@@ -42,33 +42,75 @@ inline auto export_map(const T &map, const std::string &indent, size_t last_line
   std::string new_indent = indent + "  ";
   size_t next_depth = current_depth + 1;
 
+  // iterator for values of multimap
+  struct value_iterator {
+    T::const_iterator it;
+    auto operator*() { return it->second; }
+    bool operator!=(const value_iterator &to) { return it != to.it; }
+    value_iterator &operator++() {
+      ++it;
+      return *this;
+    }
+  };
+
+  struct value_container {
+    value_iterator _begin;
+    value_iterator _end;
+    auto begin() const { return _begin; }
+    auto end() const { return _end; }
+  };
+
 rollback:
   std::string output = "{ ";
   bool is_first = true;
-  for (const auto &elem_pair : map) {
+  for (auto it = map.begin(), end = map.end(); it != end; it = map.equal_range(it->first).second) {
     if (is_first) {
       is_first = false;
     } else {
       output += ", ";
     }
 
+    std::string key_string, value_string;
     if (shift_indent) {
-      std::string key_string =
-          "\n" + new_indent +
-          export_var(elem_pair.first, new_indent, new_indent.length(), next_depth, false) + ": ";
-      std::string value_string = export_var(elem_pair.second, new_indent,
-                                            get_last_line_length(key_string), next_depth, false);
+      if constexpr (is_multimap<T>) {
+        auto [_begin, _end] = map.equal_range(it->first);
+        value_container values{{_begin}, {_end}};
+
+        key_string = "\n" + new_indent +
+                     export_var(it->first, new_indent, new_indent.length(), next_depth, false) +
+                     " (" + std::to_string(map.count(it->first)) + "): ";
+        value_string =
+            export_var(values, new_indent, get_last_line_length(key_string), next_depth, false);
+      } else {
+        key_string = "\n" + new_indent +
+                     export_var(it->first, new_indent, new_indent.length(), next_depth, false) +
+                     ": ";
+        value_string =
+            export_var(it->second, new_indent, get_last_line_length(key_string), next_depth, false);
+      }
 
       output += key_string + value_string;
       continue;
     }
 
-    std::string key_string =
-        export_var(elem_pair.first, indent, last_line_length + output.length(), next_depth, true) +
-        ": ";
-    std::string value_string =
-        export_var(elem_pair.second, indent,
-                   last_line_length + output.length() + key_string.length(), next_depth, true);
+    if constexpr (is_multimap<T>) {
+      auto [_begin, _end] = map.equal_range(it->first);
+      value_container values{{_begin}, {_end}};
+
+      key_string =
+          export_var(it->first, indent, last_line_length + output.length(), next_depth, true) +
+          " (" + std::to_string(map.count(it->first)) + "): ";
+      value_string =
+          export_var(values, indent, last_line_length + output.length() + key_string.length(),
+                     next_depth, true);
+    } else {
+      key_string =
+          export_var(it->first, indent, last_line_length + output.length(), next_depth, true) +
+          ": ";
+      value_string =
+          export_var(it->second, indent, last_line_length + output.length() + key_string.length(),
+                     next_depth, true);
+    }
 
     std::string elem_string = key_string + value_string;
     if (!has_newline(elem_string)) {

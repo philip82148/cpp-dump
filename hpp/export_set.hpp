@@ -44,7 +44,7 @@ inline auto export_set(const T &set, const std::string &indent, size_t last_line
 rollback:
   std::string output = "{ ";
   bool is_first = true;
-  for (const auto &elem : set) {
+  for (auto it = set.begin(), end = set.end(); it != end; it = set.equal_range(*it).second) {
     if (is_first) {
       is_first = false;
     } else {
@@ -53,12 +53,18 @@ rollback:
 
     if (shift_indent) {
       output +=
-          "\n" + new_indent + export_var(elem, new_indent, new_indent.length(), next_depth, false);
+          "\n" + new_indent + export_var(*it, new_indent, new_indent.length(), next_depth, false);
+
+      if constexpr (is_multiset<T>) output += " (" + std::to_string(set.count(*it)) + ")";
+
       continue;
     }
 
     std::string elem_string =
-        export_var(elem, indent, last_line_length + output.length(), next_depth, true);
+        export_var(*it, indent, last_line_length + output.length(), next_depth, true);
+
+    if constexpr (is_multiset<T>) elem_string += " (" + std::to_string(set.count(*it)) + ")";
+
     if (!has_newline(elem_string)) {
       output += elem_string;
 
