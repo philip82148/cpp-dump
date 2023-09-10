@@ -23,8 +23,8 @@ namespace _detail {
 template <typename T>
 std::string export_var(const T &, const std::string &, size_t, size_t, bool);
 
-template <typename T>
-inline std::string export_pointer(const std::weak_ptr<T> &pointer, const std::string &indent,
+template <typename... Args>
+inline std::string export_pointer(const std::weak_ptr<Args...> &pointer, const std::string &indent,
                                   size_t last_line_length, size_t current_depth,
                                   bool fail_on_newline) {
   return export_var(pointer.lock(), indent, last_line_length, current_depth, fail_on_newline);

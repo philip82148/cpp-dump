@@ -77,12 +77,12 @@ inline constexpr bool is_string = std::is_convertible_v<T, std::string_view> && 
 
 template <typename>
 inline constexpr bool _is_smart_pointer = false;
-template <typename T>
-inline constexpr bool _is_smart_pointer<std::unique_ptr<T>> = true;
-template <typename T>
-inline constexpr bool _is_smart_pointer<std::shared_ptr<T>> = true;
-template <typename T>
-inline constexpr bool _is_smart_pointer<std::weak_ptr<T>> = true;
+template <typename... Args>
+inline constexpr bool _is_smart_pointer<std::unique_ptr<Args...>> = true;
+template <typename... Args>
+inline constexpr bool _is_smart_pointer<std::shared_ptr<Args...>> = true;
+template <typename... Args>
+inline constexpr bool _is_smart_pointer<std::weak_ptr<Args...>> = true;
 
 template <typename T>
 inline constexpr bool is_smart_pointer = _is_smart_pointer<_remove_cref<T>>;
@@ -101,16 +101,16 @@ using remove_pointer = decltype(_remove_pointer<_remove_cref<T>>(0));
 
 template <typename>
 inline constexpr bool _is_ref = false;
-template <typename T>
-inline constexpr bool _is_ref<std::reference_wrapper<T>> = true;
+template <typename... Args>
+inline constexpr bool _is_ref<std::reference_wrapper<Args...>> = true;
 
 template <typename T>
 inline constexpr bool is_ref = _is_ref<_remove_cref<T>>;
 
 template <typename>
 inline constexpr bool _is_optional = false;
-template <typename T>
-inline constexpr bool _is_optional<std::optional<T>> = true;
+template <typename... Args>
+inline constexpr bool _is_optional<std::optional<Args...>> = true;
 template <>
 inline constexpr bool _is_optional<std::nullopt_t> = true;
 
@@ -119,20 +119,28 @@ inline constexpr bool is_optional = _is_optional<_remove_cref<T>>;
 
 template <typename>
 inline constexpr bool _is_map = false;
-template <typename T1, typename T2>
-inline constexpr bool _is_map<std::map<T1, T2>> = true;
-template <typename T1, typename T2>
-inline constexpr bool _is_map<std::unordered_map<T1, T2>> = true;
+template <typename... Args>
+inline constexpr bool _is_map<std::map<Args...>> = true;
+template <typename... Args>
+inline constexpr bool _is_map<std::multimap<Args...>> = true;
+template <typename... Args>
+inline constexpr bool _is_map<std::unordered_map<Args...>> = true;
+template <typename... Args>
+inline constexpr bool _is_map<std::unordered_multimap<Args...>> = true;
 
 template <typename T>
 inline constexpr bool is_map = _is_map<_remove_cref<T>>;
 
 template <typename>
 inline constexpr bool _is_set = false;
-template <typename T>
-inline constexpr bool _is_set<std::set<T>> = true;
-template <typename T>
-inline constexpr bool _is_set<std::unordered_set<T>> = true;
+template <typename... Args>
+inline constexpr bool _is_set<std::set<Args...>> = true;
+template <typename... Args>
+inline constexpr bool _is_set<std::multiset<Args...>> = true;
+template <typename... Args>
+inline constexpr bool _is_set<std::unordered_set<Args...>> = true;
+template <typename... Args>
+inline constexpr bool _is_set<std::unordered_multiset<Args...>> = true;
 
 template <typename T>
 inline constexpr bool is_set = _is_set<_remove_cref<T>>;
@@ -152,12 +160,12 @@ inline constexpr bool is_tuple_like = _is_tuple_like<_remove_cref<T>>;
 
 template <typename>
 inline constexpr bool _is_xixo = false;
-template <typename T>
-inline constexpr bool _is_xixo<std::queue<T>> = true;
-template <typename T>
-inline constexpr bool _is_xixo<std::priority_queue<T>> = true;
-template <typename T>
-inline constexpr bool _is_xixo<std::stack<T>> = true;
+template <typename... Args>
+inline constexpr bool _is_xixo<std::queue<Args...>> = true;
+template <typename... Args>
+inline constexpr bool _is_xixo<std::priority_queue<Args...>> = true;
+template <typename... Args>
+inline constexpr bool _is_xixo<std::stack<Args...>> = true;
 
 template <typename T>
 inline constexpr bool is_xixo = _is_xixo<_remove_cref<T>>;

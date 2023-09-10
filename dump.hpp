@@ -25,12 +25,12 @@
 namespace cpp_dump {
 
 /**
- * Maximum line width of export_var().
+ * Maximum line width of a output string of cpp_dump::export_var().
  */
 inline size_t max_line_width = 160;
 
 /**
- * Maximum number of times export_var() is applied recursively.
+ * Maximum number of times cpp_dump::export_var() is applied recursively.
  */
 inline size_t max_depth = 5;
 
@@ -211,7 +211,7 @@ rollback:
 
 /**
  * Output string representation of variable(s) to std::clog.
- * This function uses export_var() internally.
+ * This function uses cpp_dump::export_var() internally.
  */
 template <typename... Args>
 void dump(const Args &...args) {
@@ -229,7 +229,7 @@ rollback:
 
 /**
  * Set values to cpp_dump::max_line_width and cpp_dump::max_depth.
- * Instead of using this function, values can be assigned directly to variables.
+ * Instead of using this function, values can be assigned directly to the variables.
  */
 inline void set_options(size_t max_line_width, size_t max_depth) {
   cpp_dump::max_line_width = max_line_width;

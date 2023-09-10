@@ -8,7 +8,6 @@
 #pragma once
 
 #include <algorithm>
-#include <bitset>
 #include <string>
 #include <type_traits>
 
