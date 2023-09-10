@@ -11,6 +11,7 @@
 #include <type_traits>
 
 #include "./export_arithmetic.hpp"
+#include "./export_asterisk.hpp"
 #include "./export_container.hpp"
 #include "./export_enum.hpp"
 #include "./export_map.hpp"
@@ -55,8 +56,10 @@ std::string export_var(const T &value, const std::string &indent, size_t last_li
     return export_pointer(value, indent, last_line_length, current_depth, fail_on_newline);
   } else if constexpr (is_optional<T>) {
     return export_optional(value, indent, last_line_length, current_depth, fail_on_newline);
-  } else {
+  } else if constexpr (is_other_type<T>) {
     return export_other(value, indent, last_line_length, current_depth, fail_on_newline);
+  } else {
+    return export_asterisk(value, indent, last_line_length, current_depth, fail_on_newline);
   }
 }
 
