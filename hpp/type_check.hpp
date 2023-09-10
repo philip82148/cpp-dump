@@ -100,14 +100,6 @@ template <typename T>
 using remove_pointer = decltype(_remove_pointer<_remove_cref<T>>(0));
 
 template <typename>
-inline constexpr bool _is_ref = false;
-template <typename... Args>
-inline constexpr bool _is_ref<std::reference_wrapper<Args...>> = true;
-
-template <typename T>
-inline constexpr bool is_ref = _is_ref<_remove_cref<T>>;
-
-template <typename>
 inline constexpr bool _is_optional = false;
 template <typename... Args>
 inline constexpr bool _is_optional<std::optional<Args...>> = true;
@@ -183,14 +175,6 @@ template <typename T>
 inline constexpr bool is_xixo = _is_xixo<_remove_cref<T>>;
 
 template <typename>
-inline constexpr bool _is_bitset = false;
-template <size_t N>
-inline constexpr bool _is_bitset<std::bitset<N>> = true;
-
-template <typename T>
-inline constexpr bool is_bitset = _is_bitset<_remove_cref<T>>;
-
-template <typename>
 inline constexpr bool _is_exportable_object = false;
 
 template <typename T>
@@ -202,15 +186,25 @@ inline constexpr bool _is_exportable_enum = false;
 template <typename T>
 inline constexpr bool is_exportable_enum = _is_exportable_enum<_remove_cref<T>>;
 
+template <typename>
+inline constexpr bool _is_other_type = false;
+template <typename... Args>
+inline constexpr bool _is_other_type<std::reference_wrapper<Args...>> = true;
+template <size_t N>
+inline constexpr bool _is_other_type<std::bitset<N>> = true;
+
+template <typename T>
+inline constexpr bool is_other_type = _is_other_type<_remove_cref<T>>;
+
 template <typename T>
 inline constexpr bool is_iterable_like = is_container<T> || is_map<T> || is_set<T> ||
                                          is_tuple_like<T> || is_xixo<T> || is_exportable_object<T>;
 
 template <typename T>
 inline constexpr bool is_exportable =
-    is_arithmetic<T> || is_string<T> || is_pointer<T> || is_ref<T> || is_optional<T> || is_map<T> ||
-    is_set<T> || is_container<T> || is_tuple_like<T> || is_xixo<T> || is_bitset<T> ||
-    is_exportable_object<T> || is_exportable_enum<T>;
+    is_arithmetic<T> || is_string<T> || is_map<T> || is_set<T> || is_container<T> ||
+    is_tuple_like<T> || is_xixo<T> || is_pointer<T> || is_optional<T> || is_exportable_object<T> ||
+    is_exportable_enum<T> || is_other_type<T>;
 
 }  // namespace _detail
 

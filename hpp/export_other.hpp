@@ -15,18 +15,21 @@
 
 namespace cpp_dump {
 
-extern inline size_t max_line_width;
-
-extern inline size_t max_depth;
-
 namespace _detail {
 
 template <typename T>
 std::string export_var(const T &, const std::string &, size_t, size_t, bool);
 
-template <typename T>
-inline auto export_bitset(const T &bitset, const std::string &, size_t, size_t, bool)
-    -> std::enable_if_t<is_bitset<T>, std::string> {
+template <typename... Args>
+inline std::string export_other(const std::reference_wrapper<Args...> &ref,
+                                const std::string &indent, size_t last_line_length,
+                                size_t current_depth, bool fail_on_newline) {
+  return export_var(ref.get(), indent, last_line_length, current_depth, fail_on_newline);
+}
+
+template <size_t N>
+inline std::string export_other(const std::bitset<N> &bitset, const std::string &, size_t, size_t,
+                                bool) {
   std::string bitset_str = bitset.to_string();
 
   std::string output;

@@ -16,8 +16,6 @@
 
 namespace cpp_dump {
 
-extern inline size_t max_depth;
-
 namespace _detail {
 
 template <typename T>
@@ -42,8 +40,6 @@ inline auto export_pointer(const T &pointer, const std::string &indent, size_t l
 
     return ss.str();
   } else {
-    if (current_depth >= max_depth) return "*...";
-
     return "*" + export_var(*pointer, indent, last_line_length + 1, current_depth, fail_on_newline);
   }
 }
