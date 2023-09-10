@@ -8,6 +8,7 @@
 #pragma once
 
 #include <bitset>
+#include <complex>
 #include <functional>
 #include <map>
 #include <memory>
@@ -21,6 +22,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <utility>
+#include <variant>
 
 namespace cpp_dump {
 
@@ -192,6 +194,10 @@ template <typename... Args>
 inline constexpr bool _is_other_type<std::reference_wrapper<Args...>> = true;
 template <size_t N>
 inline constexpr bool _is_other_type<std::bitset<N>> = true;
+template <typename... Args>
+inline constexpr bool _is_other_type<std::complex<Args...>> = true;
+template <typename... Args>
+inline constexpr bool _is_other_type<std::variant<Args...>> = true;
 
 template <typename T>
 inline constexpr bool is_other_type = _is_other_type<_remove_cref<T>>;
