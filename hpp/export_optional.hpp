@@ -32,7 +32,7 @@ inline auto export_optional(const T &optional, const std::string &indent, size_t
   if (!optional) return "std::nullopt";
 
   return "?" +
-         export_var(optional.value(), indent, last_line_length, current_depth, fail_on_newline);
+         export_var(optional.value(), indent, last_line_length + 1, current_depth, fail_on_newline);
 }
 
 }  // namespace _detail

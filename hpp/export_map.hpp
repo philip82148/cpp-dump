@@ -44,7 +44,7 @@ inline auto export_map(const T &map, const std::string &indent, size_t last_line
 
   // iterator for values of multimap
   struct value_iterator {
-    T::const_iterator it;
+    typename T::const_iterator it;
     auto operator*() { return it->second; }
     bool operator!=(const value_iterator &to) { return it != to.it; }
     value_iterator &operator++() {
