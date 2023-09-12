@@ -1,9 +1,12 @@
 name: Dump Test
 
-on: push
+on:
+  push:
+  pull_request:
 
 jobs:
-  test:
+  dump-test:
+    name: Dump Test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
