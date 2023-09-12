@@ -204,14 +204,14 @@ template <typename T>
 inline constexpr bool is_exportable_enum = _is_exportable_enum<_remove_cref<T>>;
 
 template <typename T>
-inline constexpr bool _is_exportable_but_not_iterator =
+inline constexpr bool _is_exportable_but_not_asterisk =
     is_arithmetic<T> || is_string<T> || is_map<T> || is_set<T> || is_container<T>
     || is_tuple_like<T> || is_xixo<T> || is_pointer<T> || is_optional<T> || is_other_type<T>
     || is_exportable_object<T> || is_exportable_enum<T>;
 
 template <typename T>
 auto _is_asterisk(int) -> std::enable_if_t<
-    !_is_exportable_but_not_iterator<T>,
+    !_is_exportable_but_not_asterisk<T>,
     decltype(*std::declval<const T>(), std::true_type())>;
 template <typename>
 std::false_type _is_asterisk(long);
@@ -225,7 +225,7 @@ inline constexpr bool is_iterable_like =
     || is_exportable_object<T>;
 
 template <typename T>
-inline constexpr bool is_exportable = _is_exportable_but_not_iterator<T> || is_asterisk<T>;
+inline constexpr bool is_exportable = _is_exportable_but_not_asterisk<T> || is_asterisk<T>;
 
 }  // namespace _detail
 
