@@ -15,12 +15,19 @@
 #include "hpp/export_var.hpp"
 #include "hpp/utility.hpp"
 
-#define CPP_DUMP_EXPAND_FOR_CPP_DUMP_(expr) #expr, expr
-#define cpp_dump(...)                                                                              \
-  cpp_dump::_detail::cpp_dump_(CPP_DUMP_EXPAND_VA_(CPP_DUMP_EXPAND_FOR_CPP_DUMP_, __VA_ARGS__))
+#define _p_CPP_DUMP_EXPAND_FOR_CPP_DUMP(expr) #expr, expr
 
-#define CPP_DUMP_SET_OPTIONS(max_line_width, max_depth)                                            \
-  cpp_dump::set_options(max_line_width, max_depth)
+/**
+ * Output string representation of expression(s) and the result(s) to std::clog.
+ * This function uses cpp_dump::export_var() internally.
+ */
+#define cpp_dump(...)                                                                              \
+  cpp_dump::_detail::cpp_dump_(_p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_CPP_DUMP, __VA_ARGS__))
+
+/**
+ * Set a value to a variable in cpp_dump namespace.
+ */
+#define CPP_DUMP_SET_OPTION(variable, value) cpp_dump::variable = value
 
 namespace cpp_dump {
 
@@ -231,15 +238,6 @@ rollback:
   }
 
   std::clog << output << std::endl;
-}
-
-/**
- * Set values to cpp_dump::max_line_width and cpp_dump::max_depth.
- * Instead of using this function, values can be assigned directly to the variables.
- */
-inline void set_options(size_t max_line_width, size_t max_depth) {
-  cpp_dump::max_line_width = max_line_width;
-  cpp_dump::max_depth      = max_depth;
 }
 
 }  // namespace cpp_dump

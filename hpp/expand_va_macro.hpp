@@ -7,24 +7,39 @@
 
 #pragma once
 
-#define CPP_DUMP_EXPAND_VA1_(func, arg1)       func(arg1)
-#define CPP_DUMP_EXPAND_VA2_(func, arg1, ...)  func(arg1), CPP_DUMP_EXPAND_VA1_(func, __VA_ARGS__)
-#define CPP_DUMP_EXPAND_VA3_(func, arg1, ...)  func(arg1), CPP_DUMP_EXPAND_VA2_(func, __VA_ARGS__)
-#define CPP_DUMP_EXPAND_VA4_(func, arg1, ...)  func(arg1), CPP_DUMP_EXPAND_VA3_(func, __VA_ARGS__)
-#define CPP_DUMP_EXPAND_VA5_(func, arg1, ...)  func(arg1), CPP_DUMP_EXPAND_VA4_(func, __VA_ARGS__)
-#define CPP_DUMP_EXPAND_VA6_(func, arg1, ...)  func(arg1), CPP_DUMP_EXPAND_VA5_(func, __VA_ARGS__)
-#define CPP_DUMP_EXPAND_VA7_(func, arg1, ...)  func(arg1), CPP_DUMP_EXPAND_VA6_(func, __VA_ARGS__)
-#define CPP_DUMP_EXPAND_VA8_(func, arg1, ...)  func(arg1), CPP_DUMP_EXPAND_VA7_(func, __VA_ARGS__)
-#define CPP_DUMP_EXPAND_VA9_(func, arg1, ...)  func(arg1), CPP_DUMP_EXPAND_VA8_(func, __VA_ARGS__)
-#define CPP_DUMP_EXPAND_VA10_(func, arg1, ...) func(arg1), CPP_DUMP_EXPAND_VA9_(func, __VA_ARGS__)
-#define CPP_DUMP_EXPAND_VA11_(func, arg1, ...) func(arg1), CPP_DUMP_EXPAND_VA10_(func, __VA_ARGS__)
-#define CPP_DUMP_EXPAND_VA12_(func, arg1, ...) func(arg1), CPP_DUMP_EXPAND_VA11_(func, __VA_ARGS__)
-#define CPP_DUMP_EXPAND_VA13_(func, arg1, ...) func(arg1), CPP_DUMP_EXPAND_VA12_(func, __VA_ARGS__)
-#define CPP_DUMP_EXPAND_VA14_(func, arg1, ...) func(arg1), CPP_DUMP_EXPAND_VA13_(func, __VA_ARGS__)
-#define CPP_DUMP_EXPAND_VA15_(func, arg1, ...) func(arg1), CPP_DUMP_EXPAND_VA14_(func, __VA_ARGS__)
-#define CPP_DUMP_EXPAND_VA16_(func, arg1, ...) func(arg1), CPP_DUMP_EXPAND_VA15_(func, __VA_ARGS__)
+#define _p_CPP_DUMP_EXPAND_VA1(func, arg1) func(arg1)
+#define _p_CPP_DUMP_EXPAND_VA2(func, arg1, ...)                                                    \
+  func(arg1), _p_CPP_DUMP_EXPAND_VA1(func, __VA_ARGS__)
+#define _p_CPP_DUMP_EXPAND_VA3(func, arg1, ...)                                                    \
+  func(arg1), _p_CPP_DUMP_EXPAND_VA2(func, __VA_ARGS__)
+#define _p_CPP_DUMP_EXPAND_VA4(func, arg1, ...)                                                    \
+  func(arg1), _p_CPP_DUMP_EXPAND_VA3(func, __VA_ARGS__)
+#define _p_CPP_DUMP_EXPAND_VA5(func, arg1, ...)                                                    \
+  func(arg1), _p_CPP_DUMP_EXPAND_VA4(func, __VA_ARGS__)
+#define _p_CPP_DUMP_EXPAND_VA6(func, arg1, ...)                                                    \
+  func(arg1), _p_CPP_DUMP_EXPAND_VA5(func, __VA_ARGS__)
+#define _p_CPP_DUMP_EXPAND_VA7(func, arg1, ...)                                                    \
+  func(arg1), _p_CPP_DUMP_EXPAND_VA6(func, __VA_ARGS__)
+#define _p_CPP_DUMP_EXPAND_VA8(func, arg1, ...)                                                    \
+  func(arg1), _p_CPP_DUMP_EXPAND_VA7(func, __VA_ARGS__)
+#define _p_CPP_DUMP_EXPAND_VA9(func, arg1, ...)                                                    \
+  func(arg1), _p_CPP_DUMP_EXPAND_VA8(func, __VA_ARGS__)
+#define _p_CPP_DUMP_EXPAND_VA10(func, arg1, ...)                                                   \
+  func(arg1), _p_CPP_DUMP_EXPAND_VA9(func, __VA_ARGS__)
+#define _p_CPP_DUMP_EXPAND_VA11(func, arg1, ...)                                                   \
+  func(arg1), _p_CPP_DUMP_EXPAND_VA10(func, __VA_ARGS__)
+#define _p_CPP_DUMP_EXPAND_VA12(func, arg1, ...)                                                   \
+  func(arg1), _p_CPP_DUMP_EXPAND_VA11(func, __VA_ARGS__)
+#define _p_CPP_DUMP_EXPAND_VA13(func, arg1, ...)                                                   \
+  func(arg1), _p_CPP_DUMP_EXPAND_VA12(func, __VA_ARGS__)
+#define _p_CPP_DUMP_EXPAND_VA14(func, arg1, ...)                                                   \
+  func(arg1), _p_CPP_DUMP_EXPAND_VA13(func, __VA_ARGS__)
+#define _p_CPP_DUMP_EXPAND_VA15(func, arg1, ...)                                                   \
+  func(arg1), _p_CPP_DUMP_EXPAND_VA14(func, __VA_ARGS__)
+#define _p_CPP_DUMP_EXPAND_VA16(func, arg1, ...)                                                   \
+  func(arg1), _p_CPP_DUMP_EXPAND_VA15(func, __VA_ARGS__)
 
-#define CPP_DUMP_VA_SIZE_AUX_(                                                                     \
+#define _p_CPP_DUMP_VA_SIZE_AUX(                                                                   \
     arg1,                                                                                          \
     arg2,                                                                                          \
     arg3,                                                                                          \
@@ -45,12 +60,12 @@
     ...                                                                                            \
 )                                                                                                  \
   size
-#define CPP_DUMP_VA_SIZE_(...)                                                                     \
-  CPP_DUMP_VA_SIZE_AUX_(__VA_ARGS__, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1)
+#define _p_CPP_DUMP_VA_SIZE(...)                                                                   \
+  _p_CPP_DUMP_VA_SIZE_AUX(__VA_ARGS__, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1)
 
-#define CPP_DUMP_GET_EXPAND_VA_MACRO_(size) CPP_DUMP_EXPAND_VA##size##_
-#define CPP_DUMP_EXPAND_VA_AUX_(func, size, ...)                                                   \
-  CPP_DUMP_GET_EXPAND_VA_MACRO_(size)(func, __VA_ARGS__)
+#define _p_CPP_DUMP_GET_EXPAND_VA_MACRO(size) _p_CPP_DUMP_EXPAND_VA##size
+#define _p_CPP_DUMP_EXPAND_VA_AUX(func, size, ...)                                                 \
+  _p_CPP_DUMP_GET_EXPAND_VA_MACRO(size)(func, __VA_ARGS__)
 
-#define CPP_DUMP_EXPAND_VA_(func, ...)                                                             \
-  CPP_DUMP_EXPAND_VA_AUX_(func, CPP_DUMP_VA_SIZE_(__VA_ARGS__), __VA_ARGS__)
+#define _p_CPP_DUMP_EXPAND_VA(func, ...)                                                           \
+  _p_CPP_DUMP_EXPAND_VA_AUX(func, _p_CPP_DUMP_VA_SIZE(__VA_ARGS__), __VA_ARGS__)

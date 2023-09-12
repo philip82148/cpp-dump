@@ -14,9 +14,13 @@
 #include "./type_check.hpp"
 #include "./utility.hpp"
 
-#define CPP_DUMP_EXPAND_FOR_EXPORT_ENUM_(member)                                                   \
+#define _p_CPP_DUMP_EXPAND_FOR_EXPORT_ENUM(member)                                                 \
   { member, #member }
-#define CPP_DUMP_DEFINE_EXPORT_ENUM(type, ...)                                                     \
+
+/**
+ * Make export_var() support enum TYPE.
+ */
+#define CPP_DUMP_DEFINE_EXPORT_ENUM(TYPE, ...)                                                     \
   namespace cpp_dump {                                                                             \
                                                                                                    \
   extern inline size_t max_line_width;                                                             \
@@ -26,18 +30,18 @@
   namespace _detail {                                                                              \
                                                                                                    \
   template <>                                                                                      \
-  inline constexpr bool _is_exportable_enum<type> = true;                                          \
+  inline constexpr bool _is_exportable_enum<TYPE> = true;                                          \
                                                                                                    \
   template <typename T>                                                                            \
   std::string export_var(const T &, const std::string &, size_t, size_t, bool);                    \
                                                                                                    \
   template <>                                                                                      \
   inline std::string export_enum(                                                                  \
-      const type &enum_const, const std::string &, size_t, size_t, bool                            \
+      const TYPE &enum_const, const std::string &, size_t, size_t, bool                            \
   ) {                                                                                              \
-    std::map<type, std::string> enum_to_string{                                                    \
-        CPP_DUMP_EXPAND_VA_(CPP_DUMP_EXPAND_FOR_EXPORT_ENUM_, __VA_ARGS__)};                       \
-    return enum_to_string.count(enum_const) ? enum_to_string[enum_const] : #type "::?";            \
+    std::map<TYPE, std::string> enum_to_string{                                                    \
+        _p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_EXPORT_ENUM, __VA_ARGS__)};                   \
+    return enum_to_string.count(enum_const) ? enum_to_string[enum_const] : #TYPE "::?";            \
   }                                                                                                \
                                                                                                    \
   } /* namespace _detail */                                                                        \
