@@ -22,16 +22,24 @@ template <typename T>
 std::string export_var(const T &, const std::string &, size_t, size_t, bool);
 
 template <typename... Args>
-inline std::string export_pointer(const std::weak_ptr<Args...> &pointer, const std::string &indent,
-                                  size_t last_line_length, size_t current_depth,
-                                  bool fail_on_newline) {
+inline std::string export_pointer(
+    const std::weak_ptr<Args...> &pointer,
+    const std::string &indent,
+    size_t last_line_length,
+    size_t current_depth,
+    bool fail_on_newline
+) {
   return export_var(pointer.lock(), indent, last_line_length, current_depth, fail_on_newline);
 }
 
 template <typename T>
-inline auto export_pointer(const T &pointer, const std::string &indent, size_t last_line_length,
-                           size_t current_depth, bool fail_on_newline)
-    -> std::enable_if_t<is_pointer<T>, std::string> {
+inline auto export_pointer(
+    const T &pointer,
+    const std::string &indent,
+    size_t last_line_length,
+    size_t current_depth,
+    bool fail_on_newline
+) -> std::enable_if_t<is_pointer<T>, std::string> {
   if (pointer == nullptr) return "nullptr";
 
   if constexpr (is_null_pointer<T> || !is_exportable<remove_pointer<T>>) {

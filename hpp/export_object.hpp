@@ -30,13 +30,17 @@
   std::string export_var(const T &, const std::string &, size_t, size_t, bool);                    \
                                                                                                    \
   template <>                                                                                      \
-  inline std::string export_object(const type &value, const std::string &indent,                   \
-                                   size_t last_line_length, size_t current_depth,                  \
-                                   bool fail_on_newline) {                                         \
+  inline std::string export_object(                                                                \
+      const type &value,                                                                           \
+      const std::string &indent,                                                                   \
+      size_t last_line_length,                                                                     \
+      size_t current_depth,                                                                        \
+      bool fail_on_newline                                                                         \
+  ) {                                                                                              \
     if (current_depth >= max_depth) return #type "{ ... }";                                        \
                                                                                                    \
     std::string new_indent = indent + "  ";                                                        \
-    size_t next_depth = current_depth + 1;                                                         \
+    size_t next_depth      = current_depth + 1;                                                    \
                                                                                                    \
     bool shift_indent = false;                                                                     \
                                                                                                    \
@@ -61,7 +65,7 @@
     };                                                                                             \
                                                                                                    \
   rollback:                                                                                        \
-    output = #type "{ ";                                                                           \
+    output   = #type "{ ";                                                                         \
     is_first = true;                                                                               \
                                                                                                    \
     CPP_DUMP_EXPAND_VA_(CPP_DUMP_EXPAND_FOR_EXPORT_OBJECT_, __VA_ARGS__);                          \

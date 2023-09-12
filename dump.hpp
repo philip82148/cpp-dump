@@ -16,10 +16,10 @@
 #include "hpp/utility.hpp"
 
 #define CPP_DUMP_EXPAND_FOR_CPP_DUMP_(expr) #expr, expr
-#define cpp_dump(...) \
+#define cpp_dump(...)                                                                              \
   cpp_dump::_detail::cpp_dump_(CPP_DUMP_EXPAND_VA_(CPP_DUMP_EXPAND_FOR_CPP_DUMP_, __VA_ARGS__))
 
-#define CPP_DUMP_SET_OPTIONS(max_line_width, max_depth) \
+#define CPP_DUMP_SET_OPTIONS(max_line_width, max_depth)                                            \
   cpp_dump::set_options(max_line_width, max_depth)
 
 namespace cpp_dump {
@@ -37,8 +37,9 @@ inline size_t max_depth = 5;
 namespace _detail {
 
 template <typename T>
-bool _dump_one(std::string &output, bool no_newline_in_value_string, const std::string &expr,
-               const T &value) {
+bool _dump_one(
+    std::string &output, bool no_newline_in_value_string, const std::string &expr, const T &value
+) {
   const std::string indent7 = "       ";
   const std::string indent9 = "         ";
 
@@ -60,8 +61,8 @@ bool _dump_one(std::string &output, bool no_newline_in_value_string, const std::
   };
 
   auto make_prefix_and_value_string = [&, no_newline_in_value_string](
-                                          const std::string &prefix,
-                                          const std::string &indent) -> prefix_and_value_string {
+                                          const std::string &prefix, const std::string &indent
+                                      ) -> prefix_and_value_string {
     auto last_line_length = get_last_line_length(output + prefix);
 
     std::string value_string =
@@ -176,20 +177,25 @@ bool _dump_one(std::string &output, bool no_newline_in_value_string, const std::
 inline bool _dump_recursive_with_expr(std::string &, bool) { return true; }
 
 template <typename T, typename... Args>
-inline bool _dump_recursive_with_expr(std::string &output, bool no_newline_in_value_string,
-                                      const std::string &expr, const T &value,
-                                      const Args &...args) {
-  return _dump_one(output, no_newline_in_value_string, expr, value) &&
-         _dump_recursive_with_expr(output, no_newline_in_value_string, args...);
+inline bool _dump_recursive_with_expr(
+    std::string &output,
+    bool no_newline_in_value_string,
+    const std::string &expr,
+    const T &value,
+    const Args &...args
+) {
+  return _dump_one(output, no_newline_in_value_string, expr, value)
+         && _dump_recursive_with_expr(output, no_newline_in_value_string, args...);
 }
 
 inline bool _dump_recursive_without_expr(std::string &, bool) { return true; }
 
 template <typename T, typename... Args>
-inline bool _dump_recursive_without_expr(std::string &output, bool no_newline_in_value_string,
-                                         const T &value, const Args &...args) {
-  return _dump_one(output, no_newline_in_value_string, "", value) &&
-         _dump_recursive_without_expr(output, no_newline_in_value_string, args...);
+inline bool _dump_recursive_without_expr(
+    std::string &output, bool no_newline_in_value_string, const T &value, const Args &...args
+) {
+  return _dump_one(output, no_newline_in_value_string, "", value)
+         && _dump_recursive_without_expr(output, no_newline_in_value_string, args...);
 }
 
 // function called by cpp_dump() macro
@@ -233,7 +239,7 @@ rollback:
  */
 inline void set_options(size_t max_line_width, size_t max_depth) {
   cpp_dump::max_line_width = max_line_width;
-  cpp_dump::max_depth = max_depth;
+  cpp_dump::max_depth      = max_depth;
 }
 
 }  // namespace cpp_dump

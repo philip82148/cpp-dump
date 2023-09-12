@@ -25,9 +25,13 @@ template <typename T>
 std::string export_var(const T &, const std::string &, size_t, size_t, bool);
 
 template <typename T>
-inline auto export_container(const T &container, const std::string &indent, size_t last_line_length,
-                             size_t current_depth, bool fail_on_newline)
-    -> std::enable_if_t<is_container<T>, std::string> {
+inline auto export_container(
+    const T &container,
+    const std::string &indent,
+    size_t last_line_length,
+    size_t current_depth,
+    bool fail_on_newline
+) -> std::enable_if_t<is_container<T>, std::string> {
   if (is_empty_iterable(container)) return "[ ]";
 
   if (current_depth >= max_depth) return "[ ... ]";
@@ -39,11 +43,11 @@ inline auto export_container(const T &container, const std::string &indent, size
   if (shift_indent && fail_on_newline) return "\n";
 
   std::string new_indent = indent + "  ";
-  size_t next_depth = current_depth + 1;
+  size_t next_depth      = current_depth + 1;
 
 rollback:
   std::string output = "[ ";
-  bool is_first = true;
+  bool is_first      = true;
   for (const auto &elem : container) {
     if (is_first) {
       is_first = false;

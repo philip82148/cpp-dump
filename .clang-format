@@ -1,0 +1,21 @@
+---
+BasedOnStyle: Google
+ColumnLimit: 100
+
+AlignAfterOpenBracket: BlockIndent
+
+BinPackArguments: false
+AllowAllArgumentsOnNextLine: true
+
+BinPackParameters: false
+AllowAllParametersOfDeclarationOnNextLine: true
+
+AlignConsecutiveAssignments:
+  Enabled: true
+  AlignCompound: true
+  PadOperators: true
+AlignConsecutiveMacros: true
+
+BreakBeforeBinaryOperators: NonAssignment
+
+AlignEscapedNewlines: Right

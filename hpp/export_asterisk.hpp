@@ -20,9 +20,13 @@ template <typename T>
 std::string export_var(const T &, const std::string &, size_t, size_t, bool);
 
 template <typename T>
-inline auto export_asterisk(const T &value, const std::string &indent, size_t last_line_length,
-                            size_t current_depth, bool fail_on_newline)
-    -> std::enable_if_t<is_asterisk<T>, std::string> {
+inline auto export_asterisk(
+    const T &value,
+    const std::string &indent,
+    size_t last_line_length,
+    size_t current_depth,
+    bool fail_on_newline
+) -> std::enable_if_t<is_asterisk<T>, std::string> {
   return "*" + export_var(*value, indent, last_line_length + 1, current_depth, fail_on_newline);
 }
 

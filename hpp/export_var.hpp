@@ -30,8 +30,13 @@ namespace cpp_dump {
 namespace _detail {
 
 template <typename T>
-std::string export_var(const T &value, const std::string &indent, size_t last_line_length,
-                       size_t current_depth, bool fail_on_newline) {
+std::string export_var(
+    const T &value,
+    const std::string &indent,
+    size_t last_line_length,
+    size_t current_depth,
+    bool fail_on_newline
+) {
   if constexpr (!is_exportable<T>) {
     return "Unsupported Type";
   } else if constexpr (is_exportable_object<T>) {
