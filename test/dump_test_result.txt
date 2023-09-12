@@ -1,0 +1,116 @@
+[dump] false => false, 0 => 0, 0.0 => 0.000000, '0' => '0', (const char *)"0" => "0", string{"0"} => "0", string_view{"0"} => "0"
+[dump] true => true, 3.14 => 3.140000, 159265 => 159265, "This is a test string" => "This is a test string"
+[dump] "This contains newline\nhere." => 
+`This contains newline
+here.`,
+       R"(This contains ".)" => `This contains ".`,
+       R"(This contains `.)" => "This contains `."
+[dump] "\n\n\n\n" => 
+`
+
+
+
+`
+[dump] (vector<int>{3, 1, 4}) => [ 3, 1, 4 ]
+[dump] (vector<vector<int>>{{3}, {1, 4}, {1, 5, 9}}) => [ 
+         [ 3 ], 
+         [ 1, 4 ], 
+         [ 1, 5, 9 ]
+       ]
+[dump] (vector<vector<vector<int>>>{{}, {{2, 6}}, {{5}, {3}, {5}}}) => [ 
+         [ ], 
+         [ 
+           [ 2, 6 ]
+         ], 
+         [ 
+           [ 5 ], 
+           [ 3 ], 
+           [ 5 ]
+         ]
+       ]
+[dump] (vector<int>{3, 1, 4}) => [ 3, 1, 4 ],
+       vec => [ 
+         [ 2, 4, 6, 7, 8, 9, 0, 1, 1, 1, 7, 8, 9, 0, 1, 1, 1, 1, 1, 1, 1 ]
+       ],
+       (vector<vector<vector<int>>>{{{2, 4, 6, 7, 8, 9, 0, 1, 1, 1, 3, 45}}}) => [ 
+         [ 
+           [ 2, 4, 6, 7, 8, 9, 0, 1, 1, 1, 3, 45 ]
+         ]
+       ]
+[dump] (vector<int>{3, 1, 4}) => [ 3, 1, 4 ],
+       (vector<vector<vector<int>>>{{{2, 4, 6, 7, 8, 9, 0, 1, 1, 1}}}) => [ 
+         [ 
+           [ 2, 4, 6, 7, 8, 9, 0, 1, 1, 1 ]
+         ]
+       ]
+[dump] (vector<int>{}) => [ ], (vector<int>{}) => [ ], 
+       (vector<int>{2, 4, 4, 5, 6, 4, 5, 2, 4, 5, 3, 5, 6, 7, 5, 6, 6, 6, 7, 7, 8, 1}) => [ 2, 4, 4, 5, 6, 4, 5, 2, 4, 5, 3, 5, 6, 7, 5, 6, 6, 6, 7, 7, 8, 1 ]
+[dump] (vector{make_pair(1, 9), make_pair(3, 4), make_pair(5, 7)}) => [ 
+         ( 1, 9 ), 
+         ( 3, 4 ), 
+         ( 5, 7 )
+       ]
+[dump] i => [ 3, 1, 4, 1, 5, 9, 2, 6, 5, 3 ]
+[dump] con_vec => [ 
+         [ 2, 4, 6, 7, 8, 9, 0, 1, 1, 1, 7, 8, 9, 0, 1, 1, 1, 1, 1, 1, 1 ]
+       ]
+[dump] [ 
+         [ 2, 4, 6, 7, 8, 9, 0, 1, 1, 1, 7, 8, 9, 0, 1, 1, 1, 1, 1, 1, 1 ]
+       ]
+[dump] make_pair(8, 'a') => ( 8, 'a' )
+[dump] make_tuple( 9, "This is another string.", "This is another string.", "This is another string.", "This is another string.", 7.9 )
+         => ( 9, "This is another string.", "This is another string.", "This is another string.", "This is another string.", 7.900000 )
+[dump] (map<double, string>{{3.2, "This is a pen."}, {3.8, "I have an apple."}}) => { 3.200000: "This is a pen.", 3.800000: "I have an apple." }
+[dump] (unordered_map<int, int>{{4, 6}, {2, 6}, {4, 3}}) => { 2: 6, 4: 6 }
+[dump] multimap1 => { 
+         'a' (2): [ 10, 40 ], 
+         'b' (1): [ 20 ], 
+         'c' (1): [ 30 ]
+       }
+[dump] unordered_multimap1 => { 
+         'b' (1): [ 20 ], 
+         'a' (2): [ 40, 10 ], 
+         'c' (1): [ 30 ]
+       }
+[dump] (set{"A", "p", "p", "l", "e", " ", "P", "e", "n"}) => { "A", "p", "l", "e", " ", "P", "n" }
+[dump] (unordered_set{3, 1, 4, 1, 5}) => { 5, 4, 1, 3 }
+[dump] multiset1 => { 1 (2), 3 (1), 4 (1) }
+[dump] unordered_multiset1 => { 4 (1), 1 (2), 3 (1) }
+[dump] queue1 => std::queue{ front()= 1, size()= 5 }
+[dump] priority_queue1 => std::priority_queue{ top()= '5', size()= 5 }
+[dump] stack1 => std::stack{ top()= "5", size()= 5 }
+[dump] b => Unsupported Type
+[dump] int_p => *65
+[dump] *int_p => 65
+[dump] void_p => 0x7ffd06586204, char_p => "A"
+[dump] nullptr => nullptr
+[dump] shared_ptr1 => *42, weak_ptr1 => *42, unique_ptr1 => *42, c => *42
+[dump] shared_ptr1 => *3, weak_ptr1 => nullptr, unique_ptr1 => *42
+[dump] object_a => decltype(object_a){ a= 314159265, b= 1, get_a()= 314159265 }
+[dump] object_b => class_b{ 
+         a= 358979, 
+         b= 1, 
+         s= "This object has a pointer to itself.", 
+         pointer= *class_b{ 
+           a= 358979, 
+           b= 1, 
+           s= "This object has a pointer to itself.", 
+           pointer= *class_b{ 
+             a= 358979, 
+             b= 1, 
+             s= "This object has a pointer to itself.", 
+             pointer= *class_b{ a= 358979, b= 1, s= "This object has a pointer to itself.", pointer= *class_b{ ... } }
+           }
+         }
+       }
+[dump] int_p => *65, s => enum1::s, k => enum1::k, l => enum1::?
+[dump] bitset1 => 0b 00 1100 1010
+[dump] optional => ?1
+[dump] optional => std::nullopt
+[dump] nullopt => std::nullopt
+[dump] variant1 => |""
+[dump] variant1 => |0
+[dump] complex1 => 0.000000 - 1.000000i ( abs= 1.000000, arg/pi= -0.500000 )
+[dump] complex2 => 10.000000 + 1.000000i ( abs= 10.049876, arg/pi= 0.031726 )
+[dump] vec.begin() => *[ 2, 4, 6, 7, 8, 9, 0, 1, 1, 1, 7, 8, 9, 0, 1, 1, 1, 1, 1, 1, 1 ]
+[dump] unsupported_enum => Unsupported Type
