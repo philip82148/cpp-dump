@@ -16,6 +16,8 @@
 #include <variant>
 #include <vector>
 
+#define rep(i, n) for (int i = 0; i < (int)(n); i++)
+
 using namespace std;
 using cpp_dump::dump;
 
@@ -48,6 +50,7 @@ int main() {
 
   CPP_DUMP_SET_OPTION(max_line_width, 160);
   CPP_DUMP_SET_OPTION(max_depth, 5);
+  CPP_DUMP_SET_OPTION(max_iteration_count, 100);
 
   // basic
   cpp_dump(false, 0, 0.0, '0', (const char *)"0", string{"0"}, string_view{"0"});
@@ -59,24 +62,26 @@ int main() {
   cpp_dump((vector<int>{3, 1, 4}));
   cpp_dump((vector<vector<int>>{{3}, {1, 4}, {1, 5, 9}}));
   cpp_dump((vector<vector<vector<int>>>{{}, {{2, 6}}, {{5}, {3}, {5}}}));
-  auto vec = (vector<vector<int>>{{2, 4, 6, 7, 8, 9, 0, 1, 1, 1, 7, 8, 9, 0, 1, 1, 1, 1, 1, 1, 1}});
+  const auto vec =
+      (vector<vector<int>>{{2, 4, 6, 7, 8, 9, 0, 1, 1, 1, 7, 8, 9, 0, 1, 1, 1, 1, 1, 1, 1}});
   cpp_dump(
       (vector<int>{3, 1, 4}),
       vec,
       (vector<vector<vector<int>>>{{{2, 4, 6, 7, 8, 9, 0, 1, 1, 1, 3, 45}}})
   );
-  cpp_dump((vector<int>{3, 1, 4}), (vector<vector<vector<int>>>{{{2, 4, 6, 7, 8, 9, 0, 1, 1, 1}}}));
-  cpp_dump((vector<int>{}), (vector<int>{}), (vector<int>{2, 4, 4, 5, 6, 4, 5, 2, 4, 5, 3,
-                                                          5, 6, 7, 5, 6, 6, 6, 7, 7, 8, 1}));
+  cpp_dump(
+      (vector<int>{2, 3}), (vector<int>{3, 4}), (vector<int>{2, 4, 4, 5, 6, 4, 5, 2, 4, 5, 3,
+                                                             5, 6, 7, 5, 6, 6, 6, 7, 7, 8, 1})
+  );
+  cpp_dump(
+      (vector<int>{2, 3}), (vector<int>{3, 4}), (vector<vector<int>>{{2}, {4}, {4}, {5}, {6}})
+  );
   cpp_dump((vector{make_pair(1, 9), make_pair(3, 4), make_pair(5, 7)}));
-  int i[10]{3, 1, 4, 1, 5, 9, 2, 6, 5, 3};
-  cpp_dump(i);
+  int c_style_array[10]{3, 1, 4, 1, 5, 9, 2, 6, 5, 3};
+  cpp_dump(c_style_array);
 
-  const auto con_vec =
-      (vector<vector<int>>{{2, 4, 6, 7, 8, 9, 0, 1, 1, 1, 7, 8, 9, 0, 1, 1, 1, 1, 1, 1, 1}});
-
-  cpp_dump(con_vec);
-  dump(con_vec);
+  cpp_dump(vec);
+  dump(vec);
 
   // pair&tuple
   cpp_dump(make_pair(8, 'a'));
@@ -196,9 +201,23 @@ int main() {
   // iterator
   cpp_dump(vec.begin());
 
+  // unsupported type
   enum class unsupported { k, l } unsupported_enum = unsupported::k;
   cpp_dump(unsupported_enum);
 
-  // stream.close();
+  // max_iteration_count
+  array<int, 50> array50;
+  map<int, int> map50;
+  set<int> set50;
+  rep(i, 50) {
+    array50[i] = i;
+    map50.emplace(i, i + 1);
+    set50.emplace(i);
+  }
+  CPP_DUMP_SET_OPTION(max_iteration_count, 10);
+  cpp_dump(array50, map50, set50);
+  CPP_DUMP_SET_OPTION(max_iteration_count, 40);
+  cpp_dump(array50, map50, set50);
+
   clog.rdbuf(clog_buf);
 }
