@@ -19,6 +19,8 @@ extern inline size_t max_line_width;
 
 extern inline size_t max_depth;
 
+extern inline size_t max_iteration_count;
+
 namespace _detail {
 
 template <typename T>
@@ -46,8 +48,9 @@ inline auto export_container(
   size_t next_depth      = current_depth + 1;
 
 rollback:
-  std::string output = "[ ";
-  bool is_first      = true;
+  std::string output     = "[ ";
+  bool is_first          = true;
+  size_t iteration_count = 0;
   for (const auto &elem : container) {
     if (is_first) {
       is_first = false;
@@ -56,9 +59,23 @@ rollback:
     }
 
     if (shift_indent) {
+      if (++iteration_count > max_iteration_count) {
+        output += "\n" + new_indent + "...";
+        break;
+      }
+
       output +=
           "\n" + new_indent + export_var(elem, new_indent, new_indent.length(), next_depth, false);
       continue;
+    }
+
+    if (++iteration_count > max_iteration_count) {
+      output += "...";
+
+      if (last_line_length + (output + " ]").length() <= max_line_width) break;
+
+      shift_indent = true;
+      goto rollback;
     }
 
     std::string elem_string =

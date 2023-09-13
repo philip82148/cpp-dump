@@ -41,6 +41,11 @@ inline size_t max_line_width = 160;
  */
 inline size_t max_depth = 5;
 
+/**
+ * Maximum number of times cpp_dump::export_var() iterates over an iterator.
+ */
+inline size_t max_iteration_count = 100;
+
 namespace _detail {
 
 template <typename T>

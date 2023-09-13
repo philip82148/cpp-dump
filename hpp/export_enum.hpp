@@ -23,17 +23,10 @@
 #define CPP_DUMP_DEFINE_EXPORT_ENUM(TYPE, ...)                                                     \
   namespace cpp_dump {                                                                             \
                                                                                                    \
-  extern inline size_t max_line_width;                                                             \
-                                                                                                   \
-  extern inline size_t max_depth;                                                                  \
-                                                                                                   \
   namespace _detail {                                                                              \
                                                                                                    \
   template <>                                                                                      \
   inline constexpr bool _is_exportable_enum<TYPE> = true;                                          \
-                                                                                                   \
-  template <typename T>                                                                            \
-  std::string export_var(const T &, const std::string &, size_t, size_t, bool);                    \
                                                                                                    \
   template <>                                                                                      \
   inline std::string export_enum(                                                                  \
