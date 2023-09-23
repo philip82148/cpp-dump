@@ -115,6 +115,7 @@ here.`,
 [dump] variant1 => |0
 [dump] complex1 => 0.000000 - 1.000000i ( abs= 1.000000, arg/pi= -0.500000 )
 [dump] complex2 => 10.000000 + 1.000000i ( abs= 10.049876, arg/pi= 0.031726 )
+[dump] logic_error1 => std::logic_error{ what()= "This is a test error." }, original_error1 => { what()= "This is an original error." }
 [dump] vec.begin() => *[ 2, 4, 6, 7, 8, 9, 0, 1, 1, 1, 7, 8, 9, 0, 1, 1, 1, 1, 1, 1, 1 ]
 [dump] unsupported_enum => Unsupported Type
 [dump] array50 => [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, ... ], map50 => { 0: 1, 1: 2, 2: 3, 3: 4, 4: 5, 5: 6, 6: 7, 7: 8, 8: 9, 9: 10, ... }, 

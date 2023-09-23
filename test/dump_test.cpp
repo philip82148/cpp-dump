@@ -2,6 +2,7 @@
 
 #include <bitset>
 #include <complex>
+#include <exception>
 #include <fstream>
 #include <iostream>
 #include <map>
@@ -9,6 +10,7 @@
 #include <queue>
 #include <set>
 #include <stack>
+#include <stdexcept>
 #include <string>
 #include <tuple>
 #include <unordered_map>
@@ -43,7 +45,7 @@ CPP_DUMP_DEFINE_EXPORT_OBJECT(decltype(object_a), a, b, get_a());
 CPP_DUMP_DEFINE_EXPORT_OBJECT(class_b, a, b, s, pointer);
 
 int main() {
-  ofstream stream{"./dump_test_result.txt"};
+  ofstream stream{"./dump_test.txt"};
 
   streambuf *clog_buf;
   clog_buf = clog.rdbuf(stream.rdbuf());
@@ -197,6 +199,12 @@ int main() {
   cpp_dump(complex1);
   complex complex2{10.0, 1.0};
   cpp_dump(complex2);
+
+  logic_error logic_error1("This is a test error.");
+  class original_error : public logic_error {
+    using logic_error::logic_error;
+  } original_error1("This is an original error.");
+  cpp_dump(logic_error1, original_error1);
 
   // iterator
   cpp_dump(vec.begin());
