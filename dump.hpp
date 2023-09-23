@@ -21,8 +21,10 @@
  * Output string representation of expression(s) and the result(s) to std::clog.
  * This function uses cpp_dump::export_var() internally.
  */
-#define cpp_dump(...)                                                                              \
-  cpp_dump::_detail::cpp_dump_(_p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_CPP_DUMP, __VA_ARGS__))
+#define CPP_DUMP(...)                                                                              \
+  cpp_dump::_detail::cpp_dump_macro(                                                               \
+      _p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_CPP_DUMP, __VA_ARGS__)                          \
+  )
 
 /**
  * Set a value to a variable in cpp_dump namespace.
@@ -43,8 +45,10 @@ inline size_t max_depth = 5;
 
 /**
  * Maximum number of times cpp_dump::export_var() iterates over an iterator.
+ * Note that in a single call, export_var() calls itself at most
+ * (max_iteration_count^max_depth-1)/(max_iteration_count-1)-1 times.
  */
-inline size_t max_iteration_count = 100;
+inline size_t max_iteration_count = 16;
 
 namespace _detail {
 
@@ -118,7 +122,7 @@ bool _dump_one(
     return false;
   }
 
-  // below for dump_recursive_with_expr(), which is for cpp_dump() (macro)
+  // below for dump_recursive_with_expr(), which is for CPP_DUMP() (macro)
 
   if (no_newline_in_value_string) {
     prefix_and_value_string pattern1a = make_prefix_and_value_string(expr + " => ", indent7);
@@ -210,9 +214,9 @@ inline bool _dump_recursive_without_expr(
          && _dump_recursive_without_expr(output, no_newline_in_value_string, args...);
 }
 
-// function called by cpp_dump() macro
+// function called by CPP_DUMP() macro
 template <typename... Args>
-void cpp_dump_(const Args &...args) {
+void cpp_dump_macro(const Args &...args) {
   bool no_newline_in_value_string = true;
 
 rollback:
