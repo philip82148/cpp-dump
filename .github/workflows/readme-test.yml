@@ -1,0 +1,15 @@
+name: Readme Test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  readme-test:
+    name: Readme Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Run Test
+        run: sh ./test/readme_test.sh
