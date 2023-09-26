@@ -14,6 +14,8 @@
 
 namespace cpp_dump {
 
+extern inline size_t max_depth;
+
 namespace _detail {
 
 template <typename T>
@@ -27,7 +29,11 @@ inline auto export_asterisk(
     size_t current_depth,
     bool fail_on_newline
 ) -> std::enable_if_t<is_asterisk<T>, std::string> {
-  return "*" + export_var(*value, indent, last_line_length + 1, current_depth, fail_on_newline);
+  if (current_depth >= max_depth) return "*...";
+
+  // If decltype(*value) == decltype(value), then the program enters an infinite loop.
+  // So increment depth.
+  return "*" + export_var(*value, indent, last_line_length + 1, current_depth + 1, fail_on_newline);
 }
 
 }  // namespace _detail
