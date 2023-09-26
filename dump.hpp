@@ -18,7 +18,7 @@
 #define _p_CPP_DUMP_EXPAND_FOR_CPP_DUMP(expr) #expr, expr
 
 /**
- * Output string representation of expression(s) and the result(s) to std::clog.
+ * Output string representations of expression(s) and result(s) to std::clog.
  * This function uses cpp_dump::export_var() internally.
  */
 #define CPP_DUMP(...)                                                                              \
@@ -34,7 +34,7 @@
 namespace cpp_dump {
 
 /**
- * Maximum line width of a output string of cpp_dump::export_var().
+ * Maximum line width of output strings of cpp_dump::export_var().
  */
 inline size_t max_line_width = 160;
 
@@ -232,7 +232,7 @@ rollback:
 }  // namespace _detail
 
 /**
- * Output string representation of variable(s) to std::clog.
+ * Output string representation(s) of variable(s) to std::clog.
  * This function uses cpp_dump::export_var() internally.
  */
 template <typename... Args>
