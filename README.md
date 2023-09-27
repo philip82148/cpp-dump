@@ -1,6 +1,19 @@
 # cpp-dump
 
+[日本語記事はこちら！](https://zenn.dev/sassan/articles/19db660e4da0a4)
+
+## Overview
+
 cpp-dump is an all-round dump function library for C++ that supports even user-defined classes.
+
+This library has the following features:
+
+- Outputs to the standard error output (std::clog) string representations of a wide variety of types: multidimensional arrays, (multi)maps, (multi)sets, complex numbers, even error objects, and etc.
+- Automatically indents so that the output fits into the maximum line width.
+- Header-only library, no build or dependencies required.
+- The macro version can dump variables along with the names.
+- User-defined types can also be dumped by using macros.
+- The string representation of variables is similar to JavaScript, Python and C syntax.
 
 ## Introduction
 
@@ -112,6 +125,11 @@ CPP_DUMP(new_my_enum);
 ```
 
 ![user-defined-enum.png](./readme/user-defined-enum.png)
+
+## Requirement
+
+- C++17 or higher.
+- No build or dependencies are required since cpp-dump is a header-only library.
 
 ## Installation
 
