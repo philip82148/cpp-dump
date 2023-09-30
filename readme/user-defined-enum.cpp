@@ -3,14 +3,14 @@
 
 #include "../dump.hpp"
 
-enum class my_enum { a, b, c };
-CPP_DUMP_DEFINE_EXPORT_ENUM(my_enum, my_enum::a, my_enum::b, my_enum::c);
+enum class enum_A { a, b, c };
+CPP_DUMP_DEFINE_EXPORT_ENUM(enum_A, enum_A::a, enum_A::b, enum_A::c);
 
 int main() {
   std::clog << std::endl;
 
-  my_enum new_my_enum = my_enum::c;
-  CPP_DUMP(new_my_enum);
+  enum_A my_enum_A = enum_A::c;
+  CPP_DUMP(my_enum_A);
 
   std::clog << std::endl;
 }

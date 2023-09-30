@@ -14,51 +14,51 @@
 #include "../dump.hpp"
 
 int main() {
-  int a          = 15;
-  int *ptr       = &a;
-  void *void_ptr = &a;
-  std::vector<std::vector<int>> vector{{3, 5, 8, 9, 7}, {9, 3, 2, 3, 8}};
-  std::set<char> set{'A', 'p', 'p', 'l', 'e'};
-  std::map<int, int> map{{2, 6}, {4, 6}, {5, 3}};
-  std::multiset<char> multiset{'A', 'p', 'p', 'l', 'e'};
-  std::multimap<int, int> multimap{{2, 4}, {4, 6}, {5, 3}, {4, 7}};
-  std::pair<int, char> pair{8, 'a'};
-  std::tuple<int, double, std::string> tuple{7, 4.5, "This is a string."};
-  std::queue<int> queue;
-  std::priority_queue<int> pq;
-  std::stack<int> stack;
-  for (auto v : {1, 2, 3, 4, 5}) queue.push(v), pq.push(v), stack.push(v);
-  std::bitset<8> bitset(0x3a);
-  std::complex<double> complex{1.0, 1.0};
-  std::optional<int> optional{15};
-  std::variant<int, std::string> variant{"1"};
-  std::vector<std::pair<int, std::string>> vector_of_pair{{1, "apple"}, {3, "banana"}};
+  int my_int     = 15;
+  int *ptr       = &my_int;
+  void *void_ptr = &my_int;
+  std::vector<std::vector<int>> my_vector{{3, 5, 8, 9, 7}, {9, 3, 2, 3, 8}};
+  std::set<char> my_set{'A', 'p', 'p', 'l', 'e'};
+  std::map<int, int> my_map{{2, 6}, {4, 6}, {5, 3}};
+  std::multiset<char> my_multiset{'A', 'p', 'p', 'l', 'e'};
+  std::multimap<int, int> my_multimap{{2, 4}, {4, 6}, {5, 3}, {4, 7}};
+  std::pair<int, char> my_pair{8, 'a'};
+  std::tuple<int, double, std::string> my_tuple{7, 4.5, "This is a string."};
+  std::queue<int> my_queue;
+  std::priority_queue<int> my_priority_queue;
+  std::stack<int> my_stack;
+  for (auto v : {1, 2, 3, 4, 5}) my_queue.push(v), my_priority_queue.push(v), my_stack.push(v);
+  std::bitset<8> my_bitset(0x3a);
+  std::complex<double> my_complex{1.0, 1.0};
+  std::optional<int> my_optional{15};
+  std::variant<int, std::string> my_variant{"1"};
+  std::vector<std::pair<int, std::string>> vector_of_pairs{{1, "apple"}, {3, "banana"}};
 
   std::clog << "\n// Basic Type" << std::endl;
-  CPP_DUMP(false, 0, 0.0, '0'), CPP_DUMP(true, 3.14, a, 9265);
+  CPP_DUMP(false, 0, 0.0, '0'), CPP_DUMP(true, 3.14, my_int, 9265);
   CPP_DUMP("This is a string."), CPP_DUMP(ptr, void_ptr, nullptr);
 
   std::clog << "\n// Container" << std::endl;
-  CPP_DUMP(vector);
+  CPP_DUMP(my_vector);
 
   std::clog << "\n// Set/Map" << std::endl;
-  CPP_DUMP(set), CPP_DUMP(map);
+  CPP_DUMP(my_set), CPP_DUMP(my_map);
 
   std::clog << "\n// Multiset/Multimap" << std::endl;
-  CPP_DUMP(multiset), CPP_DUMP(multimap);
+  CPP_DUMP(my_multiset), CPP_DUMP(my_multimap);
 
   std::clog << "\n// Tuple" << std::endl;
-  CPP_DUMP(tuple), CPP_DUMP(pair);
+  CPP_DUMP(my_tuple), CPP_DUMP(my_pair);
 
   std::clog << "\n// FIFO/LIFO" << std::endl;
-  CPP_DUMP(queue), CPP_DUMP(pq), CPP_DUMP(stack);
+  CPP_DUMP(my_queue), CPP_DUMP(my_priority_queue), CPP_DUMP(my_stack);
 
   std::clog << "\n// Other" << std::endl;
-  CPP_DUMP(bitset), CPP_DUMP(complex);
-  CPP_DUMP(optional, std::nullopt), CPP_DUMP(variant);
+  CPP_DUMP(my_bitset), CPP_DUMP(my_complex);
+  CPP_DUMP(my_optional, std::nullopt), CPP_DUMP(my_variant);
 
   std::clog << "\n// Combination" << std::endl;
-  CPP_DUMP(vector_of_pair);
+  CPP_DUMP(vector_of_pairs);
 
   std::clog << std::endl;
 }

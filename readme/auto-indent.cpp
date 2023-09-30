@@ -9,11 +9,12 @@ int main() {
 
   cpp_dump::max_line_width = 100;
 
-  std::vector vector{"This is a test string.", "This is a test string.", "This is a test string."};
-  CPP_DUMP(vector);
+  std::vector my_vector{
+      "This is a test string.", "This is a test string.", "This is a test string."};
+  CPP_DUMP(my_vector);
 
-  vector.push_back("This is a test string.");
-  CPP_DUMP(vector);
+  my_vector.push_back("This is a test string.");
+  CPP_DUMP(my_vector);
 
   std::clog << std::endl;
 }

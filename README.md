@@ -24,8 +24,8 @@ cpp-dump has a macro version and a function version of dump functions.
 This macro dumps variable(s) along with expression(s). [See Full Example Code](./readme/macro-version.cpp)
 
 ```cpp
-std::vector<std::vector<int>> vector{{3, 5, 8, 9, 7}, {9, 3, 2, 3, 8}};
-CPP_DUMP(vector);
+std::vector<std::vector<int>> my_vector{{3, 5, 8, 9, 7}, {9, 3, 2, 3, 8}};
+CPP_DUMP(my_vector);
 ```
 
 ![macro-version.png](./readme/macro-version.png)
@@ -35,8 +35,8 @@ CPP_DUMP(vector);
 This function simply dumps variable(s). [See Full Example Code](./readme/function-version.cpp)
 
 ```cpp
-std::vector<std::vector<int>> vector{{3, 5, 8, 9, 7}, {9, 3, 2, 3, 8}};
-cpp_dump::dump(vector);
+std::vector<std::vector<int>> my_vector{{3, 5, 8, 9, 7}, {9, 3, 2, 3, 8}};
+cpp_dump::dump(my_vector);
 ```
 
 ![function-version.png](./readme/function-version.png)
@@ -51,31 +51,32 @@ Both dump functions have the following features.
 [See Full Example Code](./readme/supports-various-types.cpp)
 
 ```cpp
+// See the full example code for the definitions of the variables.
 std::clog << "\n// Basic Type" << std::endl;
-CPP_DUMP(false, 0, 0.0, '0'); CPP_DUMP(true, 3.14, a, 9265);
+CPP_DUMP(false, 0, 0.0, '0'); CPP_DUMP(true, 3.14, my_int, 9265);
 CPP_DUMP("This is a string."); CPP_DUMP(ptr, void_ptr, nullptr);
 
 std::clog << "\n// Container" << std::endl;
-CPP_DUMP(vector);
+CPP_DUMP(my_vector);
 
 std::clog << "\n// Set/Map" << std::endl;
-CPP_DUMP(set); CPP_DUMP(map);
+CPP_DUMP(my_set); CPP_DUMP(my_map);
 
 std::clog << "\n// Multiset/Multimap" << std::endl;
-CPP_DUMP(multiset); CPP_DUMP(multimap);
+CPP_DUMP(my_multiset); CPP_DUMP(my_multimap);
 
 std::clog << "\n// Tuple" << std::endl;
-CPP_DUMP(tuple); CPP_DUMP(pair);
+CPP_DUMP(my_tuple); CPP_DUMP(pair);
 
 std::clog << "\n// FIFO/LIFO" << std::endl;
-CPP_DUMP(queue); CPP_DUMP(pq); CPP_DUMP(stack);
+CPP_DUMP(my_queue); CPP_DUMP(pq); CPP_DUMP(my_stack);
 
 std::clog << "\n// Other" << std::endl;
-CPP_DUMP(bitset); CPP_DUMP(complex);
-CPP_DUMP(optional, std::nullopt); CPP_DUMP(variant);
+CPP_DUMP(my_bitset); CPP_DUMP(my_complex);
+CPP_DUMP(my_optional, std::nullopt); CPP_DUMP(my_variant);
 
 std::clog << "\n// Combination" << std::endl;
-CPP_DUMP(vector_of_pair);
+CPP_DUMP(vector_of_pairs);
 ```
 
 ![supports-various-types.png](./readme/supports-various-types.png)
@@ -85,9 +86,9 @@ CPP_DUMP(vector_of_pair);
 Automatically indent so that the output does not exceed the maximum width. [See Full Example Code](./readme/auto-indent.cpp)
 
 ```cpp
-CPP_DUMP(vector);
-vector.push_back("This is a test string.");
-CPP_DUMP(vector);
+CPP_DUMP(my_vector);
+my_vector.push_back("This is a test string.");
+CPP_DUMP(my_vector);
 ```
 
 ![Auto indent](./readme/auto-indent.png)
@@ -100,15 +101,15 @@ CPP_DUMP(vector);
 
 ```cpp
 //  At top level
-struct my_class {
+struct class_A {
   int i;
   std::string str() const { return std::to_string(i); }
 };
-CPP_DUMP_DEFINE_EXPORT_OBJECT(my_class, i, str());
+CPP_DUMP_DEFINE_EXPORT_OBJECT(class_A, i, str());
 
 // In main() or some function
-my_class new_my_class{10};
-CPP_DUMP(new_my_class);
+class_A my_class_A{10};
+CPP_DUMP(my_class_A);
 ```
 
 ![user-defined-class.png](./readme/user-defined-class.png)
@@ -119,12 +120,12 @@ CPP_DUMP(new_my_class);
 
 ```cpp
 //  At top level
-enum class my_enum { a, b, c };
-CPP_DUMP_DEFINE_EXPORT_ENUM(my_enum, my_enum::a, my_enum::b, my_enum::c);
+enum class enum_A { a, b, c };
+CPP_DUMP_DEFINE_EXPORT_ENUM(enum_A, enum_A::a, enum_A::b, enum_A::c);
 
 // In main() or some function
-my_enum new_my_enum = my_enum::c;
-CPP_DUMP(new_my_enum);
+enum_A my_enum_A = enum_A::c;
+CPP_DUMP(my_enum_A);
 ```
 
 ![user-defined-enum.png](./readme/user-defined-enum.png)
