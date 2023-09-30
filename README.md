@@ -73,6 +73,9 @@ CPP_DUMP(queue); CPP_DUMP(pq); CPP_DUMP(stack);
 std::clog << "\n// Other" << std::endl;
 CPP_DUMP(bitset); CPP_DUMP(complex);
 CPP_DUMP(optional, std::nullopt); CPP_DUMP(variant);
+
+std::clog << "\n// Combination" << std::endl;
+CPP_DUMP(vector_of_pair);
 ```
 
 ![supports-various-types.png](./readme/supports-various-types.png)

@@ -32,6 +32,7 @@ int main() {
   std::complex<double> complex{1.0, 1.0};
   std::optional<int> optional{15};
   std::variant<int, std::string> variant{"1"};
+  std::vector<std::pair<int, std::string>> vector_of_pair{{1, "apple"}, {3, "banana"}};
 
   std::clog << "\n// Basic Type" << std::endl;
   CPP_DUMP(false, 0, 0.0, '0'), CPP_DUMP(true, 3.14, a, 9265);
@@ -55,6 +56,9 @@ int main() {
   std::clog << "\n// Other" << std::endl;
   CPP_DUMP(bitset), CPP_DUMP(complex);
   CPP_DUMP(optional, std::nullopt), CPP_DUMP(variant);
+
+  std::clog << "\n// Combination" << std::endl;
+  CPP_DUMP(vector_of_pair);
 
   std::clog << std::endl;
 }
