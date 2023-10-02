@@ -13,7 +13,7 @@ This library has the following features:
 - Header-only library, no build or dependencies required.
 - The macro version can dump variables along with the names.
 - User-defined types can also be dumped by using macros.
-- The string representation of variables is similar to JavaScript, Python and C syntax.
+- The string representation of variables is similar to JavaScript, Python and C++ syntax.
 
 ## Introduction
 
@@ -66,10 +66,10 @@ std::clog << "\n// Multiset/Multimap" << std::endl;
 CPP_DUMP(my_multiset); CPP_DUMP(my_multimap);
 
 std::clog << "\n// Tuple" << std::endl;
-CPP_DUMP(my_tuple); CPP_DUMP(pair);
+CPP_DUMP(my_tuple); CPP_DUMP(my_pair);
 
 std::clog << "\n// FIFO/LIFO" << std::endl;
-CPP_DUMP(my_queue); CPP_DUMP(pq); CPP_DUMP(my_stack);
+CPP_DUMP(my_queue); CPP_DUMP(my_priority_queue); CPP_DUMP(my_stack);
 
 std::clog << "\n// Other" << std::endl;
 CPP_DUMP(my_bitset); CPP_DUMP(my_complex);
@@ -266,7 +266,7 @@ int main() {
 | Container    | T is compatible with the range-based for loop                                                                                                                      | `std::vector`, `std::array`, C-style arrays       |
 | Map          | T is either `std::map`, `std::unordered_map`, `std::multimap`, or `std::unordered_multimap`                                                                        |                                                   |
 | Set          | T is either `std::set`, `std::unordered_set`, `std::multiset`, or `std::unordered_multiset`                                                                        |                                                   |
-| Tuple        | T is either `std::tuple` or `std::pair`                                                                                                                            |                                                   |
+| Tuple        | T is compatible with `std::tuple_size_v<T>`                                                                                                                        | `std::tuple`, `std::pair`                         |
 | FIFO/LIFO    | T is either `std::queue`, `std::priority_queue`, or `std::stack`                                                                                                   |                                                   |
 | Pointer      | T is a pointer or smart pointer                                                                                                                                    | `int *`, `std::shared_ptr`, `std::unique_ptr`     |
 | Reference    | T is `std::reference_wrapper`                                                                                                                                      |                                                   |
