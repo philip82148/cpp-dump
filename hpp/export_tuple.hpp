@@ -26,44 +26,40 @@ template <typename T>
 std::string export_var(const T &, const std::string &, size_t, size_t, bool);
 
 template <const size_t i, const size_t size, typename T>
-inline auto _export_tuple_like_in_one_line(
+inline auto _export_tuple_in_one_line(
     const T &tuple, const std::string &indent, size_t last_line_length, size_t next_depth
-) -> std::enable_if_t<is_tuple_like<T>, std::string> {
+) -> std::enable_if_t<is_tuple<T>, std::string> {
   std::string output = export_var(std::get<i>(tuple), indent, last_line_length, next_depth, true);
   if (has_newline(output)) return "\n";
 
   if constexpr (i < size - 1) {
     return output + ", "
-           + _export_tuple_like_in_one_line<i + 1, size>(
-               tuple, indent, output.length() + 2, next_depth
-           );
+           + _export_tuple_in_one_line<i + 1, size>(tuple, indent, output.length() + 2, next_depth);
   } else {
     return output;
   }
 }
 
 template <const size_t i, const size_t size, typename T>
-inline auto _export_tuple_like_in_lines(
-    const T &tuple, const std::string &indent, size_t next_depth
-) -> std::enable_if_t<is_tuple_like<T>, std::string> {
+inline auto _export_tuple_in_lines(const T &tuple, const std::string &indent, size_t next_depth)
+    -> std::enable_if_t<is_tuple<T>, std::string> {
   std::string output = export_var(std::get<i>(tuple), indent, indent.length(), next_depth, false);
 
   if constexpr (i < size - 1) {
-    return output + ",\n" + indent
-           + _export_tuple_like_in_lines<i + 1, size>(tuple, indent, next_depth);
+    return output + ",\n" + indent + _export_tuple_in_lines<i + 1, size>(tuple, indent, next_depth);
   } else {
     return output;
   }
 }
 
 template <typename T>
-inline auto export_tuple_like(
+inline auto export_tuple(
     const T &tuple,
     const std::string &indent,
     size_t last_line_length,
     size_t current_depth,
     bool fail_on_newline
-) -> std::enable_if_t<is_tuple_like<T>, std::string> {
+) -> std::enable_if_t<is_tuple<T>, std::string> {
   constexpr size_t tuple_size = std::tuple_size_v<T>;
 
   if constexpr (tuple_size == 0) {
@@ -73,20 +69,18 @@ inline auto export_tuple_like(
 
     size_t next_depth = current_depth + 1;
 
-    std::string output = "( "
-                         + _export_tuple_like_in_one_line<0, tuple_size>(
-                             tuple, indent, last_line_length + 2, next_depth
-                         )
-                         + " )";
+    std::string output =
+        "( "
+        + _export_tuple_in_one_line<0, tuple_size>(tuple, indent, last_line_length + 2, next_depth)
+        + " )";
 
     if (!has_newline(output) && output.length() <= max_line_width) return output;
 
     if (fail_on_newline) return "\n";
 
     std::string new_indent = indent + "  ";
-    return "(\n" + new_indent
-           + _export_tuple_like_in_lines<0, tuple_size>(tuple, new_indent, next_depth) + "\n"
-           + indent + ")";
+    return "(\n" + new_indent + _export_tuple_in_lines<0, tuple_size>(tuple, new_indent, next_depth)
+           + "\n" + indent + ")";
   }
 }
 

@@ -22,7 +22,7 @@
 #include "./export_pointer.hpp"
 #include "./export_set.hpp"
 #include "./export_string.hpp"
-#include "./export_tuple_like.hpp"
+#include "./export_tuple.hpp"
 #include "./export_xixo.hpp"
 #include "./type_check.hpp"
 
@@ -54,8 +54,8 @@ std::string export_var(
     return export_set(value, indent, last_line_length, current_depth, fail_on_newline);
   } else if constexpr (is_container<T>) {
     return export_container(value, indent, last_line_length, current_depth, fail_on_newline);
-  } else if constexpr (is_tuple_like<T>) {
-    return export_tuple_like(value, indent, last_line_length, current_depth, fail_on_newline);
+  } else if constexpr (is_tuple<T>) {
+    return export_tuple(value, indent, last_line_length, current_depth, fail_on_newline);
   } else if constexpr (is_xixo<T>) {
     return export_xixo(value, indent, last_line_length, current_depth, fail_on_newline);
   } else if constexpr (is_pointer<T>) {
