@@ -22,7 +22,6 @@
 #include <type_traits>
 #include <unordered_map>
 #include <unordered_set>
-#include <utility>
 #include <variant>
 
 namespace cpp_dump {
@@ -121,15 +120,13 @@ inline constexpr bool is_set = _is_set<_remove_cref<T>> || is_multiset<T>;
 template <typename T>
 inline constexpr bool is_container = is_iterable<T> && !is_string<T> && !is_map<T> && !is_set<T>;
 
+template <typename T>
+auto _is_tuple_like(int) -> decltype(std::tuple_size<T>::value, std::true_type());
 template <typename>
-inline constexpr bool _is_tuple_like = false;
-template <typename... Args>
-inline constexpr bool _is_tuple_like<std::tuple<Args...>> = true;
-template <typename T1, typename T2>
-inline constexpr bool _is_tuple_like<std::pair<T1, T2>> = true;
+std::false_type _is_tuple_like(long);
 
 template <typename T>
-inline constexpr bool is_tuple_like = _is_tuple_like<_remove_cref<T>>;
+inline constexpr bool is_tuple_like = decltype(_is_tuple_like<_remove_cref<T>>(0))::value;
 
 template <typename>
 inline constexpr bool _is_xixo = false;
