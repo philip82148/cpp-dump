@@ -82,31 +82,30 @@ here.`,
 [dump] queue1 => std::queue{ front()= 1, size()= 5 }
 [dump] priority_queue1 => std::priority_queue{ top()= '5', size()= 5 }
 [dump] stack1 => std::stack{ top()= "5", size()= 5 }
-[dump] b => Unsupported Type
-[dump] int_p => *65
-[dump] *int_p => 65
-[dump] void_p => 0x7ffd06586204, char_p => "A"
+[dump] int_ptr => *65
+[dump] *int_ptr => 65
+[dump] void_ptr => 0x7ffd06586204, char_ptr => "A"
 [dump] nullptr => nullptr
 [dump] shared_ptr1 => *42, weak_ptr1 => *42, unique_ptr1 => *42, c => *42
 [dump] shared_ptr1 => *3, weak_ptr1 => nullptr, unique_ptr1 => *42
-[dump] object_a => decltype(object_a){ a= 314159265, b= 1, get_a()= 314159265 }
-[dump] object_b => class_b{ 
-         a= 358979, 
-         b= 1, 
-         s= "This object has a pointer to itself.", 
+[dump] class_a1 => decltype(class_a1){ int_a= 314159265, long_b= 1, get_a()= 314159265 }
+[dump] class_b1 => class_b{ 
+         static_long_a= 358979, 
+         int_b= 1, 
+         str= "This object has a pointer to itself.", 
          pointer= *class_b{ 
-           a= 358979, 
-           b= 1, 
-           s= "This object has a pointer to itself.", 
+           static_long_a= 358979, 
+           int_b= 1, 
+           str= "This object has a pointer to itself.", 
            pointer= *class_b{ 
-             a= 358979, 
-             b= 1, 
-             s= "This object has a pointer to itself.", 
-             pointer= *class_b{ a= 358979, b= 1, s= "This object has a pointer to itself.", pointer= *class_b{ ... } }
+             static_long_a= 358979, 
+             int_b= 1, 
+             str= "This object has a pointer to itself.", 
+             pointer= *class_b{ static_long_a= 358979, int_b= 1, str= "This object has a pointer to itself.", pointer= *class_b{ ... } }
            }
          }
        }
-[dump] int_p => *65, s => enum1::s, k => enum1::k, l => enum1::?
+[dump] int_ptr => *65, enum_a_s => enum_a::s, enum_a_k => enum_a::k, enum_a_l => enum_a::?
 [dump] bitset1 => 0b 00 1100 1010
 [dump] optional => ?1
 [dump] optional => std::nullopt

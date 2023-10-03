@@ -18,31 +18,32 @@
 #include <variant>
 #include <vector>
 
+// These are often used to write code faster in competition programming.
+// This is the test for it.
 #define rep(i, n) for (int i = 0; i < (int)(n); i++)
-
 using namespace std;
 using cpp_dump::dump;
 
 struct class_a {
-  int a = 314159265;
-  int b = 1;
-  int get_a() const { return a; }
-} object_a;
+  int int_a   = 314159265;
+  long long_b = 1;
+  int get_a() const { return int_a; }
+} class_a1;
 
 struct class_b {
-  static int a;
-  int b            = 1;
-  string s         = "This object has a pointer to itself.";
+  static long static_long_a;
+  int int_b        = 1;
+  string str       = "This object has a pointer to itself.";
   class_b *pointer = this;
-} object_b;
+} class_b1;
 
-int class_b::a = 358979;
+long class_b::static_long_a = 358979;
 
-enum class enum1 { s, k, l };
+enum class enum_a { s, k, l };
 
-CPP_DUMP_DEFINE_EXPORT_ENUM(enum1, enum1::s, enum1::k);
-CPP_DUMP_DEFINE_EXPORT_OBJECT(decltype(object_a), a, b, get_a());
-CPP_DUMP_DEFINE_EXPORT_OBJECT(class_b, a, b, s, pointer);
+CPP_DUMP_DEFINE_EXPORT_ENUM(enum_a, enum_a::s, enum_a::k);
+CPP_DUMP_DEFINE_EXPORT_OBJECT(decltype(class_a1), int_a, long_b, get_a());
+CPP_DUMP_DEFINE_EXPORT_OBJECT(class_b, static_long_a, int_b, str, pointer);
 
 int main() {
   ofstream stream{"./dump_test.txt"};
@@ -147,20 +148,17 @@ int main() {
   for (auto v : {"1", "2", "3", "4", "5"}) stack1.push(v);
   CPP_DUMP(stack1);
 
-  enum class s { k } b = s::k;
-  CPP_DUMP(b);
-
   // pointer
   int a = 65;
-  int *int_p;
-  int_p = &a;
+  int *int_ptr;
+  int_ptr = &a;
 
-  CPP_DUMP(int_p);
-  CPP_DUMP(*int_p);
+  CPP_DUMP(int_ptr);
+  CPP_DUMP(*int_ptr);
 
-  const void *void_p = (void *)0x7ffd06586204;
-  char *char_p       = (char *)&a;
-  CPP_DUMP(void_p, char_p);
+  const void *void_ptr = (void *)0x7ffd06586204;
+  char *char_ptr       = (char *)&a;
+  CPP_DUMP(void_ptr, char_ptr);
   CPP_DUMP(nullptr);
   shared_ptr<int> shared_ptr1(new int(42));
   weak_ptr<int> weak_ptr1 = shared_ptr1;
@@ -171,14 +169,14 @@ int main() {
   CPP_DUMP(shared_ptr1, weak_ptr1, unique_ptr1);
 
   // object
-  CPP_DUMP(object_a);
-  CPP_DUMP(object_b);
+  CPP_DUMP(class_a1);
+  CPP_DUMP(class_b1);
 
   // enum
-  enum1 s = enum1::s;
-  enum1 k = enum1::k;
-  enum1 l = enum1::l;
-  CPP_DUMP(int_p, s, k, l);
+  enum_a enum_a_s = enum_a::s;
+  enum_a enum_a_k = enum_a::k;
+  enum_a enum_a_l = enum_a::l;
+  CPP_DUMP(int_ptr, enum_a_s, enum_a_k, enum_a_l);
 
   // other
   bitset<10> bitset1(0xca);
