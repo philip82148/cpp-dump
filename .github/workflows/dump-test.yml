@@ -12,4 +12,4 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Run Test
-        run: sh ./test/dump_test.sh
+        run: ./test/dump_test.sh

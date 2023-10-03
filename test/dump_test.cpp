@@ -46,7 +46,7 @@ CPP_DUMP_DEFINE_EXPORT_OBJECT(decltype(class_a1), int_a, long_b, get_a());
 CPP_DUMP_DEFINE_EXPORT_OBJECT(class_b, static_long_a, int_b, str, pointer);
 
 int main() {
-  ofstream stream{"./dump_test.txt"};
+  ofstream stream{"./dump_test.log"};
 
   streambuf *clog_buf;
   clog_buf = clog.rdbuf(stream.rdbuf());
