@@ -18,7 +18,7 @@
 #define _p_CPP_DUMP_EXPAND_FOR_CPP_DUMP(expr) #expr, expr
 
 /**
- * Output string representations of expression(s) and result(s) to std::clog.
+ * Print string representations of expression(s) and result(s) to std::clog.
  * This function uses cpp_dump::export_var() internally.
  */
 #define CPP_DUMP(...)                                                                              \
@@ -50,22 +50,31 @@ inline size_t max_depth = 5;
  */
 inline size_t max_iteration_count = 16;
 
+/**
+ * Label that cpp_dump::dump() and CPP_DUMP() print at the beginning of the output.
+ */
+inline std::string log_label = "[dump] ";
+
 namespace _detail {
 
 template <typename T>
 bool _dump_one(
     std::string &output, bool no_newline_in_value_string, const std::string &expr, const T &value
 ) {
-  const std::string indent7 = "       ";
-  const std::string indent9 = "         ";
+  const std::string initial_indent = ([] {
+    std::string indent;
+    for (auto _ : log_label) indent += " ";
+    return indent;
+  })();
+  const std::string second_indent  = initial_indent + "  ";
 
   if (output.length() == 0) {
-    output = "[dump] ";
+    output = log_label;
   } else {
     if (no_newline_in_value_string) {
       output += ", ";
     } else {
-      output += ",\n" + indent7;
+      output += ",\n" + initial_indent;
     }
   }
 
@@ -98,7 +107,7 @@ bool _dump_one(
 
   // for dump_recursive_without_expr(), which is for cpp_dump::dump() (function)
   if (expr == "") {
-    prefix_and_value_string pattern1 = make_prefix_and_value_string("", indent7);
+    prefix_and_value_string pattern1 = make_prefix_and_value_string("", initial_indent);
 
     if (!no_newline_in_value_string) {
       append_output(pattern1);
@@ -110,9 +119,10 @@ bool _dump_one(
       return true;
     }
 
-    if (get_last_line_length(output) <= indent7.length()) return false;
+    if (get_last_line_length(output) <= initial_indent.length()) return false;
 
-    prefix_and_value_string pattern2 = make_prefix_and_value_string("\n" + indent7, indent7);
+    prefix_and_value_string pattern2 =
+        make_prefix_and_value_string("\n" + initial_indent, initial_indent);
 
     if (!pattern2.value_string_has_newline && !pattern2.over_max_line_width) {
       append_output(pattern2);
@@ -125,16 +135,16 @@ bool _dump_one(
   // below for dump_recursive_with_expr(), which is for CPP_DUMP() (macro)
 
   if (no_newline_in_value_string) {
-    prefix_and_value_string pattern1a = make_prefix_and_value_string(expr + " => ", indent7);
+    prefix_and_value_string pattern1a = make_prefix_and_value_string(expr + " => ", initial_indent);
 
     if (!pattern1a.value_string_has_newline && !pattern1a.over_max_line_width) {
       append_output(pattern1a);
       return true;
     }
 
-    if (get_last_line_length(output) <= indent7.length()) {
+    if (get_last_line_length(output) <= initial_indent.length()) {
       prefix_and_value_string pattern1b =
-          make_prefix_and_value_string(expr + "\n" + indent9 + "=> ", indent9);
+          make_prefix_and_value_string(expr + "\n" + second_indent + "=> ", second_indent);
 
       if (!pattern1b.value_string_has_newline) {
         append_output(pattern1b);
@@ -145,15 +155,16 @@ bool _dump_one(
     }
 
     prefix_and_value_string pattern2a =
-        make_prefix_and_value_string("\n" + indent7 + expr + " => ", indent7);
+        make_prefix_and_value_string("\n" + initial_indent + expr + " => ", initial_indent);
 
     if (!pattern2a.value_string_has_newline && !pattern2a.over_max_line_width) {
       append_output(pattern2a);
       return true;
     }
 
-    prefix_and_value_string pattern2b =
-        make_prefix_and_value_string("\n" + indent7 + expr + "\n" + indent9 + "=> ", indent9);
+    prefix_and_value_string pattern2b = make_prefix_and_value_string(
+        "\n" + initial_indent + expr + "\n" + second_indent + "=> ", second_indent
+    );
 
     if (!pattern2b.value_string_has_newline) {
       append_output(pattern2b);
@@ -163,7 +174,7 @@ bool _dump_one(
     return false;
   }
 
-  prefix_and_value_string pattern1a = make_prefix_and_value_string(expr + " => ", indent7);
+  prefix_and_value_string pattern1a = make_prefix_and_value_string(expr + " => ", initial_indent);
 
   if (!pattern1a.over_max_line_width) {
     if (!pattern1a.value_string_has_newline) {
@@ -172,7 +183,7 @@ bool _dump_one(
     }
 
     prefix_and_value_string pattern1b =
-        make_prefix_and_value_string(expr + "\n" + indent9 + "=> ", indent9);
+        make_prefix_and_value_string(expr + "\n" + second_indent + "=> ", second_indent);
 
     if (!pattern1b.value_string_has_newline) {
       append_output(pattern1b);
@@ -184,7 +195,7 @@ bool _dump_one(
   }
 
   prefix_and_value_string pattern1b =
-      make_prefix_and_value_string(expr + "\n" + indent9 + "=> ", indent9);
+      make_prefix_and_value_string(expr + "\n" + second_indent + "=> ", second_indent);
 
   append_output(pattern1b);
   return true;
@@ -232,7 +243,7 @@ rollback:
 }  // namespace _detail
 
 /**
- * Output string representation(s) of variable(s) to std::clog.
+ * Print string representation(s) of variable(s) to std::clog.
  * This function uses cpp_dump::export_var() internally.
  */
 template <typename... Args>
