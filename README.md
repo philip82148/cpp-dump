@@ -197,6 +197,11 @@ inline size_t cpp_dump::max_depth = 5;
  * (max_iteration_count^max_depth-1)/(max_iteration_count-1)-1 times.
  */
 inline size_t cpp_dump::max_iteration_count = 16;
+
+/**
+ * Label that cpp_dump::dump() and CPP_DUMP() print at the beginning of the output.
+ */
+inline std::string log_label = "[dump] ";
 ```
 
 ### Functions
