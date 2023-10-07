@@ -45,7 +45,9 @@ CPP_DUMP_DEFINE_EXPORT_ENUM(enum_a, enum_a::s, enum_a::k);
 CPP_DUMP_DEFINE_EXPORT_OBJECT(decltype(class_a1), int_a, long_b, get_a());
 CPP_DUMP_DEFINE_EXPORT_OBJECT(class_b, static_long_a, int_b, str, pointer);
 
-int main() {
+int main(int argc, char *argv[]) {
+  if (argc != 2) return 1;
+
   ofstream stream{"./dump_test.log"};
 
   streambuf *clog_buf;
@@ -54,7 +56,7 @@ int main() {
   CPP_DUMP_SET_OPTION(max_line_width, 160);
   CPP_DUMP_SET_OPTION(max_depth, 4);
   CPP_DUMP_SET_OPTION(max_iteration_count, 100);
-  CPP_DUMP_SET_OPTION(use_es, false);
+  CPP_DUMP_SET_OPTION(use_es, stoi(argv[1]));
 
   // basic
   CPP_DUMP(false, 0, 0.0, '0', (const char *)"0", string{"0"}, string_view{"0"});
