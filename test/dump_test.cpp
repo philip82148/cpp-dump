@@ -63,7 +63,9 @@ int main(int argc, char *argv[]) {
   CPP_DUMP_SET_OPTION(max_line_width, is_narrow_width ? 20 : 160);
   CPP_DUMP_SET_OPTION(max_depth, 4);
   CPP_DUMP_SET_OPTION(max_iteration_count, 100);
-  CPP_DUMP_SET_OPTION(use_es, use_es);
+  CPP_DUMP_SET_OPTION(
+      es_style, use_es ? cpp_dump::es_style_t::by_syntax : cpp_dump::es_style_t::no_es
+  );
 
   // basic
   CPP_DUMP(false, 0, 0.0, '0', (const char *)"0", string{"0"}, string_view{"0"});

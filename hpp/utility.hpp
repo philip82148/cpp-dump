@@ -10,16 +10,18 @@
 #include <string>
 #include <string_view>
 
+#include "./escape_sequence.hpp"
+
 namespace cpp_dump {
 
-extern inline bool use_es;
+extern inline es_style_t es_style;
 
 namespace _detail {
 
 inline bool has_newline(std::string_view s) { return s.find("\n") != std::string::npos; }
 
 inline size_t get_length(std::string_view s) {
-  if (!use_es) return s.length();
+  if (es_style == es_style_t::no_es) return s.length();
 
   size_t length = 0, s_first = 0, s_last;
   while ((s_last = s.find("\e[", s_first)) != std::string::npos) {

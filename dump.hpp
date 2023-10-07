@@ -56,16 +56,9 @@ inline size_t max_iteration_count = 16;
  */
 inline std::string log_label = "[dump] ";
 
-inline bool use_es = true;
+inline es_style_t es_style = es_style_t::by_syntax;
 
-inline escape_sequence es_value = {
-    "\e[36m",  // cyan
-    "\e[32m",  // green
-    "\e[32m",  // green
-    "\e[02m",  // dark
-    "\e[36m",  // cyan
-    "\e[36m",  // cyan
-    "",        // default
+inline es_value_t es_value = {
     "\e[02m",  // dark
     "\e[34m",  // blue
     {
@@ -73,6 +66,13 @@ inline escape_sequence es_value = {
         "\e[35m",  // magenta
         "\e[36m",  // cyan
     },
+    "\e[36m",  // cyan
+    "\e[32m",  // green
+    "\e[32m",  // green
+    "\e[02m",  // dark
+    "\e[36m",  // cyan
+    "\e[36m",  // cyan
+    "",        // default
 };
 
 namespace _detail {
