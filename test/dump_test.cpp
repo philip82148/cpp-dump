@@ -1,24 +1,9 @@
+// This is a test for competitive programming.
+#include <bits/stdc++.h>
+//
 #include "../dump.hpp"
 
-#include <bitset>
-#include <complex>
-#include <exception>
-#include <fstream>
-#include <iostream>
-#include <map>
-#include <optional>
-#include <queue>
-#include <set>
-#include <stack>
-#include <stdexcept>
-#include <string>
-#include <tuple>
-#include <unordered_map>
-#include <utility>
-#include <variant>
-#include <vector>
-
-// These are often used to write code faster in competition programming.
+// These are often used to write code faster in competitive programming.
 // This is the test for it.
 #define rep(i, n) for (int i = 0; i < (int)(n); i++)
 using namespace std;

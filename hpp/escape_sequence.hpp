@@ -78,21 +78,21 @@ inline std::string apply(const std::string &es, const std::string &s) {
   }
 }
 
-inline std::string log(const std::string &s) { return apply(es_value.log, s); }
-inline std::string expression(const std::string &s) { return apply(es_value.expression, s); }
-inline std::string reserved(const std::string &s) { return apply(es_value.reserved, s); }
-inline std::string number(const std::string &s) { return apply(es_value.number, s); }
-inline std::string character(const std::string &s) { return apply(es_value.character, s); }
-inline std::string op(const std::string &s) { return apply(es_value.op, s); }
-inline std::string identifier(const std::string &s) { return apply(es_value.identifier, s); }
-inline std::string member(const std::string &s) { return apply(es_value.member, s); }
-inline std::string unsupported(const std::string &s) { return apply(es_value.unsupported, s); }
+inline std::string log(const std::string &s) { return es::apply(es_value.log, s); }
+inline std::string expression(const std::string &s) { return es::apply(es_value.expression, s); }
+inline std::string reserved(const std::string &s) { return es::apply(es_value.reserved, s); }
+inline std::string number(const std::string &s) { return es::apply(es_value.number, s); }
+inline std::string character(const std::string &s) { return es::apply(es_value.character, s); }
+inline std::string op(const std::string &s) { return es::apply(es_value.op, s); }
+inline std::string identifier(const std::string &s) { return es::apply(es_value.identifier, s); }
+inline std::string member(const std::string &s) { return es::apply(es_value.member, s); }
+inline std::string unsupported(const std::string &s) { return es::apply(es_value.unsupported, s); }
 
 inline std::string bracket(const std::string &s, size_t d) {
   auto sz = es_value.bracket_by_depth.size();
   if (sz == 0) return s;
 
-  return apply(es_value.bracket_by_depth[d % sz], s);
+  return es::apply(es_value.bracket_by_depth[d % sz], s);
 }
 
 }  // namespace es
