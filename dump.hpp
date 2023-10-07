@@ -58,7 +58,22 @@ inline std::string log_label = "[dump] ";
 
 inline bool use_es = true;
 
-inline escape_sequence es_value = es_theme::rich;
+inline escape_sequence es_value = {
+    "\e[36m",  // cyan
+    "\e[32m",  // green
+    "\e[32m",  // green
+    "\e[02m",  // dark
+    "\e[36m",  // cyan
+    "\e[36m",  // cyan
+    "",        // default
+    "\e[02m",  // dark
+    "\e[34m",  // blue
+    {
+        "\e[33m",  // yellow
+        "\e[35m",  // magenta
+        "\e[36m",  // cyan
+    },
+};
 
 namespace _detail {
 
@@ -68,18 +83,19 @@ bool _dump_one(
 ) {
   const std::string initial_indent = ([] {
     std::string indent;
-    for (auto _ : log_label) indent += " ";
+    size_t length = get_length(log_label);
+    for (size_t i = 0; i < length; ++i) indent += " ";
     return indent;
   })();
   const std::string second_indent  = initial_indent + "  ";
 
   if (output.length() == 0) {
-    output = log_label;
+    output = with_es::log(log_label);
   } else {
     if (no_newline_in_value_string) {
-      output += ", ";
+      output += with_es::log(", ");
     } else {
-      output += ",\n" + initial_indent;
+      output += with_es::log(",\n") + initial_indent;
     }
   }
 
@@ -138,9 +154,11 @@ bool _dump_one(
   }
 
   // below for dump_recursive_with_expr(), which is for CPP_DUMP() (macro)
+  auto expr_with_es = with_es::expression(expr);
 
   if (no_newline_in_value_string) {
-    prefix_and_value_string pattern1a = make_prefix_and_value_string(expr + " => ", initial_indent);
+    prefix_and_value_string pattern1a =
+        make_prefix_and_value_string(expr_with_es + with_es::log(" => "), initial_indent);
 
     if (!pattern1a.value_string_has_newline && !pattern1a.over_max_line_width) {
       append_output(pattern1a);
@@ -148,8 +166,9 @@ bool _dump_one(
     }
 
     if (get_last_line_length(output) <= initial_indent.length()) {
-      prefix_and_value_string pattern1b =
-          make_prefix_and_value_string(expr + "\n" + second_indent + "=> ", second_indent);
+      prefix_and_value_string pattern1b = make_prefix_and_value_string(
+          expr_with_es + "\n" + second_indent + with_es::log("=> "), second_indent
+      );
 
       if (!pattern1b.value_string_has_newline) {
         append_output(pattern1b);
@@ -159,8 +178,9 @@ bool _dump_one(
       return false;
     }
 
-    prefix_and_value_string pattern2a =
-        make_prefix_and_value_string("\n" + initial_indent + expr + " => ", initial_indent);
+    prefix_and_value_string pattern2a = make_prefix_and_value_string(
+        "\n" + initial_indent + expr_with_es + with_es::log(" => "), initial_indent
+    );
 
     if (!pattern2a.value_string_has_newline && !pattern2a.over_max_line_width) {
       append_output(pattern2a);
@@ -168,7 +188,8 @@ bool _dump_one(
     }
 
     prefix_and_value_string pattern2b = make_prefix_and_value_string(
-        "\n" + initial_indent + expr + "\n" + second_indent + "=> ", second_indent
+        "\n" + initial_indent + expr_with_es + "\n" + second_indent + with_es::log("=> "),
+        second_indent
     );
 
     if (!pattern2b.value_string_has_newline) {
@@ -179,7 +200,8 @@ bool _dump_one(
     return false;
   }
 
-  prefix_and_value_string pattern1a = make_prefix_and_value_string(expr + " => ", initial_indent);
+  prefix_and_value_string pattern1a =
+      make_prefix_and_value_string(expr_with_es + with_es::log(" => "), initial_indent);
 
   if (!pattern1a.over_max_line_width) {
     if (!pattern1a.value_string_has_newline) {
@@ -187,8 +209,9 @@ bool _dump_one(
       return true;
     }
 
-    prefix_and_value_string pattern1b =
-        make_prefix_and_value_string(expr + "\n" + second_indent + "=> ", second_indent);
+    prefix_and_value_string pattern1b = make_prefix_and_value_string(
+        expr_with_es + "\n" + second_indent + with_es::log("=> "), second_indent
+    );
 
     if (!pattern1b.value_string_has_newline) {
       append_output(pattern1b);
@@ -199,8 +222,9 @@ bool _dump_one(
     return true;
   }
 
-  prefix_and_value_string pattern1b =
-      make_prefix_and_value_string(expr + "\n" + second_indent + "=> ", second_indent);
+  prefix_and_value_string pattern1b = make_prefix_and_value_string(
+      expr_with_es + "\n" + second_indent + with_es::log("=> "), second_indent
+  );
 
   append_output(pattern1b);
   return true;
@@ -216,7 +240,7 @@ inline bool _dump_recursive_with_expr(
     const T &value,
     const Args &...args
 ) {
-  return _dump_one(output, no_newline_in_value_string, with_es::expression(expr), value)
+  return _dump_one(output, no_newline_in_value_string, expr, value)
          && _dump_recursive_with_expr(output, no_newline_in_value_string, args...);
 }
 

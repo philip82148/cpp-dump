@@ -44,8 +44,8 @@
       bool fail_on_newline                                                                         \
   ) {                                                                                              \
     if (current_depth >= max_depth)                                                                \
-      return with_es::identifier(#TYPE) + with_es::bracket("{ ", current_depth) + "..."            \
-             + with_es::bracket(" }", current_depth);                                              \
+      return with_es::identifier(#TYPE) + with_es::bracket("{ ", current_depth)                    \
+             + with_es::op("...") + with_es::bracket(" }", current_depth);                         \
                                                                                                    \
     std::string new_indent = indent + "  ";                                                        \
     size_t next_depth      = current_depth + 1;                                                    \
@@ -59,14 +59,14 @@
       if (is_first) {                                                                              \
         is_first = false;                                                                          \
       } else {                                                                                     \
-        output += ", ";                                                                            \
+        output += with_es::op(", ");                                                               \
       }                                                                                            \
                                                                                                    \
       if (shift_indent) {                                                                          \
-        output += "\n" + new_indent + with_es::member(member_name) + "= ";                         \
+        output += "\n" + new_indent + with_es::member(member_name) + with_es::op("= ");            \
         output += export_var(member, new_indent, get_last_line_length(output), next_depth, false); \
       } else {                                                                                     \
-        output += with_es::member(member_name) + "= ";                                             \
+        output += with_es::member(member_name) + with_es::op("= ");                                \
         output +=                                                                                  \
             export_var(member, indent, last_line_length + get_length(output), next_depth, true);   \
       }                                                                                            \

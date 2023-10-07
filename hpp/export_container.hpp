@@ -38,7 +38,8 @@ inline auto export_container(
   if (is_empty_iterable(container)) return with_es::bracket("[ ]", current_depth);
 
   if (current_depth >= max_depth)
-    return with_es::bracket("[ ", current_depth) + "..." + with_es::bracket(" ]", current_depth);
+    return with_es::bracket("[ ", current_depth) + with_es::op("...")
+           + with_es::bracket(" ]", current_depth);
 
   bool shift_indent = is_iterable_like<iterable_elem_type<T>>;
   // 中身がiterable_likeでも常に長さに応じて改行するかどうかを決める場合は次
@@ -57,12 +58,12 @@ rollback:
     if (is_first) {
       is_first = false;
     } else {
-      output += ", ";
+      output += with_es::op(", ");
     }
 
     if (shift_indent) {
       if (++iteration_count > max_iteration_count) {
-        output += "\n" + new_indent + "...";
+        output += "\n" + new_indent + with_es::op("...");
         break;
       }
 
@@ -72,7 +73,7 @@ rollback:
     }
 
     if (++iteration_count > max_iteration_count) {
-      output += "...";
+      output += with_es::op("...");
 
       if (last_line_length + get_length(output + " ]") <= max_line_width) break;
 

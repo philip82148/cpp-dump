@@ -38,7 +38,8 @@ inline auto export_set(
   if (set.empty()) return with_es::bracket("{ }", current_depth);
 
   if (current_depth >= max_depth)
-    with_es::bracket("{ ", current_depth) + "..." + with_es::bracket(" }", current_depth);
+    with_es::bracket("{ ", current_depth) + with_es::op("...")
+        + with_es::bracket(" }", current_depth);
 
   bool shift_indent = is_iterable_like<iterable_elem_type<T>>;
   // 中身がiterable_likeでも常に長さに応じて改行するかどうかを決める場合は次
@@ -57,25 +58,26 @@ rollback:
     if (is_first) {
       is_first = false;
     } else {
-      output += ", ";
+      output += with_es::op(", ");
     }
 
     if (shift_indent) {
       if (++iteration_count > max_iteration_count) {
-        output += "\n" + new_indent + "...";
+        output += "\n" + new_indent + with_es::op("...");
         break;
       }
 
       output +=
           "\n" + new_indent + export_var(*it, new_indent, new_indent.length(), next_depth, false);
 
-      if constexpr (is_multiset<T>) output += " (" + std::to_string(set.count(*it)) + ")";
+      if constexpr (is_multiset<T>)
+        output += with_es::member(" (" + std::to_string(set.count(*it)) + ")");
 
       continue;
     }
 
     if (++iteration_count > max_iteration_count) {
-      output += "...";
+      output += with_es::op("...");
 
       if (last_line_length + get_length(output + " }") <= max_line_width) break;
 
@@ -86,7 +88,8 @@ rollback:
     std::string elem_string =
         export_var(*it, indent, last_line_length + get_length(output), next_depth, true);
 
-    if constexpr (is_multiset<T>) elem_string += " (" + std::to_string(set.count(*it)) + ")";
+    if constexpr (is_multiset<T>)
+      elem_string += with_es::member(" (" + std::to_string(set.count(*it)) + ")");
 
     if (!has_newline(elem_string)) {
       output += elem_string;

@@ -17,38 +17,14 @@ struct escape_sequence {
   std::string reserved;
   std::string number;
   std::string character;
+  std::string op;
   std::string identifier;
   std::string member;
   std::string unsupported;
+  std::string log;
   std::string expression;
   std::vector<std::string> bracket_by_depth;
 };
-
-enum class use_es { do_not_use, normal, enhanced };
-
-namespace es_theme {
-
-const escape_sequence simple = {
-    "\e[34m",
-    "\e[32m",
-    "\e[36m",
-    "\e[34m",
-    "\e[34m",
-};
-
-const escape_sequence rich = {
-    "\e[38;2;53;140;214m",
-    "\e[38;2;167;206;155m",
-    "\e[38;2;195;145;91m",
-    "\e[38;2;78;201;176m",
-    "\e[38;2;103;205;254m",
-    "",
-    "\e[38;2;23;159;255m",
-    // "\e[38;2;68;193;241m",
-    {"\e[38;2;255;215;0m", "\e[38;2;218;112;214m", "\e[38;2;23;159;255m"},
-};
-
-};  // namespace es_theme
 
 extern inline bool use_es;
 
@@ -70,9 +46,11 @@ inline std::string _apply(const std::string &es, const std::string &s) {
 inline std::string reserved(const std::string &s) { return _apply(es_value.reserved, s); }
 inline std::string number(const std::string &s) { return _apply(es_value.number, s); }
 inline std::string character(const std::string &s) { return _apply(es_value.character, s); }
+inline std::string op(const std::string &s) { return _apply(es_value.op, s); }
 inline std::string identifier(const std::string &s) { return _apply(es_value.identifier, s); }
 inline std::string member(const std::string &s) { return _apply(es_value.member, s); }
 inline std::string unsupported(const std::string &s) { return _apply(es_value.unsupported, s); }
+inline std::string log(const std::string &s) { return _apply(es_value.log, s); }
 inline std::string expression(const std::string &s) { return _apply(es_value.expression, s); }
 
 inline std::string bracket(const std::string &s, size_t d) {

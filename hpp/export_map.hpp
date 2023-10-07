@@ -38,7 +38,8 @@ inline auto export_map(
   if (map.empty()) return with_es::bracket("{ }", current_depth);
 
   if (current_depth >= max_depth)
-    return with_es::bracket("{ ", current_depth) + "..." + with_es::bracket(" }", current_depth);
+    return with_es::bracket("{ ", current_depth) + with_es::op("...")
+           + with_es::bracket(" }", current_depth);
 
   bool shift_indent = is_multimap<T> || is_iterable_like<typename T::key_type>
                       || is_iterable_like<typename T::mapped_type>;
@@ -76,13 +77,13 @@ rollback:
     if (is_first) {
       is_first = false;
     } else {
-      output += ", ";
+      output += with_es::op(", ");
     }
 
     std::string key_string, value_string;
     if (shift_indent) {
       if (++iteration_count > max_iteration_count) {
-        output += "\n" + new_indent + "...";
+        output += "\n" + new_indent + with_es::op("...");
         break;
       }
 
@@ -92,13 +93,14 @@ rollback:
 
         key_string = "\n" + new_indent
                      + export_var(it->first, new_indent, new_indent.length(), next_depth, false)
-                     + with_es::member(" (" + std::to_string(map.count(it->first)) + ")") + ": ";
+                     + with_es::member(" (" + std::to_string(map.count(it->first)) + ")")
+                     + with_es::op(": ");
         value_string =
             export_var(values, new_indent, get_last_line_length(key_string), next_depth, false);
       } else {
         key_string = "\n" + new_indent
                      + export_var(it->first, new_indent, new_indent.length(), next_depth, false)
-                     + ": ";
+                     + with_es::op(": ");
         value_string =
             export_var(it->second, new_indent, get_last_line_length(key_string), next_depth, false);
       }
@@ -108,7 +110,7 @@ rollback:
     }
 
     if (++iteration_count > max_iteration_count) {
-      output += "...";
+      output += with_es::op("...");
 
       if (last_line_length + get_length(output + " }") <= max_line_width) break;
 
@@ -122,7 +124,7 @@ rollback:
 
       key_string =
           export_var(it->first, indent, last_line_length + get_length(output), next_depth, true)
-          + with_es::member(" (" + std::to_string(map.count(it->first)) + ")") + ": ";
+          + with_es::member(" (" + std::to_string(map.count(it->first)) + ")") + with_es::op(": ");
       value_string = export_var(
           values,
           indent,
@@ -133,7 +135,7 @@ rollback:
     } else {
       key_string =
           export_var(it->first, indent, last_line_length + get_length(output), next_depth, true)
-          + ": ";
+          + with_es::op(": ");
       value_string = export_var(
           it->second,
           indent,
