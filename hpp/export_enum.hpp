@@ -54,3 +54,7 @@ inline std::string export_enum(const T &, const std::string &, size_t, size_t, b
 }  // namespace _detail
 
 }  // namespace cpp_dump
+
+CPP_DUMP_DEFINE_EXPORT_ENUM(
+    cpp_dump::es_style_t, cpp_dump::es_style_t::no_es, cpp_dump::es_style_t::by_syntax
+);
