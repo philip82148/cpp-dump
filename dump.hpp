@@ -42,12 +42,12 @@ inline size_t max_line_width = 160;
 /**
  * Maximum number of times cpp_dump::export_var() is applied recursively.
  */
-inline size_t max_depth = 5;
+inline size_t max_depth = 4;
 
 /**
  * Maximum number of times cpp_dump::export_var() iterates over an iterator.
  * Note that in a single call, export_var() calls itself at most
- * (max_iteration_count^max_depth-1)/(max_iteration_count-1)-1 times.
+ * (max_iteration_count^(max_depth+1)-1)/(max_iteration_count-1)-1 times.
  */
 inline size_t max_iteration_count = 16;
 
@@ -96,7 +96,7 @@ bool _dump_one(
     auto last_line_length = get_last_line_length(output + prefix);
 
     std::string value_string =
-        export_var(value, indent, last_line_length, 1, no_newline_in_value_string);
+        export_var(value, indent, last_line_length, 0, no_newline_in_value_string);
 
     bool value_string_has_newline = has_newline(value_string);
 

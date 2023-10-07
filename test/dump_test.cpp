@@ -52,7 +52,7 @@ int main() {
   clog_buf = clog.rdbuf(stream.rdbuf());
 
   CPP_DUMP_SET_OPTION(max_line_width, 160);
-  CPP_DUMP_SET_OPTION(max_depth, 5);
+  CPP_DUMP_SET_OPTION(max_depth, 4);
   CPP_DUMP_SET_OPTION(max_iteration_count, 100);
   CPP_DUMP_SET_OPTION(use_es, false);
 

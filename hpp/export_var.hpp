@@ -79,7 +79,7 @@ std::string export_var(
  */
 template <typename T>
 std::string export_var(const T &value) {
-  return _detail::export_var(value, "", 0, 1, false);
+  return _detail::export_var(value, "", 0, 0, false);
 }
 
 }  // namespace cpp_dump
