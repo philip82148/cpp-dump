@@ -46,17 +46,24 @@ CPP_DUMP_DEFINE_EXPORT_OBJECT(decltype(class_a1), int_a, long_b, get_a());
 CPP_DUMP_DEFINE_EXPORT_OBJECT(class_b, static_long_a, int_b, str, pointer);
 
 int main(int argc, char *argv[]) {
-  if (argc != 2) return 1;
+  if (argc != 3) return 1;
+  bool is_narrow_width = stoi(argv[1]);
+  bool use_es          = stoi(argv[2]);
 
-  ofstream stream{"./dump_test.log"};
+  ofstream stream;
+  if (is_narrow_width) {
+    stream.open("./dump_test_narrow.log");
+  } else {
+    stream.open("./dump_test.log");
+  }
 
   streambuf *clog_buf;
   clog_buf = clog.rdbuf(stream.rdbuf());
 
-  CPP_DUMP_SET_OPTION(max_line_width, 160);
+  CPP_DUMP_SET_OPTION(max_line_width, is_narrow_width ? 20 : 160);
   CPP_DUMP_SET_OPTION(max_depth, 4);
   CPP_DUMP_SET_OPTION(max_iteration_count, 100);
-  CPP_DUMP_SET_OPTION(use_es, stoi(argv[1]));
+  CPP_DUMP_SET_OPTION(use_es, use_es);
 
   // basic
   CPP_DUMP(false, 0, 0.0, '0', (const char *)"0", string{"0"}, string_view{"0"});
