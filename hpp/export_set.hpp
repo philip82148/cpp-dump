@@ -38,7 +38,7 @@ inline auto export_set(
   if (set.empty()) return es::bracket("{ }", current_depth);
 
   if (current_depth >= max_depth)
-    es::bracket("{ ", current_depth) + es::op("...") + es::bracket(" }", current_depth);
+    return es::bracket("{ ", current_depth) + es::op("...") + es::bracket(" }", current_depth);
 
   bool shift_indent = is_iterable_like<iterable_elem_type<T>>;
   // 中身がiterable_likeでも常に長さに応じて改行するかどうかを決める場合は次
