@@ -14,6 +14,7 @@ This library has the following features:
 - The macro version can dump variables along with the names.
 - User-defined types can also be dumped by using macros.
 - The string representation of variables is similar to JavaScript, Python and C++ syntax.
+- Output colors can be customized.
 
 ## Introduction
 
@@ -129,6 +130,45 @@ CPP_DUMP(my_enum_A);
 ```
 
 ![user-defined-enum.png](./readme/user-defined-enum.png)
+
+### Customizable output colors
+
+The output color can be changed by assigning an escape sequence to a member of cpp_dump::es_value.
+
+[See Full Example Code](./readme/customizable-colors.cpp)
+
+```cpp
+// More color
+cpp_dump::es_value = {
+  "\e[02m",  // log: dark
+  "\e[34m",  // expression: blue
+  {
+    "\e[33m",  // bracket_by_depth[0]: yellow
+    "\e[35m",  // bracket_by_depth[1]: magenta
+    "\e[36m",  // bracket_by_depth[2]: cyan
+  },
+  "\e[36m",  // reserved: cyan
+  "\e[36m",  // number: cyan
+  "\e[36m",  // character: cyan
+  "\e[02m",  // op: dark
+  "\e[32m",  // identifier:  green
+  "\e[36m",  // member: cyan
+  "",        // unsupported: default
+};
+```
+
+![customizable-colors.png](./readme/customizable-colors.png)
+
+To turn off output coloring, assign cpp_dump::es_style_t::no_es to cpp_dump::es_style.
+
+[See Full Example Code](./readme/no-es.cpp)
+
+```cpp
+// Turn off output coloring
+cpp_dump::es_style = cpp_dump::es_style_t::no_es;
+```
+
+![no-es.png](./readme/no-es.png)
 
 ## Requirement
 
@@ -255,6 +295,18 @@ struct cpp_dump::es_value_t {
   std::string identifier;
   std::string member;
   std::string unsupported;
+  es_value_t(
+    std::string log,
+    std::string expression,
+    std::vector<std::string> bracket_by_depth,
+    std::string reserved,
+    std::string number,
+    std::string character,
+    std::string op,
+    std::string identifier,
+    std::string member,
+    std::string unsupported
+  );
 }
 ```
 
