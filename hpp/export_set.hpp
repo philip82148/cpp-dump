@@ -77,21 +77,21 @@ rollback:
     if (++iteration_count > max_iteration_count) {
       output += "...";
 
-      if (last_line_length + (output + " }").length() <= max_line_width) break;
+      if (last_line_length + get_length(output + " }") <= max_line_width) break;
 
       shift_indent = true;
       goto rollback;
     }
 
     std::string elem_string =
-        export_var(*it, indent, last_line_length + output.length(), next_depth, true);
+        export_var(*it, indent, last_line_length + get_length(output), next_depth, true);
 
     if constexpr (is_multiset<T>) elem_string += " (" + std::to_string(set.count(*it)) + ")";
 
     if (!has_newline(elem_string)) {
       output += elem_string;
 
-      if (last_line_length + (output + " }").length() <= max_line_width) continue;
+      if (last_line_length + get_length(output + " }") <= max_line_width) continue;
     }
 
     if (fail_on_newline) return "\n";

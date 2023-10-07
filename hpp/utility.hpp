@@ -12,24 +12,41 @@
 
 namespace cpp_dump {
 
+extern inline bool use_es;
+
 namespace _detail {
 
 inline bool has_newline(std::string_view s) { return s.find("\n") != std::string::npos; }
 
+inline size_t get_length(std::string_view s) {
+  if (!use_es) return s.length();
+
+  size_t length = 0, s_first = 0, s_last;
+  while ((s_last = s.find('\e', s_first)) != std::string::npos) {
+    length       += s_last - s_first;
+    auto es_last = s.find('m', s_last + 1);
+    if (es_last == std::string::npos) break;
+    s_first = es_last + 1;
+  }
+  length += s.length() - s_first;
+
+  return length;
+}
+
 inline size_t get_first_line_length(std::string_view s) {
   auto lf_pos = s.find("\n");
 
-  if (lf_pos == std::string::npos) return s.length();
+  if (lf_pos == std::string::npos) return get_length(s);
 
-  return lf_pos;
+  return get_length(s.substr(0, lf_pos));
 }
 
 inline size_t get_last_line_length(std::string_view s, int additional_first_line_length = 0) {
   auto lf_pos = s.rfind("\n");
 
-  if (lf_pos == std::string::npos) return additional_first_line_length + s.length();
+  if (lf_pos == std::string::npos) return additional_first_line_length + get_length(s);
 
-  return s.length() - lf_pos - 1;
+  return get_length(s.substr(lf_pos + 1));
 }
 
 }  // namespace _detail

@@ -68,7 +68,7 @@
       } else {                                                                                     \
         output += with_es::member(member_name) + "= ";                                             \
         output +=                                                                                  \
-            export_var(member, indent, last_line_length + output.length(), next_depth, true);      \
+            export_var(member, indent, last_line_length + get_length(output), next_depth, true);   \
       }                                                                                            \
     };                                                                                             \
                                                                                                    \
@@ -81,7 +81,7 @@
     if (!shift_indent) {                                                                           \
       output += +with_es::bracket(" }", current_depth);                                            \
                                                                                                    \
-      if (!has_newline(output) && last_line_length + output.length() <= max_line_width)            \
+      if (!has_newline(output) && last_line_length + get_length(output) <= max_line_width)         \
         return output;                                                                             \
                                                                                                    \
       if (fail_on_newline) return "\n";                                                            \

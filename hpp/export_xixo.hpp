@@ -50,11 +50,11 @@ inline std::string export_xixo(
                        + with_es::member("front()") + "= ";
   std::string output =
       prefix
-      + export_var(queue.front(), indent, last_line_length + prefix.length(), next_depth, true)
+      + export_var(queue.front(), indent, last_line_length + get_length(prefix), next_depth, true)
       + ", " + with_es::member("size()") + "= " + with_es::number(std::to_string(queue.size()))
       + with_es::bracket(" }", current_depth);
 
-  if (!has_newline(output) && output.length() <= max_line_width) return output;
+  if (!has_newline(output) && get_length(output) <= max_line_width) return output;
 
   if (fail_on_newline) return "\n";
 
@@ -62,7 +62,7 @@ inline std::string export_xixo(
 
   prefix = new_indent + with_es::member("front()") + "= ";
   output = with_es::identifier("std::queue") + with_es::bracket("{\n", current_depth) + prefix
-           + export_var(queue.front(), new_indent, prefix.length(), next_depth, false) + ",\n"
+           + export_var(queue.front(), new_indent, get_length(prefix), next_depth, false) + ",\n"
            + new_indent + with_es::member("size()") + "= "
            + with_es::number(std::to_string(queue.size())) + "\n" + indent
            + with_es::bracket("}", current_depth);
@@ -92,11 +92,11 @@ inline std::string export_xixo(
   std::string prefix = with_es::identifier("std::priority_queue")
                        + with_es::bracket("{ ", current_depth) + with_es::member("top()") + "= ";
   std::string output =
-      prefix + export_var(pq.top(), indent, last_line_length + prefix.length(), next_depth, true)
+      prefix + export_var(pq.top(), indent, last_line_length + get_length(prefix), next_depth, true)
       + ", " + with_es::member("size()") + "= " + with_es::number(std::to_string(pq.size()))
       + with_es::bracket(" }", current_depth);
 
-  if (!has_newline(output) && output.length() <= max_line_width) return output;
+  if (!has_newline(output) && get_length(output) <= max_line_width) return output;
 
   if (fail_on_newline) return "\n";
 
@@ -104,8 +104,8 @@ inline std::string export_xixo(
 
   prefix = new_indent + with_es::member("top()") + "= ";
   output = with_es::identifier("std::priority_queue") + with_es::bracket("{\n", current_depth)
-           + prefix + export_var(pq.top(), new_indent, prefix.length(), next_depth, false) + ",\n"
-           + new_indent + with_es::member("size()") + "= "
+           + prefix + export_var(pq.top(), new_indent, get_length(prefix), next_depth, false)
+           + ",\n" + new_indent + with_es::member("size()") + "= "
            + with_es::number(std::to_string(pq.size())) + "\n" + indent
            + with_es::bracket("}", current_depth);
 
@@ -134,11 +134,12 @@ inline std::string export_xixo(
   std::string prefix = with_es::identifier("std::stack") + with_es::bracket("{ ", current_depth)
                        + with_es::member("top()") + "= ";
   std::string output =
-      prefix + export_var(stack.top(), indent, last_line_length + prefix.length(), next_depth, true)
+      prefix
+      + export_var(stack.top(), indent, last_line_length + get_length(prefix), next_depth, true)
       + ", " + with_es::member("size()") + "= " + with_es::number(std::to_string(stack.size()))
       + with_es::bracket(" }", current_depth);
 
-  if (!has_newline(output) && output.length() <= max_line_width) return output;
+  if (!has_newline(output) && get_length(output) <= max_line_width) return output;
 
   if (fail_on_newline) return "\n";
 
@@ -146,7 +147,7 @@ inline std::string export_xixo(
 
   prefix = new_indent + with_es::member("top()") + "= ";
   output = with_es::identifier("std::stack") + with_es::bracket("{\n", current_depth) + prefix
-           + export_var(stack.top(), new_indent, prefix.length(), next_depth, false) + ",\n"
+           + export_var(stack.top(), new_indent, get_length(prefix), next_depth, false) + ",\n"
            + new_indent + with_es::member("size()") + "= "
            + with_es::number(std::to_string(stack.size())) + "\n" + indent
            + with_es::bracket("}", current_depth);

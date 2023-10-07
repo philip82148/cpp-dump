@@ -56,7 +56,7 @@ inline size_t max_iteration_count = 16;
  */
 inline std::string log_label = "[dump] ";
 
-inline use_es use_es_value = use_es::enhanced;
+inline bool use_es = true;
 
 inline escape_sequence es_value = es_theme::rich;
 

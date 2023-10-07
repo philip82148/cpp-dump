@@ -110,7 +110,7 @@ rollback:
     if (++iteration_count > max_iteration_count) {
       output += "...";
 
-      if (last_line_length + (output + " }").length() <= max_line_width) break;
+      if (last_line_length + get_length(output + " }") <= max_line_width) break;
 
       shift_indent = true;
       goto rollback;
@@ -121,19 +121,23 @@ rollback:
       value_container values{{_begin}, {_end}};
 
       key_string =
-          export_var(it->first, indent, last_line_length + output.length(), next_depth, true)
+          export_var(it->first, indent, last_line_length + get_length(output), next_depth, true)
           + with_es::member(" (" + std::to_string(map.count(it->first)) + ")") + ": ";
       value_string = export_var(
-          values, indent, last_line_length + output.length() + key_string.length(), next_depth, true
+          values,
+          indent,
+          last_line_length + get_length(output) + get_length(key_string),
+          next_depth,
+          true
       );
     } else {
       key_string =
-          export_var(it->first, indent, last_line_length + output.length(), next_depth, true)
+          export_var(it->first, indent, last_line_length + get_length(output), next_depth, true)
           + ": ";
       value_string = export_var(
           it->second,
           indent,
-          last_line_length + output.length() + key_string.length(),
+          last_line_length + get_length(output) + get_length(key_string),
           next_depth,
           true
       );
@@ -143,7 +147,7 @@ rollback:
     if (!has_newline(elem_string)) {
       output += elem_string;
 
-      if (last_line_length + (output + " }").length() <= max_line_width) continue;
+      if (last_line_length + get_length(output + " }") <= max_line_width) continue;
     }
 
     if (fail_on_newline) return "\n";

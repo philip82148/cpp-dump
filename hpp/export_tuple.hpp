@@ -35,7 +35,9 @@ inline auto _export_tuple_in_one_line(
 
   if constexpr (i < size - 1) {
     return output + ", "
-           + _export_tuple_in_one_line<i + 1, size>(tuple, indent, output.length() + 2, next_depth);
+           + _export_tuple_in_one_line<i + 1, size>(
+               tuple, indent, get_length(output) + 2, next_depth
+           );
   } else {
     return output;
   }
@@ -44,7 +46,8 @@ inline auto _export_tuple_in_one_line(
 template <const size_t i, const size_t size, typename T>
 inline auto _export_tuple_in_lines(const T &tuple, const std::string &indent, size_t next_depth)
     -> std::enable_if_t<is_tuple<T>, std::string> {
-  std::string output = export_var(std::get<i>(tuple), indent, indent.length(), next_depth, false);
+  std::string output =
+      export_var(std::get<i>(tuple), indent, get_length(indent), next_depth, false);
 
   if constexpr (i < size - 1) {
     return output + ",\n" + indent + _export_tuple_in_lines<i + 1, size>(tuple, indent, next_depth);
@@ -76,7 +79,7 @@ inline auto export_tuple(
         + _export_tuple_in_one_line<0, tuple_size>(tuple, indent, last_line_length + 2, next_depth)
         + with_es::bracket(" )", current_depth);
 
-    if (!has_newline(output) && output.length() <= max_line_width) return output;
+    if (!has_newline(output) && get_length(output) <= max_line_width) return output;
 
     if (fail_on_newline) return "\n";
 

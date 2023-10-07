@@ -50,7 +50,7 @@ const escape_sequence rich = {
 
 };  // namespace es_theme
 
-extern inline use_es use_es_value;
+extern inline bool use_es;
 
 extern inline escape_sequence es_value;
 
@@ -59,11 +59,11 @@ namespace _detail {
 namespace with_es {
 
 inline std::string _apply(const std::string &es, const std::string &s) {
-  if (use_es_value == use_es::do_not_use) {
-    return s;
-  } else {
+  if (use_es) {
     const std::string reset = "\e[0m";
     return es + s + reset;
+  } else {
+    return s;
   }
 }
 

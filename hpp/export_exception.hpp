@@ -28,11 +28,11 @@
     std::string output =                                                                           \
         prefix                                                                                     \
         + export_var(                                                                              \
-            exception.what(), indent, last_line_length + prefix.length(), next_depth, true         \
+            exception.what(), indent, last_line_length + get_length(prefix), next_depth, true      \
         )                                                                                          \
         + with_es::bracket(" }", current_depth);                                                   \
                                                                                                    \
-    if (!has_newline(output) && output.length() <= max_line_width) return output;                  \
+    if (!has_newline(output) && get_length(output) <= max_line_width) return output;               \
                                                                                                    \
     if (fail_on_newline) return "\n";                                                              \
                                                                                                    \
@@ -40,8 +40,8 @@
                                                                                                    \
     prefix = new_indent + with_es::member("what()") + "= ";                                        \
     output = with_es::identifier(#TYPE) + with_es::bracket("{\n", current_depth) + prefix          \
-             + export_var(exception.what(), new_indent, prefix.length(), next_depth, false) + "\n" \
-             + indent + with_es::bracket("}", current_depth);                                      \
+             + export_var(exception.what(), new_indent, get_length(prefix), next_depth, false)     \
+             + "\n" + indent + with_es::bracket("}", current_depth);                               \
                                                                                                    \
     return output;                                                                                 \
   }
@@ -79,10 +79,12 @@ inline auto export_exception(
   std::string prefix = with_es::bracket("{ ", current_depth) + with_es::member("what()") + "= ";
   std::string output =
       prefix
-      + export_var(exception.what(), indent, last_line_length + prefix.length(), next_depth, true)
+      + export_var(
+          exception.what(), indent, last_line_length + get_length(prefix), next_depth, true
+      )
       + with_es::bracket(" }", current_depth);
 
-  if (!has_newline(output) && output.length() <= max_line_width) return output;
+  if (!has_newline(output) && get_length(output) <= max_line_width) return output;
 
   if (fail_on_newline) return "\n";
 
@@ -90,7 +92,7 @@ inline auto export_exception(
 
   prefix = new_indent + with_es::member("what()") + "= ";
   output = with_es::bracket("{\n", current_depth) + prefix
-           + export_var(exception.what(), new_indent, prefix.length(), next_depth, false) + "\n"
+           + export_var(exception.what(), new_indent, get_length(prefix), next_depth, false) + "\n"
            + indent + with_es::bracket("}", current_depth);
 }
 
