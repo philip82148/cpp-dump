@@ -94,6 +94,8 @@ inline auto export_exception(
   output = with_es::bracket("{\n", current_depth) + prefix
            + export_var(exception.what(), new_indent, get_length(prefix), next_depth, false) + "\n"
            + indent + with_es::bracket("}", current_depth);
+
+  return output;
 }
 
 }  // namespace _detail

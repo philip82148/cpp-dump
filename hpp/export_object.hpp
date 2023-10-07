@@ -79,7 +79,7 @@
     _p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_EXPORT_OBJECT, __VA_ARGS__);                      \
                                                                                                    \
     if (!shift_indent) {                                                                           \
-      output += +with_es::bracket(" }", current_depth);                                            \
+      output += with_es::bracket(" }", current_depth);                                             \
                                                                                                    \
       if (!has_newline(output) && last_line_length + get_length(output) <= max_line_width)         \
         return output;                                                                             \

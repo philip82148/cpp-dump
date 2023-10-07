@@ -54,6 +54,7 @@ int main() {
   CPP_DUMP_SET_OPTION(max_line_width, 160);
   CPP_DUMP_SET_OPTION(max_depth, 5);
   CPP_DUMP_SET_OPTION(max_iteration_count, 100);
+  CPP_DUMP_SET_OPTION(use_es, false);
 
   // basic
   CPP_DUMP(false, 0, 0.0, '0', (const char *)"0", string{"0"}, string_view{"0"});
