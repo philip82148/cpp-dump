@@ -8,6 +8,7 @@
 #pragma once
 
 #include <string>
+#include <type_traits>
 #include <vector>
 
 #include "./utility.hpp"
@@ -96,7 +97,7 @@ inline std::string bracket(const std::string &s, size_t d) {
 
 }  // namespace with_es
 
-inline std::string _export_es_value_member(
+inline std::string _export_es_value_string(
     const std::string &es, const std::string &, size_t, size_t, bool
 ) {
   std::string escaped_es = es;
@@ -105,7 +106,7 @@ inline std::string _export_es_value_member(
   return with_es::apply(es, R"(")" + escaped_es + R"(")");
 }
 
-inline std::string _export_es_value_member(
+inline std::string _export_es_value_vector(
     const std::vector<std::string> &vector,
     const std::string &indent,
     size_t last_line_length,
@@ -143,7 +144,7 @@ rollback:
       }
 
       output += "\n" + new_indent
-                + _export_es_value_member(es, new_indent, new_indent.length(), next_depth, false);
+                + _export_es_value_string(es, new_indent, new_indent.length(), next_depth, false);
       continue;
     }
 
@@ -156,7 +157,7 @@ rollback:
       goto rollback;
     }
 
-    output += _export_es_value_member(
+    output += _export_es_value_string(
         es, indent, last_line_length + get_length(output), next_depth, true
     );
 
@@ -203,15 +204,17 @@ inline std::string export_es_value_t(
       output += with_es::op(", ");
     }
 
-    if (shift_indent) {
-      output += "\n" + new_indent + with_es::member(member_name) + with_es::op("= ");
-      output += _export_es_value_member(
+    if (shift_indent) output += "\n" + new_indent;
+
+    if constexpr (std::is_convertible_v<decltype(member), std::string>) {
+      output += with_es::apply(member, member_name + "= ");
+      output += _export_es_value_string(
           member, new_indent, get_last_line_length(output), next_depth, false
       );
     } else {
       output += with_es::member(member_name) + with_es::op("= ");
-      output += _export_es_value_member(
-          member, indent, last_line_length + get_length(output), next_depth, true
+      output += _export_es_value_vector(
+          member, new_indent, get_last_line_length(output), next_depth, false
       );
     }
   };
