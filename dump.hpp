@@ -56,23 +56,26 @@ inline size_t max_iteration_count = 16;
  */
 inline std::string log_label = "[dump] ";
 
+/**
+ * Style of the escape sequences.
+ */
 inline es_style_t es_style = es_style_t::by_syntax;
 
+/**
+ * Value of the escape sequences.
+ */
 inline es_value_t es_value = {
     "\e[02m",  // dark
-    "\e[34m",  // blue
-    {
-        "\e[33m",  // yellow
-        "\e[35m",  // magenta
-        "\e[36m",  // cyan
-    },
-    "\e[36m",  // cyan
-    "\e[32m",  // green
-    "\e[32m",  // green
+    "\e[36m",  // blue
+    // {"\e[02m"},
+    {"\e[32m"},
+    "",        // cyan
+    "",        // green
+    "",        // green
     "\e[02m",  // dark
+    "\e[32m",  // cyan
     "\e[36m",  // cyan
-    "\e[36m",  // cyan
-    "",        // default
+    "\e[31m",  // default
 };
 
 namespace _detail {

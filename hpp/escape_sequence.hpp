@@ -15,8 +15,16 @@
 
 namespace cpp_dump {
 
+/**
+ * Type of cpp_dump::es_style.
+ * cpp_dump::export_var() supports this type.
+ */
 enum class es_style_t { no_es, by_syntax };
 
+/**
+ * Type of cpp_dump::es_value.
+ * cpp_dump::export_var() supports this type.
+ */
 struct es_value_t {
  public:
   std::string log;

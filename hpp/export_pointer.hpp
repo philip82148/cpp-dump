@@ -47,7 +47,8 @@ inline auto export_pointer(
     std::ostringstream ss;
     ss << std::hex << pointer;
 
-    return es::number(ss.str());
+    // Make the entire string an identifier
+    return es::identifier(ss.str());
   } else {
     return es::identifier("*")
            + export_var(*pointer, indent, last_line_length + 1, current_depth, fail_on_newline);

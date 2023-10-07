@@ -178,6 +178,23 @@ git submodule add https://github.com/philip82148/cpp-dump
 #define CPP_DUMP_SET_OPTION(variable, value)
 ```
 
+### Functions
+
+```cpp
+/**
+ * Output string representation(s) of variable(s) to std::clog.
+ */
+template <typename... Args>
+void cpp_dump::dump(const Args &...args);
+
+/**
+ * Return a string representation of a variable.
+ * CPP_DUMP() and cpp_dump::dump() use this function internally.
+ */
+template <typename T>
+std::string cpp_dump::export_var(const T &value);
+```
+
 ### Variables
 
 ```cpp
@@ -201,24 +218,44 @@ inline size_t cpp_dump::max_iteration_count = 16;
 /**
  * Label that cpp_dump::dump() and CPP_DUMP() print at the beginning of the output.
  */
-inline std::string log_label = "[dump] ";
+inline std::string cpp_dump::log_label = "[dump] ";
+
+/**
+ * Style of the escape sequences.
+ */
+inline cpp_dump::es_style_t cpp_dump::es_style = cpp_dump::es_style_t::by_syntax;
+
+/**
+ * Value of the escape sequences.
+ */
+inline cpp_dump::es_value_t cpp_dump::es_value;
 ```
 
-### Functions
+### Types
 
 ```cpp
 /**
- * Output string representation(s) of variable(s) to std::clog.
+ * Type of cpp_dump::es_style.
+ * cpp_dump::export_var() supports this type.
  */
-template <typename... Args>
-void cpp_dump::dump(const Args &...args);
+enum class cpp_dump::es_style_t { no_es, by_syntax };
 
 /**
- * Return a string representation of a variable.
- * CPP_DUMP() and cpp_dump::dump() use this function internally.
+ * Type of cpp_dump::es_value.
+ * cpp_dump::export_var() supports this type.
  */
-template <typename T>
-std::string cpp_dump::export_var(const T &value);
+struct cpp_dump::es_value_t {
+  std::string log;
+  std::string expression;
+  std::vector<std::string> bracket_by_depth;
+  std::string reserved;
+  std::string number;
+  std::string character;
+  std::string op;
+  std::string identifier;
+  std::string member;
+  std::string unsupported;
+}
 ```
 
 ### Meta function
@@ -314,7 +351,7 @@ std::queue{ front()= value, size()= integer }
 *value
 nullptr
 0x7fff2246c4d8
-# (The address will be displayed when the type the pointer points to is not supported or void *.)
+# (The address will be displayed when the pointer type is void * or the type the pointer points to is not supported.)
 
 # Reference
 true, 'c', 1, 3.140000

@@ -52,7 +52,8 @@ inline std::string export_other(
   }
   output = "0b " + output;
 
-  return es::number(output);
+  // Make the entire string an identifier
+  return es::identifier(output);
 }
 
 template <typename... Args>
@@ -62,7 +63,8 @@ inline std::string export_other(
   auto imag      = std::imag(complex);
   auto imag_sign = imag >= 0 ? "+" : "-";
 
-  return es::number(
+  // Make the entire complex string an identifier
+  return es::identifier(
              std::to_string(std::real(complex)) + " " + imag_sign + " "
              + std::to_string(std::abs(imag)) + "i "
          )
