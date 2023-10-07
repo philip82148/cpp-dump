@@ -52,7 +52,7 @@ inline std::string export_other(
   }
   output = "0b " + output;
 
-  return with_es::number(output);
+  return es::number(output);
 }
 
 template <typename... Args>
@@ -62,11 +62,11 @@ inline std::string export_other(
   auto imag      = std::imag(complex);
   auto imag_sign = imag >= 0 ? "+" : "-";
 
-  return with_es::number(
+  return es::number(
              std::to_string(std::real(complex)) + " " + imag_sign + " "
              + std::to_string(std::abs(imag)) + "i "
          )
-         + with_es::member(
+         + es::member(
              "( abs= " + std::to_string(std::abs(complex))
              + ", arg/pi= " + std::to_string(std::arg(complex) / M_PI) + " )"
          );
@@ -82,7 +82,7 @@ inline std::string export_other(
 ) {
   return std::visit(
       [=, &indent](const auto &value) -> std::string {
-        return with_es::identifier("|")
+        return es::identifier("|")
                + export_var(value, indent, last_line_length + 1, current_depth, fail_on_newline);
       },
       variant

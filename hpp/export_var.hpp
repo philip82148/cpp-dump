@@ -40,7 +40,7 @@ std::string export_var(
     bool fail_on_newline
 ) {
   if constexpr (!is_exportable<T>) {
-    return with_es::unsupported("Unsupported Type");
+    return es::unsupported("Unsupported Type");
   } else if constexpr (is_exportable_object<T>) {
     return export_object(value, indent, last_line_length, current_depth, fail_on_newline);
   } else if constexpr (is_exportable_enum<T>) {

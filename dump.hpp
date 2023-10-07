@@ -90,12 +90,12 @@ bool _dump_one(
   const std::string second_indent  = initial_indent + "  ";
 
   if (output.length() == 0) {
-    output = with_es::log(log_label);
+    output = es::log(log_label);
   } else {
     if (no_newline_in_value_string) {
-      output += with_es::log(", ");
+      output += es::log(", ");
     } else {
-      output += with_es::log(",\n") + initial_indent;
+      output += es::log(",\n") + initial_indent;
     }
   }
 
@@ -154,11 +154,11 @@ bool _dump_one(
   }
 
   // below for dump_recursive_with_expr(), which is for CPP_DUMP() (macro)
-  auto expr_with_es = with_es::expression(expr);
+  auto expr_with_es = es::expression(expr);
 
   if (no_newline_in_value_string) {
     prefix_and_value_string pattern1a =
-        make_prefix_and_value_string(expr_with_es + with_es::log(" => "), initial_indent);
+        make_prefix_and_value_string(expr_with_es + es::log(" => "), initial_indent);
 
     if (!pattern1a.value_string_has_newline && !pattern1a.over_max_line_width) {
       append_output(pattern1a);
@@ -167,7 +167,7 @@ bool _dump_one(
 
     if (get_last_line_length(output) <= initial_indent.length()) {
       prefix_and_value_string pattern1b = make_prefix_and_value_string(
-          expr_with_es + "\n" + second_indent + with_es::log("=> "), second_indent
+          expr_with_es + "\n" + second_indent + es::log("=> "), second_indent
       );
 
       if (!pattern1b.value_string_has_newline) {
@@ -179,7 +179,7 @@ bool _dump_one(
     }
 
     prefix_and_value_string pattern2a = make_prefix_and_value_string(
-        "\n" + initial_indent + expr_with_es + with_es::log(" => "), initial_indent
+        "\n" + initial_indent + expr_with_es + es::log(" => "), initial_indent
     );
 
     if (!pattern2a.value_string_has_newline && !pattern2a.over_max_line_width) {
@@ -188,8 +188,7 @@ bool _dump_one(
     }
 
     prefix_and_value_string pattern2b = make_prefix_and_value_string(
-        "\n" + initial_indent + expr_with_es + "\n" + second_indent + with_es::log("=> "),
-        second_indent
+        "\n" + initial_indent + expr_with_es + "\n" + second_indent + es::log("=> "), second_indent
     );
 
     if (!pattern2b.value_string_has_newline) {
@@ -201,7 +200,7 @@ bool _dump_one(
   }
 
   prefix_and_value_string pattern1a =
-      make_prefix_and_value_string(expr_with_es + with_es::log(" => "), initial_indent);
+      make_prefix_and_value_string(expr_with_es + es::log(" => "), initial_indent);
 
   if (!pattern1a.over_max_line_width) {
     if (!pattern1a.value_string_has_newline) {
@@ -210,7 +209,7 @@ bool _dump_one(
     }
 
     prefix_and_value_string pattern1b = make_prefix_and_value_string(
-        expr_with_es + "\n" + second_indent + with_es::log("=> "), second_indent
+        expr_with_es + "\n" + second_indent + es::log("=> "), second_indent
     );
 
     if (!pattern1b.value_string_has_newline) {
@@ -223,7 +222,7 @@ bool _dump_one(
   }
 
   prefix_and_value_string pattern1b = make_prefix_and_value_string(
-      expr_with_es + "\n" + second_indent + with_es::log("=> "), second_indent
+      expr_with_es + "\n" + second_indent + es::log("=> "), second_indent
   );
 
   append_output(pattern1b);

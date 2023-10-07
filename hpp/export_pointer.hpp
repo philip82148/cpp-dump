@@ -41,15 +41,15 @@ inline auto export_pointer(
     size_t current_depth,
     bool fail_on_newline
 ) -> std::enable_if_t<is_pointer<T>, std::string> {
-  if (pointer == nullptr) return with_es::reserved("nullptr");
+  if (pointer == nullptr) return es::reserved("nullptr");
 
   if constexpr (is_null_pointer<T> || !is_exportable<remove_pointer<T>>) {
     std::ostringstream ss;
     ss << std::hex << pointer;
 
-    return with_es::number(ss.str());
+    return es::number(ss.str());
   } else {
-    return with_es::identifier("*")
+    return es::identifier("*")
            + export_var(*pointer, indent, last_line_length + 1, current_depth, fail_on_newline);
   }
 }

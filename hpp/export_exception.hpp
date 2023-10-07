@@ -23,14 +23,14 @@
   ) {                                                                                              \
     size_t next_depth = current_depth + 1;                                                         \
                                                                                                    \
-    std::string prefix = with_es::identifier(#TYPE) + with_es::bracket("{ ", current_depth)        \
-                         + with_es::member("what()") + with_es::op("= ");                          \
+    std::string prefix = es::identifier(#TYPE) + es::bracket("{ ", current_depth)                  \
+                         + es::member("what()") + es::op("= ");                                    \
     std::string output =                                                                           \
         prefix                                                                                     \
         + export_var(                                                                              \
             exception.what(), indent, last_line_length + get_length(prefix), next_depth, true      \
         )                                                                                          \
-        + with_es::bracket(" }", current_depth);                                                   \
+        + es::bracket(" }", current_depth);                                                        \
                                                                                                    \
     if (!has_newline(output) && get_length(output) <= max_line_width) return output;               \
                                                                                                    \
@@ -38,10 +38,10 @@
                                                                                                    \
     std::string new_indent = indent + "  ";                                                        \
                                                                                                    \
-    prefix = new_indent + with_es::member("what()") + with_es::op("= ");                           \
-    output = with_es::identifier(#TYPE) + with_es::bracket("{\n", current_depth) + prefix          \
+    prefix = new_indent + es::member("what()") + es::op("= ");                                     \
+    output = es::identifier(#TYPE) + es::bracket("{\n", current_depth) + prefix                    \
              + export_var(exception.what(), new_indent, get_length(prefix), next_depth, false)     \
-             + "\n" + indent + with_es::bracket("}", current_depth);                               \
+             + "\n" + indent + es::bracket("}", current_depth);                                    \
                                                                                                    \
     return output;                                                                                 \
   }
@@ -76,14 +76,13 @@ inline auto export_exception(
 ) -> std::enable_if_t<is_exception<T>, std::string> {
   size_t next_depth = current_depth + 1;
 
-  std::string prefix =
-      with_es::bracket("{ ", current_depth) + with_es::member("what()") + with_es::op("= ");
+  std::string prefix = es::bracket("{ ", current_depth) + es::member("what()") + es::op("= ");
   std::string output =
       prefix
       + export_var(
           exception.what(), indent, last_line_length + get_length(prefix), next_depth, true
       )
-      + with_es::bracket(" }", current_depth);
+      + es::bracket(" }", current_depth);
 
   if (!has_newline(output) && get_length(output) <= max_line_width) return output;
 
@@ -91,10 +90,10 @@ inline auto export_exception(
 
   std::string new_indent = indent + "  ";
 
-  prefix = new_indent + with_es::member("what()") + with_es::op("= ");
-  output = with_es::bracket("{\n", current_depth) + prefix
+  prefix = new_indent + es::member("what()") + es::op("= ");
+  output = es::bracket("{\n", current_depth) + prefix
            + export_var(exception.what(), new_indent, get_length(prefix), next_depth, false) + "\n"
-           + indent + with_es::bracket("}", current_depth);
+           + indent + es::bracket("}", current_depth);
 
   return output;
 }

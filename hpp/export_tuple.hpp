@@ -34,7 +34,7 @@ inline auto _export_tuple_in_one_line(
   if (has_newline(output)) return "\n";
 
   if constexpr (i < size - 1) {
-    return output + with_es::op(", ")
+    return output + es::op(", ")
            + _export_tuple_in_one_line<i + 1, size>(
                tuple, indent, get_length(output) + 2, next_depth
            );
@@ -50,7 +50,7 @@ inline auto _export_tuple_in_lines(const T &tuple, const std::string &indent, si
       export_var(std::get<i>(tuple), indent, get_length(indent), next_depth, false);
 
   if constexpr (i < size - 1) {
-    return output + with_es::op(",\n") + indent
+    return output + es::op(",\n") + indent
            + _export_tuple_in_lines<i + 1, size>(tuple, indent, next_depth);
   } else {
     return output;
@@ -68,27 +68,26 @@ inline auto export_tuple(
   constexpr size_t tuple_size = std::tuple_size_v<T>;
 
   if constexpr (tuple_size == 0) {
-    return with_es::bracket("( )", current_depth);
+    return es::bracket("( )", current_depth);
   } else {
     if (current_depth >= max_depth)
-      return with_es::bracket("( ", current_depth) + with_es::op("...")
-             + with_es::bracket(" )", current_depth);
+      return es::bracket("( ", current_depth) + es::op("...") + es::bracket(" )", current_depth);
 
     size_t next_depth = current_depth + 1;
 
     std::string output =
-        with_es::bracket("( ", current_depth)
+        es::bracket("( ", current_depth)
         + _export_tuple_in_one_line<0, tuple_size>(tuple, indent, last_line_length + 2, next_depth)
-        + with_es::bracket(" )", current_depth);
+        + es::bracket(" )", current_depth);
 
     if (!has_newline(output) && get_length(output) <= max_line_width) return output;
 
     if (fail_on_newline) return "\n";
 
     std::string new_indent = indent + "  ";
-    return with_es::bracket("(\n", current_depth) + new_indent
+    return es::bracket("(\n", current_depth) + new_indent
            + _export_tuple_in_lines<0, tuple_size>(tuple, new_indent, next_depth) + "\n" + indent
-           + with_es::bracket(")", current_depth);
+           + es::bracket(")", current_depth);
   }
 }
 

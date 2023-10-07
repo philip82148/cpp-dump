@@ -44,8 +44,8 @@
       bool fail_on_newline                                                                         \
   ) {                                                                                              \
     if (current_depth >= max_depth)                                                                \
-      return with_es::identifier(#TYPE) + with_es::bracket("{ ", current_depth)                    \
-             + with_es::op("...") + with_es::bracket(" }", current_depth);                         \
+      return es::identifier(#TYPE) + es::bracket("{ ", current_depth) + es::op("...")              \
+             + es::bracket(" }", current_depth);                                                   \
                                                                                                    \
     std::string new_indent = indent + "  ";                                                        \
     size_t next_depth      = current_depth + 1;                                                    \
@@ -59,27 +59,27 @@
       if (is_first) {                                                                              \
         is_first = false;                                                                          \
       } else {                                                                                     \
-        output += with_es::op(", ");                                                               \
+        output += es::op(", ");                                                                    \
       }                                                                                            \
                                                                                                    \
       if (shift_indent) {                                                                          \
-        output += "\n" + new_indent + with_es::member(member_name) + with_es::op("= ");            \
+        output += "\n" + new_indent + es::member(member_name) + es::op("= ");                      \
         output += export_var(member, new_indent, get_last_line_length(output), next_depth, false); \
       } else {                                                                                     \
-        output += with_es::member(member_name) + with_es::op("= ");                                \
+        output += es::member(member_name) + es::op("= ");                                          \
         output +=                                                                                  \
             export_var(member, indent, last_line_length + get_length(output), next_depth, true);   \
       }                                                                                            \
     };                                                                                             \
                                                                                                    \
   rollback:                                                                                        \
-    output   = with_es::identifier(#TYPE) + with_es::bracket("{ ", current_depth);                 \
+    output   = es::identifier(#TYPE) + es::bracket("{ ", current_depth);                           \
     is_first = true;                                                                               \
                                                                                                    \
     _p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_EXPORT_OBJECT, __VA_ARGS__);                      \
                                                                                                    \
     if (!shift_indent) {                                                                           \
-      output += with_es::bracket(" }", current_depth);                                             \
+      output += es::bracket(" }", current_depth);                                                  \
                                                                                                    \
       if (!has_newline(output) && last_line_length + get_length(output) <= max_line_width)         \
         return output;                                                                             \
@@ -90,7 +90,7 @@
       goto rollback;                                                                               \
     }                                                                                              \
                                                                                                    \
-    output += "\n" + indent + with_es::bracket("}", current_depth);                                \
+    output += "\n" + indent + es::bracket("}", current_depth);                                     \
                                                                                                    \
     return output;                                                                                 \
   }                                                                                                \

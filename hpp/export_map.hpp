@@ -35,11 +35,10 @@ inline auto export_map(
     size_t current_depth,
     bool fail_on_newline
 ) -> std::enable_if_t<is_map<T>, std::string> {
-  if (map.empty()) return with_es::bracket("{ }", current_depth);
+  if (map.empty()) return es::bracket("{ }", current_depth);
 
   if (current_depth >= max_depth)
-    return with_es::bracket("{ ", current_depth) + with_es::op("...")
-           + with_es::bracket(" }", current_depth);
+    return es::bracket("{ ", current_depth) + es::op("...") + es::bracket(" }", current_depth);
 
   bool shift_indent = is_multimap<T> || is_iterable_like<typename T::key_type>
                       || is_iterable_like<typename T::mapped_type>;
@@ -70,20 +69,20 @@ inline auto export_map(
   };
 
 rollback:
-  std::string output     = with_es::bracket("{ ", current_depth);
+  std::string output     = es::bracket("{ ", current_depth);
   bool is_first          = true;
   size_t iteration_count = 0;
   for (auto it = map.begin(), end = map.end(); it != end; it = map.equal_range(it->first).second) {
     if (is_first) {
       is_first = false;
     } else {
-      output += with_es::op(", ");
+      output += es::op(", ");
     }
 
     std::string key_string, value_string;
     if (shift_indent) {
       if (++iteration_count > max_iteration_count) {
-        output += "\n" + new_indent + with_es::op("...");
+        output += "\n" + new_indent + es::op("...");
         break;
       }
 
@@ -93,14 +92,13 @@ rollback:
 
         key_string = "\n" + new_indent
                      + export_var(it->first, new_indent, new_indent.length(), next_depth, false)
-                     + with_es::member(" (" + std::to_string(map.count(it->first)) + ")")
-                     + with_es::op(": ");
+                     + es::member(" (" + std::to_string(map.count(it->first)) + ")") + es::op(": ");
         value_string =
             export_var(values, new_indent, get_last_line_length(key_string), next_depth, false);
       } else {
         key_string = "\n" + new_indent
                      + export_var(it->first, new_indent, new_indent.length(), next_depth, false)
-                     + with_es::op(": ");
+                     + es::op(": ");
         value_string =
             export_var(it->second, new_indent, get_last_line_length(key_string), next_depth, false);
       }
@@ -110,7 +108,7 @@ rollback:
     }
 
     if (++iteration_count > max_iteration_count) {
-      output += with_es::op("...");
+      output += es::op("...");
 
       if (last_line_length + get_length(output + " }") <= max_line_width) break;
 
@@ -124,7 +122,7 @@ rollback:
 
       key_string =
           export_var(it->first, indent, last_line_length + get_length(output), next_depth, true)
-          + with_es::member(" (" + std::to_string(map.count(it->first)) + ")") + with_es::op(": ");
+          + es::member(" (" + std::to_string(map.count(it->first)) + ")") + es::op(": ");
       value_string = export_var(
           values,
           indent,
@@ -135,7 +133,7 @@ rollback:
     } else {
       key_string =
           export_var(it->first, indent, last_line_length + get_length(output), next_depth, true)
-          + with_es::op(": ");
+          + es::op(": ");
       value_string = export_var(
           it->second,
           indent,
@@ -159,9 +157,9 @@ rollback:
   }
 
   if (shift_indent) {
-    output += "\n" + indent + with_es::bracket("}", current_depth);
+    output += "\n" + indent + es::bracket("}", current_depth);
   } else {
-    output += with_es::bracket(" }", current_depth);
+    output += es::bracket(" }", current_depth);
   }
 
   return output;

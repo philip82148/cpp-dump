@@ -35,11 +35,10 @@ inline auto export_container(
     size_t current_depth,
     bool fail_on_newline
 ) -> std::enable_if_t<is_container<T>, std::string> {
-  if (is_empty_iterable(container)) return with_es::bracket("[ ]", current_depth);
+  if (is_empty_iterable(container)) return es::bracket("[ ]", current_depth);
 
   if (current_depth >= max_depth)
-    return with_es::bracket("[ ", current_depth) + with_es::op("...")
-           + with_es::bracket(" ]", current_depth);
+    return es::bracket("[ ", current_depth) + es::op("...") + es::bracket(" ]", current_depth);
 
   bool shift_indent = is_iterable_like<iterable_elem_type<T>>;
   // 中身がiterable_likeでも常に長さに応じて改行するかどうかを決める場合は次
@@ -51,19 +50,19 @@ inline auto export_container(
   size_t next_depth      = current_depth + 1;
 
 rollback:
-  std::string output     = with_es::bracket("[ ", current_depth);
+  std::string output     = es::bracket("[ ", current_depth);
   bool is_first          = true;
   size_t iteration_count = 0;
   for (const auto &elem : container) {
     if (is_first) {
       is_first = false;
     } else {
-      output += with_es::op(", ");
+      output += es::op(", ");
     }
 
     if (shift_indent) {
       if (++iteration_count > max_iteration_count) {
-        output += "\n" + new_indent + with_es::op("...");
+        output += "\n" + new_indent + es::op("...");
         break;
       }
 
@@ -73,7 +72,7 @@ rollback:
     }
 
     if (++iteration_count > max_iteration_count) {
-      output += with_es::op("...");
+      output += es::op("...");
 
       if (last_line_length + get_length(output + " ]") <= max_line_width) break;
 
@@ -96,9 +95,9 @@ rollback:
   }
 
   if (shift_indent) {
-    output += "\n" + indent + with_es::bracket("]", current_depth);
+    output += "\n" + indent + es::bracket("]", current_depth);
   } else {
-    output += with_es::bracket(" ]", current_depth);
+    output += es::bracket(" ]", current_depth);
   }
 
   return output;

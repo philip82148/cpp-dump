@@ -34,7 +34,7 @@ inline auto export_asterisk(
 
   // If decltype(*value) == decltype(value), then the program enters an infinite loop.
   // So increment depth.
-  return with_es::identifier("*")
+  return es::identifier("*")
          + export_var(*value, indent, last_line_length + 1, current_depth + 1, fail_on_newline);
 }
 

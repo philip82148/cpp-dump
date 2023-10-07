@@ -67,7 +67,7 @@ namespace _detail {
 
 inline bool use_es() { return es_style != es_style_t::no_es; }
 
-namespace with_es {
+namespace es {
 
 inline std::string apply(const std::string &es, const std::string &s) {
   if (use_es()) {
@@ -95,7 +95,7 @@ inline std::string bracket(const std::string &s, size_t d) {
   return apply(es_value.bracket_by_depth[d % sz], s);
 }
 
-}  // namespace with_es
+}  // namespace es
 
 inline std::string _export_es_value_string(
     const std::string &es, const std::string &, size_t, size_t, bool
@@ -103,21 +103,20 @@ inline std::string _export_es_value_string(
   std::string escaped_es = es;
   replace_string(escaped_es, "\e", "\\e");
 
-  return with_es::apply(es, R"(")" + escaped_es + R"(")");
+  return es::apply(es, R"(")" + escaped_es + R"(")");
 }
 
 inline std::string _export_es_value_vector(
-    const std::vector<std::string> &vector,
+    const std::vector<std::string> &es_vec,
     const std::string &indent,
     size_t last_line_length,
     size_t current_depth,
     bool fail_on_newline
 ) {
-  if (vector.empty()) return with_es::bracket("[ ]", current_depth);
+  if (es_vec.empty()) return es::bracket("[ ]", current_depth);
 
   if (current_depth >= max_depth)
-    return with_es::bracket("[ ", current_depth) + with_es::op("...")
-           + with_es::bracket(" ]", current_depth);
+    return es::bracket("[ ", current_depth) + es::op("...") + es::bracket(" ]", current_depth);
 
   bool shift_indent = false;
 
@@ -127,19 +126,19 @@ inline std::string _export_es_value_vector(
   size_t next_depth      = current_depth + 1;
 
 rollback:
-  std::string output     = with_es::bracket("[ ", current_depth);
+  std::string output     = es::bracket("[ ", current_depth);
   bool is_first          = true;
   size_t iteration_count = 0;
-  for (const auto &es : vector) {
+  for (const auto &es : es_vec) {
     if (is_first) {
       is_first = false;
     } else {
-      output += with_es::op(", ");
+      output += es::op(", ");
     }
 
     if (shift_indent) {
       if (++iteration_count > max_iteration_count) {
-        output += "\n" + new_indent + with_es::op("...");
+        output += "\n" + new_indent + es::op("...");
         break;
       }
 
@@ -149,7 +148,7 @@ rollback:
     }
 
     if (++iteration_count > max_iteration_count) {
-      output += with_es::op("...");
+      output += es::op("...");
 
       if (last_line_length + get_length(output + " ]") <= max_line_width) break;
 
@@ -170,9 +169,9 @@ rollback:
   }
 
   if (shift_indent) {
-    output += "\n" + indent + with_es::bracket("]", current_depth);
+    output += "\n" + indent + es::bracket("]", current_depth);
   } else {
-    output += with_es::bracket(" ]", current_depth);
+    output += es::bracket(" ]", current_depth);
   }
 
   return output;
@@ -186,8 +185,8 @@ inline std::string export_es_value_t(
     bool fail_on_newline
 ) {
   if (current_depth >= max_depth)
-    return with_es::identifier("cpp_dump::es_value_t") + with_es::bracket("{ ", current_depth)
-           + with_es::op("...") + with_es::bracket(" }", current_depth);
+    return es::identifier("cpp_dump::es_value_t") + es::bracket("{ ", current_depth) + es::op("...")
+           + es::bracket(" }", current_depth);
 
   std::string new_indent = indent + "  ";
   size_t next_depth      = current_depth + 1;
@@ -201,18 +200,18 @@ inline std::string export_es_value_t(
     if (is_first) {
       is_first = false;
     } else {
-      output += with_es::op(", ");
+      output += es::op(", ");
     }
 
     if (shift_indent) output += "\n" + new_indent;
 
     if constexpr (std::is_convertible_v<decltype(member), std::string>) {
-      output += with_es::apply(member, member_name + "= ");
+      output += es::apply(member, member_name + "= ");
       output += _export_es_value_string(
           member, new_indent, get_last_line_length(output), next_depth, false
       );
     } else {
-      output += with_es::member(member_name) + with_es::op("= ");
+      output += es::member(member_name) + es::op("= ");
       output += _export_es_value_vector(
           member, new_indent, get_last_line_length(output), next_depth, false
       );
@@ -220,7 +219,7 @@ inline std::string export_es_value_t(
   };
 
 rollback:
-  output   = with_es::identifier("cpp_dump::es_value_t") + with_es::bracket("{ ", current_depth);
+  output   = es::identifier("cpp_dump::es_value_t") + es::bracket("{ ", current_depth);
   is_first = true;
 
   append_output("log", esv.log);
@@ -234,7 +233,7 @@ rollback:
   append_output("unsupported", esv.unsupported);
 
   if (!shift_indent) {
-    output += with_es::bracket(" }", current_depth);
+    output += es::bracket(" }", current_depth);
 
     if (!has_newline(output) && last_line_length + get_length(output) <= max_line_width)
       return output;
@@ -245,7 +244,7 @@ rollback:
     goto rollback;
   }
 
-  output += "\n" + indent + with_es::bracket("}", current_depth);
+  output += "\n" + indent + es::bracket("}", current_depth);
 
   return output;
 }
