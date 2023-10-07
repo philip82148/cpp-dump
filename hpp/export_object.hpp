@@ -44,7 +44,7 @@
       bool fail_on_newline                                                                         \
   ) {                                                                                              \
     if (current_depth >= max_depth)                                                                \
-      return with_es::object(#TYPE) + with_es::bracket("{ ", current_depth) + "..."                \
+      return with_es::identifier(#TYPE) + with_es::bracket("{ ", current_depth) + "..."            \
              + with_es::bracket(" }", current_depth);                                              \
                                                                                                    \
     std::string new_indent = indent + "  ";                                                        \
@@ -63,17 +63,17 @@
       }                                                                                            \
                                                                                                    \
       if (shift_indent) {                                                                          \
-        output += "\n" + new_indent + with_es::object(member_name) + "= ";                         \
+        output += "\n" + new_indent + with_es::member(member_name) + "= ";                         \
         output += export_var(member, new_indent, get_last_line_length(output), next_depth, false); \
       } else {                                                                                     \
-        output += with_es::object(member_name) + "= ";                                             \
+        output += with_es::member(member_name) + "= ";                                             \
         output +=                                                                                  \
             export_var(member, indent, last_line_length + output.length(), next_depth, true);      \
       }                                                                                            \
     };                                                                                             \
                                                                                                    \
   rollback:                                                                                        \
-    output   = with_es::object(#TYPE) + with_es::bracket("{ ", current_depth);                     \
+    output   = with_es::identifier(#TYPE) + with_es::bracket("{ ", current_depth);                 \
     is_first = true;                                                                               \
                                                                                                    \
     _p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_EXPORT_OBJECT, __VA_ARGS__);                      \

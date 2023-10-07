@@ -35,7 +35,7 @@
   ) {                                                                                              \
     std::map<TYPE, std::string> enum_to_string{                                                    \
         _p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_EXPORT_ENUM, __VA_ARGS__)};                   \
-    return with_es::object(                                                                        \
+    return with_es::identifier(                                                                    \
         enum_to_string.count(enum_const) ? enum_to_string[enum_const] : #TYPE "::?"                \
     );                                                                                             \
   }                                                                                                \

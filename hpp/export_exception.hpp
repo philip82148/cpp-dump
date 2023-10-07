@@ -23,8 +23,8 @@
   ) {                                                                                              \
     size_t next_depth = current_depth + 1;                                                         \
                                                                                                    \
-    std::string prefix = with_es::object(#TYPE) + with_es::bracket("{ ", current_depth)            \
-                         + with_es::object("what()") + "= ";                                       \
+    std::string prefix = with_es::identifier(#TYPE) + with_es::bracket("{ ", current_depth)        \
+                         + with_es::member("what()") + "= ";                                       \
     std::string output =                                                                           \
         prefix                                                                                     \
         + export_var(                                                                              \
@@ -38,8 +38,8 @@
                                                                                                    \
     std::string new_indent = indent + "  ";                                                        \
                                                                                                    \
-    prefix = new_indent + with_es::object("what()") + "= ";                                        \
-    output = with_es::object(#TYPE) + with_es::bracket("{\n", current_depth) + prefix              \
+    prefix = new_indent + with_es::member("what()") + "= ";                                        \
+    output = with_es::identifier(#TYPE) + with_es::bracket("{\n", current_depth) + prefix          \
              + export_var(exception.what(), new_indent, prefix.length(), next_depth, false) + "\n" \
              + indent + with_es::bracket("}", current_depth);                                      \
                                                                                                    \
@@ -76,7 +76,7 @@ inline auto export_exception(
 ) -> std::enable_if_t<is_exception<T>, std::string> {
   size_t next_depth = current_depth + 1;
 
-  std::string prefix = with_es::bracket("{ ", current_depth) + with_es::object("what()") + "= ";
+  std::string prefix = with_es::bracket("{ ", current_depth) + with_es::member("what()") + "= ";
   std::string output =
       prefix
       + export_var(exception.what(), indent, last_line_length + prefix.length(), next_depth, true)
@@ -88,7 +88,7 @@ inline auto export_exception(
 
   std::string new_indent = indent + "  ";
 
-  prefix = new_indent + with_es::object("what()") + "= ";
+  prefix = new_indent + with_es::member("what()") + "= ";
   output = with_es::bracket("{\n", current_depth) + prefix
            + export_var(exception.what(), new_indent, prefix.length(), next_depth, false) + "\n"
            + indent + with_es::bracket("}", current_depth);

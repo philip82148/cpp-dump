@@ -92,7 +92,7 @@ rollback:
 
         key_string = "\n" + new_indent
                      + export_var(it->first, new_indent, new_indent.length(), next_depth, false)
-                     + " (" + std::to_string(map.count(it->first)) + "): ";
+                     + with_es::member(" (" + std::to_string(map.count(it->first)) + ")") + ": ";
         value_string =
             export_var(values, new_indent, get_last_line_length(key_string), next_depth, false);
       } else {
@@ -121,8 +121,8 @@ rollback:
       value_container values{{_begin}, {_end}};
 
       key_string =
-          export_var(it->first, indent, last_line_length + output.length(), next_depth, true) + " ("
-          + std::to_string(map.count(it->first)) + "): ";
+          export_var(it->first, indent, last_line_length + output.length(), next_depth, true)
+          + with_es::member(" (" + std::to_string(map.count(it->first)) + ")") + ": ";
       value_string = export_var(
           values, indent, last_line_length + output.length() + key_string.length(), next_depth, true
       );

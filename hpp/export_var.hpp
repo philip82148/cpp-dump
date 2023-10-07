@@ -10,6 +10,7 @@
 #include <string>
 #include <type_traits>
 
+#include "./escape_sequence.hpp"
 #include "./export_arithmetic.hpp"
 #include "./export_asterisk.hpp"
 #include "./export_container.hpp"
@@ -39,7 +40,7 @@ std::string export_var(
     bool fail_on_newline
 ) {
   if constexpr (!is_exportable<T>) {
-    return "Unsupported Type";
+    return with_es::unsupported("Unsupported Type");
   } else if constexpr (is_exportable_object<T>) {
     return export_object(value, indent, last_line_length, current_depth, fail_on_newline);
   } else if constexpr (is_exportable_enum<T>) {

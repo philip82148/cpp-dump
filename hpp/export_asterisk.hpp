@@ -10,6 +10,7 @@
 #include <string>
 #include <type_traits>
 
+#include "./escape_sequence.hpp"
 #include "./type_check.hpp"
 
 namespace cpp_dump {
@@ -33,7 +34,8 @@ inline auto export_asterisk(
 
   // If decltype(*value) == decltype(value), then the program enters an infinite loop.
   // So increment depth.
-  return "*" + export_var(*value, indent, last_line_length + 1, current_depth + 1, fail_on_newline);
+  return with_es::identifier("*")
+         + export_var(*value, indent, last_line_length + 1, current_depth + 1, fail_on_newline);
 }
 
 }  // namespace _detail

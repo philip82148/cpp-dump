@@ -63,10 +63,13 @@ inline std::string export_other(
   auto imag_sign = imag >= 0 ? "+" : "-";
 
   return with_es::number(
-      std::to_string(std::real(complex)) + " " + imag_sign + " " + std::to_string(std::abs(imag))
-      + "i ( abs= " + std::to_string(std::abs(complex))
-      + ", arg/pi= " + std::to_string(std::arg(complex) / M_PI) + " )"
-  );
+             std::to_string(std::real(complex)) + " " + imag_sign + " "
+             + std::to_string(std::abs(imag)) + "i "
+         )
+         + with_es::member(
+             "( abs= " + std::to_string(std::abs(complex))
+             + ", arg/pi= " + std::to_string(std::arg(complex) / M_PI) + " )"
+         );
 }
 
 template <typename... Args>
@@ -79,7 +82,7 @@ inline std::string export_other(
 ) {
   return std::visit(
       [=, &indent](const auto &value) -> std::string {
-        return "|"
+        return with_es::identifier("|")
                + export_var(value, indent, last_line_length + 1, current_depth, fail_on_newline);
       },
       variant
