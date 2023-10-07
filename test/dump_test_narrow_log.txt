@@ -423,6 +423,26 @@ here.`,
          ]
 [dump] unsupported_enum
          => Unsupported Type
+[dump] cpp_dump::es_style_t::no_es
+         => cpp_dump::es_style_t::no_es,
+       cpp_dump::es_style_t::by_syntax
+         => cpp_dump::es_style_t::by_syntax,
+       cpp_dump::es_value
+         => cpp_dump::es_value_t{ 
+           log= "\e[02m", 
+           expression= "\e[34m", 
+           bracket_by_depth= [ 
+             "\e[33m", 
+             "\e[35m", 
+             "\e[36m"
+           ], 
+           reserved= "\e[36m", 
+           character= "\e[32m", 
+           op= "\e[02m", 
+           identifier= "\e[36m", 
+           member= "\e[36m", 
+           unsupported= ""
+         }
 [dump] array50 => [ 
          0, 
          1, 

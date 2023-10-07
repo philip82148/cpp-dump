@@ -46,25 +46,22 @@ CPP_DUMP_DEFINE_EXPORT_OBJECT(decltype(class_a1), int_a, long_b, get_a());
 CPP_DUMP_DEFINE_EXPORT_OBJECT(class_b, static_long_a, int_b, str, pointer);
 
 int main(int argc, char *argv[]) {
-  if (argc != 3) return 1;
-  bool is_narrow_width = stoi(argv[1]);
-  bool use_es          = stoi(argv[2]);
+  if (argc != 5) return 1;
+  const char *filename = argv[1];
+  int max_line_width   = stoi(argv[2]);
+  int max_depth        = stoi(argv[3]);
+  int es_index         = stoi(argv[4]);
 
-  ofstream stream;
-  if (is_narrow_width) {
-    stream.open("./dump_test_narrow.log");
-  } else {
-    stream.open("./dump_test.log");
-  }
+  ofstream stream(filename);
 
   streambuf *clog_buf;
   clog_buf = clog.rdbuf(stream.rdbuf());
 
-  CPP_DUMP_SET_OPTION(max_line_width, is_narrow_width ? 20 : 160);
-  CPP_DUMP_SET_OPTION(max_depth, 4);
+  CPP_DUMP_SET_OPTION(max_line_width, max_line_width);
+  CPP_DUMP_SET_OPTION(max_depth, max_depth);
   CPP_DUMP_SET_OPTION(max_iteration_count, 100);
   CPP_DUMP_SET_OPTION(
-      es_style, use_es ? cpp_dump::es_style_t::by_syntax : cpp_dump::es_style_t::no_es
+      es_style, (array{cpp_dump::es_style_t::no_es, cpp_dump::es_style_t::by_syntax}[es_index])
   );
 
   // basic
@@ -222,6 +219,9 @@ int main(int argc, char *argv[]) {
   // unsupported type
   enum class unsupported { k, l } unsupported_enum = unsupported::k;
   CPP_DUMP(unsupported_enum);
+
+  // extra
+  CPP_DUMP(cpp_dump::es_style_t::no_es, cpp_dump::es_style_t::by_syntax, cpp_dump::es_value);
 
   // max_iteration_count
   array<int, 50> array50;
