@@ -37,19 +37,20 @@ inline auto export_string(const T &value, const std::string &, size_t, size_t, b
   _replace_string(str, R"(\)", R"(\\)");
 
   if (!has_newline(str) && str.find(R"(")") == std::string::npos)
-    return with_es::character(R"(")" + str + R"(")");
+    return with_es::character(R"(")" + str) + with_es::character(R"(")");
 
   _replace_string(str, R"(`)", R"(\`)");
 
-  if (!has_newline(str)) return with_es::character(R"(`)" + str + R"(`)");
+  if (!has_newline(str)) return with_es::character(R"(`)" + str) + with_es::character(R"(`)");
 
   if (fail_on_newline) return "\n";
 
   return with_es::character(
-      "\n"
-      R"(`)"
-      + str + R"(`)"
-  );
+             "\n"
+             R"(`)"
+             + str
+         )
+         + with_es::character(R"(`)");
 }
 
 }  // namespace _detail
