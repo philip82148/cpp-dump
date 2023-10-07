@@ -10,6 +10,7 @@
 #include <map>
 #include <string>
 
+#include "./escape_sequence.hpp"
 #include "./expand_va_macro.hpp"
 #include "./type_check.hpp"
 #include "./utility.hpp"
@@ -34,7 +35,9 @@
   ) {                                                                                              \
     std::map<TYPE, std::string> enum_to_string{                                                    \
         _p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_EXPORT_ENUM, __VA_ARGS__)};                   \
-    return enum_to_string.count(enum_const) ? enum_to_string[enum_const] : #TYPE "::?";            \
+    return with_es::object(                                                                        \
+        enum_to_string.count(enum_const) ? enum_to_string[enum_const] : #TYPE "::?"                \
+    );                                                                                             \
   }                                                                                                \
                                                                                                    \
   } /* namespace _detail */                                                                        \

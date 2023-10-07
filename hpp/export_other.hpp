@@ -14,6 +14,7 @@
 #include <type_traits>
 #include <variant>
 
+#include "./escape_sequence.hpp"
 #include "./type_check.hpp"
 
 namespace cpp_dump {
@@ -51,7 +52,7 @@ inline std::string export_other(
   }
   output = "0b " + output;
 
-  return output;
+  return with_es::number(output);
 }
 
 template <typename... Args>
@@ -61,9 +62,11 @@ inline std::string export_other(
   auto imag      = std::imag(complex);
   auto imag_sign = imag >= 0 ? "+" : "-";
 
-  return std::to_string(std::real(complex)) + " " + imag_sign + " " + std::to_string(std::abs(imag))
-         + "i ( abs= " + std::to_string(std::abs(complex))
-         + ", arg/pi= " + std::to_string(std::arg(complex) / M_PI) + " )";
+  return with_es::number(
+      std::to_string(std::real(complex)) + " " + imag_sign + " " + std::to_string(std::abs(imag))
+      + "i ( abs= " + std::to_string(std::abs(complex))
+      + ", arg/pi= " + std::to_string(std::arg(complex) / M_PI) + " )"
+  );
 }
 
 template <typename... Args>

@@ -11,6 +11,7 @@
 #include <string_view>
 #include <type_traits>
 
+#include "./escape_sequence.hpp"
 #include "./type_check.hpp"
 #include "./utility.hpp"
 
@@ -35,17 +36,20 @@ inline auto export_string(const T &value, const std::string &, size_t, size_t, b
 
   _replace_string(str, R"(\)", R"(\\)");
 
-  if (!has_newline(str) && str.find(R"(")") == std::string::npos) return R"(")" + str + R"(")";
+  if (!has_newline(str) && str.find(R"(")") == std::string::npos)
+    return with_es::character(R"(")" + str + R"(")");
 
   _replace_string(str, R"(`)", R"(\`)");
 
-  if (!has_newline(str)) return R"(`)" + str + R"(`)";
+  if (!has_newline(str)) return with_es::character(R"(`)" + str + R"(`)");
 
   if (fail_on_newline) return "\n";
 
-  return "\n"
-         R"(`)"
-         + str + R"(`)";
+  return with_es::character(
+      "\n"
+      R"(`)"
+      + str + R"(`)"
+  );
 }
 
 }  // namespace _detail

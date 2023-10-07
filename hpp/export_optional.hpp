@@ -11,6 +11,7 @@
 #include <string>
 #include <type_traits>
 
+#include "./escape_sequence.hpp"
 #include "./type_check.hpp"
 
 namespace cpp_dump {
@@ -23,7 +24,7 @@ std::string export_var(const T &, const std::string &, size_t, size_t, bool);
 inline std::string export_optional(
     const std::nullopt_t &, const std::string &, size_t, size_t, bool
 ) {
-  return "std::nullopt";
+  return with_es::object("std::nullopt");
 }
 
 template <typename T>
@@ -34,7 +35,7 @@ inline auto export_optional(
     size_t current_depth,
     bool fail_on_newline
 ) -> std::enable_if_t<is_optional<T>, std::string> {
-  if (!optional) return "std::nullopt";
+  if (!optional) return with_es::object("std::nullopt");
 
   return "?"
          + export_var(

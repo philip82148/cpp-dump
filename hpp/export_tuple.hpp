@@ -11,6 +11,7 @@
 #include <tuple>
 #include <type_traits>
 
+#include "./escape_sequence.hpp"
 #include "./type_check.hpp"
 #include "./utility.hpp"
 
@@ -63,24 +64,26 @@ inline auto export_tuple(
   constexpr size_t tuple_size = std::tuple_size_v<T>;
 
   if constexpr (tuple_size == 0) {
-    return "( )";
+    return with_es::bracket("( )", current_depth);
   } else {
-    if (current_depth >= max_depth) return "( ... )";
+    if (current_depth >= max_depth)
+      return with_es::bracket("( ", current_depth) + "..." + with_es::bracket(" )", current_depth);
 
     size_t next_depth = current_depth + 1;
 
     std::string output =
-        "( "
+        with_es::bracket("( ", current_depth)
         + _export_tuple_in_one_line<0, tuple_size>(tuple, indent, last_line_length + 2, next_depth)
-        + " )";
+        + with_es::bracket(" )", current_depth);
 
     if (!has_newline(output) && output.length() <= max_line_width) return output;
 
     if (fail_on_newline) return "\n";
 
     std::string new_indent = indent + "  ";
-    return "(\n" + new_indent + _export_tuple_in_lines<0, tuple_size>(tuple, new_indent, next_depth)
-           + "\n" + indent + ")";
+    return with_es::bracket("(\n", current_depth) + new_indent
+           + _export_tuple_in_lines<0, tuple_size>(tuple, new_indent, next_depth) + "\n" + indent
+           + with_es::bracket(")", current_depth);
   }
 }
 

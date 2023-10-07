@@ -9,6 +9,7 @@
 
 #include <stdexcept>
 
+#include "./escape_sequence.hpp"
 #include "./type_check.hpp"
 #include "./utility.hpp"
 
@@ -22,13 +23,14 @@
   ) {                                                                                              \
     size_t next_depth = current_depth + 1;                                                         \
                                                                                                    \
-    std::string prefix = #TYPE "{ what()= ";                                                       \
+    std::string prefix = with_es::object(#TYPE) + with_es::bracket("{ ", current_depth)            \
+                         + with_es::object("what()") + "= ";                                       \
     std::string output =                                                                           \
         prefix                                                                                     \
         + export_var(                                                                              \
             exception.what(), indent, last_line_length + prefix.length(), next_depth, true         \
         )                                                                                          \
-        + " }";                                                                                    \
+        + with_es::bracket(" }", current_depth);                                                   \
                                                                                                    \
     if (!has_newline(output) && output.length() <= max_line_width) return output;                  \
                                                                                                    \
@@ -36,10 +38,10 @@
                                                                                                    \
     std::string new_indent = indent + "  ";                                                        \
                                                                                                    \
-    prefix = new_indent + "what()= ";                                                              \
-    output = #TYPE "{\n" + prefix                                                                  \
+    prefix = new_indent + with_es::object("what()") + "= ";                                        \
+    output = with_es::object(#TYPE) + with_es::bracket("{\n", current_depth) + prefix              \
              + export_var(exception.what(), new_indent, prefix.length(), next_depth, false) + "\n" \
-             + indent + "}";                                                                       \
+             + indent + with_es::bracket("}", current_depth);                                      \
                                                                                                    \
     return output;                                                                                 \
   }
@@ -74,11 +76,11 @@ inline auto export_exception(
 ) -> std::enable_if_t<is_exception<T>, std::string> {
   size_t next_depth = current_depth + 1;
 
-  std::string prefix = "{ what()= ";
+  std::string prefix = with_es::bracket("{ ", current_depth) + with_es::object("what()") + "= ";
   std::string output =
       prefix
       + export_var(exception.what(), indent, last_line_length + prefix.length(), next_depth, true)
-      + " }";
+      + with_es::bracket(" }", current_depth);
 
   if (!has_newline(output) && output.length() <= max_line_width) return output;
 
@@ -86,12 +88,10 @@ inline auto export_exception(
 
   std::string new_indent = indent + "  ";
 
-  prefix = new_indent + "what()= ";
-  output = "{\n" + prefix
+  prefix = new_indent + with_es::object("what()") + "= ";
+  output = with_es::bracket("{\n", current_depth) + prefix
            + export_var(exception.what(), new_indent, prefix.length(), next_depth, false) + "\n"
-           + indent + "}";
-
-  return output;
+           + indent + with_es::bracket("}", current_depth);
 }
 
 }  // namespace _detail

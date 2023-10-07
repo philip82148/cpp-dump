@@ -10,6 +10,7 @@
 #include <string>
 #include <type_traits>
 
+#include "./escape_sequence.hpp"
 #include "./type_check.hpp"
 #include "./utility.hpp"
 
@@ -34,9 +35,10 @@ inline auto export_set(
     size_t current_depth,
     bool fail_on_newline
 ) -> std::enable_if_t<is_set<T>, std::string> {
-  if (set.empty()) return "{ }";
+  if (set.empty()) return with_es::bracket("{ }", current_depth);
 
-  if (current_depth >= max_depth) return "{ ... }";
+  if (current_depth >= max_depth)
+    with_es::bracket("{ ", current_depth) + "..." + with_es::bracket(" }", current_depth);
 
   bool shift_indent = is_iterable_like<iterable_elem_type<T>>;
   // 中身がiterable_likeでも常に長さに応じて改行するかどうかを決める場合は次
@@ -48,7 +50,7 @@ inline auto export_set(
   size_t next_depth      = current_depth + 1;
 
 rollback:
-  std::string output     = "{ ";
+  std::string output     = with_es::bracket("{ ", current_depth);
   bool is_first          = true;
   size_t iteration_count = 0;
   for (auto it = set.begin(), end = set.end(); it != end; it = set.equal_range(*it).second) {
@@ -99,9 +101,9 @@ rollback:
   }
 
   if (shift_indent) {
-    output += "\n" + indent + "}";
+    output += "\n" + indent + with_es::bracket("}", current_depth);
   } else {
-    output += " }";
+    output += with_es::bracket(" }", current_depth);
   }
 
   return output;

@@ -11,6 +11,7 @@
 #include <string>
 #include <utility>
 
+#include "hpp/escape_sequence.hpp"
 #include "hpp/expand_va_macro.hpp"
 #include "hpp/export_var.hpp"
 #include "hpp/utility.hpp"
@@ -54,6 +55,10 @@ inline size_t max_iteration_count = 16;
  * Label that cpp_dump::dump() and CPP_DUMP() print at the beginning of the output.
  */
 inline std::string log_label = "[dump] ";
+
+inline use_es use_es_value = use_es::enhanced;
+
+inline escape_sequence es_value = es_theme::rich;
 
 namespace _detail {
 
@@ -211,7 +216,7 @@ inline bool _dump_recursive_with_expr(
     const T &value,
     const Args &...args
 ) {
-  return _dump_one(output, no_newline_in_value_string, expr, value)
+  return _dump_one(output, no_newline_in_value_string, with_es::expression(expr), value)
          && _dump_recursive_with_expr(output, no_newline_in_value_string, args...);
 }
 

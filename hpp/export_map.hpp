@@ -10,6 +10,7 @@
 #include <string>
 #include <type_traits>
 
+#include "./escape_sequence.hpp"
 #include "./type_check.hpp"
 #include "./utility.hpp"
 
@@ -34,9 +35,10 @@ inline auto export_map(
     size_t current_depth,
     bool fail_on_newline
 ) -> std::enable_if_t<is_map<T>, std::string> {
-  if (map.empty()) return "{ }";
+  if (map.empty()) return with_es::bracket("{ }", current_depth);
 
-  if (current_depth >= max_depth) return "{ ... }";
+  if (current_depth >= max_depth)
+    return with_es::bracket("{ ", current_depth) + "..." + with_es::bracket(" }", current_depth);
 
   bool shift_indent = is_multimap<T> || is_iterable_like<typename T::key_type>
                       || is_iterable_like<typename T::mapped_type>;
@@ -67,7 +69,7 @@ inline auto export_map(
   };
 
 rollback:
-  std::string output     = "{ ";
+  std::string output     = with_es::bracket("{ ", current_depth);
   bool is_first          = true;
   size_t iteration_count = 0;
   for (auto it = map.begin(), end = map.end(); it != end; it = map.equal_range(it->first).second) {
@@ -151,9 +153,9 @@ rollback:
   }
 
   if (shift_indent) {
-    output += "\n" + indent + "}";
+    output += "\n" + indent + with_es::bracket("}", current_depth);
   } else {
-    output += " }";
+    output += with_es::bracket(" }", current_depth);
   }
 
   return output;
