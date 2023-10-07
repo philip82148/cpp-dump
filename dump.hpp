@@ -65,17 +65,16 @@ inline es_style_t es_style = es_style_t::by_syntax;
  * Value of the escape sequences.
  */
 inline es_value_t es_value = {
-    "\e[02m",  // dark
-    "\e[36m",  // blue
-    // {"\e[02m"},
-    {"\e[32m"},
-    "",        // cyan
-    "",        // green
-    "",        // green
-    "\e[02m",  // dark
-    "\e[32m",  // cyan
-    "\e[36m",  // cyan
-    "\e[31m",  // default
+    "\e[02m",    // log: dark
+    "\e[36m",    // expression: cyan
+    {"\e[32m"},  // bracket_by_depth[0]: green
+    "",          // reserved: default
+    "",          // number: default
+    "",          // character: default
+    "\e[02m",    // op: dark
+    "\e[32m",    // identifier: green
+    "\e[36m",    // member: cyan
+    "\e[31m",    // unsupported: red
 };
 
 namespace _detail {

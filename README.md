@@ -10,11 +10,11 @@ This library has the following features:
 
 - Outputs to the standard error output (std::clog) string representations of a wide variety of types: multidimensional arrays, (multi)maps, (multi)sets, complex numbers, even error objects, and etc.
 - Automatically indents so that the output fits into the maximum line width.
+- Output is colored and the colors can be customized.
 - Header-only library, no build or dependencies required.
 - The macro version can dump variables along with the names.
 - User-defined types can also be dumped by using macros.
 - The string representation of variables is similar to JavaScript, Python and C++ syntax.
-- Output colors can be customized.
 
 ## Introduction
 
@@ -94,6 +94,43 @@ CPP_DUMP(my_vector);
 
 ![Auto indent](./readme/auto-indent.png)
 
+### Customizable output colors
+
+The output color can be changed by assigning an escape sequence to a member of `cpp_dump::es_value`. [See Full Example Code](./readme/customizable-colors.cpp)
+
+```cpp
+// Use more colors
+cpp_dump::es_value = {
+  "\e[02m",  // log: dark
+  "\e[34m",  // expression: blue
+  {
+    "\e[33m",  // bracket_by_depth[0]: yellow
+    "\e[35m",  // bracket_by_depth[1]: magenta
+    "\e[36m",  // bracket_by_depth[2]: cyan
+  },
+  "\e[36m",  // reserved: cyan
+  "\e[36m",  // number: cyan
+  "\e[36m",  // character: cyan
+  "\e[02m",  // op: dark
+  "\e[32m",  // identifier:  green
+  "\e[36m",  // member: cyan
+  "",        // unsupported: default
+};
+```
+
+![customizable-colors.png](./readme/customizable-colors.png)
+
+To turn off output coloring, assign `cpp_dump::es_style_t::no_es` to `cpp_dump::es_style`.
+
+[See Full Example Code](./readme/no-es.cpp)
+
+```cpp
+// Turn off output coloring
+cpp_dump::es_style = cpp_dump::es_style_t::no_es;
+```
+
+![no-es.png](./readme/no-es.png)
+
 ### User-defined types can also be supported by using macros
 
 #### User-defined class
@@ -130,45 +167,6 @@ CPP_DUMP(my_enum_A);
 ```
 
 ![user-defined-enum.png](./readme/user-defined-enum.png)
-
-### Customizable output colors
-
-The output color can be changed by assigning an escape sequence to a member of cpp_dump::es_value.
-
-[See Full Example Code](./readme/customizable-colors.cpp)
-
-```cpp
-// More color
-cpp_dump::es_value = {
-  "\e[02m",  // log: dark
-  "\e[34m",  // expression: blue
-  {
-    "\e[33m",  // bracket_by_depth[0]: yellow
-    "\e[35m",  // bracket_by_depth[1]: magenta
-    "\e[36m",  // bracket_by_depth[2]: cyan
-  },
-  "\e[36m",  // reserved: cyan
-  "\e[36m",  // number: cyan
-  "\e[36m",  // character: cyan
-  "\e[02m",  // op: dark
-  "\e[32m",  // identifier:  green
-  "\e[36m",  // member: cyan
-  "",        // unsupported: default
-};
-```
-
-![customizable-colors.png](./readme/customizable-colors.png)
-
-To turn off output coloring, assign cpp_dump::es_style_t::no_es to cpp_dump::es_style.
-
-[See Full Example Code](./readme/no-es.cpp)
-
-```cpp
-// Turn off output coloring
-cpp_dump::es_style = cpp_dump::es_style_t::no_es;
-```
-
-![no-es.png](./readme/no-es.png)
 
 ## Requirement
 
@@ -268,7 +266,18 @@ inline cpp_dump::es_style_t cpp_dump::es_style = cpp_dump::es_style_t::by_syntax
 /**
  * Value of the escape sequences.
  */
-inline cpp_dump::es_value_t cpp_dump::es_value;
+inline cpp_dump::es_value_t cpp_dump::es_value = {
+    "\e[02m",    // log: dark
+    "\e[36m",    // expression: cyan
+    {"\e[32m"},  // bracket_by_depth[0]: green
+    "",          // reserved: default
+    "",          // number: default
+    "",          // character: default
+    "\e[02m",    // op: dark
+    "\e[32m",    // identifier: green
+    "\e[36m",    // member: cyan
+    "\e[31m",    // unsupported: red
+};
 ```
 
 ### Types
