@@ -24,6 +24,8 @@
 #include <unordered_set>
 #include <variant>
 
+#include "./escape_sequence.hpp"
+
 namespace cpp_dump {
 
 namespace _detail {
@@ -188,6 +190,8 @@ template <typename... Args>
 inline constexpr bool _is_other_type<std::complex<Args...>> = true;
 template <typename... Args>
 inline constexpr bool _is_other_type<std::variant<Args...>> = true;
+template <>
+inline constexpr bool _is_other_type<es_value_t> = true;
 
 template <typename T>
 inline constexpr bool is_other_type = _is_other_type<_remove_cref<T>>;

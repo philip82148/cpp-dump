@@ -19,27 +19,17 @@ namespace cpp_dump {
 
 namespace _detail {
 
-inline void _replace_string(
-    std::string &subject, std::string_view search, std::string_view replace
-) {
-  std::string::size_type pos = 0;
-  while ((pos = subject.find(search, pos)) != std::string::npos) {
-    subject.replace(pos, search.length(), replace);
-    pos += replace.length();
-  }
-}
-
 template <typename T>
 inline auto export_string(const T &value, const std::string &, size_t, size_t, bool fail_on_newline)
     -> std::enable_if_t<is_string<T>, std::string> {
   std::string str{value};
 
-  _replace_string(str, R"(\)", R"(\\)");
+  replace_string(str, R"(\)", R"(\\)");
 
   if (!has_newline(str) && str.find(R"(")") == std::string::npos)
     return with_es::character(R"(")" + str) + with_es::character(R"(")");
 
-  _replace_string(str, R"(`)", R"(\`)");
+  replace_string(str, R"(`)", R"(\`)");
 
   if (!has_newline(str)) return with_es::character(R"(`)" + str) + with_es::character(R"(`)");
 

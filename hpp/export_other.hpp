@@ -89,6 +89,16 @@ inline std::string export_other(
   );
 }
 
+inline std::string export_other(
+    const es_value_t &esv,
+    const std::string &indent,
+    size_t last_line_length,
+    size_t current_depth,
+    bool fail_on_newline
+) {
+  return export_es_value_t(esv, indent, last_line_length, current_depth, fail_on_newline);
+}
+
 }  // namespace _detail
 
 }  // namespace cpp_dump
