@@ -69,6 +69,7 @@ rollback:
       output +=
           "\n" + new_indent + export_var(*it, new_indent, new_indent.length(), next_depth, false);
 
+      // Treat the multiplicity as a member as export_map() does.
       if constexpr (is_multiset<T>)
         output += es::member(" (" + std::to_string(set.count(*it)) + ")");
 
@@ -87,6 +88,7 @@ rollback:
     std::string elem_string =
         export_var(*it, indent, last_line_length + get_length(output), next_depth, true);
 
+    // Treat the multiplicity as a member as export_map() does.
     if constexpr (is_multiset<T>)
       elem_string += es::member(" (" + std::to_string(set.count(*it)) + ")");
 

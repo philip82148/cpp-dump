@@ -80,7 +80,7 @@ namespace es {
 inline std::string apply(const std::string &es, const std::string &s) {
   if (use_es()) {
     const std::string reset = "\e[0m";
-    return es + s + reset;
+    return reset + es + s + reset;
   } else {
     return s;
   }

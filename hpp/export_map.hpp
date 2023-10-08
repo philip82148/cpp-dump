@@ -90,6 +90,8 @@ rollback:
         auto [_begin, _end] = map.equal_range(it->first);
         value_container values{{_begin}, {_end}};
 
+        // Treat the multiplicity as a member to distinguish it from the keys & values.
+        // Also, multiplicities are similar to members since they are on the left side of values.
         key_string = "\n" + new_indent
                      + export_var(it->first, new_indent, new_indent.length(), next_depth, false)
                      + es::member(" (" + std::to_string(map.count(it->first)) + ")") + es::op(": ");
@@ -120,6 +122,8 @@ rollback:
       auto [_begin, _end] = map.equal_range(it->first);
       value_container values{{_begin}, {_end}};
 
+      // Treat the multiplicity as a member to distinguish it from the keys & values.
+      // Also, multiplicities are similar to members since they are on the left side of values.
       key_string =
           export_var(it->first, indent, last_line_length + get_length(output), next_depth, true)
           + es::member(" (" + std::to_string(map.count(it->first)) + ")") + es::op(": ");

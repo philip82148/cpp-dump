@@ -58,20 +58,20 @@ inline std::string export_other(
 
 template <typename... Args>
 inline std::string export_other(
-    const std::complex<Args...> &complex, const std::string &, size_t, size_t, bool
+    const std::complex<Args...> &complex, const std::string &, size_t, size_t current_depth, bool
 ) {
   auto imag      = std::imag(complex);
   auto imag_sign = imag >= 0 ? "+" : "-";
 
-  // Make the entire complex string an identifier
+  // Treat the entire complex string as an identifier
   return es::identifier(
              std::to_string(std::real(complex)) + " " + imag_sign + " "
              + std::to_string(std::abs(imag)) + "i "
          )
-         + es::member(
-             "( abs= " + std::to_string(std::abs(complex))
-             + ", arg/pi= " + std::to_string(std::arg(complex) / M_PI) + " )"
-         );
+         + es::bracket("( ", current_depth) + es::member("abs") + es::op("= ")
+         + es::number(std::to_string(std::abs(complex))) + es::op(", ") + es::member("arg/pi")
+         + es::op("= ") + es::number(std::to_string(std::arg(complex) / M_PI))
+         + es::bracket(" )", current_depth);
 }
 
 template <typename... Args>
