@@ -24,23 +24,18 @@ inline auto export_string(const T &value, const std::string &, size_t, size_t, b
     -> std::enable_if_t<is_string<T>, std::string> {
   std::string str{value};
 
-  replace_string(str, R"(\)", R"(\\)");
+  // replace_string(str, R"(\)", R"(\\)");
 
   if (!has_newline(str) && str.find(R"(")") == std::string::npos)
     return es::character(R"(")" + str) + es::character(R"(")");
 
-  replace_string(str, R"(`)", R"(\`)");
+  // replace_string(str, R"(`)", R"(\`)");
 
   if (!has_newline(str)) return es::character(R"(`)" + str) + es::character(R"(`)");
 
   if (fail_on_newline) return "\n";
 
-  return es::character(
-             "\n"
-             R"(`)"
-             + str
-         )
-         + es::character(R"(`)");
+  return "\n" + es::character(R"(`)" + str) + es::character(R"(`)");
 }
 
 }  // namespace _detail
