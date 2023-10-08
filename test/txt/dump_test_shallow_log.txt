@@ -21,6 +21,7 @@ here.`,
 [dump] c_style_array => [ ... ]
 [dump] vec => [ ... ]
 [dump] [ ... ]
+[dump] [ ... ], [ ... ]
 [dump] make_pair(8, 'a') => ( ... )
 [dump] make_tuple( 9, "This is another string.", "This is another string.", "This is another string.", "This is another string.", 7.9 ) => ( ... )
 [dump] (map<double, string>{{3.2, "This is a pen."}, {3.8, "I have an apple."}}) => { ... }

@@ -31,16 +31,10 @@ CPP_DUMP_DEFINE_EXPORT_OBJECT(decltype(class_a1), int_a, long_b, get_a());
 CPP_DUMP_DEFINE_EXPORT_OBJECT(class_b, static_long_a, int_b, str, pointer);
 
 int main(int argc, char *argv[]) {
-  if (argc != 5) return 1;
-  const char *filename = argv[1];
-  int max_line_width   = stoi(argv[2]);
-  int max_depth        = stoi(argv[3]);
-  int es_index         = stoi(argv[4]);
-
-  ofstream stream(filename);
-
-  streambuf *clog_buf;
-  clog_buf = clog.rdbuf(stream.rdbuf());
+  if (argc != 4) return 1;
+  int max_line_width = stoi(argv[1]);
+  int max_depth      = stoi(argv[2]);
+  int es_index       = stoi(argv[3]);
 
   CPP_DUMP_SET_OPTION(max_line_width, max_line_width);
   CPP_DUMP_SET_OPTION(max_depth, max_depth);
@@ -74,11 +68,14 @@ int main(int argc, char *argv[]) {
       (vector<int>{2, 3}), (vector<int>{3, 4}), (vector<vector<int>>{{2}, {4}, {4}, {5}, {6}})
   );
   CPP_DUMP((vector{make_pair(1, 9), make_pair(3, 4), make_pair(5, 7)}));
-  int c_style_array[10]{3, 1, 4, 1, 5, 9, 2, 6, 5, 3};
+  int c_style_array[40]{3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 3, 1, 4, 1, 5, 9, 2, 6, 5, 3,
+                        3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 3, 1, 4, 1, 5, 9, 2, 6, 5, 3};
   CPP_DUMP(c_style_array);
 
   CPP_DUMP(vec);
   dump(vec);
+
+  dump(c_style_array, c_style_array);
 
   // pair&tuple
   CPP_DUMP(make_pair(8, 'a'));
@@ -221,6 +218,4 @@ int main(int argc, char *argv[]) {
   CPP_DUMP(array50, map50, set50);
   CPP_DUMP_SET_OPTION(max_iteration_count, 40);
   CPP_DUMP(array50, map50, set50);
-
-  clog.rdbuf(clog_buf);
 }
