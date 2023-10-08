@@ -12,6 +12,7 @@
 #include <string>
 #include <type_traits>
 
+#include "./escape_sequence.hpp"
 #include "./type_check.hpp"
 
 namespace cpp_dump {
@@ -40,15 +41,17 @@ inline auto export_pointer(
     size_t current_depth,
     bool fail_on_newline
 ) -> std::enable_if_t<is_pointer<T>, std::string> {
-  if (pointer == nullptr) return "nullptr";
+  if (pointer == nullptr) return es::reserved("nullptr");
 
   if constexpr (is_null_pointer<T> || !is_exportable<remove_pointer<T>>) {
     std::ostringstream ss;
     ss << std::hex << pointer;
 
-    return ss.str();
+    // Make the entire string an identifier
+    return es::identifier(ss.str());
   } else {
-    return "*" + export_var(*pointer, indent, last_line_length + 1, current_depth, fail_on_newline);
+    return es::identifier("*")
+           + export_var(*pointer, indent, last_line_length + 1, current_depth, fail_on_newline);
   }
 }
 

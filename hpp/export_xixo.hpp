@@ -12,6 +12,7 @@
 #include <string>
 #include <type_traits>
 
+#include "./escape_sequence.hpp"
 #include "./type_check.hpp"
 #include "./utility.hpp"
 
@@ -34,28 +35,36 @@ inline std::string export_xixo(
     size_t current_depth,
     bool fail_on_newline
 ) {
-  if (queue.empty()) return "std::queue{ size()= 0 }";
+  if (queue.empty())
+    return es::identifier("std::queue") + es::bracket("{ ", current_depth) + es::member("size()")
+           + es::op("= ") + es::number("0") + es::bracket(" }", current_depth);
 
-  if (current_depth >= max_depth) return "std::queue{ ... }";
+  if (current_depth >= max_depth)
+    return es::identifier("std::queue") + es::bracket("{ ", current_depth) + es::op("...")
+           + es::bracket(" }", current_depth);
 
   size_t next_depth = current_depth + 1;
 
-  std::string prefix = "std::queue{ front()= ";
+  std::string prefix = es::identifier("std::queue") + es::bracket("{ ", current_depth)
+                       + es::member("front()") + es::op("= ");
   std::string output =
       prefix
-      + export_var(queue.front(), indent, last_line_length + prefix.length(), next_depth, true)
-      + ", size()= " + std::to_string(queue.size()) + " }";
+      + export_var(queue.front(), indent, last_line_length + get_length(prefix), next_depth, true)
+      + es::op(", ") + es::member("size()") + es::op("= ")
+      + es::number(std::to_string(queue.size())) + es::bracket(" }", current_depth);
 
-  if (!has_newline(output) && output.length() <= max_line_width) return output;
+  if (!has_newline(output) && get_length(output) <= max_line_width) return output;
 
   if (fail_on_newline) return "\n";
 
   std::string new_indent = indent + "  ";
 
-  prefix = new_indent + "front()= ";
-  output = "std::queue{\n" + prefix
-           + export_var(queue.front(), new_indent, prefix.length(), next_depth, false) + ",\n"
-           + new_indent + "size()= " + std::to_string(queue.size()) + "\n" + indent + "}";
+  prefix = new_indent + es::member("front()") + es::op("= ");
+  output = es::identifier("std::queue") + es::bracket("{\n", current_depth) + prefix
+           + export_var(queue.front(), new_indent, get_length(prefix), next_depth, false)
+           + es::op(",\n") + new_indent + es::member("size()") + es::op("= ")
+           + es::number(std::to_string(queue.size())) + "\n" + indent
+           + es::bracket("}", current_depth);
 
   return output;
 }
@@ -68,27 +77,35 @@ inline std::string export_xixo(
     size_t current_depth,
     bool fail_on_newline
 ) {
-  if (pq.empty()) return "std::priority_queue{ size()= 0 }";
+  if (pq.empty())
+    return es::identifier("std::priority_queue") + es::bracket("{ ", current_depth)
+           + es::member("size()") + "= " + es::number("0") + es::bracket(" }", current_depth);
 
-  if (current_depth >= max_depth) return "std::priority_queue{ ... }";
+  if (current_depth >= max_depth)
+    return es::identifier("std::priority_queue") + es::bracket("{ ", current_depth) + es::op("...")
+           + es::bracket(" }", current_depth);
 
   size_t next_depth = current_depth + 1;
 
-  std::string prefix = "std::priority_queue{ top()= ";
+  std::string prefix = es::identifier("std::priority_queue") + es::bracket("{ ", current_depth)
+                       + es::member("top()") + es::op("= ");
   std::string output =
-      prefix + export_var(pq.top(), indent, last_line_length + prefix.length(), next_depth, true)
-      + ", size()= " + std::to_string(pq.size()) + " }";
+      prefix + export_var(pq.top(), indent, last_line_length + get_length(prefix), next_depth, true)
+      + es::op(", ") + es::member("size()") + es::op("= ") + es::number(std::to_string(pq.size()))
+      + es::bracket(" }", current_depth);
 
-  if (!has_newline(output) && output.length() <= max_line_width) return output;
+  if (!has_newline(output) && get_length(output) <= max_line_width) return output;
 
   if (fail_on_newline) return "\n";
 
   std::string new_indent = indent + "  ";
 
-  prefix = new_indent + "top()= ";
-  output = "std::priority_queue{\n" + prefix
-           + export_var(pq.top(), new_indent, prefix.length(), next_depth, false) + ",\n"
-           + new_indent + "size()= " + std::to_string(pq.size()) + "\n" + indent + "}";
+  prefix = new_indent + es::member("top()") + es::op("= ");
+  output = es::identifier("std::priority_queue") + es::bracket("{\n", current_depth) + prefix
+           + export_var(pq.top(), new_indent, get_length(prefix), next_depth, false) + es::op(",\n")
+           + new_indent + es::member("size()") + es::op("= ")
+           + es::number(std::to_string(pq.size())) + "\n" + indent
+           + es::bracket("}", current_depth);
 
   return output;
 }
@@ -101,27 +118,36 @@ inline std::string export_xixo(
     size_t current_depth,
     bool fail_on_newline
 ) {
-  if (stack.empty()) return "std::stack{ size()= 0 }";
+  if (stack.empty())
+    return es::identifier("std::stack") + es::bracket("{ ", current_depth) + es::member("size()")
+           + es::op("= ") + es::number("0") + es::bracket(" }", current_depth);
 
-  if (current_depth >= max_depth) return "std::stack{ ... }";
+  if (current_depth >= max_depth)
+    return es::identifier("std::stack") + es::bracket("{ ", current_depth) + es::op("...")
+           + es::bracket(" }", current_depth);
 
   size_t next_depth = current_depth + 1;
 
-  std::string prefix = "std::stack{ top()= ";
+  std::string prefix = es::identifier("std::stack") + es::bracket("{ ", current_depth)
+                       + es::member("top()") + es::op("= ");
   std::string output =
-      prefix + export_var(stack.top(), indent, last_line_length + prefix.length(), next_depth, true)
-      + ", size()= " + std::to_string(stack.size()) + " }";
+      prefix
+      + export_var(stack.top(), indent, last_line_length + get_length(prefix), next_depth, true)
+      + es::op(", ") + es::member("size()") + es::op("= ")
+      + es::number(std::to_string(stack.size())) + es::bracket(" }", current_depth);
 
-  if (!has_newline(output) && output.length() <= max_line_width) return output;
+  if (!has_newline(output) && get_length(output) <= max_line_width) return output;
 
   if (fail_on_newline) return "\n";
 
   std::string new_indent = indent + "  ";
 
-  prefix = new_indent + "top()= ";
-  output = "std::stack{\n" + prefix
-           + export_var(stack.top(), new_indent, prefix.length(), next_depth, false) + ",\n"
-           + new_indent + "size()= " + std::to_string(stack.size()) + "\n" + indent + "}";
+  prefix = new_indent + es::member("top()") + es::op("= ");
+  output = es::identifier("std::stack") + es::bracket("{\n", current_depth) + prefix
+           + export_var(stack.top(), new_indent, get_length(prefix), next_depth, false)
+           + es::op(",\n") + new_indent + es::member("size()") + es::op("= ")
+           + es::number(std::to_string(stack.size())) + "\n" + indent
+           + es::bracket("}", current_depth);
 
   return output;
 }

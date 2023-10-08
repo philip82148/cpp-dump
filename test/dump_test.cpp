@@ -1,24 +1,9 @@
+// This is a test for competitive programming.
+#include <bits/stdc++.h>
+//
 #include "../dump.hpp"
 
-#include <bitset>
-#include <complex>
-#include <exception>
-#include <fstream>
-#include <iostream>
-#include <map>
-#include <optional>
-#include <queue>
-#include <set>
-#include <stack>
-#include <stdexcept>
-#include <string>
-#include <tuple>
-#include <unordered_map>
-#include <utility>
-#include <variant>
-#include <vector>
-
-// These are often used to write code faster in competition programming.
+// These are often used to write code faster in competitive programming.
 // This is the test for it.
 #define rep(i, n) for (int i = 0; i < (int)(n); i++)
 using namespace std;
@@ -45,15 +30,18 @@ CPP_DUMP_DEFINE_EXPORT_ENUM(enum_a, enum_a::s, enum_a::k);
 CPP_DUMP_DEFINE_EXPORT_OBJECT(decltype(class_a1), int_a, long_b, get_a());
 CPP_DUMP_DEFINE_EXPORT_OBJECT(class_b, static_long_a, int_b, str, pointer);
 
-int main() {
-  ofstream stream{"./dump_test.log"};
+int main(int argc, char *argv[]) {
+  if (argc != 4) return 1;
+  int max_line_width = stoi(argv[1]);
+  int max_depth      = stoi(argv[2]);
+  int es_index       = stoi(argv[3]);
 
-  streambuf *clog_buf;
-  clog_buf = clog.rdbuf(stream.rdbuf());
-
-  CPP_DUMP_SET_OPTION(max_line_width, 160);
-  CPP_DUMP_SET_OPTION(max_depth, 5);
+  CPP_DUMP_SET_OPTION(max_line_width, max_line_width);
+  CPP_DUMP_SET_OPTION(max_depth, max_depth);
   CPP_DUMP_SET_OPTION(max_iteration_count, 100);
+  CPP_DUMP_SET_OPTION(
+      es_style, (array{cpp_dump::es_style_t::no_es, cpp_dump::es_style_t::by_syntax}[es_index])
+  );
 
   // basic
   CPP_DUMP(false, 0, 0.0, '0', (const char *)"0", string{"0"}, string_view{"0"});
@@ -80,11 +68,14 @@ int main() {
       (vector<int>{2, 3}), (vector<int>{3, 4}), (vector<vector<int>>{{2}, {4}, {4}, {5}, {6}})
   );
   CPP_DUMP((vector{make_pair(1, 9), make_pair(3, 4), make_pair(5, 7)}));
-  int c_style_array[10]{3, 1, 4, 1, 5, 9, 2, 6, 5, 3};
+  int c_style_array[40]{3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 3, 1, 4, 1, 5, 9, 2, 6, 5, 3,
+                        3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 3, 1, 4, 1, 5, 9, 2, 6, 5, 3};
   CPP_DUMP(c_style_array);
 
   CPP_DUMP(vec);
   dump(vec);
+
+  dump(c_style_array, c_style_array);
 
   // pair&tuple
   CPP_DUMP(make_pair(8, 'a'));
@@ -211,6 +202,9 @@ int main() {
   enum class unsupported { k, l } unsupported_enum = unsupported::k;
   CPP_DUMP(unsupported_enum);
 
+  // extra
+  CPP_DUMP(cpp_dump::es_style_t::no_es, cpp_dump::es_style_t::by_syntax, cpp_dump::es_value);
+
   // max_iteration_count
   array<int, 50> array50;
   map<int, int> map50;
@@ -224,6 +218,4 @@ int main() {
   CPP_DUMP(array50, map50, set50);
   CPP_DUMP_SET_OPTION(max_iteration_count, 40);
   CPP_DUMP(array50, map50, set50);
-
-  clog.rdbuf(clog_buf);
 }

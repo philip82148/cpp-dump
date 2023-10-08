@@ -10,6 +10,7 @@
 #include <string>
 #include <type_traits>
 
+#include "./escape_sequence.hpp"
 #include "./type_check.hpp"
 #include "./utility.hpp"
 
@@ -34,9 +35,10 @@ inline auto export_set(
     size_t current_depth,
     bool fail_on_newline
 ) -> std::enable_if_t<is_set<T>, std::string> {
-  if (set.empty()) return "{ }";
+  if (set.empty()) return es::bracket("{ }", current_depth);
 
-  if (current_depth >= max_depth) return "{ ... }";
+  if (current_depth >= max_depth)
+    return es::bracket("{ ", current_depth) + es::op("...") + es::bracket(" }", current_depth);
 
   bool shift_indent = is_iterable_like<iterable_elem_type<T>>;
   // 中身がiterable_likeでも常に長さに応じて改行するかどうかを決める場合は次
@@ -48,48 +50,52 @@ inline auto export_set(
   size_t next_depth      = current_depth + 1;
 
 rollback:
-  std::string output     = "{ ";
+  std::string output     = es::bracket("{ ", current_depth);
   bool is_first          = true;
   size_t iteration_count = 0;
   for (auto it = set.begin(), end = set.end(); it != end; it = set.equal_range(*it).second) {
     if (is_first) {
       is_first = false;
     } else {
-      output += ", ";
+      output += es::op(", ");
     }
 
     if (shift_indent) {
       if (++iteration_count > max_iteration_count) {
-        output += "\n" + new_indent + "...";
+        output += "\n" + new_indent + es::op("...");
         break;
       }
 
       output +=
           "\n" + new_indent + export_var(*it, new_indent, new_indent.length(), next_depth, false);
 
-      if constexpr (is_multiset<T>) output += " (" + std::to_string(set.count(*it)) + ")";
+      // Treat the multiplicity as a member as export_map() does.
+      if constexpr (is_multiset<T>)
+        output += es::member(" (" + std::to_string(set.count(*it)) + ")");
 
       continue;
     }
 
     if (++iteration_count > max_iteration_count) {
-      output += "...";
+      output += es::op("...");
 
-      if (last_line_length + (output + " }").length() <= max_line_width) break;
+      if (last_line_length + get_length(output + " }") <= max_line_width) break;
 
       shift_indent = true;
       goto rollback;
     }
 
     std::string elem_string =
-        export_var(*it, indent, last_line_length + output.length(), next_depth, true);
+        export_var(*it, indent, last_line_length + get_length(output), next_depth, true);
 
-    if constexpr (is_multiset<T>) elem_string += " (" + std::to_string(set.count(*it)) + ")";
+    // Treat the multiplicity as a member as export_map() does.
+    if constexpr (is_multiset<T>)
+      elem_string += es::member(" (" + std::to_string(set.count(*it)) + ")");
 
     if (!has_newline(elem_string)) {
       output += elem_string;
 
-      if (last_line_length + (output + " }").length() <= max_line_width) continue;
+      if (last_line_length + get_length(output + " }") <= max_line_width) continue;
     }
 
     if (fail_on_newline) return "\n";
@@ -99,9 +105,9 @@ rollback:
   }
 
   if (shift_indent) {
-    output += "\n" + indent + "}";
+    output += "\n" + indent + es::bracket("}", current_depth);
   } else {
-    output += " }";
+    output += es::bracket(" }", current_depth);
   }
 
   return output;

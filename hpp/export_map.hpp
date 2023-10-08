@@ -10,6 +10,7 @@
 #include <string>
 #include <type_traits>
 
+#include "./escape_sequence.hpp"
 #include "./type_check.hpp"
 #include "./utility.hpp"
 
@@ -34,9 +35,10 @@ inline auto export_map(
     size_t current_depth,
     bool fail_on_newline
 ) -> std::enable_if_t<is_map<T>, std::string> {
-  if (map.empty()) return "{ }";
+  if (map.empty()) return es::bracket("{ }", current_depth);
 
-  if (current_depth >= max_depth) return "{ ... }";
+  if (current_depth >= max_depth)
+    return es::bracket("{ ", current_depth) + es::op("...") + es::bracket(" }", current_depth);
 
   bool shift_indent = is_multimap<T> || is_iterable_like<typename T::key_type>
                       || is_iterable_like<typename T::mapped_type>;
@@ -67,20 +69,20 @@ inline auto export_map(
   };
 
 rollback:
-  std::string output     = "{ ";
+  std::string output     = es::bracket("{ ", current_depth);
   bool is_first          = true;
   size_t iteration_count = 0;
   for (auto it = map.begin(), end = map.end(); it != end; it = map.equal_range(it->first).second) {
     if (is_first) {
       is_first = false;
     } else {
-      output += ", ";
+      output += es::op(", ");
     }
 
     std::string key_string, value_string;
     if (shift_indent) {
       if (++iteration_count > max_iteration_count) {
-        output += "\n" + new_indent + "...";
+        output += "\n" + new_indent + es::op("...");
         break;
       }
 
@@ -88,15 +90,17 @@ rollback:
         auto [_begin, _end] = map.equal_range(it->first);
         value_container values{{_begin}, {_end}};
 
+        // Treat the multiplicity as a member to distinguish it from the keys & values.
+        // Also, multiplicities are similar to members since they are on the left side of values.
         key_string = "\n" + new_indent
                      + export_var(it->first, new_indent, new_indent.length(), next_depth, false)
-                     + " (" + std::to_string(map.count(it->first)) + "): ";
+                     + es::member(" (" + std::to_string(map.count(it->first)) + ")") + es::op(": ");
         value_string =
             export_var(values, new_indent, get_last_line_length(key_string), next_depth, false);
       } else {
         key_string = "\n" + new_indent
                      + export_var(it->first, new_indent, new_indent.length(), next_depth, false)
-                     + ": ";
+                     + es::op(": ");
         value_string =
             export_var(it->second, new_indent, get_last_line_length(key_string), next_depth, false);
       }
@@ -106,9 +110,9 @@ rollback:
     }
 
     if (++iteration_count > max_iteration_count) {
-      output += "...";
+      output += es::op("...");
 
-      if (last_line_length + (output + " }").length() <= max_line_width) break;
+      if (last_line_length + get_length(output + " }") <= max_line_width) break;
 
       shift_indent = true;
       goto rollback;
@@ -118,20 +122,26 @@ rollback:
       auto [_begin, _end] = map.equal_range(it->first);
       value_container values{{_begin}, {_end}};
 
+      // Treat the multiplicity as a member to distinguish it from the keys & values.
+      // Also, multiplicities are similar to members since they are on the left side of values.
       key_string =
-          export_var(it->first, indent, last_line_length + output.length(), next_depth, true) + " ("
-          + std::to_string(map.count(it->first)) + "): ";
+          export_var(it->first, indent, last_line_length + get_length(output), next_depth, true)
+          + es::member(" (" + std::to_string(map.count(it->first)) + ")") + es::op(": ");
       value_string = export_var(
-          values, indent, last_line_length + output.length() + key_string.length(), next_depth, true
+          values,
+          indent,
+          last_line_length + get_length(output) + get_length(key_string),
+          next_depth,
+          true
       );
     } else {
       key_string =
-          export_var(it->first, indent, last_line_length + output.length(), next_depth, true)
-          + ": ";
+          export_var(it->first, indent, last_line_length + get_length(output), next_depth, true)
+          + es::op(": ");
       value_string = export_var(
           it->second,
           indent,
-          last_line_length + output.length() + key_string.length(),
+          last_line_length + get_length(output) + get_length(key_string),
           next_depth,
           true
       );
@@ -141,7 +151,7 @@ rollback:
     if (!has_newline(elem_string)) {
       output += elem_string;
 
-      if (last_line_length + (output + " }").length() <= max_line_width) continue;
+      if (last_line_length + get_length(output + " }") <= max_line_width) continue;
     }
 
     if (fail_on_newline) return "\n";
@@ -151,9 +161,9 @@ rollback:
   }
 
   if (shift_indent) {
-    output += "\n" + indent + "}";
+    output += "\n" + indent + es::bracket("}", current_depth);
   } else {
-    output += " }";
+    output += es::bracket(" }", current_depth);
   }
 
   return output;

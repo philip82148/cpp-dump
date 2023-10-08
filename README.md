@@ -10,6 +10,7 @@ This library has the following features:
 
 - Outputs to the standard error output (std::clog) string representations of a wide variety of types: multidimensional arrays, (multi)maps, (multi)sets, complex numbers, even error objects, and etc.
 - Automatically indents so that the output fits into the maximum line width.
+- Output is colored and the colors can be customized.
 - Header-only library, no build or dependencies required.
 - The macro version can dump variables along with the names.
 - User-defined types can also be dumped by using macros.
@@ -92,6 +93,43 @@ CPP_DUMP(my_vector);
 ```
 
 ![Auto indent](./readme/auto-indent.png)
+
+### Customizable output colors
+
+The output color can be changed by assigning an escape sequence to a member of `cpp_dump::es_value`. [See Full Example Code](./readme/customizable-colors.cpp)
+
+```cpp
+// Use more colors
+cpp_dump::es_value = {
+  "\e[02m",  // log: dark
+  "\e[34m",  // expression: blue
+  {
+    "\e[33m",  // bracket_by_depth[0]: yellow
+    "\e[35m",  // bracket_by_depth[1]: magenta
+    "\e[36m",  // bracket_by_depth[2]: cyan
+  },
+  "\e[36m",  // reserved: cyan
+  "\e[36m",  // number: cyan
+  "\e[36m",  // character: cyan
+  "\e[02m",  // op: dark
+  "\e[32m",  // identifier:  green
+  "\e[36m",  // member: cyan
+  "",        // unsupported: default
+};
+```
+
+![customizable-colors.png](./readme/customizable-colors.png)
+
+To turn off output coloring, assign `cpp_dump::es_style_t::no_es` to `cpp_dump::es_style`.
+
+[See Full Example Code](./readme/no-es.cpp)
+
+```cpp
+// Turn off output coloring
+cpp_dump::es_style = cpp_dump::es_style_t::no_es;
+```
+
+![no-es.png](./readme/no-es.png)
 
 ### User-defined types can also be supported by using macros
 
@@ -178,32 +216,6 @@ git submodule add https://github.com/philip82148/cpp-dump
 #define CPP_DUMP_SET_OPTION(variable, value)
 ```
 
-### Variables
-
-```cpp
-/**
- * Maximum line width of output strings of cpp_dump::export_var().
- */
-inline size_t cpp_dump::max_line_width = 160;
-
-/**
- * Maximum number of times cpp_dump::export_var() is applied recursively.
- */
-inline size_t cpp_dump::max_depth = 5;
-
-/**
- * Maximum number of times cpp_dump::export_var() iterates over an iterator.
- * Note that in a single call, export_var() calls itself at most
- * (max_iteration_count^max_depth-1)/(max_iteration_count-1)-1 times.
- */
-inline size_t cpp_dump::max_iteration_count = 16;
-
-/**
- * Label that cpp_dump::dump() and CPP_DUMP() print at the beginning of the output.
- */
-inline std::string log_label = "[dump] ";
-```
-
 ### Functions
 
 ```cpp
@@ -219,6 +231,93 @@ void cpp_dump::dump(const Args &...args);
  */
 template <typename T>
 std::string cpp_dump::export_var(const T &value);
+```
+
+### Variables
+
+```cpp
+/**
+ * Maximum line width of output strings of cpp_dump::export_var().
+ */
+inline size_t cpp_dump::max_line_width = 160;
+
+/**
+ * Maximum number of times cpp_dump::export_var() is applied recursively.
+ */
+inline size_t cpp_dump::max_depth = 4;
+
+/**
+ * Maximum number of times cpp_dump::export_var() iterates over an iterator.
+ * Note that in a single call, export_var() calls itself at most
+ * (max_iteration_count^(max_depth+1)-1)/(max_iteration_count-1)-1 times.
+ */
+inline size_t cpp_dump::max_iteration_count = 16;
+
+/**
+ * Function that returns the label that cpp_dump::dump() and CPP_DUMP() print
+ * at the beginning of the output.
+ */
+inline std::function<std::string(void)> cpp_dump::log_label_func = []() -> std::string { return "[dump] "; };
+
+/**
+ * Style of the escape sequences.
+ */
+inline cpp_dump::es_style_t cpp_dump::es_style = cpp_dump::es_style_t::by_syntax;
+
+/**
+ * Value of the escape sequences.
+ */
+inline cpp_dump::es_value_t cpp_dump::es_value = {
+    "\e[02m",    // log: dark
+    "\e[36m",    // expression: cyan
+    {"\e[02m"},  // bracket_by_depth[0]: dark
+    "",          // reserved: default
+    "",          // number: default
+    "",          // character: default
+    "\e[02m",    // op: dark
+    "\e[32m",    // identifier: green
+    "\e[36m",    // member: cyan
+    "\e[31m",    // unsupported: red
+};
+```
+
+### Types
+
+```cpp
+/**
+ * Type of cpp_dump::es_style.
+ * cpp_dump::export_var() supports this type.
+ */
+enum class cpp_dump::es_style_t { no_es, by_syntax };
+
+/**
+ * Type of cpp_dump::es_value.
+ * cpp_dump::export_var() supports this type.
+ */
+struct cpp_dump::es_value_t {
+  std::string log;
+  std::string expression;
+  std::vector<std::string> bracket_by_depth;
+  std::string reserved;
+  std::string number;
+  std::string character;
+  std::string op;
+  std::string identifier;
+  std::string member;
+  std::string unsupported;
+  es_value_t(
+    std::string log,
+    std::string expression,
+    std::vector<std::string> bracket_by_depth,
+    std::string reserved,
+    std::string number,
+    std::string character,
+    std::string op,
+    std::string identifier,
+    std::string member,
+    std::string unsupported
+  );
+}
 ```
 
 ### Meta function
@@ -314,7 +413,7 @@ std::queue{ front()= value, size()= integer }
 *value
 nullptr
 0x7fff2246c4d8
-# (The address will be displayed when the type the pointer points to is not supported or void *.)
+# (The address will be displayed when the pointer type is void * or the type the pointer points to is not supported.)
 
 # Reference
 true, 'c', 1, 3.140000

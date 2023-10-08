@@ -11,6 +11,7 @@
 #include <tuple>
 #include <type_traits>
 
+#include "./escape_sequence.hpp"
 #include "./type_check.hpp"
 #include "./utility.hpp"
 
@@ -33,8 +34,10 @@ inline auto _export_tuple_in_one_line(
   if (has_newline(output)) return "\n";
 
   if constexpr (i < size - 1) {
-    return output + ", "
-           + _export_tuple_in_one_line<i + 1, size>(tuple, indent, output.length() + 2, next_depth);
+    return output + es::op(", ")
+           + _export_tuple_in_one_line<i + 1, size>(
+               tuple, indent, get_length(output) + 2, next_depth
+           );
   } else {
     return output;
   }
@@ -43,10 +46,12 @@ inline auto _export_tuple_in_one_line(
 template <const size_t i, const size_t size, typename T>
 inline auto _export_tuple_in_lines(const T &tuple, const std::string &indent, size_t next_depth)
     -> std::enable_if_t<is_tuple<T>, std::string> {
-  std::string output = export_var(std::get<i>(tuple), indent, indent.length(), next_depth, false);
+  std::string output =
+      export_var(std::get<i>(tuple), indent, get_length(indent), next_depth, false);
 
   if constexpr (i < size - 1) {
-    return output + ",\n" + indent + _export_tuple_in_lines<i + 1, size>(tuple, indent, next_depth);
+    return output + es::op(",\n") + indent
+           + _export_tuple_in_lines<i + 1, size>(tuple, indent, next_depth);
   } else {
     return output;
   }
@@ -63,24 +68,26 @@ inline auto export_tuple(
   constexpr size_t tuple_size = std::tuple_size_v<T>;
 
   if constexpr (tuple_size == 0) {
-    return "( )";
+    return es::bracket("( )", current_depth);
   } else {
-    if (current_depth >= max_depth) return "( ... )";
+    if (current_depth >= max_depth)
+      return es::bracket("( ", current_depth) + es::op("...") + es::bracket(" )", current_depth);
 
     size_t next_depth = current_depth + 1;
 
     std::string output =
-        "( "
+        es::bracket("( ", current_depth)
         + _export_tuple_in_one_line<0, tuple_size>(tuple, indent, last_line_length + 2, next_depth)
-        + " )";
+        + es::bracket(" )", current_depth);
 
-    if (!has_newline(output) && output.length() <= max_line_width) return output;
+    if (!has_newline(output) && get_length(output) <= max_line_width) return output;
 
     if (fail_on_newline) return "\n";
 
     std::string new_indent = indent + "  ";
-    return "(\n" + new_indent + _export_tuple_in_lines<0, tuple_size>(tuple, new_indent, next_depth)
-           + "\n" + indent + ")";
+    return es::bracket("(\n", current_depth) + new_indent
+           + _export_tuple_in_lines<0, tuple_size>(tuple, new_indent, next_depth) + "\n" + indent
+           + es::bracket(")", current_depth);
   }
 }
 

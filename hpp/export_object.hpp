@@ -9,6 +9,7 @@
 
 #include <string>
 
+#include "./escape_sequence.hpp"
 #include "./expand_va_macro.hpp"
 #include "./type_check.hpp"
 #include "./utility.hpp"
@@ -42,7 +43,9 @@
       size_t current_depth,                                                                        \
       bool fail_on_newline                                                                         \
   ) {                                                                                              \
-    if (current_depth >= max_depth) return #TYPE "{ ... }";                                        \
+    if (current_depth >= max_depth)                                                                \
+      return es::identifier(#TYPE) + es::bracket("{ ", current_depth) + es::op("...")              \
+             + es::bracket(" }", current_depth);                                                   \
                                                                                                    \
     std::string new_indent = indent + "  ";                                                        \
     size_t next_depth      = current_depth + 1;                                                    \
@@ -56,29 +59,29 @@
       if (is_first) {                                                                              \
         is_first = false;                                                                          \
       } else {                                                                                     \
-        output += ", ";                                                                            \
+        output += es::op(", ");                                                                    \
       }                                                                                            \
                                                                                                    \
       if (shift_indent) {                                                                          \
-        output += "\n" + new_indent + member_name + "= ";                                          \
+        output += "\n" + new_indent + es::member(member_name) + es::op("= ");                      \
         output += export_var(member, new_indent, get_last_line_length(output), next_depth, false); \
       } else {                                                                                     \
-        output += member_name + "= ";                                                              \
+        output += es::member(member_name) + es::op("= ");                                          \
         output +=                                                                                  \
-            export_var(member, indent, last_line_length + output.length(), next_depth, true);      \
+            export_var(member, indent, last_line_length + get_length(output), next_depth, true);   \
       }                                                                                            \
     };                                                                                             \
                                                                                                    \
   rollback:                                                                                        \
-    output   = #TYPE "{ ";                                                                         \
+    output   = es::identifier(#TYPE) + es::bracket("{ ", current_depth);                           \
     is_first = true;                                                                               \
                                                                                                    \
     _p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_EXPORT_OBJECT, __VA_ARGS__);                      \
                                                                                                    \
     if (!shift_indent) {                                                                           \
-      output += " }";                                                                              \
+      output += es::bracket(" }", current_depth);                                                  \
                                                                                                    \
-      if (!has_newline(output) && last_line_length + output.length() <= max_line_width)            \
+      if (!has_newline(output) && last_line_length + get_length(output) <= max_line_width)         \
         return output;                                                                             \
                                                                                                    \
       if (fail_on_newline) return "\n";                                                            \
@@ -87,7 +90,7 @@
       goto rollback;                                                                               \
     }                                                                                              \
                                                                                                    \
-    output += "\n" + indent + "}";                                                                 \
+    output += "\n" + indent + es::bracket("}", current_depth);                                     \
                                                                                                    \
     return output;                                                                                 \
   }                                                                                                \

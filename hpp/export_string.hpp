@@ -11,6 +11,7 @@
 #include <string_view>
 #include <type_traits>
 
+#include "./escape_sequence.hpp"
 #include "./type_check.hpp"
 #include "./utility.hpp"
 
@@ -18,34 +19,23 @@ namespace cpp_dump {
 
 namespace _detail {
 
-inline void _replace_string(
-    std::string &subject, std::string_view search, std::string_view replace
-) {
-  std::string::size_type pos = 0;
-  while ((pos = subject.find(search, pos)) != std::string::npos) {
-    subject.replace(pos, search.length(), replace);
-    pos += replace.length();
-  }
-}
-
 template <typename T>
 inline auto export_string(const T &value, const std::string &, size_t, size_t, bool fail_on_newline)
     -> std::enable_if_t<is_string<T>, std::string> {
   std::string str{value};
 
-  _replace_string(str, R"(\)", R"(\\)");
+  // replace_string(str, R"(\)", R"(\\)");
 
-  if (!has_newline(str) && str.find(R"(")") == std::string::npos) return R"(")" + str + R"(")";
+  if (!has_newline(str) && str.find(R"(")") == std::string::npos)
+    return es::character(R"(")" + str) + es::character(R"(")");
 
-  _replace_string(str, R"(`)", R"(\`)");
+  // replace_string(str, R"(`)", R"(\`)");
 
-  if (!has_newline(str)) return R"(`)" + str + R"(`)";
+  if (!has_newline(str)) return es::character(R"(`)" + str) + es::character(R"(`)");
 
   if (fail_on_newline) return "\n";
 
-  return "\n"
-         R"(`)"
-         + str + R"(`)";
+  return "\n" + es::character(R"(`)" + str) + es::character(R"(`)");
 }
 
 }  // namespace _detail

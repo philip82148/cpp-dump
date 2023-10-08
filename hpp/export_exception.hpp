@@ -9,6 +9,7 @@
 
 #include <stdexcept>
 
+#include "./escape_sequence.hpp"
 #include "./type_check.hpp"
 #include "./utility.hpp"
 
@@ -22,24 +23,25 @@
   ) {                                                                                              \
     size_t next_depth = current_depth + 1;                                                         \
                                                                                                    \
-    std::string prefix = #TYPE "{ what()= ";                                                       \
+    std::string prefix = es::identifier(#TYPE) + es::bracket("{ ", current_depth)                  \
+                         + es::member("what()") + es::op("= ");                                    \
     std::string output =                                                                           \
         prefix                                                                                     \
         + export_var(                                                                              \
-            exception.what(), indent, last_line_length + prefix.length(), next_depth, true         \
+            exception.what(), indent, last_line_length + get_length(prefix), next_depth, true      \
         )                                                                                          \
-        + " }";                                                                                    \
+        + es::bracket(" }", current_depth);                                                        \
                                                                                                    \
-    if (!has_newline(output) && output.length() <= max_line_width) return output;                  \
+    if (!has_newline(output) && get_length(output) <= max_line_width) return output;               \
                                                                                                    \
     if (fail_on_newline) return "\n";                                                              \
                                                                                                    \
     std::string new_indent = indent + "  ";                                                        \
                                                                                                    \
-    prefix = new_indent + "what()= ";                                                              \
-    output = #TYPE "{\n" + prefix                                                                  \
-             + export_var(exception.what(), new_indent, prefix.length(), next_depth, false) + "\n" \
-             + indent + "}";                                                                       \
+    prefix = new_indent + es::member("what()") + es::op("= ");                                     \
+    output = es::identifier(#TYPE) + es::bracket("{\n", current_depth) + prefix                    \
+             + export_var(exception.what(), new_indent, get_length(prefix), next_depth, false)     \
+             + "\n" + indent + es::bracket("}", current_depth);                                    \
                                                                                                    \
     return output;                                                                                 \
   }
@@ -74,22 +76,24 @@ inline auto export_exception(
 ) -> std::enable_if_t<is_exception<T>, std::string> {
   size_t next_depth = current_depth + 1;
 
-  std::string prefix = "{ what()= ";
+  std::string prefix = es::bracket("{ ", current_depth) + es::member("what()") + es::op("= ");
   std::string output =
       prefix
-      + export_var(exception.what(), indent, last_line_length + prefix.length(), next_depth, true)
-      + " }";
+      + export_var(
+          exception.what(), indent, last_line_length + get_length(prefix), next_depth, true
+      )
+      + es::bracket(" }", current_depth);
 
-  if (!has_newline(output) && output.length() <= max_line_width) return output;
+  if (!has_newline(output) && get_length(output) <= max_line_width) return output;
 
   if (fail_on_newline) return "\n";
 
   std::string new_indent = indent + "  ";
 
-  prefix = new_indent + "what()= ";
-  output = "{\n" + prefix
-           + export_var(exception.what(), new_indent, prefix.length(), next_depth, false) + "\n"
-           + indent + "}";
+  prefix = new_indent + es::member("what()") + es::op("= ");
+  output = es::bracket("{\n", current_depth) + prefix
+           + export_var(exception.what(), new_indent, get_length(prefix), next_depth, false) + "\n"
+           + indent + es::bracket("}", current_depth);
 
   return output;
 }
