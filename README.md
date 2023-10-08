@@ -269,7 +269,7 @@ inline cpp_dump::es_style_t cpp_dump::es_style = cpp_dump::es_style_t::by_syntax
 inline cpp_dump::es_value_t cpp_dump::es_value = {
     "\e[02m",    // log: dark
     "\e[36m",    // expression: cyan
-    {"\e[32m"},  // bracket_by_depth[0]: green
+    {"\e[02m"},  // bracket_by_depth[0]: dark
     "",          // reserved: default
     "",          // number: default
     "",          // character: default
