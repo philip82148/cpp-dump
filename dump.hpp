@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <functional>
 #include <iostream>
 #include <string>
 #include <utility>
@@ -52,9 +53,10 @@ inline size_t max_depth = 4;
 inline size_t max_iteration_count = 16;
 
 /**
- * Label that cpp_dump::dump() and CPP_DUMP() print at the beginning of the output.
+ * Function that returns the label that cpp_dump::dump() and CPP_DUMP() print
+ * at the beginning of the output.
  */
-inline std::string log_label = "[dump] ";
+inline std::function<std::string(void)> log_label_func = []() -> std::string { return "[dump] "; };
 
 /**
  * Style of the escape sequences.
@@ -81,9 +83,13 @@ namespace _detail {
 
 template <typename T>
 bool _dump_one(
-    std::string &output, bool no_newline_in_value_string, const std::string &expr, const T &value
+    std::string &output,
+    const std::string &log_label,
+    bool no_newline_in_value_string,
+    const std::string &expr,
+    const T &value
 ) {
-  const std::string initial_indent = ([] {
+  const std::string initial_indent = ([&] {
     std::string indent;
     size_t length = get_length(log_label);
     for (size_t i = 0; i < length; ++i) indent += " ";
@@ -128,7 +134,7 @@ bool _dump_one(
     output += pattern.prefix + pattern.value_string;
   };
 
-  // for dump_recursive_without_expr(), which is for cpp_dump::dump() (function)
+  // for _dump_recursively_without_expr(), which is for cpp_dump::dump() (function)
   if (expr == "") {
     prefix_and_value_string pattern1 = make_prefix_and_value_string("", initial_indent);
 
@@ -155,7 +161,7 @@ bool _dump_one(
     return false;
   }
 
-  // below for dump_recursive_with_expr(), which is for CPP_DUMP() (macro)
+  // below for _dump_recursively_with_expr(), which is for CPP_DUMP() (macro)
   auto expr_with_es = es::expression(expr);
 
   if (no_newline_in_value_string) {
@@ -231,40 +237,46 @@ bool _dump_one(
   return true;
 }
 
-inline bool _dump_recursive_with_expr(std::string &, bool) { return true; }
+inline bool _dump_recursively_with_expr(std::string &, const std::string &, bool) { return true; }
 
 template <typename T, typename... Args>
-inline bool _dump_recursive_with_expr(
+inline bool _dump_recursively_with_expr(
     std::string &output,
+    const std::string &log_label,
     bool no_newline_in_value_string,
     const std::string &expr,
     const T &value,
     const Args &...args
 ) {
-  return _dump_one(output, no_newline_in_value_string, expr, value)
-         && _dump_recursive_with_expr(output, no_newline_in_value_string, args...);
+  return _dump_one(output, log_label, no_newline_in_value_string, expr, value)
+         && _dump_recursively_with_expr(output, log_label, no_newline_in_value_string, args...);
 }
 
-inline bool _dump_recursive_without_expr(std::string &, bool) { return true; }
+inline bool _dump_recursively_without_expr(std::string &, const std::string &, bool) {
+  return true;
+}
 
 template <typename T, typename... Args>
-inline bool _dump_recursive_without_expr(
-    std::string &output, bool no_newline_in_value_string, const T &value, const Args &...args
+inline bool _dump_recursively_without_expr(
+    std::string &output,
+    const std::string &log_label,
+    bool no_newline_in_value_string,
+    const T &value,
+    const Args &...args
 ) {
-  return _dump_one(output, no_newline_in_value_string, "", value)
-         && _dump_recursive_without_expr(output, no_newline_in_value_string, args...);
+  return _dump_one(output, log_label, no_newline_in_value_string, "", value)
+         && _dump_recursively_without_expr(output, log_label, no_newline_in_value_string, args...);
 }
 
 // function called by CPP_DUMP() macro
 template <typename... Args>
 void cpp_dump_macro(const Args &...args) {
-  bool no_newline_in_value_string = true;
+  std::string log_label = log_label_func ? log_label_func() : "";
 
-rollback:
   std::string output = "";
-  if (!_dump_recursive_with_expr(output, no_newline_in_value_string, args...)) {
-    no_newline_in_value_string = false;
-    goto rollback;
+  if (!_detail::_dump_recursively_with_expr(output, log_label, true, args...)) {
+    output = "";
+    _detail::_dump_recursively_with_expr(output, log_label, false, args...);
   }
 
   std::clog << output << std::endl;
@@ -278,13 +290,12 @@ rollback:
  */
 template <typename... Args>
 void dump(const Args &...args) {
-  bool no_newline_in_value_string = true;
+  std::string log_label = log_label_func ? log_label_func() : "";
 
-rollback:
   std::string output = "";
-  if (!_detail::_dump_recursive_without_expr(output, no_newline_in_value_string, args...)) {
-    no_newline_in_value_string = false;
-    goto rollback;
+  if (!_detail::_dump_recursively_without_expr(output, log_label, true, args...)) {
+    output = "";
+    _detail::_dump_recursively_without_expr(output, log_label, false, args...);
   }
 
   std::clog << output << std::endl;

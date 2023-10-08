@@ -254,9 +254,10 @@ inline size_t cpp_dump::max_depth = 4;
 inline size_t cpp_dump::max_iteration_count = 16;
 
 /**
- * Label that cpp_dump::dump() and CPP_DUMP() print at the beginning of the output.
+ * Function that returns the label that cpp_dump::dump() and CPP_DUMP() print
+ * at the beginning of the output.
  */
-inline std::string cpp_dump::log_label = "[dump] ";
+inline std::function<std::string(void)> cpp_dump::log_label_func = []() -> std::string { return "[dump] "; };
 
 /**
  * Style of the escape sequences.
