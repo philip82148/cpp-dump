@@ -432,7 +432,7 @@ here.`,
            log= "\e[02m", 
            expression= "\e[36m", 
            bracket_by_depth= [ 
-             "\e[32m"
+             "\e[02m"
            ], 
            reserved= "", 
            character= "", 

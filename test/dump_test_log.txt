@@ -122,7 +122,7 @@ here.`,
        cpp_dump::es_value => cpp_dump::es_value_t{ 
          log= "\e[02m", 
          expression= "\e[36m", 
-         bracket_by_depth= [ "\e[32m" ], 
+         bracket_by_depth= [ "\e[02m" ], 
          reserved= "", 
          character= "", 
          op= "\e[02m", 
