@@ -1,7 +1,7 @@
 #!/bin/bash -eux
 
-bash ./test/dump_test.sh
-bash ./test/readme_test.sh
+bash ./test/dump_test.sh || true
+bash ./test/readme_test.sh || true
 
 for f in ./*.log; do
     basename=$(basename $f .log)
