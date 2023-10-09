@@ -96,7 +96,8 @@ CPP_DUMP(my_vector);
 
 ### Customizable output colors
 
-The output color can be changed by assigning an escape sequence to a member of `cpp_dump::es_value`. [See Full Example Code](./readme/customizable-colors.cpp)
+The output color can be changed by assigning an escape sequence to a member of `cpp_dump::es_value`.  
+[See Full Example Code](./readme/customizable-colors.cpp)
 
 ```cpp
 // Use more colors
@@ -297,7 +298,6 @@ enum class cpp_dump::es_style_t { no_es, by_syntax };
 struct cpp_dump::es_value_t {
   std::string log;
   std::string expression;
-  std::vector<std::string> bracket_by_depth;
   std::string reserved;
   std::string number;
   std::string character;
@@ -305,10 +305,10 @@ struct cpp_dump::es_value_t {
   std::string identifier;
   std::string member;
   std::string unsupported;
+  std::vector<std::string> bracket_by_depth;
   es_value_t(
     std::string log,
     std::string expression,
-    std::vector<std::string> bracket_by_depth,
     std::string reserved,
     std::string number,
     std::string character,
@@ -316,6 +316,7 @@ struct cpp_dump::es_value_t {
     std::string identifier,
     std::string member,
     std::string unsupported
+    std::vector<std::string> bracket_by_depth,
   );
 }
 ```
