@@ -232,13 +232,13 @@ rollback:
 
   append_output("log", esv.log);
   append_output("expression", esv.expression);
-  append_output("bracket_by_depth", esv.bracket_by_depth);
   append_output("reserved", esv.reserved);
   append_output("character", esv.character);
   append_output("op", esv.op);
   append_output("identifier", esv.identifier);
   append_output("member", esv.member);
   append_output("unsupported", esv.unsupported);
+  append_output("bracket_by_depth", esv.bracket_by_depth);
 
   if (!shift_indent) {
     output += es::bracket(" }", current_depth);

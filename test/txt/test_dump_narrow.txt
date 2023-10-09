@@ -545,15 +545,15 @@ here.`,
          => cpp_dump::es_value_t{ 
            log= "\e[02m", 
            expression= "\e[36m", 
-           bracket_by_depth= [ 
-             "\e[02m"
-           ], 
            reserved= "", 
            character= "", 
            op= "\e[02m", 
            identifier= "\e[32m", 
            member= "\e[36m", 
-           unsupported= "\e[31m"
+           unsupported= "\e[31m", 
+           bracket_by_depth= [ 
+             "\e[02m"
+           ]
          }
 [dump] array50 => [ 
          0, 

@@ -124,13 +124,13 @@ here.`,
        cpp_dump::es_value => cpp_dump::es_value_t{ 
          log= "\e[02m", 
          expression= "\e[36m", 
-         bracket_by_depth= [ "\e[02m" ], 
          reserved= "", 
          character= "", 
          op= "\e[02m", 
          identifier= "\e[32m", 
          member= "\e[36m", 
-         unsupported= "\e[31m"
+         unsupported= "\e[31m", 
+         bracket_by_depth= [ "\e[02m" ]
        }
 [dump] array50 => [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, ... ], map50 => { 0: 1, 1: 2, 2: 3, 3: 4, 4: 5, 5: 6, 6: 7, 7: 8, 8: 9, 9: 10, ... }, 
        set50 => { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, ... }
