@@ -105,9 +105,7 @@ inline std::string bracket(const std::string &s, size_t d) {
 
 }  // namespace es
 
-inline std::string _export_es_value_string(
-    const std::string &es, const std::string &, size_t, size_t, bool
-) {
+inline std::string _export_es_value_string(const std::string &es) {
   std::string escaped_es = es;
   replace_string(escaped_es, "\e", "\\e");
 
@@ -131,7 +129,6 @@ inline std::string _export_es_value_vector(
   if (shift_indent && fail_on_newline) return "\n";
 
   std::string new_indent = indent + "  ";
-  size_t next_depth      = current_depth + 1;
 
 rollback:
   std::string output     = es::bracket("[ ", current_depth);
@@ -150,8 +147,7 @@ rollback:
         break;
       }
 
-      output += "\n" + new_indent
-                + _export_es_value_string(es, new_indent, new_indent.length(), next_depth, false);
+      output += "\n" + new_indent + _export_es_value_string(es);
       continue;
     }
 
@@ -164,9 +160,7 @@ rollback:
       goto rollback;
     }
 
-    output += _export_es_value_string(
-        es, indent, last_line_length + get_length(output), next_depth, true
-    );
+    output += _export_es_value_string(es);
 
     if (last_line_length + get_length(output + " ]") <= max_line_width) continue;
 
@@ -213,11 +207,9 @@ inline std::string export_es_value_t(
 
     if (shift_indent) output += "\n" + new_indent;
 
-    if constexpr (std::is_convertible_v<decltype(member), std::string>) {
+    if constexpr (std::is_same_v<decltype(member), const std::string &>) {
       output += es::apply(member, member_name + "= ");
-      output += _export_es_value_string(
-          member, new_indent, get_last_line_length(output), next_depth, false
-      );
+      output += _export_es_value_string(member);
     } else {
       output += es::member(member_name) + es::op("= ");
       output += _export_es_value_vector(
