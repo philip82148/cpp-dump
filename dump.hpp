@@ -69,7 +69,6 @@ inline es_style_t es_style = es_style_t::by_syntax;
 inline es_value_t es_value = {
     "\e[02m",    // log: dark
     "\e[36m",    // expression: cyan
-    {"\e[02m"},  // bracket_by_depth[0]: dark
     "",          // reserved: default
     "",          // number: default
     "",          // character: default
@@ -77,6 +76,7 @@ inline es_value_t es_value = {
     "\e[32m",    // identifier: green
     "\e[36m",    // member: cyan
     "\e[31m",    // unsupported: red
+    {"\e[02m"},  // bracket_by_depth[0]: dark
 };
 
 namespace _detail {

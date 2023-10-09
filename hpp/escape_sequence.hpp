@@ -29,7 +29,6 @@ struct es_value_t {
  public:
   std::string log;
   std::string expression;
-  std::vector<std::string> bracket_by_depth;
   std::string reserved;
   std::string number;
   std::string character;
@@ -37,28 +36,29 @@ struct es_value_t {
   std::string identifier;
   std::string member;
   std::string unsupported;
+  std::vector<std::string> bracket_by_depth;
   es_value_t(
       std::string log,
       std::string expression,
-      std::vector<std::string> bracket_by_depth,
       std::string reserved,
       std::string number,
       std::string character,
       std::string op,
       std::string identifier,
       std::string member,
-      std::string unsupported
+      std::string unsupported,
+      std::vector<std::string> bracket_by_depth
   )
       : log(log),
         expression(expression),
-        bracket_by_depth(bracket_by_depth),
         reserved(reserved),
         number(number),
         character(character),
         op(op),
         identifier(identifier),
         member(member),
-        unsupported(unsupported) {}
+        unsupported(unsupported),
+        bracket_by_depth(bracket_by_depth) {}
 };
 
 extern inline es_style_t es_style;

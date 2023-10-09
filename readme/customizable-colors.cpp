@@ -17,11 +17,6 @@ int main() {
   cpp_dump::es_value = {
       "\e[02m",  // log: dark
       "\e[34m",  // expression: blue
-      {
-          "\e[33m",  // bracket_by_depth[0]: yellow
-          "\e[35m",  // bracket_by_depth[1]: magenta
-          "\e[36m",  // bracket_by_depth[2]: cyan
-      },
       "\e[36m",  // reserved: cyan
       "\e[36m",  // number: cyan
       "\e[36m",  // character: cyan
@@ -29,6 +24,11 @@ int main() {
       "\e[32m",  // identifier:  green
       "\e[36m",  // member: cyan
       "",        // unsupported: default
+      {
+          "\e[33m",  // bracket_by_depth[0]: yellow
+          "\e[35m",  // bracket_by_depth[1]: magenta
+          "\e[36m",  // bracket_by_depth[2]: cyan
+      },
   };
 
   int my_int     = 15;
