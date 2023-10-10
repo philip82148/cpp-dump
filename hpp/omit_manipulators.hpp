@@ -47,6 +47,7 @@ struct omitted_container {
     omitted_iterator() = delete;
 
     auto operator*() { return *it; }
+    auto operator->() { return it.operator->(); }
     template <typename U>
     bool operator!=(const U &to) const {
       return it != to.it;

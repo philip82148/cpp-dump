@@ -20,22 +20,83 @@ extern inline size_t max_line_width;
 
 extern inline size_t max_depth;
 
-extern inline size_t max_iteration_count;
-
 namespace _detail {
 
 template <typename T>
 std::string export_var(const T &, const std::string &, size_t, size_t, bool);
 
 template <typename T>
+struct _map_wrapper {
+ public:
+  _map_wrapper(const T &map) : _begin(map, map.begin()), _end(map, map.end()) {}
+  _map_wrapper() = delete;
+
+  auto begin() const { return _begin; }
+  auto end() const { return _end; }
+
+ private:
+  struct map_wrapper_iterator {
+   public:
+    using It = typename T::const_iterator;
+    map_wrapper_iterator(const T &map, It it) : map(map), it(it) {}
+    map_wrapper_iterator() = delete;
+
+    auto operator*() const { return *it; }
+    auto operator->() { return it.operator->(); }
+    bool operator!=(const map_wrapper_iterator &to) const { return it != to.it; }
+    map_wrapper_iterator &operator++() {
+      it = map.equal_range(it->first).second;
+      return *this;
+    }
+
+   private:
+    const T &map;
+    It it;
+  };
+
+  map_wrapper_iterator _begin;
+  map_wrapper_iterator _end;
+};
+
+template <typename It>
+struct _multimap_value_wrapper {
+ public:
+  _multimap_value_wrapper(It begin, It end) : _begin(begin), _end(end) {}
+  _multimap_value_wrapper() = delete;
+
+  auto begin() const { return _begin; }
+  auto end() const { return _end; }
+
+ private:
+  struct multimap_value_iterator {
+   public:
+    multimap_value_iterator(It it) : it(it) {}
+    multimap_value_iterator() = delete;
+
+    auto operator*() const { return it->second; }
+    bool operator!=(const multimap_value_iterator &to) const { return it != to.it; }
+    multimap_value_iterator &operator++() {
+      ++it;
+      return *this;
+    }
+
+   private:
+    It it;
+  };
+
+  multimap_value_iterator _begin;
+  multimap_value_iterator _end;
+};
+
+template <typename T>
 inline auto export_map(
-    const T &map,
+    const omitted_container<T> &omitted_map,
     const std::string &indent,
     size_t last_line_length,
     size_t current_depth,
     bool fail_on_newline
 ) -> std::enable_if_t<is_map<T>, std::string> {
-  if (map.empty()) return es::bracket("{ }", current_depth);
+  if (omitted_map.empty()) return es::bracket("{ }", current_depth);
 
   if (current_depth >= max_depth)
     return es::bracket("{ ", current_depth) + es::op("...") + es::bracket(" }", current_depth);
@@ -50,29 +111,18 @@ inline auto export_map(
   std::string new_indent = indent + "  ";
   size_t next_depth      = current_depth + 1;
 
-  // iterator for values of multimap
-  struct value_iterator {
-    typename T::const_iterator it;
-    auto operator*() const { return it->second; }
-    bool operator!=(const value_iterator &to) const { return it != to.it; }
-    value_iterator &operator++() {
-      ++it;
-      return *this;
-    }
-  };
-
-  struct value_container {
-    value_iterator _begin;
-    value_iterator _end;
-    auto begin() const { return _begin; }
-    auto end() const { return _end; }
-  };
+  const T &map = omitted_map.original;
+  omitted_container<_map_wrapper<T>> omitted_map_wrapper(
+      _map_wrapper<T>(map), omitted_map.is_valid
+  );
 
 rollback:
-  std::string output     = es::bracket("{ ", current_depth);
-  bool is_first          = true;
-  size_t iteration_count = 0;
-  for (auto it = map.begin(), end = map.end(); it != end; it = map.equal_range(it->first).second) {
+  std::string output = es::bracket("{ ", current_depth);
+  bool is_first      = true;
+
+  auto it  = omitted_map_wrapper.begin();
+  auto end = omitted_map_wrapper.end();
+  for (; it != end; ++it) {
     if (is_first) {
       is_first = false;
     } else {
@@ -81,14 +131,14 @@ rollback:
 
     std::string key_string, value_string;
     if (shift_indent) {
-      if (++iteration_count > max_iteration_count) {
+      if (it.is_ellipsis()) {
         output += "\n" + new_indent + es::op("...");
-        break;
+        continue;
       }
 
       if constexpr (is_multimap<T>) {
         auto [_begin, _end] = map.equal_range(it->first);
-        value_container values{{_begin}, {_end}};
+        _multimap_value_wrapper values(_begin, _end);
 
         // Treat the multiplicity as a member to distinguish it from the keys & values.
         // Also, multiplicities are similar to members since they are on the left side of values.
@@ -109,10 +159,10 @@ rollback:
       continue;
     }
 
-    if (++iteration_count > max_iteration_count) {
+    if (it.is_ellipsis()) {
       output += es::op("...");
 
-      if (last_line_length + get_length(output + " }") <= max_line_width) break;
+      if (last_line_length + get_length(output + " }") <= max_line_width) continue;
 
       shift_indent = true;
       goto rollback;
@@ -120,7 +170,7 @@ rollback:
 
     if constexpr (is_multimap<T>) {
       auto [_begin, _end] = map.equal_range(it->first);
-      value_container values{{_begin}, {_end}};
+      _multimap_value_wrapper values(_begin, _end);
 
       // Treat the multiplicity as a member to distinguish it from the keys & values.
       // Also, multiplicities are similar to members since they are on the left side of values.
@@ -167,6 +217,17 @@ rollback:
   }
 
   return output;
+}
+
+template <typename T>
+inline auto export_map(
+    const T &map,
+    const std::string &indent,
+    size_t last_line_length,
+    size_t current_depth,
+    bool fail_on_newline
+) -> std::enable_if_t<is_map<T> && !is_omitted_container<T>, std::string> {
+  return export_map(omit_back() << map, indent, last_line_length, current_depth, fail_on_newline);
 }
 
 }  // namespace _detail
