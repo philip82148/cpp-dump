@@ -56,5 +56,9 @@ here.`,
 [dump] vec.begin() => *...
 [dump] unsupported_enum => Unsupported Type
 [dump] cpp_dump::es_style_t::no_es => cpp_dump::es_style_t::no_es, cpp_dump::es_style_t::by_syntax => cpp_dump::es_style_t::by_syntax, cpp_dump::es_value => cpp_dump::es_value_t{ ... }
-[dump] array50 => [ ... ], map50 => { ... }, set50 => { ... }
-[dump] array50 => [ ... ], map50 => { ... }, set50 => { ... }
+[dump] omit_front(10) << array50 => [ ... ], omit_front(10) << map50 => { ... }, omit_front(10) << set50 => { ... }
+[dump] omit_middle(5) << array50 => [ ... ], omit_middle(5) << map50 => { ... }, omit_middle(5) << set50 => { ... }
+[dump] omit_back(10) << array50 => [ ... ], omit_back(10) << map50 => { ... }, omit_back(10) << set50 => { ... }
+[dump] omit_front(40) << array50 => [ ... ], omit_front(40) << map50 => { ... }, omit_front(40) << set50 => { ... }
+[dump] omit_middle(20) << array50 => [ ... ], omit_middle(20) << map50 => { ... }, omit_middle(20) << set50 => { ... }
+[dump] omit_back(40) << array50 => [ ... ], omit_back(40) << map50 => { ... }, omit_back(40) << set50 => { ... }

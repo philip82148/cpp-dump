@@ -7,7 +7,7 @@
 // This is the test for it.
 #define rep(i, n) for (int i = 0; i < (int)(n); i++)
 using namespace std;
-using cpp_dump::dump;
+using namespace cpp_dump;
 
 struct class_a {
   int int_a   = 314159265;
@@ -214,8 +214,10 @@ int main(int argc, char *argv[]) {
     map50.emplace(i, i + 1);
     set50.emplace(i);
   }
-  CPP_DUMP_SET_OPTION(max_iteration_count, 10);
-  CPP_DUMP(array50, map50, set50);
-  CPP_DUMP_SET_OPTION(max_iteration_count, 40);
-  CPP_DUMP(array50, map50, set50);
+  CPP_DUMP(omit_front(10) << array50, omit_front(10) << map50, omit_front(10) << set50);
+  CPP_DUMP(omit_middle(5) << array50, omit_middle(5) << map50, omit_middle(5) << set50);
+  CPP_DUMP(omit_back(10) << array50, omit_back(10) << map50, omit_back(10) << set50);
+  CPP_DUMP(omit_front(40) << array50, omit_front(40) << map50, omit_front(40) << set50);
+  CPP_DUMP(omit_middle(20) << array50, omit_middle(20) << map50, omit_middle(20) << set50);
+  CPP_DUMP(omit_back(40) << array50, omit_back(40) << map50, omit_back(40) << set50);
 }

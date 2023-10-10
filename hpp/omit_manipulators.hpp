@@ -130,27 +130,27 @@ inline auto omit_front(size_t iteration_count = max_iteration_count) {
   return _detail::_omit_front(iteration_count);
 }
 
-template <typename T>
-inline auto omit_front(T t, size_t iteration_count = max_iteration_count) {
-  return omit_front(iteration_count) << t;
-}
+// template <typename T>
+// inline auto omit_front(T t, size_t iteration_count = max_iteration_count) {
+//   return omit_front(iteration_count) << t;
+// }
 
 inline auto omit_middle(size_t half_iteration_count = max_iteration_count / 2) {
   return _detail::_omit_middle(half_iteration_count);
 }
 
-template <typename T>
-inline auto omit_middle(T t, size_t iteration_count = max_iteration_count) {
-  return omit_middle(iteration_count) << t;
-}
+// template <typename T>
+// inline auto omit_middle(T t, size_t iteration_count = max_iteration_count) {
+//   return omit_middle(iteration_count) << t;
+// }
 
 inline auto omit_back(size_t iteration_count = max_iteration_count) {
   return _detail::_omit_back(iteration_count);
 }
 
-template <typename T>
-inline auto omit_back(T t, size_t iteration_count = max_iteration_count) {
-  return omit_back(iteration_count) << t;
-}
+// template <typename T>
+// inline auto omit_back(T t, size_t iteration_count = max_iteration_count) {
+//   return omit_back(iteration_count) << t;
+// }
 
 }  // namespace cpp_dump
