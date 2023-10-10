@@ -25,6 +25,8 @@
 #include <variant>
 
 #include "./escape_sequence.hpp"
+#include "./iterable.hpp"
+#include "./omit_manipulators.hpp"
 
 namespace cpp_dump {
 
@@ -34,28 +36,13 @@ template <typename T>
 using _remove_cref = std::remove_const_t<std::remove_reference_t<T>>;
 
 template <typename T>
-auto _begin(const T &t, int) -> decltype(begin(t)) {
-  return begin(t);
-}
+auto _is_iterable(int) -> decltype(
+  iterable_begin(std::declval<T>()) != iterable_end(std::declval<T>()), 
+  *iterable_begin(std::declval<T>()), 
+  std::true_type()
+  //
+);
 
-template <typename T>
-auto _begin(const T &t, long) -> decltype(std::begin(t)) {
-  return std::begin(t);
-}
-
-template <typename T>
-auto _end(const T &t, int) -> decltype(end(t)) {
-  return end(t);
-}
-
-template <typename T>
-auto _end(const T &t, long) -> decltype(std::end(t)) {
-  return std::end(t);
-}
-
-template <typename T>
-auto _is_iterable(int
-) -> decltype(_begin(std::declval<T>(), 0) != _end(std::declval<T>(), 0), *_begin(std::declval<T>(), 0), std::true_type());
 template <typename>
 std::false_type _is_iterable(long);
 
@@ -63,12 +50,16 @@ template <typename T>
 inline constexpr bool is_iterable = decltype(_is_iterable<T>(0))::value;
 
 template <typename T>
-using iterable_elem_type = _remove_cref<decltype(*_begin(std::declval<T>(), 0))>;
+using iterable_elem_type = _remove_cref<decltype(*iterable_begin(std::declval<T>()))>;
+
+template <typename>
+inline constexpr bool _is_omitted_container = false;
 
 template <typename T>
-inline bool is_empty_iterable(const T &t) {
-  return !(_begin(t, 0) != _end(t, 0));
-}
+inline constexpr bool _is_omitted_container<omitted_container<T>> = true;
+
+template <typename T>
+inline constexpr bool is_omitted_container = _is_omitted_container<_remove_cref<T>>;
 
 template <typename T>
 inline constexpr bool is_arithmetic = std::is_arithmetic_v<_remove_cref<T>>;

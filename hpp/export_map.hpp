@@ -53,8 +53,8 @@ inline auto export_map(
   // iterator for values of multimap
   struct value_iterator {
     typename T::const_iterator it;
-    auto operator*() { return it->second; }
-    bool operator!=(const value_iterator &to) { return it != to.it; }
+    auto operator*() const { return it->second; }
+    bool operator!=(const value_iterator &to) const { return it != to.it; }
     value_iterator &operator++() {
       ++it;
       return *this;

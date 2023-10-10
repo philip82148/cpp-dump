@@ -11,6 +11,7 @@
 #include <type_traits>
 
 #include "./escape_sequence.hpp"
+#include "./omit_manipulators.hpp"
 #include "./type_check.hpp"
 #include "./utility.hpp"
 
@@ -20,22 +21,20 @@ extern inline size_t max_line_width;
 
 extern inline size_t max_depth;
 
-extern inline size_t max_iteration_count;
-
 namespace _detail {
 
 template <typename T>
 std::string export_var(const T &, const std::string &, size_t, size_t, bool);
 
 template <typename T>
-inline auto export_container(
-    const T &container,
+inline std::string export_container(
+    const omitted_container<T> &omitted,
     const std::string &indent,
     size_t last_line_length,
     size_t current_depth,
     bool fail_on_newline
-) -> std::enable_if_t<is_container<T>, std::string> {
-  if (is_empty_iterable(container)) return es::bracket("[ ]", current_depth);
+) {
+  if (omitted.empty()) return es::bracket("[ ]", current_depth);
 
   if (current_depth >= max_depth)
     return es::bracket("[ ", current_depth) + es::op("...") + es::bracket(" ]", current_depth);
@@ -50,10 +49,12 @@ inline auto export_container(
   size_t next_depth      = current_depth + 1;
 
 rollback:
-  std::string output     = es::bracket("[ ", current_depth);
-  bool is_first          = true;
-  size_t iteration_count = 0;
-  for (const auto &elem : container) {
+  std::string output = es::bracket("[ ", current_depth);
+  bool is_first      = true;
+
+  auto it  = omitted.begin();
+  auto end = omitted.end();
+  for (; it != end; ++it) {
     if (is_first) {
       is_first = false;
     } else {
@@ -61,27 +62,26 @@ rollback:
     }
 
     if (shift_indent) {
-      if (++iteration_count > max_iteration_count) {
+      if (it.is_ellipsis()) {
         output += "\n" + new_indent + es::op("...");
-        break;
+        continue;
       }
 
       output +=
-          "\n" + new_indent + export_var(elem, new_indent, new_indent.length(), next_depth, false);
+          "\n" + new_indent + export_var(*it, new_indent, new_indent.length(), next_depth, false);
       continue;
     }
 
-    if (++iteration_count > max_iteration_count) {
+    if (it.is_ellipsis()) {
       output += es::op("...");
-
-      if (last_line_length + get_length(output + " ]") <= max_line_width) break;
+      if (last_line_length + get_length(output + " ]") <= max_line_width) continue;
 
       shift_indent = true;
       goto rollback;
     }
 
     std::string elem_string =
-        export_var(elem, indent, last_line_length + get_length(output), next_depth, true);
+        export_var(*it, indent, last_line_length + get_length(output), next_depth, true);
     if (!has_newline(elem_string)) {
       output += elem_string;
 
@@ -101,6 +101,19 @@ rollback:
   }
 
   return output;
+}
+
+template <typename T>
+inline auto export_container(
+    const T &container,
+    const std::string &indent,
+    size_t last_line_length,
+    size_t current_depth,
+    bool fail_on_newline
+) -> std::enable_if_t<is_container<T> && !is_omitted_container<T>, std::string> {
+  return export_container(
+      omit_back() << container, indent, last_line_length, current_depth, fail_on_newline
+  );
 }
 
 }  // namespace _detail
