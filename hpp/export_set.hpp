@@ -11,6 +11,7 @@
 #include <type_traits>
 
 #include "./escape_sequence.hpp"
+#include "./omit_manipulators.hpp"
 #include "./type_check.hpp"
 #include "./utility.hpp"
 
@@ -20,22 +21,52 @@ extern inline size_t max_line_width;
 
 extern inline size_t max_depth;
 
-extern inline size_t max_iteration_count;
-
 namespace _detail {
 
 template <typename T>
 std::string export_var(const T &, const std::string &, size_t, size_t, bool);
 
 template <typename T>
+struct _set_wrapper {
+ public:
+  _set_wrapper(const T &set) : _begin(set, set.begin()), _end(set, set.end()) {}
+  _set_wrapper() = delete;
+
+  auto begin() const { return _begin; }
+  auto end() const { return _end; }
+
+ private:
+  struct set_wrapper_iterator {
+   public:
+    using It = typename T::const_iterator;
+    set_wrapper_iterator(const T &set, It it) : set(set), it(it) {}
+    set_wrapper_iterator() = delete;
+
+    auto operator*() const { return *it; }
+    bool operator!=(const set_wrapper_iterator &to) const { return it != to.it; }
+    set_wrapper_iterator &operator++() {
+      it = set.equal_range(*it).second;
+      return *this;
+    }
+
+   private:
+    const T &set;
+    It it;
+  };
+
+  set_wrapper_iterator _begin;
+  set_wrapper_iterator _end;
+};
+
+template <typename T>
 inline auto export_set(
-    const T &set,
+    const omitted_container<T> &omitted_set,
     const std::string &indent,
     size_t last_line_length,
     size_t current_depth,
     bool fail_on_newline
 ) -> std::enable_if_t<is_set<T>, std::string> {
-  if (set.empty()) return es::bracket("{ }", current_depth);
+  if (omitted_set.empty()) return es::bracket("{ }", current_depth);
 
   if (current_depth >= max_depth)
     return es::bracket("{ ", current_depth) + es::op("...") + es::bracket(" }", current_depth);
@@ -49,11 +80,18 @@ inline auto export_set(
   std::string new_indent = indent + "  ";
   size_t next_depth      = current_depth + 1;
 
+  const T &set = omitted_set.original;
+  omitted_container<_set_wrapper<T>> omitted_set_wrapper(
+      _set_wrapper<T>(set), omitted_set.is_valid
+  );
+
 rollback:
-  std::string output     = es::bracket("{ ", current_depth);
-  bool is_first          = true;
-  size_t iteration_count = 0;
-  for (auto it = set.begin(), end = set.end(); it != end; it = set.equal_range(*it).second) {
+  std::string output = es::bracket("{ ", current_depth);
+  bool is_first      = true;
+
+  auto it  = omitted_set_wrapper.begin();
+  auto end = omitted_set_wrapper.end();
+  for (; it != end; ++it) {
     if (is_first) {
       is_first = false;
     } else {
@@ -61,9 +99,9 @@ rollback:
     }
 
     if (shift_indent) {
-      if (++iteration_count > max_iteration_count) {
+      if (it.is_ellipsis()) {
         output += "\n" + new_indent + es::op("...");
-        break;
+        continue;
       }
 
       output +=
@@ -76,10 +114,10 @@ rollback:
       continue;
     }
 
-    if (++iteration_count > max_iteration_count) {
+    if (it.is_ellipsis()) {
       output += es::op("...");
 
-      if (last_line_length + get_length(output + " }") <= max_line_width) break;
+      if (last_line_length + get_length(output + " }") <= max_line_width) continue;
 
       shift_indent = true;
       goto rollback;
@@ -111,6 +149,17 @@ rollback:
   }
 
   return output;
+}
+
+template <typename T>
+inline auto export_set(
+    const T &set,
+    const std::string &indent,
+    size_t last_line_length,
+    size_t current_depth,
+    bool fail_on_newline
+) -> std::enable_if_t<is_set<T> && !is_omitted_container<T>, std::string> {
+  return export_set(omit_back() << set, indent, last_line_length, current_depth, fail_on_newline);
 }
 
 }  // namespace _detail
