@@ -58,9 +58,9 @@ struct _set_wrapper {
   set_wrapper_iterator _end;
 };
 
-template <typename T>
+template <typename T, size_t depth>
 inline auto export_set(
-    const omitted_container<T> &omitted_set,
+    const omitted_container<T, depth> &omitted_set,
     const std::string &indent,
     size_t last_line_length,
     size_t current_depth,
@@ -81,9 +81,8 @@ inline auto export_set(
   size_t next_depth      = current_depth + 1;
 
   const T &set = omitted_set.original;
-  omitted_container<_set_wrapper<T>> omitted_set_wrapper(
-      _set_wrapper<T>(set), omitted_set.is_valid
-  );
+  const _set_wrapper<T> wrapper(set);
+  omitted_container<_set_wrapper<T>, depth> omitted_set_wrapper(wrapper, omitted_set.command);
 
 rollback:
   std::string output = es::bracket("{ ", current_depth);

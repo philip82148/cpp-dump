@@ -26,9 +26,9 @@ namespace _detail {
 template <typename T>
 std::string export_var(const T &, const std::string &, size_t, size_t, bool);
 
-template <typename T>
+template <typename T, size_t depth>
 inline std::string export_container(
-    const omitted_container<T> &omitted,
+    const omitted_container<T, depth> &omitted,
     const std::string &indent,
     size_t last_line_length,
     size_t current_depth,

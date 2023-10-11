@@ -8,7 +8,10 @@
 #pragma once
 
 #include <functional>
+#include <memory>
 #include <string>
+#include <type_traits>
+#include <utility>
 
 #include "./iterable.hpp"
 
@@ -21,15 +24,18 @@ namespace _detail {
 template <typename T>
 std::string export_var(const T &, const std::string &, size_t, size_t, bool);
 
-template <typename T>
+template <size_t>
+struct _omit_command;
+
+template <typename T, size_t depth>
 struct omitted_container {
  public:
   const T &original;
-  const std::function<bool(size_t)> is_valid;
+  const _omit_command<depth> &command;
 
-  omitted_container(const T &cont, std::function<bool(size_t)> is_valid)
+  omitted_container(const T &cont, const _omit_command<depth> &command)
       : original(cont),
-        is_valid(is_valid),
+        command(command),
         _begin(*this, iterable_begin(cont), iterable_end(cont)),
         _end(*this, iterable_end(cont), iterable_end(cont)) {}
   omitted_container() = delete;
@@ -42,115 +48,108 @@ struct omitted_container {
   template <typename It, typename End>
   struct omitted_iterator {
    public:
-    omitted_iterator(const omitted_container<T> &parent, It it, End end)
+    omitted_iterator(const omitted_container<T, depth> &parent, It it, End end)
         : parent(parent), it(it), end(end), index(0) {}
     omitted_iterator() = delete;
 
-    auto operator*() { return *it; }
+    auto operator*() {
+      if constexpr (depth == 0) {
+        return *it;
+      } else {
+        return omitted_container<decltype(*it), depth - 1>(*it, *parent.command.child);
+      }
+    }
     auto operator->() { return it.operator->(); }
     template <typename U>
     bool operator!=(const U &to) const {
       return it != to.it;
     }
     omitted_iterator &operator++() {
-      if (parent.is_valid(index)) {
-        ++it;
-        ++index;
-      } else {
-        while (it != end && !parent.is_valid(index)) {
+      if (is_ellipsis()) {
+        while (it != end && is_ellipsis()) {
           ++it;
           ++index;
         }
+      } else {
+        ++it;
+        ++index;
       }
 
       return *this;
     }
-    bool is_ellipsis() { return !parent.is_valid(index); }
+    bool is_ellipsis() {
+      return !parent.command.is_valid->operator()(index, [this] { return original_size(); });
+    }
 
    private:
-    const omitted_container<T> &parent;
+    const omitted_container<T, depth> &parent;
     It it;
     End end;
     size_t index;
+
+    size_t original_size() {
+      static const size_t size = iterable_size(parent.original);
+      return size;
+    }
   };
 
   omitted_iterator<decltype(iterable_begin(original)), decltype(iterable_end(original))> _begin;
   omitted_iterator<decltype(iterable_end(original)), decltype(iterable_end(original))> _end;
 };
 
-struct _omit_front {
+template <size_t depth>
+struct _omit_command {
  public:
-  _omit_front(size_t iteration_count) : iteration_count(iteration_count) {}
-  _omit_front() = delete;
+  const std::shared_ptr<std::function<bool(size_t, std::function<size_t()>)>> is_valid;
+  std::shared_ptr<_omit_command<depth - 1>> child;
+
+  _omit_command(std::function<bool(size_t, std::function<size_t()>)> &&is_valid)
+      : is_valid(std::make_shared<std::function<bool(size_t, std::function<size_t()>)>>(
+          std::move(is_valid)
+      )) {}
+  _omit_command(const _omit_command<depth> &command)
+      : is_valid(command.is_valid), child(command.child) {}
+  _omit_command(const _omit_command<depth - 1> &parent, const _omit_command<0> &new_child)
+      : is_valid(parent.is_valid) {
+    if constexpr (depth - 1 > 0) {
+      child.reset(new _omit_command<depth - 1>(parent.child, new_child));
+    } else {
+      child.reset(new _omit_command<0>(new_child));
+    }
+  }
+  _omit_command() = delete;
 
   template <typename T>
-  omitted_container<T> operator<<(const T &cont) {
-    size_t first = iterable_size(cont) - iteration_count;
-    return omitted_container<T>(cont, [=, this](size_t index) { return index >= first; });
+  auto operator<<(const T &cont)
+      -> std::enable_if_t<!std::is_same_v<T, _omit_command<0>>, omitted_container<T, depth>> {
+    return omitted_container<T, depth>(cont, *this);
   }
 
- private:
-  size_t iteration_count;
-};
-
-struct _omit_middle {
- public:
-  _omit_middle(size_t half_iteration_count) : half_iteration_count(half_iteration_count) {}
-  _omit_middle() = delete;
-
-  template <typename T>
-  omitted_container<T> operator<<(const T &cont) {
-    size_t latter_half_first = iterable_size(cont) - half_iteration_count;
-    return omitted_container<T>(cont, [=, this](size_t index) {
-      return index < half_iteration_count || index >= latter_half_first;
-    });
+  _omit_command<depth + 1> operator<<(const _omit_command<0> &command) const {
+    return _omit_command<depth + 1>(*this, command);
   }
-
- private:
-  size_t half_iteration_count;
-};
-
-struct _omit_back {
- public:
-  _omit_back(size_t iteration_count) : iteration_count(iteration_count) {}
-  _omit_back() = delete;
-
-  template <typename T>
-  omitted_container<T> operator<<(const T &cont) {
-    return omitted_container<T>(cont, [this](size_t index) { return index < iteration_count; });
-  }
-
- private:
-  size_t iteration_count;
 };
 
 }  // namespace _detail
 
 inline auto omit_front(size_t iteration_count = max_iteration_count) {
-  return _detail::_omit_front(iteration_count);
+  return _detail::_omit_command<0>([=](size_t index, std::function<size_t()> get_size) -> bool {
+    size_t first = get_size() - iteration_count;
+    return index >= first;
+  });
 }
-
-// template <typename T>
-// inline auto omit_front(T t, size_t iteration_count = max_iteration_count) {
-//   return omit_front(iteration_count) << t;
-// }
 
 inline auto omit_middle(size_t half_iteration_count = max_iteration_count / 2) {
-  return _detail::_omit_middle(half_iteration_count);
+  return _detail::_omit_command<0>([=](size_t index, std::function<size_t()> get_size) -> bool {
+    size_t latter_half_first = get_size() - half_iteration_count;
+    return index < half_iteration_count || index >= latter_half_first;
+  });
 }
-
-// template <typename T>
-// inline auto omit_middle(T t, size_t iteration_count = max_iteration_count) {
-//   return omit_middle(iteration_count) << t;
-// }
 
 inline auto omit_back(size_t iteration_count = max_iteration_count) {
-  return _detail::_omit_back(iteration_count);
+  return _detail::_omit_command<0>([=](size_t index, std::function<size_t()>) {
+    return index < iteration_count;
+  });
 }
-
-// template <typename T>
-// inline auto omit_back(T t, size_t iteration_count = max_iteration_count) {
-//   return omit_back(iteration_count) << t;
-// }
 
 }  // namespace cpp_dump

@@ -40,8 +40,8 @@ struct _remove_omitted_aux {
   using type = T;
 };
 
-template <typename T>
-struct _remove_omitted_aux<omitted_container<T>> {
+template <typename T, size_t depth>
+struct _remove_omitted_aux<omitted_container<T, depth>> {
   using type = T;
 };
 
@@ -72,8 +72,8 @@ using iterable_elem_type =
 template <typename>
 inline constexpr bool _is_omitted_container = false;
 
-template <typename T>
-inline constexpr bool _is_omitted_container<omitted_container<T>> = true;
+template <typename T, size_t depth>
+inline constexpr bool _is_omitted_container<omitted_container<T, depth>> = true;
 
 template <typename T>
 inline constexpr bool is_omitted_container = _is_omitted_container<_remove_cref<T>>;

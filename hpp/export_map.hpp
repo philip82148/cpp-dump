@@ -88,9 +88,9 @@ struct _multimap_value_wrapper {
   multimap_value_iterator _end;
 };
 
-template <typename T>
+template <typename T, size_t depth>
 inline auto export_map(
-    const omitted_container<T> &omitted_map,
+    const omitted_container<T, depth> &omitted_map,
     const std::string &indent,
     size_t last_line_length,
     size_t current_depth,
@@ -112,9 +112,8 @@ inline auto export_map(
   size_t next_depth      = current_depth + 1;
 
   const T &map = omitted_map.original;
-  omitted_container<_map_wrapper<T>> omitted_map_wrapper(
-      _map_wrapper<T>(map), omitted_map.is_valid
-  );
+  const _map_wrapper<T> wrapper(map);
+  omitted_container<_map_wrapper<T>, depth> omitted_map_wrapper(wrapper, omitted_map.command);
 
 rollback:
   std::string output = es::bracket("{ ", current_depth);
