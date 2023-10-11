@@ -12,7 +12,6 @@
 #include <vector>
 
 #include "./export_command.hpp"
-#include "./type_check.hpp"
 #include "./utility.hpp"
 
 namespace cpp_dump {
