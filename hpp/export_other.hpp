@@ -34,16 +34,13 @@ inline std::string export_other(
     size_t current_depth,
     bool fail_on_newline,
     const export_command &command
-
 ) {
   return export_var(ref.get(), indent, last_line_length, current_depth, fail_on_newline, command);
 }
 
 template <size_t N>
-inline std::string export_other(
-    const std::bitset<N> &bitset, const std::string &, size_t, size_t, bool, const export_command &
-
-) {
+inline std::string
+export_other(const std::bitset<N> &bitset, const std::string &, size_t, size_t, bool, const export_command &) {
   std::string bitset_str = bitset.to_string();
 
   std::string output;
@@ -62,15 +59,8 @@ inline std::string export_other(
 }
 
 template <typename... Args>
-inline std::string export_other(
-    const std::complex<Args...> &complex,
-    const std::string &,
-    size_t,
-    size_t current_depth,
-    bool,
-    const export_command &
-
-) {
+inline std::string
+export_other(const std::complex<Args...> &complex, const std::string &, size_t, size_t current_depth, bool, const export_command &) {
   auto imag      = std::imag(complex);
   auto imag_sign = imag >= 0 ? "+" : "-";
 
@@ -93,7 +83,6 @@ inline std::string export_other(
     size_t current_depth,
     bool fail_on_newline,
     const export_command &command
-
 ) {
   return std::visit(
       [=, &indent](const auto &value) -> std::string {
@@ -106,6 +95,10 @@ inline std::string export_other(
   );
 }
 
+// meta func for type_check.hpp
+template <>
+inline constexpr bool _is_other_type<es_value_t> = true;
+
 inline std::string export_other(
     const es_value_t &esv,
     const std::string &indent,
@@ -113,9 +106,8 @@ inline std::string export_other(
     size_t current_depth,
     bool fail_on_newline,
     const export_command &command
-
 ) {
-  return export_es_value_t(esv, indent, last_line_length, current_depth, fail_on_newline);
+  return export_es_value_t(esv, indent, last_line_length, current_depth, fail_on_newline, command);
 }
 
 }  // namespace _detail

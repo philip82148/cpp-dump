@@ -11,6 +11,8 @@
 #include <type_traits>
 #include <vector>
 
+#include "./export_command.hpp"
+#include "./type_check.hpp"
 #include "./utility.hpp"
 
 namespace cpp_dump {
@@ -69,8 +71,6 @@ extern inline size_t max_line_width;
 
 extern inline size_t max_depth;
 
-extern inline size_t max_iteration_count;
-
 namespace _detail {
 
 inline bool use_es() { return es_style != es_style_t::no_es; }
@@ -117,7 +117,8 @@ inline std::string _export_es_value_vector(
     const std::string &indent,
     size_t last_line_length,
     size_t current_depth,
-    bool fail_on_newline
+    bool fail_on_newline,
+    const export_command &command
 ) {
   if (es_vec.empty()) return es::bracket("[ ]", current_depth);
 
@@ -130,11 +131,13 @@ inline std::string _export_es_value_vector(
 
   std::string new_indent = indent + "  ";
 
+  auto omitted = command.get_omitted_container(es_vec);
+
 rollback:
-  std::string output     = es::bracket("[ ", current_depth);
-  bool is_first          = true;
-  size_t iteration_count = 0;
-  for (const auto &es : es_vec) {
+  std::string output = es::bracket("[ ", current_depth);
+  bool is_first      = true;
+
+  for (const auto &[is_ellipsis, es] : omitted) {
     if (is_first) {
       is_first = false;
     } else {
@@ -142,19 +145,19 @@ rollback:
     }
 
     if (shift_indent) {
-      if (++iteration_count > max_iteration_count) {
+      if (is_ellipsis) {
         output += "\n" + new_indent + es::op("...");
-        break;
+        continue;
       }
 
       output += "\n" + new_indent + _export_es_value_string(es);
       continue;
     }
 
-    if (++iteration_count > max_iteration_count) {
+    if (is_ellipsis) {
       output += es::op("...");
 
-      if (last_line_length + get_length(output + " ]") <= max_line_width) break;
+      if (last_line_length + get_length(output + " ]") <= max_line_width) continue;
 
       shift_indent = true;
       goto rollback;
@@ -184,7 +187,8 @@ inline std::string export_es_value_t(
     const std::string &indent,
     size_t last_line_length,
     size_t current_depth,
-    bool fail_on_newline
+    bool fail_on_newline,
+    const export_command &command
 ) {
   if (current_depth >= max_depth)
     return es::identifier("cpp_dump::es_value_t") + es::bracket("{ ", current_depth) + es::op("...")
@@ -213,7 +217,7 @@ inline std::string export_es_value_t(
     } else {
       output += es::member(member_name) + es::op("= ");
       output += _export_es_value_vector(
-          member, new_indent, get_last_line_length(output), next_depth, false
+          member, new_indent, get_last_line_length(output), next_depth, false, command
       );
     }
   };
