@@ -62,7 +62,7 @@ inline auto _iterable_size(const T &t, long)
 template <typename T>
 inline size_t _iterable_size(const T &t, ...) {
   size_t size = 0;
-  for (auto elem : t) ++size;
+  for (const auto &_e : t) (void)_e, ++size;
   return size;
 }
 

@@ -9,6 +9,7 @@
 
 #include <functional>
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "./iterable.hpp"
@@ -67,14 +68,15 @@ struct omitted_container {
     const omitted_container<T> &parent;
     It it;
     size_t index;
+    mutable std::optional<size_t> size;
 
     bool is_ellipsis() const {
       return !parent.is_valid->operator()(index, [this] { return original_size(); });
     }
 
     size_t original_size() const {
-      static const size_t size = iterable_size(parent.original);
-      return size;
+      if (!size) size = iterable_size(parent.original);
+      return size.value();
     }
   };
 
@@ -117,7 +119,7 @@ struct export_command {
     if (child) {
       *child << std::move(command);
     } else {
-      child.reset(&command);
+      child = std::make_shared<export_command>(command);
     }
     return *this;
   }
@@ -159,14 +161,16 @@ inline constexpr bool is_value_with_command = _is_value_with_command<_remove_cre
 
 inline auto omit_front(size_t iteration_count = max_iteration_count) {
   return _detail::export_command([=](size_t index, std::function<size_t()> get_size) -> bool {
-    size_t first = get_size() - iteration_count;
+    size_t size  = get_size();
+    size_t first = size >= iteration_count ? size - iteration_count : 0;
     return index >= first;
   });
 }
 
 inline auto omit_middle(size_t half_iteration_count = max_iteration_count / 2) {
   return _detail::export_command([=](size_t index, std::function<size_t()> get_size) -> bool {
-    size_t latter_half_first = get_size() - half_iteration_count;
+    size_t size              = get_size();
+    size_t latter_half_first = size >= half_iteration_count ? size - half_iteration_count : 0;
     return index < half_iteration_count || index >= latter_half_first;
   });
 }
