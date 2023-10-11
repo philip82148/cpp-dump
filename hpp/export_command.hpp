@@ -24,13 +24,13 @@ template <typename T>
 struct omitted_container {
  public:
   omitted_container(
-      const T &cont,
+      const T &container,
       const std::shared_ptr<std::function<bool(size_t, std::function<size_t()>)>> &is_valid
   )
-      : original(cont),
+      : original(container),
         is_valid(is_valid),
-        _begin(*this, iterable_begin(cont)),
-        _end(*this, iterable_end(cont)) {}
+        _begin(*this, iterable_begin(container)),
+        _end(*this, iterable_end(container)) {}
   omitted_container() = delete;
 
   auto begin() const { return _begin; }
@@ -98,8 +98,8 @@ struct export_command {
   export_command() : is_valid(default_is_valid) {}
 
   template <typename T>
-  omitted_container<T> get_omitted_container(const T &cont) const {
-    return omitted_container<T>(cont, is_valid);
+  omitted_container<T> get_omitted_container(const T &container) const {
+    return omitted_container<T>(container, is_valid);
   }
 
   export_command next() const {

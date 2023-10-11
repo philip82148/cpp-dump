@@ -29,14 +29,14 @@ std::string
 export_var(const T &, const std::string &, size_t, size_t, bool, const export_command &);
 
 template <typename T>
-inline std::string export_container(
+inline auto export_container(
     const T &container,
     const std::string &indent,
     size_t last_line_length,
     size_t current_depth,
     bool fail_on_newline,
     const export_command &command
-) {
+) -> std::enable_if_t<is_container<T>, std::string> {
   if (is_empty_iterable(container)) return es::bracket("[ ]", current_depth);
 
   if (current_depth >= max_depth)

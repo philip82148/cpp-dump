@@ -8,6 +8,8 @@
 #pragma once
 
 #include <stdexcept>
+#include <string>
+#include <type_traits>
 
 #include "./escape_sequence.hpp"
 #include "./export_command.hpp"
@@ -83,7 +85,6 @@ inline auto export_exception(
     size_t current_depth,
     bool fail_on_newline,
     const export_command &command
-
 ) -> std::enable_if_t<is_exception<T>, std::string> {
   size_t next_depth = current_depth + 1;
 
