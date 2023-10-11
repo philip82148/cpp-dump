@@ -44,6 +44,11 @@ auto iterable_end(const T &t) -> decltype(_iterable_end(t, 0)) {
 }
 
 template <typename T>
+inline bool is_empty_iterable(const T &t) {
+  return !(iterable_begin(t) != iterable_end(t));
+}
+
+template <typename T>
 inline auto _iterable_size(const T &t, int) -> decltype(std::size(t)) {
   return std::size(t);
 }

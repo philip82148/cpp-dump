@@ -12,6 +12,7 @@
 #include <type_traits>
 
 #include "./escape_sequence.hpp"
+#include "./export_command.hpp"
 #include "./type_check.hpp"
 #include "./utility.hpp"
 
@@ -20,7 +21,8 @@ namespace cpp_dump {
 namespace _detail {
 
 template <typename T>
-inline auto export_string(const T &value, const std::string &, size_t, size_t, bool fail_on_newline)
+inline auto
+export_string(const T &value, const std::string &, size_t, size_t, bool fail_on_newline, const export_command &)
     -> std::enable_if_t<is_string<T>, std::string> {
   std::string str{value};
 

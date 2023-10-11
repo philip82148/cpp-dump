@@ -26,7 +26,6 @@
 
 #include "./escape_sequence.hpp"
 #include "./iterable.hpp"
-#include "./omit_manipulators.hpp"
 
 namespace cpp_dump {
 
@@ -34,22 +33,6 @@ namespace _detail {
 
 template <typename T>
 using _remove_cref = std::remove_const_t<std::remove_reference_t<T>>;
-
-template <typename T>
-struct _remove_omitted_aux {
-  using type = T;
-};
-
-template <typename T, size_t depth>
-struct _remove_omitted_aux<omitted_container<T, depth>> {
-  using type = T;
-};
-
-template <typename T>
-using _remove_omitted = typename _remove_omitted_aux<_remove_cref<T>>::type;
-
-template <typename T>
-using _remove_all = _remove_cref<_remove_omitted<T>>;
 
 template <typename T>
 auto _is_iterable(int) -> decltype(
@@ -66,17 +49,7 @@ template <typename T>
 inline constexpr bool is_iterable = decltype(_is_iterable<T>(0))::value;
 
 template <typename T>
-using iterable_elem_type =
-    _remove_cref<decltype(*iterable_begin(std::declval<_remove_omitted<T>>()))>;
-
-template <typename>
-inline constexpr bool _is_omitted_container = false;
-
-template <typename T, size_t depth>
-inline constexpr bool _is_omitted_container<omitted_container<T, depth>> = true;
-
-template <typename T>
-inline constexpr bool is_omitted_container = _is_omitted_container<_remove_cref<T>>;
+using iterable_elem_type = _remove_cref<decltype(*iterable_begin(std::declval<T>()))>;
 
 template <typename T>
 inline constexpr bool is_arithmetic = std::is_arithmetic_v<_remove_cref<T>>;
@@ -102,10 +75,10 @@ template <typename... Args>
 inline constexpr bool _is_multimap<std::unordered_multimap<Args...>> = true;
 
 template <typename T>
-inline constexpr bool is_multimap = _is_multimap<_remove_all<T>>;
+inline constexpr bool is_multimap = _is_multimap<_remove_cref<T>>;
 
 template <typename T>
-inline constexpr bool is_map = _is_map<_remove_all<T>> || is_multimap<T>;
+inline constexpr bool is_map = _is_map<_remove_cref<T>> || is_multimap<T>;
 
 template <typename>
 inline constexpr bool _is_set = false;
@@ -122,10 +95,10 @@ template <typename... Args>
 inline constexpr bool _is_multiset<std::unordered_multiset<Args...>> = true;
 
 template <typename T>
-inline constexpr bool is_multiset = _is_multiset<_remove_all<_remove_omitted<T>>>;
+inline constexpr bool is_multiset = _is_multiset<_remove_cref<T>>;
 
 template <typename T>
-inline constexpr bool is_set = _is_set<_remove_all<_remove_omitted<T>>> || is_multiset<T>;
+inline constexpr bool is_set = _is_set<_remove_cref<T>> || is_multiset<T>;
 
 template <typename T>
 inline constexpr bool is_container = is_iterable<T> && !is_string<T> && !is_map<T> && !is_set<T>;

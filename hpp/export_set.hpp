@@ -11,7 +11,7 @@
 #include <type_traits>
 
 #include "./escape_sequence.hpp"
-#include "./omit_manipulators.hpp"
+#include "./export_command.hpp"
 #include "./type_check.hpp"
 #include "./utility.hpp"
 
@@ -24,7 +24,8 @@ extern inline size_t max_depth;
 namespace _detail {
 
 template <typename T>
-std::string export_var(const T &, const std::string &, size_t, size_t, bool);
+std::string
+export_var(const T &, const std::string &, size_t, size_t, bool, const export_command &);
 
 template <typename T>
 struct _set_wrapper {
@@ -58,15 +59,16 @@ struct _set_wrapper {
   set_wrapper_iterator _end;
 };
 
-template <typename T, size_t depth>
+template <typename T>
 inline auto export_set(
-    const omitted_container<T, depth> &omitted_set,
+    const T &set,
     const std::string &indent,
     size_t last_line_length,
     size_t current_depth,
-    bool fail_on_newline
+    bool fail_on_newline,
+    const export_command &command
 ) -> std::enable_if_t<is_set<T>, std::string> {
-  if (omitted_set.empty()) return es::bracket("{ }", current_depth);
+  if (set.empty()) return es::bracket("{ }", current_depth);
 
   if (current_depth >= max_depth)
     return es::bracket("{ ", current_depth) + es::op("...") + es::bracket(" }", current_depth);
@@ -79,18 +81,16 @@ inline auto export_set(
 
   std::string new_indent = indent + "  ";
   size_t next_depth      = current_depth + 1;
+  auto next_command      = command.next();
 
-  const T &set = omitted_set.original;
-  const _set_wrapper<T> wrapper(set);
-  omitted_container<_set_wrapper<T>, depth> omitted_set_wrapper(wrapper, omitted_set.command);
+  _set_wrapper set_wrapper(set);
+  auto omitted_set = command.get_omitted_container(set_wrapper);
 
 rollback:
   std::string output = es::bracket("{ ", current_depth);
   bool is_first      = true;
 
-  auto it  = omitted_set_wrapper.begin();
-  auto end = omitted_set_wrapper.end();
-  for (; it != end; ++it) {
+  for (const auto &[is_ellipsis, elem] : omitted_set) {
     if (is_first) {
       is_first = false;
     } else {
@@ -98,22 +98,23 @@ rollback:
     }
 
     if (shift_indent) {
-      if (it.is_ellipsis()) {
+      if (is_ellipsis) {
         output += "\n" + new_indent + es::op("...");
         continue;
       }
 
       output +=
-          "\n" + new_indent + export_var(*it, new_indent, new_indent.length(), next_depth, false);
+          "\n" + new_indent
+          + export_var(elem, new_indent, new_indent.length(), next_depth, false, next_command);
 
       // Treat the multiplicity as a member as export_map() does.
       if constexpr (is_multiset<T>)
-        output += es::member(" (" + std::to_string(set.count(*it)) + ")");
+        output += es::member(" (" + std::to_string(set.count(elem)) + ")");
 
       continue;
     }
 
-    if (it.is_ellipsis()) {
+    if (is_ellipsis) {
       output += es::op("...");
 
       if (last_line_length + get_length(output + " }") <= max_line_width) continue;
@@ -122,12 +123,13 @@ rollback:
       goto rollback;
     }
 
-    std::string elem_string =
-        export_var(*it, indent, last_line_length + get_length(output), next_depth, true);
+    std::string elem_string = export_var(
+        elem, indent, last_line_length + get_length(output), next_depth, true, next_command
+    );
 
     // Treat the multiplicity as a member as export_map() does.
     if constexpr (is_multiset<T>)
-      elem_string += es::member(" (" + std::to_string(set.count(*it)) + ")");
+      elem_string += es::member(" (" + std::to_string(set.count(elem)) + ")");
 
     if (!has_newline(elem_string)) {
       output += elem_string;
@@ -148,17 +150,6 @@ rollback:
   }
 
   return output;
-}
-
-template <typename T>
-inline auto export_set(
-    const T &set,
-    const std::string &indent,
-    size_t last_line_length,
-    size_t current_depth,
-    bool fail_on_newline
-) -> std::enable_if_t<is_set<T> && !is_omitted_container<T>, std::string> {
-  return export_set(omit_back() << set, indent, last_line_length, current_depth, fail_on_newline);
 }
 
 }  // namespace _detail

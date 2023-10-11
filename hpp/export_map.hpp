@@ -11,6 +11,7 @@
 #include <type_traits>
 
 #include "./escape_sequence.hpp"
+#include "./export_command.hpp"
 #include "./type_check.hpp"
 #include "./utility.hpp"
 
@@ -23,7 +24,8 @@ extern inline size_t max_depth;
 namespace _detail {
 
 template <typename T>
-std::string export_var(const T &, const std::string &, size_t, size_t, bool);
+std::string
+export_var(const T &, const std::string &, size_t, size_t, bool, const export_command &);
 
 template <typename T>
 struct _map_wrapper {
@@ -88,15 +90,16 @@ struct _multimap_value_wrapper {
   multimap_value_iterator _end;
 };
 
-template <typename T, size_t depth>
+template <typename T>
 inline auto export_map(
-    const omitted_container<T, depth> &omitted_map,
+    const T &map,
     const std::string &indent,
     size_t last_line_length,
     size_t current_depth,
-    bool fail_on_newline
+    bool fail_on_newline,
+    const export_command &command
 ) -> std::enable_if_t<is_map<T>, std::string> {
-  if (omitted_map.empty()) return es::bracket("{ }", current_depth);
+  if (map.empty()) return es::bracket("{ }", current_depth);
 
   if (current_depth >= max_depth)
     return es::bracket("{ ", current_depth) + es::op("...") + es::bracket(" }", current_depth);
@@ -110,18 +113,18 @@ inline auto export_map(
 
   std::string new_indent = indent + "  ";
   size_t next_depth      = current_depth + 1;
+  auto next_command      = command.next();
 
-  const T &map = omitted_map.original;
-  const _map_wrapper<T> wrapper(map);
-  omitted_container<_map_wrapper<T>, depth> omitted_map_wrapper(wrapper, omitted_map.command);
+  _map_wrapper<T> map_wrapper(map);
+  auto omitted_map = command.get_omitted_container(map_wrapper);
 
 rollback:
   std::string output = es::bracket("{ ", current_depth);
   bool is_first      = true;
 
-  auto it  = omitted_map_wrapper.begin();
-  auto end = omitted_map_wrapper.end();
-  for (; it != end; ++it) {
+  for (const auto &[is_ellipsis, elem] : omitted_map) {
+    const auto &[key, value] = elem;
+
     if (is_first) {
       is_first = false;
     } else {
@@ -130,35 +133,39 @@ rollback:
 
     std::string key_string, value_string;
     if (shift_indent) {
-      if (it.is_ellipsis()) {
+      if (is_ellipsis) {
         output += "\n" + new_indent + es::op("...");
         continue;
       }
 
       if constexpr (is_multimap<T>) {
-        auto [_begin, _end] = map.equal_range(it->first);
+        auto [_begin, _end] = map.equal_range(key);
         _multimap_value_wrapper values(_begin, _end);
 
         // Treat the multiplicity as a member to distinguish it from the keys & values.
         // Also, multiplicities are similar to members since they are on the left side of values.
-        key_string = "\n" + new_indent
-                     + export_var(it->first, new_indent, new_indent.length(), next_depth, false)
-                     + es::member(" (" + std::to_string(map.count(it->first)) + ")") + es::op(": ");
-        value_string =
-            export_var(values, new_indent, get_last_line_length(key_string), next_depth, false);
+        key_string =
+            "\n" + new_indent
+            + export_var(key, new_indent, new_indent.length(), next_depth, false, next_command)
+            + es::member(" (" + std::to_string(map.count(key)) + ")") + es::op(": ");
+        value_string = export_var(
+            values, new_indent, get_last_line_length(key_string), next_depth, false, next_command
+        );
       } else {
-        key_string = "\n" + new_indent
-                     + export_var(it->first, new_indent, new_indent.length(), next_depth, false)
-                     + es::op(": ");
-        value_string =
-            export_var(it->second, new_indent, get_last_line_length(key_string), next_depth, false);
+        key_string =
+            "\n" + new_indent
+            + export_var(key, new_indent, new_indent.length(), next_depth, false, next_command)
+            + es::op(": ");
+        value_string = export_var(
+            value, new_indent, get_last_line_length(key_string), next_depth, false, next_command
+        );
       }
 
       output += key_string + value_string;
       continue;
     }
 
-    if (it.is_ellipsis()) {
+    if (is_ellipsis) {
       output += es::op("...");
 
       if (last_line_length + get_length(output + " }") <= max_line_width) continue;
@@ -168,31 +175,37 @@ rollback:
     }
 
     if constexpr (is_multimap<T>) {
-      auto [_begin, _end] = map.equal_range(it->first);
+      auto [_begin, _end] = map.equal_range(key);
       _multimap_value_wrapper values(_begin, _end);
 
       // Treat the multiplicity as a member to distinguish it from the keys & values.
       // Also, multiplicities are similar to members since they are on the left side of values.
       key_string =
-          export_var(it->first, indent, last_line_length + get_length(output), next_depth, true)
-          + es::member(" (" + std::to_string(map.count(it->first)) + ")") + es::op(": ");
+          export_var(
+              key, indent, last_line_length + get_length(output), next_depth, true, next_command
+          )
+          + es::member(" (" + std::to_string(map.count(key)) + ")") + es::op(": ");
       value_string = export_var(
           values,
           indent,
           last_line_length + get_length(output) + get_length(key_string),
           next_depth,
-          true
+          true,
+          next_command
       );
     } else {
       key_string =
-          export_var(it->first, indent, last_line_length + get_length(output), next_depth, true)
+          export_var(
+              key, indent, last_line_length + get_length(output), next_depth, true, next_command
+          )
           + es::op(": ");
       value_string = export_var(
-          it->second,
+          value,
           indent,
           last_line_length + get_length(output) + get_length(key_string),
           next_depth,
-          true
+          true,
+          next_command
       );
     }
 
@@ -216,17 +229,6 @@ rollback:
   }
 
   return output;
-}
-
-template <typename T>
-inline auto export_map(
-    const T &map,
-    const std::string &indent,
-    size_t last_line_length,
-    size_t current_depth,
-    bool fail_on_newline
-) -> std::enable_if_t<is_map<T> && !is_omitted_container<T>, std::string> {
-  return export_map(omit_back() << map, indent, last_line_length, current_depth, fail_on_newline);
 }
 
 }  // namespace _detail

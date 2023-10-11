@@ -14,6 +14,7 @@
 
 #include "hpp/escape_sequence.hpp"
 #include "hpp/expand_va_macro.hpp"
+#include "hpp/export_command.hpp"
 #include "hpp/export_var.hpp"
 #include "hpp/utility.hpp"
 
@@ -119,8 +120,9 @@ bool _dump_one(
                                       ) -> prefix_and_value_string {
     auto last_line_length = get_last_line_length(output + prefix);
 
-    std::string value_string =
-        export_var(value, indent, last_line_length, 0, no_newline_in_value_string);
+    std::string value_string = export_var(
+        value, indent, last_line_length, 0, no_newline_in_value_string, export_command()
+    );
 
     bool value_string_has_newline = has_newline(value_string);
 

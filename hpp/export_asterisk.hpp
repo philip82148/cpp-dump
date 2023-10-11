@@ -11,6 +11,7 @@
 #include <type_traits>
 
 #include "./escape_sequence.hpp"
+#include "./export_command.hpp"
 #include "./type_check.hpp"
 
 namespace cpp_dump {
@@ -20,7 +21,8 @@ extern inline size_t max_depth;
 namespace _detail {
 
 template <typename T>
-std::string export_var(const T &, const std::string &, size_t, size_t, bool);
+std::string
+export_var(const T &, const std::string &, size_t, size_t, bool, const export_command &);
 
 template <typename T>
 inline auto export_asterisk(
@@ -28,14 +30,17 @@ inline auto export_asterisk(
     const std::string &indent,
     size_t last_line_length,
     size_t current_depth,
-    bool fail_on_newline
+    bool fail_on_newline,
+    const export_command &command
 ) -> std::enable_if_t<is_asterisk<T>, std::string> {
   if (current_depth >= max_depth) return "*...";
 
   // If decltype(*value) == decltype(value), then the program enters an infinite loop.
   // So increment depth.
   return es::identifier("*")
-         + export_var(*value, indent, last_line_length + 1, current_depth + 1, fail_on_newline);
+         + export_var(
+             *value, indent, last_line_length + 1, current_depth + 1, fail_on_newline, command
+         );
 }
 
 }  // namespace _detail

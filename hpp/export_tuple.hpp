@@ -12,6 +12,7 @@
 #include <type_traits>
 
 #include "./escape_sequence.hpp"
+#include "./export_command.hpp"
 #include "./type_check.hpp"
 #include "./utility.hpp"
 
@@ -24,19 +25,25 @@ extern inline size_t max_depth;
 namespace _detail {
 
 template <typename T>
-std::string export_var(const T &, const std::string &, size_t, size_t, bool);
+std::string
+export_var(const T &, const std::string &, size_t, size_t, bool, const export_command &);
 
 template <const size_t i, const size_t size, typename T>
 inline auto _export_tuple_in_one_line(
-    const T &tuple, const std::string &indent, size_t last_line_length, size_t next_depth
+    const T &tuple,
+    const std::string &indent,
+    size_t last_line_length,
+    size_t next_depth,
+    const export_command &command
 ) -> std::enable_if_t<is_tuple<T>, std::string> {
-  std::string output = export_var(std::get<i>(tuple), indent, last_line_length, next_depth, true);
+  std::string output =
+      export_var(std::get<i>(tuple), indent, last_line_length, next_depth, true, command);
   if (has_newline(output)) return "\n";
 
   if constexpr (i < size - 1) {
     return output + es::op(", ")
            + _export_tuple_in_one_line<i + 1, size>(
-               tuple, indent, get_length(output) + 2, next_depth
+               tuple, indent, get_length(output) + 2, next_depth, command
            );
   } else {
     return output;
@@ -44,14 +51,15 @@ inline auto _export_tuple_in_one_line(
 }
 
 template <const size_t i, const size_t size, typename T>
-inline auto _export_tuple_in_lines(const T &tuple, const std::string &indent, size_t next_depth)
-    -> std::enable_if_t<is_tuple<T>, std::string> {
+inline auto _export_tuple_in_lines(
+    const T &tuple, const std::string &indent, size_t next_depth, const export_command &command
+) -> std::enable_if_t<is_tuple<T>, std::string> {
   std::string output =
-      export_var(std::get<i>(tuple), indent, get_length(indent), next_depth, false);
+      export_var(std::get<i>(tuple), indent, get_length(indent), next_depth, false, command);
 
   if constexpr (i < size - 1) {
     return output + es::op(",\n") + indent
-           + _export_tuple_in_lines<i + 1, size>(tuple, indent, next_depth);
+           + _export_tuple_in_lines<i + 1, size>(tuple, indent, next_depth, command);
   } else {
     return output;
   }
@@ -63,7 +71,8 @@ inline auto export_tuple(
     const std::string &indent,
     size_t last_line_length,
     size_t current_depth,
-    bool fail_on_newline
+    bool fail_on_newline,
+    const export_command &command
 ) -> std::enable_if_t<is_tuple<T>, std::string> {
   constexpr size_t tuple_size = std::tuple_size_v<T>;
 
@@ -75,10 +84,11 @@ inline auto export_tuple(
 
     size_t next_depth = current_depth + 1;
 
-    std::string output =
-        es::bracket("( ", current_depth)
-        + _export_tuple_in_one_line<0, tuple_size>(tuple, indent, last_line_length + 2, next_depth)
-        + es::bracket(" )", current_depth);
+    std::string output = es::bracket("( ", current_depth)
+                         + _export_tuple_in_one_line<0, tuple_size>(
+                             tuple, indent, last_line_length + 2, next_depth, command
+                         )
+                         + es::bracket(" )", current_depth);
 
     if (!has_newline(output) && get_length(output) <= max_line_width) return output;
 
@@ -86,8 +96,8 @@ inline auto export_tuple(
 
     std::string new_indent = indent + "  ";
     return es::bracket("(\n", current_depth) + new_indent
-           + _export_tuple_in_lines<0, tuple_size>(tuple, new_indent, next_depth) + "\n" + indent
-           + es::bracket(")", current_depth);
+           + _export_tuple_in_lines<0, tuple_size>(tuple, new_indent, next_depth, command) + "\n"
+           + indent + es::bracket(")", current_depth);
   }
 }
 

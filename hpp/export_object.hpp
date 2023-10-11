@@ -11,6 +11,7 @@
 
 #include "./escape_sequence.hpp"
 #include "./expand_va_macro.hpp"
+#include "./export_command.hpp"
 #include "./type_check.hpp"
 #include "./utility.hpp"
 
@@ -33,7 +34,8 @@
   inline constexpr bool _is_exportable_object<TYPE> = true;                                        \
                                                                                                    \
   template <typename T>                                                                            \
-  std::string export_var(const T &, const std::string &, size_t, size_t, bool);                    \
+  std::string                                                                                      \
+  export_var(const T &, const std::string &, size_t, size_t, bool, const export_command &);        \
                                                                                                    \
   template <>                                                                                      \
   inline std::string export_object(                                                                \
@@ -41,7 +43,8 @@
       const std::string &indent,                                                                   \
       size_t last_line_length,                                                                     \
       size_t current_depth,                                                                        \
-      bool fail_on_newline                                                                         \
+      bool fail_on_newline,                                                                        \
+      const export_command &command                                                                \
   ) {                                                                                              \
     if (current_depth >= max_depth)                                                                \
       return es::identifier(#TYPE) + es::bracket("{ ", current_depth) + es::op("...")              \
@@ -64,11 +67,14 @@
                                                                                                    \
       if (shift_indent) {                                                                          \
         output += "\n" + new_indent + es::member(member_name) + es::op("= ");                      \
-        output += export_var(member, new_indent, get_last_line_length(output), next_depth, false); \
+        output += export_var(                                                                      \
+            member, new_indent, get_last_line_length(output), next_depth, false, command           \
+        );                                                                                         \
       } else {                                                                                     \
         output += es::member(member_name) + es::op("= ");                                          \
-        output +=                                                                                  \
-            export_var(member, indent, last_line_length + get_length(output), next_depth, true);   \
+        output += export_var(                                                                      \
+            member, indent, last_line_length + get_length(output), next_depth, true, command       \
+        );                                                                                         \
       }                                                                                            \
     };                                                                                             \
                                                                                                    \
@@ -104,7 +110,8 @@ namespace cpp_dump {
 namespace _detail {
 
 template <typename T>
-inline std::string export_object(const T &, const std::string &, size_t, size_t, bool);
+inline std::string
+export_object(const T &, const std::string &, size_t, size_t, bool, const export_command &);
 
 }  // namespace _detail
 
