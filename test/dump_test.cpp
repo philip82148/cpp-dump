@@ -12,23 +12,33 @@ using namespace cpp_dump;
 struct class_a {
   int int_a   = 314159265;
   long long_b = 1;
-  int get_a() const { return int_a; }
-} class_a1;
-
-struct class_b {
   static long static_long_a;
-  int int_b        = 1;
-  string str       = "This object has a pointer to itself.";
-  class_b *pointer = this;
-} class_b1;
+  string a_str() const { return to_string(int_a); }
+} class_a1;
+long class_a::static_long_a = 358979;
 
-long class_b::static_long_a = 358979;
+struct non_copyable_and_non_movable_class {
+  string str_member;
+  non_copyable_and_non_movable_class *pointer{this};
+  reference_wrapper<non_copyable_and_non_movable_class> ref{*this};
+
+  non_copyable_and_non_movable_class(const non_copyable_and_non_movable_class &) = delete;
+  non_copyable_and_non_movable_class &operator=(const non_copyable_and_non_movable_class &) =
+      delete;
+
+  non_copyable_and_non_movable_class(non_copyable_and_non_movable_class &&)           = delete;
+  non_copyable_and_non_movable_class &operator=(non_copyable_and_non_movable_class &) = delete;
+
+  non_copyable_and_non_movable_class() = delete;
+
+  non_copyable_and_non_movable_class(const string &str_member) : str_member(str_member) {}
+} non_copyable_and_non_movable_class1("This object has a pointer and reference_wrapper to itself.");
 
 enum class enum_a { s, k, l };
 
 CPP_DUMP_DEFINE_EXPORT_ENUM(enum_a, enum_a::s, enum_a::k);
-CPP_DUMP_DEFINE_EXPORT_OBJECT(decltype(class_a1), int_a, long_b, get_a());
-CPP_DUMP_DEFINE_EXPORT_OBJECT(class_b, static_long_a, int_b, str, pointer);
+CPP_DUMP_DEFINE_EXPORT_OBJECT(decltype(class_a1), int_a, long_b, a_str());
+CPP_DUMP_DEFINE_EXPORT_OBJECT(non_copyable_and_non_movable_class, str_member, pointer, ref);
 
 int main(int argc, char *argv[]) {
   if (argc != 4) return 1;
@@ -165,7 +175,7 @@ int main(int argc, char *argv[]) {
 
   // object
   CPP_DUMP(class_a1);
-  CPP_DUMP(class_b1);
+  CPP_DUMP(non_copyable_and_non_movable_class1);
 
   // enum
   enum_a enum_a_s = enum_a::s;
@@ -177,10 +187,10 @@ int main(int argc, char *argv[]) {
   bitset<10> bitset1(0xca);
   CPP_DUMP(bitset1);
 
-  optional<int> optional = 1;
-  CPP_DUMP(optional);
-  optional = nullopt;
-  CPP_DUMP(optional);
+  optional<int> optional1 = 1;
+  CPP_DUMP(optional1);
+  optional1 = nullopt;
+  CPP_DUMP(optional1);
   CPP_DUMP(nullopt);
 
   variant<int, string> variant1 = "";
@@ -251,4 +261,14 @@ int main(int argc, char *argv[]) {
 
   CPP_DUMP(multimap1, keep_both_ends(2) << keep_both_ends(2) << multimap1);
   CPP_DUMP(multiset1, keep_middle(1) << keep_back(1) << multiset1);
+
+  array<non_copyable_and_non_movable_class, 2> array_of_non_copyable_and_non_movable_class{
+      {{string("value")}, {string("value")}}};
+
+  CPP_DUMP(
+      keep_front(2) << keep_middle(1) << keep_back(2) << keep_both_ends(1)
+                    << non_copyable_and_non_movable_class1
+  );
+  CPP_DUMP(array_of_non_copyable_and_non_movable_class);
+  CPP_DUMP(keep_front(1) << array_of_non_copyable_and_non_movable_class);
 }

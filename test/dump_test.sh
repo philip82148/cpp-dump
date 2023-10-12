@@ -3,8 +3,8 @@
 args_array=(
     "dump 160 4"
     "dump_narrow 20 4"
-    "dump_wide 2000 4"
-    "dump_shallow 2000 0"
+    "dump_wide 4000 4"
+    "dump_shallow 4000 0"
 )
 
 g++ -std=c++17 -o ./a.out ./test/dump_test.cpp

@@ -42,11 +42,11 @@ here.`,
 [dump] shared_ptr1 => *42, weak_ptr1 => *42, unique_ptr1 => *42, c => *42
 [dump] shared_ptr1 => *3, weak_ptr1 => nullptr, unique_ptr1 => *42
 [dump] class_a1 => decltype(class_a1){ ... }
-[dump] class_b1 => class_b{ ... }
+[dump] non_copyable_and_non_movable_class1 => non_copyable_and_non_movable_class{ ... }
 [dump] int_ptr => *65, enum_a_s => enum_a::s, enum_a_k => enum_a::k, enum_a_l => enum_a::?
 [dump] bitset1 => 0b 00 1100 1010
-[dump] optional => ?1
-[dump] optional => std::nullopt
+[dump] optional1 => ?1
+[dump] optional1 => std::nullopt
 [dump] nullopt => std::nullopt
 [dump] variant1 => |""
 [dump] variant1 => |0
@@ -73,3 +73,6 @@ here.`,
 [dump] vec2 => [ ... ], keep_both_ends(2) << keep_both_ends(2) << keep_both_ends(2) << vec2 => [ ... ]
 [dump] multimap1 => { ... }, keep_both_ends(2) << keep_both_ends(2) << multimap1 => { ... }
 [dump] multiset1 => { ... }, keep_middle(1) << keep_back(1) << multiset1 => { ... }
+[dump] keep_front(2) << keep_middle(1) << keep_back(2) << keep_both_ends(1) << non_copyable_and_non_movable_class1 => non_copyable_and_non_movable_class{ ... }
+[dump] array_of_non_copyable_and_non_movable_class => [ ... ]
+[dump] keep_front(1) << array_of_non_copyable_and_non_movable_class => [ ... ]
