@@ -16,7 +16,7 @@
 
 namespace cpp_dump {
 
-extern inline size_t max_iteration_count;
+extern inline std::size_t max_iteration_count;
 
 namespace _detail {
 
@@ -25,8 +25,8 @@ struct value_with_command;
 
 struct export_command {
  public:
-  export_command(std::function<bool(size_t, std::function<size_t()>)> &&is_valid)
-      : is_valid(std::make_shared<std::function<bool(size_t, std::function<size_t()>)>>(
+  export_command(std::function<bool(std::size_t, std::function<std::size_t()>)> &&is_valid)
+      : is_valid(std::make_shared<std::function<bool(std::size_t, std::function<std::size_t()>)>>(
           std::move(is_valid)
       )) {}
   export_command(const export_command &command)
@@ -59,16 +59,18 @@ struct export_command {
   }
 
  private:
-  const std::shared_ptr<std::function<bool(size_t, std::function<size_t()>)>> is_valid;
+  const std::shared_ptr<std::function<bool(std::size_t, std::function<std::size_t()>)>> is_valid;
   std::shared_ptr<export_command> child;
-  static const std::shared_ptr<std::function<bool(size_t, std::function<size_t()>)>>
+  static const std::shared_ptr<std::function<bool(std::size_t, std::function<std::size_t()>)>>
       default_is_valid;
 };
 
-const std::shared_ptr<std::function<bool(size_t, std::function<size_t()>)>>
+const std::shared_ptr<std::function<bool(std::size_t, std::function<std::size_t()>)>>
     export_command::default_is_valid(
-        std::make_shared<std::function<bool(size_t, std::function<size_t()>)>>(
-            [](size_t index, std::function<size_t()>) { return index < max_iteration_count; }
+        std::make_shared<std::function<bool(std::size_t, std::function<std::size_t()>)>>(
+            [](std::size_t index, std::function<std::size_t()>) {
+              return index < max_iteration_count;
+            }
         )
     );
 
@@ -93,40 +95,46 @@ inline constexpr bool is_value_with_command = _is_value_with_command<_remove_cre
 
 }  // namespace _detail
 
-inline auto keep_front(size_t iteration_count = max_iteration_count) {
-  return _detail::export_command([=](size_t index, std::function<size_t()>) {
+inline auto keep_front(std::size_t iteration_count = max_iteration_count) {
+  return _detail::export_command([=](std::size_t index, std::function<std::size_t()>) {
     return index < iteration_count;
   });
 }
 
-inline auto keep_back(size_t iteration_count = max_iteration_count) {
-  return _detail::export_command([=](size_t index, std::function<size_t()> get_size) -> bool {
-    size_t size  = get_size();
-    size_t first = size >= iteration_count ? size - iteration_count : 0;
+inline auto keep_back(std::size_t iteration_count = max_iteration_count) {
+  return _detail::export_command(
+      [=](std::size_t index, std::function<std::size_t()> get_size) -> bool {
+        std::size_t size  = get_size();
+        std::size_t first = size >= iteration_count ? size - iteration_count : 0;
 
-    return index >= first;
-  });
+        return index >= first;
+      }
+  );
 }
 
-inline auto keep_both_ends(size_t iteration_count = max_iteration_count) {
-  return _detail::export_command([=](size_t index, std::function<size_t()> get_size) -> bool {
-    size_t size              = get_size();
-    size_t first_half_last   = (iteration_count + 1) / 2;
-    size_t rest_count        = iteration_count - first_half_last;
-    size_t latter_half_first = size >= rest_count ? size - rest_count : 0;
+inline auto keep_both_ends(std::size_t iteration_count = max_iteration_count) {
+  return _detail::export_command(
+      [=](std::size_t index, std::function<std::size_t()> get_size) -> bool {
+        std::size_t size              = get_size();
+        std::size_t first_half_last   = (iteration_count + 1) / 2;
+        std::size_t rest_count        = iteration_count - first_half_last;
+        std::size_t latter_half_first = size >= rest_count ? size - rest_count : 0;
 
-    return index < first_half_last || index >= latter_half_first;
-  });
+        return index < first_half_last || index >= latter_half_first;
+      }
+  );
 }
 
-inline auto keep_middle(size_t iteration_count = max_iteration_count) {
-  return _detail::export_command([=](size_t index, std::function<size_t()> get_size) -> bool {
-    size_t size  = get_size();
-    size_t first = size >= iteration_count ? (size - iteration_count) / 2 : 0;
-    size_t last  = first + iteration_count;
+inline auto keep_middle(std::size_t iteration_count = max_iteration_count) {
+  return _detail::export_command(
+      [=](std::size_t index, std::function<std::size_t()> get_size) -> bool {
+        std::size_t size  = get_size();
+        std::size_t first = size >= iteration_count ? (size - iteration_count) / 2 : 0;
+        std::size_t last  = first + iteration_count;
 
-    return index >= first && index < last;
-  });
+        return index >= first && index < last;
+      }
+  );
 }
 
 }  // namespace cpp_dump

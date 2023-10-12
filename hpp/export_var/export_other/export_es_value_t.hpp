@@ -16,15 +16,15 @@
 
 namespace cpp_dump {
 
-extern inline size_t max_line_width;
+extern inline std::size_t max_line_width;
 
-extern inline size_t max_depth;
+extern inline std::size_t max_depth;
 
 namespace _detail {
 
 template <typename T>
 std::string
-export_var(const T &, const std::string &, size_t, size_t, bool, const export_command &);
+export_var(const T &, const std::string &, std::size_t, std::size_t, bool, const export_command &);
 
 inline std::string _export_es_value_string(const std::string &es) {
   std::string escaped_es = es;
@@ -36,8 +36,8 @@ inline std::string _export_es_value_string(const std::string &es) {
 inline std::string _export_es_value_vector(
     const std::vector<std::string> &es_vec,
     const std::string &indent,
-    size_t last_line_length,
-    size_t current_depth,
+    std::size_t last_line_length,
+    std::size_t current_depth,
     bool fail_on_newline,
     const export_command &command
 ) {
@@ -106,8 +106,8 @@ rollback:
 inline std::string export_es_value_t(
     const es_value_t &esv,
     const std::string &indent,
-    size_t last_line_length,
-    size_t current_depth,
+    std::size_t last_line_length,
+    std::size_t current_depth,
     bool fail_on_newline,
     const export_command &command
 ) {
@@ -116,7 +116,7 @@ inline std::string export_es_value_t(
            + es::bracket(" }", current_depth);
 
   std::string new_indent = indent + "  ";
-  size_t next_depth      = current_depth + 1;
+  std::size_t next_depth = current_depth + 1;
 
   bool shift_indent = false;
 

@@ -16,7 +16,7 @@
 
 namespace cpp_dump {
 
-extern inline size_t max_iteration_count;
+extern inline std::size_t max_iteration_count;
 
 namespace _detail {
 
@@ -25,7 +25,8 @@ struct omitted_container {
  public:
   omitted_container(
       const T &container,
-      const std::shared_ptr<std::function<bool(size_t, std::function<size_t()>)>> &is_valid
+      const std::shared_ptr<std::function<bool(std::size_t, std::function<std::size_t()>)>>
+          &is_valid
   )
       : original(container),
         is_valid(is_valid),
@@ -66,21 +67,21 @@ struct omitted_container {
    private:
     const omitted_container<T> &parent;
     It it;
-    size_t index;
-    mutable std::optional<size_t> size;
+    std::size_t index;
+    mutable std::optional<std::size_t> size;
 
     bool is_ellipsis() const {
       return !parent.is_valid->operator()(index, [this] { return original_size(); });
     }
 
-    size_t original_size() const {
+    std::size_t original_size() const {
       if (!size) size = iterable_size(parent.original);
       return size.value();
     }
   };
 
   const T &original;
-  const std::shared_ptr<std::function<bool(size_t, std::function<size_t()>)>> is_valid;
+  const std::shared_ptr<std::function<bool(std::size_t, std::function<std::size_t()>)>> is_valid;
   const omitted_iterator<decltype(iterable_begin(original))> _begin;
   const omitted_iterator<decltype(iterable_end(original))> _end;
 };
