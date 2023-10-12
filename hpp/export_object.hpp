@@ -23,9 +23,9 @@
 #define CPP_DUMP_DEFINE_EXPORT_OBJECT(TYPE, ...)                                                   \
   namespace cpp_dump {                                                                             \
                                                                                                    \
-  extern inline size_t max_line_width;                                                             \
+  extern inline std::size_t max_line_width;                                                        \
                                                                                                    \
-  extern inline size_t max_depth;                                                                  \
+  extern inline std::size_t max_depth;                                                             \
                                                                                                    \
   namespace _detail {                                                                              \
                                                                                                    \
@@ -33,14 +33,14 @@
   inline constexpr bool _is_exportable_object<TYPE> = true;                                        \
                                                                                                    \
   template <typename T>                                                                            \
-  std::string export_var(const T &, const std::string &, size_t, size_t, bool);                    \
+  std::string export_var(const T &, const std::string &, std::size_t, std::size_t, bool);          \
                                                                                                    \
   template <>                                                                                      \
   inline std::string export_object(                                                                \
       const TYPE &value,                                                                           \
       const std::string &indent,                                                                   \
-      size_t last_line_length,                                                                     \
-      size_t current_depth,                                                                        \
+      std::size_t last_line_length,                                                                \
+      std::size_t current_depth,                                                                   \
       bool fail_on_newline                                                                         \
   ) {                                                                                              \
     if (current_depth >= max_depth)                                                                \
@@ -48,7 +48,7 @@
              + es::bracket(" }", current_depth);                                                   \
                                                                                                    \
     std::string new_indent = indent + "  ";                                                        \
-    size_t next_depth      = current_depth + 1;                                                    \
+    std::size_t next_depth = current_depth + 1;                                                    \
                                                                                                    \
     bool shift_indent = false;                                                                     \
                                                                                                    \
@@ -104,7 +104,7 @@ namespace cpp_dump {
 namespace _detail {
 
 template <typename T>
-inline std::string export_object(const T &, const std::string &, size_t, size_t, bool);
+inline std::string export_object(const T &, const std::string &, std::size_t, std::size_t, bool);
 
 }  // namespace _detail
 

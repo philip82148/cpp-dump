@@ -240,19 +240,19 @@ std::string cpp_dump::export_var(const T &value);
 /**
  * Maximum line width of output strings of cpp_dump::export_var().
  */
-inline size_t cpp_dump::max_line_width = 160;
+inline std::size_t cpp_dump::max_line_width = 160;
 
 /**
  * Maximum number of times cpp_dump::export_var() is applied recursively.
  */
-inline size_t cpp_dump::max_depth = 4;
+inline std::size_t cpp_dump::max_depth = 4;
 
 /**
  * Maximum number of times cpp_dump::export_var() iterates over an iterator.
  * Note that in a single call, export_var() calls itself at most
  * (max_iteration_count^(max_depth+1)-1)/(max_iteration_count-1)-1 times.
  */
-inline size_t cpp_dump::max_iteration_count = 16;
+inline std::size_t cpp_dump::max_iteration_count = 16;
 
 /**
  * Function that returns the label that cpp_dump::dump() and CPP_DUMP() print

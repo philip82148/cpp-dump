@@ -31,7 +31,7 @@
                                                                                                    \
   template <>                                                                                      \
   inline std::string export_enum(                                                                  \
-      const TYPE &enum_const, const std::string &, size_t, size_t, bool                            \
+      const TYPE &enum_const, const std::string &, std::size_t, std::size_t, bool                  \
   ) {                                                                                              \
     std::map<TYPE, std::string> enum_to_string{                                                    \
         _p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_EXPORT_ENUM, __VA_ARGS__)};                   \
@@ -48,7 +48,7 @@ namespace cpp_dump {
 namespace _detail {
 
 template <typename T>
-inline std::string export_enum(const T &, const std::string &, size_t, size_t, bool);
+inline std::string export_enum(const T &, const std::string &, std::size_t, std::size_t, bool);
 
 }  // namespace _detail
 

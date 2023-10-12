@@ -35,8 +35,8 @@ template <typename T>
 std::string export_var(
     const T &value,
     const std::string &indent,
-    size_t last_line_length,
-    size_t current_depth,
+    std::size_t last_line_length,
+    std::size_t current_depth,
     bool fail_on_newline
 ) {
   if constexpr (!is_exportable<T>) {

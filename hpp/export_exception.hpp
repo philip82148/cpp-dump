@@ -17,11 +17,11 @@
   inline std::string export_exception(                                                             \
       const TYPE &exception,                                                                       \
       const std::string &indent,                                                                   \
-      size_t last_line_length,                                                                     \
-      size_t current_depth,                                                                        \
+      std::size_t last_line_length,                                                                \
+      std::size_t current_depth,                                                                   \
       bool fail_on_newline                                                                         \
   ) {                                                                                              \
-    size_t next_depth = current_depth + 1;                                                         \
+    std::size_t next_depth = current_depth + 1;                                                    \
                                                                                                    \
     std::string prefix = es::identifier(#TYPE) + es::bracket("{ ", current_depth)                  \
                          + es::member("what()") + es::op("= ");                                    \
@@ -48,12 +48,12 @@
 
 namespace cpp_dump {
 
-extern inline size_t max_line_width;
+extern inline std::size_t max_line_width;
 
 namespace _detail {
 
 template <typename T>
-std::string export_var(const T &, const std::string &, size_t, size_t, bool);
+std::string export_var(const T &, const std::string &, std::size_t, std::size_t, bool);
 
 _p_CPP_DUMP_DEFINE_EXPORT_EXCEPTION(std::logic_error);
 _p_CPP_DUMP_DEFINE_EXPORT_EXCEPTION(std::domain_error);
@@ -70,11 +70,11 @@ template <typename T>
 inline auto export_exception(
     const T &exception,
     const std::string &indent,
-    size_t last_line_length,
-    size_t current_depth,
+    std::size_t last_line_length,
+    std::size_t current_depth,
     bool fail_on_newline
 ) -> std::enable_if_t<is_exception<T>, std::string> {
-  size_t next_depth = current_depth + 1;
+  std::size_t next_depth = current_depth + 1;
 
   std::string prefix = es::bracket("{ ", current_depth) + es::member("what()") + es::op("= ");
   std::string output =

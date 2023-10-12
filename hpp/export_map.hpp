@@ -16,23 +16,23 @@
 
 namespace cpp_dump {
 
-extern inline size_t max_line_width;
+extern inline std::size_t max_line_width;
 
-extern inline size_t max_depth;
+extern inline std::size_t max_depth;
 
-extern inline size_t max_iteration_count;
+extern inline std::size_t max_iteration_count;
 
 namespace _detail {
 
 template <typename T>
-std::string export_var(const T &, const std::string &, size_t, size_t, bool);
+std::string export_var(const T &, const std::string &, std::size_t, std::size_t, bool);
 
 template <typename T>
 inline auto export_map(
     const T &map,
     const std::string &indent,
-    size_t last_line_length,
-    size_t current_depth,
+    std::size_t last_line_length,
+    std::size_t current_depth,
     bool fail_on_newline
 ) -> std::enable_if_t<is_map<T>, std::string> {
   if (map.empty()) return es::bracket("{ }", current_depth);
@@ -48,7 +48,7 @@ inline auto export_map(
   if (shift_indent && fail_on_newline) return "\n";
 
   std::string new_indent = indent + "  ";
-  size_t next_depth      = current_depth + 1;
+  std::size_t next_depth = current_depth + 1;
 
   // iterator for values of multimap
   struct value_iterator {
@@ -69,9 +69,9 @@ inline auto export_map(
   };
 
 rollback:
-  std::string output     = es::bracket("{ ", current_depth);
-  bool is_first          = true;
-  size_t iteration_count = 0;
+  std::string output          = es::bracket("{ ", current_depth);
+  bool is_first               = true;
+  std::size_t iteration_count = 0;
   for (auto it = map.begin(), end = map.end(); it != end; it = map.equal_range(it->first).second) {
     if (is_first) {
       is_first = false;

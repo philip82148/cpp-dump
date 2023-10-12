@@ -20,14 +20,14 @@ namespace cpp_dump {
 namespace _detail {
 
 template <typename T>
-std::string export_var(const T &, const std::string &, size_t, size_t, bool);
+std::string export_var(const T &, const std::string &, std::size_t, std::size_t, bool);
 
 template <typename... Args>
 inline std::string export_pointer(
     const std::weak_ptr<Args...> &pointer,
     const std::string &indent,
-    size_t last_line_length,
-    size_t current_depth,
+    std::size_t last_line_length,
+    std::size_t current_depth,
     bool fail_on_newline
 ) {
   return export_var(pointer.lock(), indent, last_line_length, current_depth, fail_on_newline);
@@ -37,8 +37,8 @@ template <typename T>
 inline auto export_pointer(
     const T &pointer,
     const std::string &indent,
-    size_t last_line_length,
-    size_t current_depth,
+    std::size_t last_line_length,
+    std::size_t current_depth,
     bool fail_on_newline
 ) -> std::enable_if_t<is_pointer<T>, std::string> {
   if (pointer == nullptr) return es::reserved("nullptr");
