@@ -359,6 +359,8 @@ int main() {
   vector<int> X(N);
   rep(i, N) { cin >> X[i]; }
   dump(X);
+
+  // To be continued...
 }
 ```
 
