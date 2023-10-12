@@ -24,6 +24,7 @@
 #include <unordered_set>
 #include <variant>
 
+#include "./escape_sequence.hpp"
 #include "./iterable.hpp"
 
 namespace cpp_dump {
@@ -160,6 +161,9 @@ inline constexpr bool is_optional = _is_optional<_remove_cref<T>>;
 template <typename T>
 inline constexpr bool is_exception = std::is_convertible_v<_remove_cref<T>, std::exception>;
 
+// Other: Types such that they are the only elements of their respective categories.
+// For example, there are two types that can be considered as std::optional: std::optional<> and
+// std::nullopt_t. So they don't belong to the 'other' category.
 template <typename>
 inline constexpr bool _is_other_type = false;
 template <typename... Args>
@@ -170,9 +174,8 @@ template <typename... Args>
 inline constexpr bool _is_other_type<std::complex<Args...>> = true;
 template <typename... Args>
 inline constexpr bool _is_other_type<std::variant<Args...>> = true;
-// in export_other.hpp
-// template <>
-// inline constexpr bool _is_other_type<es_value_t> = true;
+template <>
+inline constexpr bool _is_other_type<es_value_t> = true;
 
 template <typename T>
 inline constexpr bool is_other_type = _is_other_type<_remove_cref<T>>;

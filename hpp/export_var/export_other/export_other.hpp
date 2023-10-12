@@ -17,6 +17,7 @@
 #include "../../escape_sequence.hpp"
 #include "../../export_command/export_command.hpp"
 #include "../../type_check.hpp"
+#include "./export_es_value_t.hpp"
 
 namespace cpp_dump {
 
@@ -94,10 +95,6 @@ inline std::string export_other(
       variant
   );
 }
-
-// meta func for type_check.hpp
-template <>
-inline constexpr bool _is_other_type<es_value_t> = true;
 
 inline std::string export_other(
     const es_value_t &esv,
