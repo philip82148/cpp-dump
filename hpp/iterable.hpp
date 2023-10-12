@@ -71,6 +71,21 @@ inline std::size_t iterable_size(const T &t) {
   return _iterable_size(t, 0);
 }
 
+template <typename It, typename std::iterator_traits<It>::difference_type>
+inline void _iterator_advance(It &it, std::size_t n, int) {
+  std::advance(it, n);
+}
+
+template <typename It>
+inline void _iterator_advance(It &it, std::size_t n, long) {
+  for (; 0 < n; --n) ++it;
+}
+
+template <typename It>
+inline void iterator_advance(It &it, std::size_t n) {
+  _iterator_advance(it, n, 0);
+}
+
 }  // namespace _detail
 
 }  // namespace cpp_dump

@@ -8,6 +8,7 @@
 #pragma once
 
 #include <functional>
+#include <iterator>
 #include <memory>
 #include <optional>
 #include <utility>
@@ -25,11 +26,12 @@ struct omitted_container {
  public:
   omitted_container(
       const T &container,
-      const std::shared_ptr<std::function<bool(std::size_t, std::function<std::size_t()>)>>
-          &is_valid
+      const std::shared_ptr<std::function<
+          std::pair<bool, std::optional<std::size_t>>(std::size_t, std::function<std::size_t()>)>>
+          &it_info_ptr
   )
       : original(container),
-        is_valid(is_valid),
+        it_info_ptr(it_info_ptr),
         _begin(*this, iterable_begin(container)),
         _end(*this, iterable_end(container)) {}
   omitted_container() = delete;
@@ -42,23 +44,25 @@ struct omitted_container {
   struct omitted_iterator {
    public:
     omitted_iterator(const omitted_container<T> &parent, const It &it)
-        : parent(parent), it(it), index(0) {}
+        : parent(parent), it(it), index(0), done(false) {}
     omitted_iterator() = delete;
 
-    auto operator*() const { return std::make_pair(is_ellipsis(), it); }
+    std::pair<bool, It> operator*() const {
+      auto [is_ellipsis, next_advance] = it_info();
+      return {is_ellipsis, it};
+    }
     template <typename U>
     bool operator!=(const U &to) const {
-      return it != to.it;
+      return !done && it != to.it;
     }
     omitted_iterator &operator++() {
-      if (is_ellipsis()) {
-        while (it != parent._end.it && is_ellipsis()) {
-          ++it;
-          ++index;
-        }
+      auto [is_ellipsis, next_advance] = it_info();
+
+      if (next_advance) {
+        iterator_advance(it, next_advance.value());
+        index += next_advance.value();
       } else {
-        ++it;
-        ++index;
+        done = true;
       }
 
       return *this;
@@ -68,10 +72,11 @@ struct omitted_container {
     const omitted_container<T> &parent;
     It it;
     std::size_t index;
+    bool done;
     mutable std::optional<std::size_t> size;
 
-    bool is_ellipsis() const {
-      return !parent.is_valid->operator()(index, [this] { return original_size(); });
+    std::pair<bool, std::optional<std::size_t>> it_info() const {
+      return parent.it_info_ptr->operator()(index, [this] { return original_size(); });
     }
 
     std::size_t original_size() const {
@@ -81,10 +86,74 @@ struct omitted_container {
   };
 
   const T &original;
-  const std::shared_ptr<std::function<bool(std::size_t, std::function<std::size_t()>)>> is_valid;
+  const std::shared_ptr<std::function<
+      std::pair<bool, std::optional<std::size_t>>(std::size_t, std::function<std::size_t()>)>>
+      it_info_ptr;
   const omitted_iterator<decltype(iterable_begin(original))> _begin;
   const omitted_iterator<decltype(iterable_end(original))> _end;
 };
+
+namespace it_info_aux {
+
+inline std::pair<bool, std::optional<std::size_t>> keep_front(
+    std::size_t index, std::function<std::size_t()>, std::size_t iteration_count
+) {
+  bool is_ellipsis                        = index >= iteration_count;
+  std::optional<std::size_t> next_advance = 1;
+  if (is_ellipsis) next_advance = std::nullopt;
+
+  return {is_ellipsis, next_advance};
+}
+
+inline std::pair<bool, std::optional<std::size_t>> keep_back(
+    std::size_t index, std::function<std::size_t()> get_size, std::size_t iteration_count
+) {
+  std::size_t size  = get_size();
+  std::size_t first = size >= iteration_count ? size - iteration_count : 0;
+
+  bool is_ellipsis                        = index < first;
+  std::optional<std::size_t> next_advance = 1;
+  if (is_ellipsis) next_advance = first - index;
+
+  return {is_ellipsis, next_advance};
+}
+
+inline std::pair<bool, std::optional<std::size_t>> keep_both_ends(
+    std::size_t index, std::function<std::size_t()> get_size, std::size_t iteration_count
+) {
+  std::size_t size              = get_size();
+  std::size_t first_half_last   = (iteration_count + 1) / 2;
+  std::size_t rest_count        = iteration_count - first_half_last;
+  std::size_t latter_half_first = size >= rest_count ? size - rest_count : 0;
+
+  bool is_ellipsis                        = index >= first_half_last && index < latter_half_first;
+  std::optional<std::size_t> next_advance = 1;
+  if (is_ellipsis) next_advance = latter_half_first - index;
+
+  return {is_ellipsis, next_advance};
+}
+
+inline std::pair<bool, std::optional<std::size_t>> keep_middle(
+    std::size_t index, std::function<std::size_t()> get_size, std::size_t iteration_count
+) {
+  std::size_t size  = get_size();
+  std::size_t first = size >= iteration_count ? (size - iteration_count) / 2 : 0;
+  std::size_t last  = first + iteration_count;
+
+  bool is_ellipsis                        = index < first || index >= last;
+  std::optional<std::size_t> next_advance = 1;
+  if (is_ellipsis) {
+    if (index < first) {
+      next_advance = first - index;
+    } else {
+      next_advance = std::nullopt;
+    }
+  }
+
+  return {is_ellipsis, next_advance};
+}
+
+}  // namespace it_info_aux
 
 }  // namespace _detail
 
