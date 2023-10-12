@@ -18,10 +18,10 @@ inline bool use_es();
 
 inline bool has_newline(std::string_view s) { return s.find("\n") != std::string::npos; }
 
-inline size_t get_length(std::string_view s) {
+inline std::size_t get_length(std::string_view s) {
   if (!use_es()) return s.length();
 
-  size_t length = 0, s_first = 0, s_last;
+  std::size_t length = 0, s_first = 0, s_last;
   while ((s_last = s.find("\e[", s_first)) != std::string::npos) {
     length       += s_last - s_first;
     auto es_last = s.find_first_not_of("0123456789;", s_last + 2);
@@ -33,7 +33,7 @@ inline size_t get_length(std::string_view s) {
   return length;
 }
 
-inline size_t get_first_line_length(std::string_view s) {
+inline std::size_t get_first_line_length(std::string_view s) {
   auto lf_pos = s.find("\n");
 
   if (lf_pos == std::string::npos) return get_length(s);
@@ -41,7 +41,7 @@ inline size_t get_first_line_length(std::string_view s) {
   return get_length(s.substr(0, lf_pos));
 }
 
-inline size_t get_last_line_length(std::string_view s, int additional_first_line_length = 0) {
+inline std::size_t get_last_line_length(std::string_view s, int additional_first_line_length = 0) {
   auto lf_pos = s.rfind("\n");
 
   if (lf_pos == std::string::npos) return additional_first_line_length + get_length(s);

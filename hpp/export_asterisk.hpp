@@ -15,19 +15,19 @@
 
 namespace cpp_dump {
 
-extern inline size_t max_depth;
+extern inline std::size_t max_depth;
 
 namespace _detail {
 
 template <typename T>
-std::string export_var(const T &, const std::string &, size_t, size_t, bool);
+std::string export_var(const T &, const std::string &, std::size_t, std::size_t, bool);
 
 template <typename T>
 inline auto export_asterisk(
     const T &value,
     const std::string &indent,
-    size_t last_line_length,
-    size_t current_depth,
+    std::size_t last_line_length,
+    std::size_t current_depth,
     bool fail_on_newline
 ) -> std::enable_if_t<is_asterisk<T>, std::string> {
   if (current_depth >= max_depth) return "*...";

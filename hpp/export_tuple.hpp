@@ -17,18 +17,18 @@
 
 namespace cpp_dump {
 
-extern inline size_t max_line_width;
+extern inline std::size_t max_line_width;
 
-extern inline size_t max_depth;
+extern inline std::size_t max_depth;
 
 namespace _detail {
 
 template <typename T>
-std::string export_var(const T &, const std::string &, size_t, size_t, bool);
+std::string export_var(const T &, const std::string &, std::size_t, std::size_t, bool);
 
-template <const size_t i, const size_t size, typename T>
+template <const std::size_t i, const std::size_t size, typename T>
 inline auto _export_tuple_in_one_line(
-    const T &tuple, const std::string &indent, size_t last_line_length, size_t next_depth
+    const T &tuple, const std::string &indent, std::size_t last_line_length, std::size_t next_depth
 ) -> std::enable_if_t<is_tuple<T>, std::string> {
   std::string output = export_var(std::get<i>(tuple), indent, last_line_length, next_depth, true);
   if (has_newline(output)) return "\n";
@@ -43,9 +43,10 @@ inline auto _export_tuple_in_one_line(
   }
 }
 
-template <const size_t i, const size_t size, typename T>
-inline auto _export_tuple_in_lines(const T &tuple, const std::string &indent, size_t next_depth)
-    -> std::enable_if_t<is_tuple<T>, std::string> {
+template <const std::size_t i, const std::size_t size, typename T>
+inline auto _export_tuple_in_lines(
+    const T &tuple, const std::string &indent, std::size_t next_depth
+) -> std::enable_if_t<is_tuple<T>, std::string> {
   std::string output =
       export_var(std::get<i>(tuple), indent, get_length(indent), next_depth, false);
 
@@ -61,11 +62,11 @@ template <typename T>
 inline auto export_tuple(
     const T &tuple,
     const std::string &indent,
-    size_t last_line_length,
-    size_t current_depth,
+    std::size_t last_line_length,
+    std::size_t current_depth,
     bool fail_on_newline
 ) -> std::enable_if_t<is_tuple<T>, std::string> {
-  constexpr size_t tuple_size = std::tuple_size_v<T>;
+  constexpr std::size_t tuple_size = std::tuple_size_v<T>;
 
   if constexpr (tuple_size == 0) {
     return es::bracket("( )", current_depth);
@@ -73,7 +74,7 @@ inline auto export_tuple(
     if (current_depth >= max_depth)
       return es::bracket("( ", current_depth) + es::op("...") + es::bracket(" )", current_depth);
 
-    size_t next_depth = current_depth + 1;
+    std::size_t next_depth = current_depth + 1;
 
     std::string output =
         es::bracket("( ", current_depth)
