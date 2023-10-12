@@ -11,10 +11,10 @@
 #include <string>
 #include <type_traits>
 
-#include "./escape_sequence.hpp"
-#include "./export_command.hpp"
-#include "./type_check.hpp"
-#include "./utility.hpp"
+#include "../escape_sequence.hpp"
+#include "../export_command/export_command.hpp"
+#include "../type_check.hpp"
+#include "../utility.hpp"
 
 #define _p_CPP_DUMP_DEFINE_EXPORT_EXCEPTION(TYPE)                                                  \
   inline std::string export_exception(                                                             \

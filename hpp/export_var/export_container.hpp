@@ -10,11 +10,11 @@
 #include <string>
 #include <type_traits>
 
-#include "./escape_sequence.hpp"
-#include "./export_command.hpp"
-#include "./iterable.hpp"
-#include "./type_check.hpp"
-#include "./utility.hpp"
+#include "../escape_sequence.hpp"
+#include "../export_command/export_command.hpp"
+#include "../iterable.hpp"
+#include "../type_check.hpp"
+#include "../utility.hpp"
 
 namespace cpp_dump {
 

@@ -10,23 +10,23 @@
 #include <string>
 #include <type_traits>
 
-#include "./escape_sequence.hpp"
+#include "../escape_sequence.hpp"
+#include "../export_command/export_command.hpp"
+#include "../type_check.hpp"
 #include "./export_arithmetic.hpp"
 #include "./export_asterisk.hpp"
-#include "./export_command.hpp"
 #include "./export_container.hpp"
 #include "./export_enum.hpp"
 #include "./export_exception.hpp"
 #include "./export_map.hpp"
 #include "./export_object.hpp"
 #include "./export_optional.hpp"
-#include "./export_other.hpp"
+#include "./export_other/export_other.hpp"
 #include "./export_pointer.hpp"
 #include "./export_set.hpp"
 #include "./export_string.hpp"
 #include "./export_tuple.hpp"
 #include "./export_xixo.hpp"
-#include "./type_check.hpp"
 
 namespace cpp_dump {
 

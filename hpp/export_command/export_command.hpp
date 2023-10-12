@@ -12,8 +12,8 @@
 #include <optional>
 #include <utility>
 
-#include "./iterable.hpp"
-#include "./type_check.hpp"
+#include "../iterable.hpp"
+#include "../type_check.hpp"
 
 namespace cpp_dump {
 

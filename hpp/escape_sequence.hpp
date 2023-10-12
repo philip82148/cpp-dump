@@ -11,7 +11,7 @@
 #include <type_traits>
 #include <vector>
 
-#include "./export_command.hpp"
+#include "./export_command/export_command.hpp"
 #include "./utility.hpp"
 
 namespace cpp_dump {

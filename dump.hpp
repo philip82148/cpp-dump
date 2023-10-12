@@ -14,8 +14,8 @@
 
 #include "hpp/escape_sequence.hpp"
 #include "hpp/expand_va_macro.hpp"
-#include "hpp/export_command.hpp"
-#include "hpp/export_var.hpp"
+#include "hpp/export_command/export_command.hpp"
+#include "hpp/export_var/export_var.hpp"
 #include "hpp/utility.hpp"
 
 #define _p_CPP_DUMP_EXPAND_FOR_CPP_DUMP(expr) #expr, expr
