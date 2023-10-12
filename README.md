@@ -8,13 +8,13 @@ cpp-dump is an all-round dump function library for C++ that supports even user-d
 
 This library has the following features:
 
-- Outputs to the standard error output (std::clog) string representations of a wide variety of types: multidimensional arrays, (multi)maps, (multi)sets, complex numbers, even error objects, and etc.
+- Prints string representations of a wide variety of types to the standard error output (std::clog). This includes multidimensional arrays, (multi)maps, and (multi)sets, and even complex numbers, error objects, etc.
 - Automatically indents so that the output fits into the maximum line width.
-- Output is colored and the colors can be customized.
+- Output is colored, and you can customize the colors.
 - Header-only library, no build or dependencies required.
-- The macro version can dump variables along with the names.
-- User-defined types can also be dumped by using macros.
-- The string representation of variables is similar to JavaScript, Python and C++ syntax.
+- The macro version can print variables along with the names.
+- Can print even user-defined types by using macros.
+- The string representation of variables is similar to JavaScript, Python, and C++ syntax.
 
 ## Introduction
 
@@ -363,6 +363,8 @@ int main() {
 ```
 
 ## Supported types
+
+Both dump functions dump variables recursively, so they can dump nested variables of any combination of types in the table below.
 
 | Category     | Type T is supported if ...                                                                                                                                         | Example                                           |
 | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------- |
