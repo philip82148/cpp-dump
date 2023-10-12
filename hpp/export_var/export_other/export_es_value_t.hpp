@@ -58,7 +58,9 @@ rollback:
   std::string output = es::bracket("[ ", current_depth);
   bool is_first      = true;
 
-  for (const auto &[is_ellipsis, es] : omitted) {
+  for (const auto &[is_ellipsis, it] : omitted) {
+    const std::string &es = *it;
+
     if (is_first) {
       is_first = false;
     } else {

@@ -122,8 +122,8 @@ rollback:
   std::string output = es::bracket("{ ", current_depth);
   bool is_first      = true;
 
-  for (const auto &[is_ellipsis, elem] : omitted_map) {
-    const auto &[key, value] = elem;
+  for (const auto &[is_ellipsis, it] : omitted_map) {
+    const auto &[key, value] = *it;
 
     if (is_first) {
       is_first = false;

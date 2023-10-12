@@ -45,7 +45,7 @@ struct omitted_container {
         : parent(parent), it(it), index(0) {}
     omitted_iterator() = delete;
 
-    auto operator*() const { return std::make_pair(is_ellipsis(), *it); }
+    auto operator*() const { return std::make_pair(is_ellipsis(), it); }
     template <typename U>
     bool operator!=(const U &to) const {
       return it != to.it;

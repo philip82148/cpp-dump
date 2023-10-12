@@ -90,7 +90,9 @@ rollback:
   std::string output = es::bracket("{ ", current_depth);
   bool is_first      = true;
 
-  for (const auto &[is_ellipsis, elem] : omitted_set) {
+  for (const auto &[is_ellipsis, it] : omitted_set) {
+    const auto &elem = *it;
+
     if (is_first) {
       is_first = false;
     } else {
