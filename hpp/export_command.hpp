@@ -159,25 +159,39 @@ inline constexpr bool is_value_with_command = _is_value_with_command<_remove_cre
 
 }  // namespace _detail
 
-inline auto omit_front(size_t iteration_count = max_iteration_count) {
+inline auto keep_front(size_t iteration_count = max_iteration_count) {
+  return _detail::export_command([=](size_t index, std::function<size_t()>) {
+    return index < iteration_count;
+  });
+}
+
+inline auto keep_back(size_t iteration_count = max_iteration_count) {
   return _detail::export_command([=](size_t index, std::function<size_t()> get_size) -> bool {
     size_t size  = get_size();
     size_t first = size >= iteration_count ? size - iteration_count : 0;
+
     return index >= first;
   });
 }
 
-inline auto omit_middle(size_t half_iteration_count = max_iteration_count / 2) {
+inline auto keep_both_ends(size_t iteration_count = max_iteration_count) {
   return _detail::export_command([=](size_t index, std::function<size_t()> get_size) -> bool {
     size_t size              = get_size();
-    size_t latter_half_first = size >= half_iteration_count ? size - half_iteration_count : 0;
-    return index < half_iteration_count || index >= latter_half_first;
+    size_t first_half_last   = (iteration_count + 1) / 2;
+    size_t rest_count        = iteration_count - first_half_last;
+    size_t latter_half_first = size >= rest_count ? size - rest_count : 0;
+
+    return index < first_half_last || index >= latter_half_first;
   });
 }
 
-inline auto omit_back(size_t iteration_count = max_iteration_count) {
-  return _detail::export_command([=](size_t index, std::function<size_t()>) {
-    return index < iteration_count;
+inline auto keep_middle(size_t iteration_count = max_iteration_count) {
+  return _detail::export_command([=](size_t index, std::function<size_t()> get_size) -> bool {
+    size_t size  = get_size();
+    size_t first = size >= iteration_count ? (size - iteration_count) / 2 : 0;
+    size_t last  = first + iteration_count;
+
+    return index >= first && index < last;
   });
 }
 
