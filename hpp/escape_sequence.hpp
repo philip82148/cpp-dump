@@ -66,9 +66,9 @@ extern inline es_style_t es_style;
 
 extern inline es_value_t es_value;
 
-extern inline size_t max_line_width;
+extern inline std::size_t max_line_width;
 
-extern inline size_t max_depth;
+extern inline std::size_t max_depth;
 
 namespace _detail {
 
@@ -95,7 +95,7 @@ inline std::string identifier(const std::string &s) { return es::apply(es_value.
 inline std::string member(const std::string &s) { return es::apply(es_value.member, s); }
 inline std::string unsupported(const std::string &s) { return es::apply(es_value.unsupported, s); }
 
-inline std::string bracket(const std::string &s, size_t d) {
+inline std::string bracket(const std::string &s, std::size_t d) {
   auto sz = es_value.bracket_by_depth.size();
   if (sz == 0) return s;
 
@@ -114,8 +114,8 @@ inline std::string _export_es_value_string(const std::string &es) {
 inline std::string _export_es_value_vector(
     const std::vector<std::string> &es_vec,
     const std::string &indent,
-    size_t last_line_length,
-    size_t current_depth,
+    std::size_t last_line_length,
+    std::size_t current_depth,
     bool fail_on_newline,
     const export_command &command
 ) {
@@ -184,8 +184,8 @@ rollback:
 inline std::string export_es_value_t(
     const es_value_t &esv,
     const std::string &indent,
-    size_t last_line_length,
-    size_t current_depth,
+    std::size_t last_line_length,
+    std::size_t current_depth,
     bool fail_on_newline,
     const export_command &command
 ) {
@@ -194,7 +194,7 @@ inline std::string export_es_value_t(
            + es::bracket(" }", current_depth);
 
   std::string new_indent = indent + "  ";
-  size_t next_depth      = current_depth + 1;
+  std::size_t next_depth = current_depth + 1;
 
   bool shift_indent = false;
 

@@ -20,15 +20,15 @@
 
 namespace cpp_dump {
 
-extern inline size_t max_line_width;
+extern inline std::size_t max_line_width;
 
-extern inline size_t max_depth;
+extern inline std::size_t max_depth;
 
 namespace _detail {
 
 template <typename T>
 std::string
-export_var(const T &, const std::string &, size_t, size_t, bool, const export_command &);
+export_var(const T &, const std::string &, std::size_t, std::size_t, bool, const export_command &);
 
 template <typename T, typename U>
 inline std::string _export_xixo_common(
@@ -37,8 +37,8 @@ inline std::string _export_xixo_common(
     const std::string &class_name,
     const std::string &member_name,
     const std::string &indent,
-    size_t last_line_length,
-    size_t current_depth,
+    std::size_t last_line_length,
+    std::size_t current_depth,
     bool fail_on_newline,
     const export_command &command
 ) {
@@ -50,7 +50,7 @@ inline std::string _export_xixo_common(
     return es::identifier(class_name) + es::bracket("{ ", current_depth) + es::op("...")
            + es::bracket(" }", current_depth);
 
-  size_t next_depth = current_depth + 1;
+  std::size_t next_depth = current_depth + 1;
 
   std::string prefix = es::identifier(class_name) + es::bracket("{ ", current_depth)
                        + es::member(member_name) + es::op("= ");
@@ -80,8 +80,8 @@ template <typename... Args>
 inline std::string export_xixo(
     const std::queue<Args...> &queue,
     const std::string &indent,
-    size_t last_line_length,
-    size_t current_depth,
+    std::size_t last_line_length,
+    std::size_t current_depth,
     bool fail_on_newline,
     const export_command &command
 ) {
@@ -102,8 +102,8 @@ template <typename... Args>
 inline std::string export_xixo(
     const std::priority_queue<Args...> &pq,
     const std::string &indent,
-    size_t last_line_length,
-    size_t current_depth,
+    std::size_t last_line_length,
+    std::size_t current_depth,
     bool fail_on_newline,
     const export_command &command
 ) {
@@ -124,8 +124,8 @@ template <typename... Args>
 inline std::string export_xixo(
     const std::stack<Args...> &stack,
     const std::string &indent,
-    size_t last_line_length,
-    size_t current_depth,
+    std::size_t last_line_length,
+    std::size_t current_depth,
     bool fail_on_newline,
     const export_command &command
 ) {

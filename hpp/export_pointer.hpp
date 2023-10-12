@@ -22,14 +22,14 @@ namespace _detail {
 
 template <typename T>
 std::string
-export_var(const T &, const std::string &, size_t, size_t, bool, const export_command &);
+export_var(const T &, const std::string &, std::size_t, std::size_t, bool, const export_command &);
 
 template <typename... Args>
 inline std::string export_pointer(
     const std::weak_ptr<Args...> &pointer,
     const std::string &indent,
-    size_t last_line_length,
-    size_t current_depth,
+    std::size_t last_line_length,
+    std::size_t current_depth,
     bool fail_on_newline,
     const export_command &command
 ) {
@@ -42,8 +42,8 @@ template <typename T>
 inline auto export_pointer(
     const T &pointer,
     const std::string &indent,
-    size_t last_line_length,
-    size_t current_depth,
+    std::size_t last_line_length,
+    std::size_t current_depth,
     bool fail_on_newline,
     const export_command &command
 ) -> std::enable_if_t<is_pointer<T>, std::string> {

@@ -24,28 +24,28 @@ namespace _detail {
 
 template <typename T>
 std::string
-export_var(const T &, const std::string &, size_t, size_t, bool, const export_command &);
+export_var(const T &, const std::string &, std::size_t, std::size_t, bool, const export_command &);
 
 template <typename... Args>
 inline std::string export_other(
     const std::reference_wrapper<Args...> &ref,
     const std::string &indent,
-    size_t last_line_length,
-    size_t current_depth,
+    std::size_t last_line_length,
+    std::size_t current_depth,
     bool fail_on_newline,
     const export_command &command
 ) {
   return export_var(ref.get(), indent, last_line_length, current_depth, fail_on_newline, command);
 }
 
-template <size_t N>
+template <std::size_t N>
 inline std::string
-export_other(const std::bitset<N> &bitset, const std::string &, size_t, size_t, bool, const export_command &) {
+export_other(const std::bitset<N> &bitset, const std::string &, std::size_t, std::size_t, bool, const export_command &) {
   std::string bitset_str = bitset.to_string();
 
   std::string output;
   for (int end = bitset_str.length(); end > 0; end -= 4) {
-    size_t begin = std::max(end - 4, 0);
+    std::size_t begin = std::max(end - 4, 0);
     if (output == "") {
       output = bitset_str.substr(begin, end - begin);
     } else {
@@ -60,7 +60,7 @@ export_other(const std::bitset<N> &bitset, const std::string &, size_t, size_t, 
 
 template <typename... Args>
 inline std::string
-export_other(const std::complex<Args...> &complex, const std::string &, size_t, size_t current_depth, bool, const export_command &) {
+export_other(const std::complex<Args...> &complex, const std::string &, std::size_t, std::size_t current_depth, bool, const export_command &) {
   auto imag      = std::imag(complex);
   auto imag_sign = imag >= 0 ? "+" : "-";
 
@@ -79,8 +79,8 @@ template <typename... Args>
 inline std::string export_other(
     const std::variant<Args...> &variant,
     const std::string &indent,
-    size_t last_line_length,
-    size_t current_depth,
+    std::size_t last_line_length,
+    std::size_t current_depth,
     bool fail_on_newline,
     const export_command &command
 ) {
@@ -102,8 +102,8 @@ inline constexpr bool _is_other_type<es_value_t> = true;
 inline std::string export_other(
     const es_value_t &esv,
     const std::string &indent,
-    size_t last_line_length,
-    size_t current_depth,
+    std::size_t last_line_length,
+    std::size_t current_depth,
     bool fail_on_newline,
     const export_command &command
 ) {

@@ -21,10 +21,10 @@ namespace _detail {
 
 template <typename T>
 std::string
-export_var(const T &, const std::string &, size_t, size_t, bool, const export_command &);
+export_var(const T &, const std::string &, std::size_t, std::size_t, bool, const export_command &);
 
 inline std::string
-export_optional(const std::nullopt_t &, const std::string &, size_t, size_t, bool, const export_command &) {
+export_optional(const std::nullopt_t &, const std::string &, std::size_t, std::size_t, bool, const export_command &) {
   return es::identifier("std::nullopt");
 }
 
@@ -32,8 +32,8 @@ template <typename T>
 inline auto export_optional(
     const T &optional,
     const std::string &indent,
-    size_t last_line_length,
-    size_t current_depth,
+    std::size_t last_line_length,
+    std::size_t current_depth,
     bool fail_on_newline,
     const export_command &command
 ) -> std::enable_if_t<is_optional<T>, std::string> {

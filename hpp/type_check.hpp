@@ -164,7 +164,7 @@ template <typename>
 inline constexpr bool _is_other_type = false;
 template <typename... Args>
 inline constexpr bool _is_other_type<std::reference_wrapper<Args...>> = true;
-template <size_t N>
+template <std::size_t N>
 inline constexpr bool _is_other_type<std::bitset<N>> = true;
 template <typename... Args>
 inline constexpr bool _is_other_type<std::complex<Args...>> = true;

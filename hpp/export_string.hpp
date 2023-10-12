@@ -22,7 +22,7 @@ namespace _detail {
 
 template <typename T>
 inline auto
-export_string(const T &value, const std::string &, size_t, size_t, bool fail_on_newline, const export_command &)
+export_string(const T &value, const std::string &, std::size_t, std::size_t, bool fail_on_newline, const export_command &)
     -> std::enable_if_t<is_string<T>, std::string> {
   std::string str{value};
 

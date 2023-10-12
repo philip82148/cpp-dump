@@ -60,14 +60,14 @@ inline auto _iterable_size(const T &t, long)
 }
 
 template <typename T>
-inline size_t _iterable_size(const T &t, ...) {
-  size_t size = 0;
+inline std::size_t _iterable_size(const T &t, ...) {
+  std::size_t size = 0;
   for (const auto &_e : t) (void)_e, ++size;
   return size;
 }
 
 template <typename T>
-inline size_t iterable_size(const T &t) {
+inline std::size_t iterable_size(const T &t) {
   return _iterable_size(t, 0);
 }
 
