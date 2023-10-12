@@ -56,9 +56,20 @@ here.`,
 [dump] vec.begin() => *...
 [dump] unsupported_enum => Unsupported Type
 [dump] cpp_dump::es_style_t::no_es => cpp_dump::es_style_t::no_es, cpp_dump::es_style_t::by_syntax => cpp_dump::es_style_t::by_syntax, cpp_dump::es_value => cpp_dump::es_value_t{ ... }
-[dump] omit_front(10) << array50 => [ ... ], omit_front(10) << map50 => { ... }, omit_front(10) << set50 => { ... }
-[dump] omit_middle(5) << array50 => [ ... ], omit_middle(5) << map50 => { ... }, omit_middle(5) << set50 => { ... }
-[dump] omit_back(10) << array50 => [ ... ], omit_back(10) << map50 => { ... }, omit_back(10) << set50 => { ... }
-[dump] omit_front(40) << array50 => [ ... ], omit_front(40) << map50 => { ... }, omit_front(40) << set50 => { ... }
-[dump] omit_middle(20) << array50 => [ ... ], omit_middle(20) << map50 => { ... }, omit_middle(20) << set50 => { ... }
-[dump] omit_back(40) << array50 => [ ... ], omit_back(40) << map50 => { ... }, omit_back(40) << set50 => { ... }
+[dump] array50 => [ ... ], map50 => { ... }, set50 => { ... }
+[dump] keep_front() << array50 => [ ... ], keep_front() << map50 => { ... }, keep_front() << set50 => { ... }
+[dump] keep_middle() << array50 => [ ... ], keep_middle() << map50 => { ... }, keep_middle() << set50 => { ... }
+[dump] keep_back() << array50 => [ ... ], keep_back() << map50 => { ... }, keep_back() << set50 => { ... }
+[dump] keep_both_ends() << array50 => [ ... ], keep_both_ends() << map50 => { ... }, keep_both_ends() << set50 => { ... }
+[dump] keep_front(10) << array50 => [ ... ], keep_front(10) << map50 => { ... }, keep_front(10) << set50 => { ... }
+[dump] keep_back(10) << array50 => [ ... ], keep_back(10) << map50 => { ... }, keep_back(10) << set50 => { ... }
+[dump] keep_middle(10) << array50 => [ ... ], keep_middle(10) << map50 => { ... }, keep_middle(10) << set50 => { ... }
+[dump] keep_both_ends(10) << array50 => [ ... ], keep_both_ends(10) << map50 => { ... }, keep_both_ends(10) << set50 => { ... }
+[dump] keep_front(40) << array50 => [ ... ], keep_front(40) << map50 => { ... }, keep_front(40) << set50 => { ... }
+[dump] keep_middle(40) << array50 => [ ... ], keep_middle(40) << map50 => { ... }, keep_middle(40) << set50 => { ... }
+[dump] keep_back(40) << array50 => [ ... ], keep_back(40) << map50 => { ... }, keep_back(40) << set50 => { ... }
+[dump] keep_both_ends(40) << array50 => [ ... ], keep_both_ends(40) << map50 => { ... }, keep_both_ends(40) << set50 => { ... }
+[dump] vec2 => [ ... ], keep_back(2) << keep_both_ends(1) << keep_back(2) << vec2 => [ ... ]
+[dump] vec2 => [ ... ], keep_both_ends(2) << keep_both_ends(2) << keep_both_ends(2) << vec2 => [ ... ]
+[dump] multimap1 => { ... }, keep_both_ends(2) << keep_both_ends(2) << multimap1 => { ... }
+[dump] multiset1 => { ... }, keep_middle(1) << keep_back(1) << multiset1 => { ... }
