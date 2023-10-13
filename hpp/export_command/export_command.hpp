@@ -27,7 +27,7 @@ const std::shared_ptr<
         std::make_shared<std::function<
             std::optional<std::size_t>(std::size_t, const std::function<std::size_t()> &)>>(
             [](std::size_t index, std::function<std::size_t()> get_size) {
-              return skip_size_func::keep_front(index, get_size, max_iteration_count);
+              return skip_size_func::show_front(index, get_size, max_iteration_count);
             }
         )
     );
@@ -231,31 +231,31 @@ inline auto int_style(int base = 10, int chunk = 4) {
   return _detail::export_command({base, chunk});
 }
 
-inline auto keep_front(std::size_t iteration_count = max_iteration_count) {
+inline auto show_front(std::size_t iteration_count = max_iteration_count) {
   return _detail::export_command([=](std::size_t index,
                                      const std::function<std::size_t()> &get_size) {
-    return _detail::skip_size_func::keep_front(index, get_size, iteration_count);
+    return _detail::skip_size_func::show_front(index, get_size, iteration_count);
   });
 }
 
-inline auto keep_back(std::size_t iteration_count = max_iteration_count) {
+inline auto show_back(std::size_t iteration_count = max_iteration_count) {
   return _detail::export_command([=](std::size_t index,
                                      const std::function<std::size_t()> &get_size) {
-    return _detail::skip_size_func::keep_back(index, get_size, iteration_count);
+    return _detail::skip_size_func::show_back(index, get_size, iteration_count);
   });
 }
 
-inline auto keep_both_ends(std::size_t iteration_count = max_iteration_count) {
+inline auto show_both_ends(std::size_t iteration_count = max_iteration_count) {
   return _detail::export_command([=](std::size_t index,
                                      const std::function<std::size_t()> &get_size) {
-    return _detail::skip_size_func::keep_both_ends(index, get_size, iteration_count);
+    return _detail::skip_size_func::show_both_ends(index, get_size, iteration_count);
   });
 }
 
-inline auto keep_middle(std::size_t iteration_count = max_iteration_count) {
+inline auto show_middle(std::size_t iteration_count = max_iteration_count) {
   return _detail::export_command([=](std::size_t index,
                                      const std::function<std::size_t()> &get_size) {
-    return _detail::skip_size_func::keep_middle(index, get_size, iteration_count);
+    return _detail::skip_size_func::show_middle(index, get_size, iteration_count);
   });
 }
 

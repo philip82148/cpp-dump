@@ -111,14 +111,14 @@ struct skip_container {
 
 namespace skip_size_func {
 
-inline std::optional<std::size_t> keep_front(
+inline std::optional<std::size_t> show_front(
     std::size_t index, const std::function<std::size_t()> &, std::size_t iteration_count
 ) {
   if (index >= iteration_count) return std::nullopt;
   return 0;
 }
 
-inline std::optional<std::size_t> keep_back(
+inline std::optional<std::size_t> show_back(
     std::size_t index, const std::function<std::size_t()> &get_size, std::size_t iteration_count
 ) {
   std::size_t size  = get_size();
@@ -128,7 +128,7 @@ inline std::optional<std::size_t> keep_back(
   return 0;
 }
 
-inline std::optional<std::size_t> keep_both_ends(
+inline std::optional<std::size_t> show_both_ends(
     std::size_t index, const std::function<std::size_t()> &get_size, std::size_t iteration_count
 ) {
   std::size_t size              = get_size();
@@ -140,7 +140,7 @@ inline std::optional<std::size_t> keep_both_ends(
   return 0;
 }
 
-inline std::optional<std::size_t> keep_middle(
+inline std::optional<std::size_t> show_middle(
     std::size_t index, const std::function<std::size_t()> &get_size, std::size_t iteration_count
 ) {
   std::size_t size  = get_size();
