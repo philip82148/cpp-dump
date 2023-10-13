@@ -21,9 +21,6 @@ extern inline std::size_t max_iteration_count;
 
 namespace _detail {
 
-template <typename T>
-struct value_with_command;
-
 const std::shared_ptr<
     std::function<std::optional<std::size_t>(std::size_t, const std::function<std::size_t()> &)>>
     _default_skip_size_func(
@@ -35,7 +32,33 @@ const std::shared_ptr<
         )
     );
 
+template <typename T>
+struct value_with_command;
+
 struct export_command {
+  friend export_command _map_key(const export_command &command) {
+    export_command new_command;
+    new_command.map_key_skip_size_func = command.skip_size_func;
+    new_command.map_key_child          = command.child;
+    return new_command;
+  }
+
+  friend export_command _map_value(const export_command &command) {
+    export_command new_command;
+    new_command.map_value_skip_size_func = command.skip_size_func;
+    new_command.map_value_child          = command.child;
+    return new_command;
+  }
+
+  friend export_command _map_key_and_value(const export_command &key, const export_command &value) {
+    export_command new_command;
+    new_command.map_key_skip_size_func   = key.skip_size_func;
+    new_command.map_key_child            = key.child;
+    new_command.map_value_skip_size_func = value.skip_size_func;
+    new_command.map_value_child          = value.child;
+    return new_command;
+  }
+
  public:
   export_command(
       std::function<std::optional<std::size_t>(std::size_t, const std::function<std::size_t()> &)>
@@ -47,8 +70,15 @@ struct export_command {
               std::move(skip_size_func)
           )
       ) {}
-  export_command(const export_command &command)
-      : skip_size_func(command.skip_size_func), child(command.child) {}
+  export_command(
+      const std::shared_ptr<std::function<
+          std::optional<std::size_t>(std::size_t, const std::function<std::size_t()> &)>>
+          &skip_size_func,
+      const std::shared_ptr<export_command> &child
+  )
+      : skip_size_func(skip_size_func), child(child) {}
+  export_command(const export_command &)            = default;
+  export_command &operator=(const export_command &) = default;
   export_command() : skip_size_func(_default_skip_size_func) {}
 
   template <typename T>
@@ -62,25 +92,56 @@ struct export_command {
     return export_command();
   }
 
+  export_command next_for_map_key() const {
+    if (map_key_child) return *map_key_child;
+
+    return next();
+  }
+
+  export_command next_for_map_value() const {
+    if (map_value_child) return *map_value_child;
+
+    return next();
+  }
+
   template <typename T>
   value_with_command<T> operator<<(const T &value) {
     return value_with_command<T>(value, *this);
   }
 
-  export_command &operator<<(export_command &&command) {
+  export_command &operator<<(const export_command &command) {
     if (child) {
-      *child << std::move(command);
+      *child << command;
     } else {
-      child = std::make_shared<export_command>(command);
+      child.reset(new export_command(command.skip_size_func, command.child));
+
+      if (command.map_key_skip_size_func)
+        map_key_child.reset(
+            new export_command(command.map_key_skip_size_func, command.map_key_child)
+        );
+
+      if (command.map_value_skip_size_func)
+        map_value_child.reset(
+            new export_command(command.map_value_skip_size_func, command.map_value_child)
+        );
     }
+
     return *this;
   }
 
  private:
-  const std::shared_ptr<
+  std::shared_ptr<
       std::function<std::optional<std::size_t>(std::size_t, const std::function<std::size_t()> &)>>
       skip_size_func;
   std::shared_ptr<export_command> child;
+  std::shared_ptr<
+      std::function<std::optional<std::size_t>(std::size_t, const std::function<std::size_t()> &)>>
+      map_key_skip_size_func;
+  std::shared_ptr<export_command> map_key_child;
+  std::shared_ptr<
+      std::function<std::optional<std::size_t>(std::size_t, const std::function<std::size_t()> &)>>
+      map_value_skip_size_func;
+  std::shared_ptr<export_command> map_value_child;
 };
 
 template <typename T>
@@ -130,6 +191,14 @@ inline auto keep_middle(std::size_t iteration_count = max_iteration_count) {
                                      const std::function<std::size_t()> &get_size) {
     return _detail::skip_size_func::keep_middle(index, get_size, iteration_count);
   });
+}
+
+auto map_key(const _detail::export_command &command) { return _map_key(command); }
+
+auto map_value(const _detail::export_command &command) { return _map_value(command); }
+
+auto map_key_and_value(const _detail::export_command &key, const _detail::export_command &value) {
+  return _map_key_and_value(key, value);
 }
 
 }  // namespace cpp_dump

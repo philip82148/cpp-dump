@@ -113,7 +113,8 @@ inline auto export_map(
 
   std::string new_indent = indent + "  ";
   std::size_t next_depth = current_depth + 1;
-  auto next_command      = command.next();
+  auto key_command       = command.next_for_map_key();
+  auto value_command     = command.next_for_map_value();
 
   _map_wrapper<T> map_wrapper(map);
   auto skipped_map = command.get_skip_container(map_wrapper);
@@ -146,18 +147,18 @@ rollback:
         // Also, multiplicities are similar to members since they are on the left side of values.
         key_string =
             "\n" + new_indent
-            + export_var(key, new_indent, new_indent.length(), next_depth, false, next_command)
+            + export_var(key, new_indent, new_indent.length(), next_depth, false, key_command)
             + es::member(" (" + std::to_string(map.count(key)) + ")") + es::op(": ");
         value_string = export_var(
-            values, new_indent, get_last_line_length(key_string), next_depth, false, next_command
+            values, new_indent, get_last_line_length(key_string), next_depth, false, value_command
         );
       } else {
         key_string =
             "\n" + new_indent
-            + export_var(key, new_indent, new_indent.length(), next_depth, false, next_command)
+            + export_var(key, new_indent, new_indent.length(), next_depth, false, key_command)
             + es::op(": ");
         value_string = export_var(
-            value, new_indent, get_last_line_length(key_string), next_depth, false, next_command
+            value, new_indent, get_last_line_length(key_string), next_depth, false, value_command
         );
       }
 
@@ -182,7 +183,7 @@ rollback:
       // Also, multiplicities are similar to members since they are on the left side of values.
       key_string =
           export_var(
-              key, indent, last_line_length + get_length(output), next_depth, true, next_command
+              key, indent, last_line_length + get_length(output), next_depth, true, key_command
           )
           + es::member(" (" + std::to_string(map.count(key)) + ")") + es::op(": ");
       value_string = export_var(
@@ -191,12 +192,12 @@ rollback:
           last_line_length + get_length(output) + get_length(key_string),
           next_depth,
           true,
-          next_command
+          value_command
       );
     } else {
       key_string =
           export_var(
-              key, indent, last_line_length + get_length(output), next_depth, true, next_command
+              key, indent, last_line_length + get_length(output), next_depth, true, key_command
           )
           + es::op(": ");
       value_string = export_var(
@@ -205,7 +206,7 @@ rollback:
           last_line_length + get_length(output) + get_length(key_string),
           next_depth,
           true,
-          next_command
+          value_command
       );
     }
 
