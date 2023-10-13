@@ -22,12 +22,12 @@ extern inline std::size_t max_iteration_count;
 namespace _detail {
 
 template <typename>
-struct omitted_container;
+struct skip_container;
 
 template <typename T, typename It>
-struct omitted_iterator {
+struct skip_iterator {
  public:
-  omitted_iterator(
+  skip_iterator(
       const It &it,
       const std::function<
           std::optional<std::size_t>(std::size_t, const std::function<std::size_t()> &)>
@@ -39,7 +39,7 @@ struct omitted_iterator {
         original_size_func(original_size_func),
         index(0),
         done(false) {}
-  omitted_iterator() = delete;
+  skip_iterator() = delete;
 
   std::pair<bool, It> operator*() const {
     bool skip = get_skip_size().value_or(1) != 0;
@@ -49,7 +49,7 @@ struct omitted_iterator {
   bool operator!=(const U &to) const {
     return !done && it != to.it;
   }
-  omitted_iterator &operator++() {
+  skip_iterator &operator++() {
     std::optional<std::size_t> skip_size = get_skip_size();
 
     if (skip_size) {
@@ -81,9 +81,9 @@ struct omitted_iterator {
 };
 
 template <typename T>
-struct omitted_container {
+struct skip_container {
  public:
-  omitted_container(
+  skip_container(
       const T &container,
       const std::function<
           std::optional<std::size_t>(std::size_t, const std::function<std::size_t()> &)>
@@ -92,15 +92,15 @@ struct omitted_container {
       : original(container),
         _begin(iterable_begin(original), skip_size_func, original_size_func),
         _end(iterable_end(original), skip_size_func, original_size_func) {}
-  omitted_container() = delete;
+  skip_container() = delete;
 
   auto begin() const { return _begin; }
   auto end() const { return _end; }
 
  private:
   const T &original;
-  const omitted_iterator<T, decltype(iterable_begin(original))> _begin;
-  const omitted_iterator<T, decltype(iterable_end(original))> _end;
+  const skip_iterator<T, decltype(iterable_begin(original))> _begin;
+  const skip_iterator<T, decltype(iterable_end(original))> _end;
 
   std::optional<std::size_t> size;
   const std::function<std::size_t()> original_size_func = [this] {

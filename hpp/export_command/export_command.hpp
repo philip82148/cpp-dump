@@ -13,7 +13,7 @@
 #include <utility>
 
 #include "../type_check.hpp"
-#include "./omitted_container.hpp"
+#include "./skip_container.hpp"
 
 namespace cpp_dump {
 
@@ -52,8 +52,8 @@ struct export_command {
   export_command() : skip_size_func(_default_skip_size_func) {}
 
   template <typename T>
-  omitted_container<T> get_omitted_container(const T &container) const {
-    return omitted_container<T>(container, *skip_size_func);
+  skip_container<T> get_skip_container(const T &container) const {
+    return skip_container<T>(container, *skip_size_func);
   }
 
   export_command next() const {

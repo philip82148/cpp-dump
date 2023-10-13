@@ -52,13 +52,13 @@ inline auto export_container(
   std::size_t next_depth = current_depth + 1;
   auto next_command      = command.next();
 
-  auto omitted = command.get_omitted_container(container);
+  auto skipped = command.get_skip_container(container);
 
 rollback:
   std::string output = es::bracket("[ ", current_depth);
   bool is_first      = true;
 
-  for (const auto &[skip, it] : omitted) {
+  for (const auto &[skip, it] : skipped) {
     const auto &elem = *it;
 
     if (is_first) {

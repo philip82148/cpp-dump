@@ -84,13 +84,13 @@ inline auto export_set(
   auto next_command      = command.next();
 
   _set_wrapper set_wrapper(set);
-  auto omitted_set = command.get_omitted_container(set_wrapper);
+  auto skipped_set = command.get_skip_container(set_wrapper);
 
 rollback:
   std::string output = es::bracket("{ ", current_depth);
   bool is_first      = true;
 
-  for (const auto &[skip, it] : omitted_set) {
+  for (const auto &[skip, it] : skipped_set) {
     const auto &elem = *it;
 
     if (is_first) {

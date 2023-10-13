@@ -116,13 +116,13 @@ inline auto export_map(
   auto next_command      = command.next();
 
   _map_wrapper<T> map_wrapper(map);
-  auto omitted_map = command.get_omitted_container(map_wrapper);
+  auto skipped_map = command.get_skip_container(map_wrapper);
 
 rollback:
   std::string output = es::bracket("{ ", current_depth);
   bool is_first      = true;
 
-  for (const auto &[skip, it] : omitted_map) {
+  for (const auto &[skip, it] : skipped_map) {
     const auto &[key, value] = *it;
 
     if (is_first) {
