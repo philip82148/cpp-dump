@@ -62,7 +62,9 @@ inline auto _iterable_size(const T &t, long)
 template <typename T>
 inline std::size_t _iterable_size(const T &t, ...) {
   std::size_t size = 0;
-  for (const auto &_e : t) (void)_e, ++size;
+  auto begin       = iterable_begin(t);
+  auto end         = iterable_end(t);
+  for (; begin != end; ++begin) ++size;
   return size;
 }
 
