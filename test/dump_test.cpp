@@ -26,8 +26,8 @@ struct non_copyable_and_non_movable_class {
   non_copyable_and_non_movable_class &operator=(const non_copyable_and_non_movable_class &) =
       delete;
 
-  non_copyable_and_non_movable_class(non_copyable_and_non_movable_class &&)           = delete;
-  non_copyable_and_non_movable_class &operator=(non_copyable_and_non_movable_class &) = delete;
+  non_copyable_and_non_movable_class(non_copyable_and_non_movable_class &&)            = delete;
+  non_copyable_and_non_movable_class &operator=(non_copyable_and_non_movable_class &&) = delete;
 
   non_copyable_and_non_movable_class() = delete;
 
@@ -279,6 +279,15 @@ int main(int argc, char *argv[]) {
 
   CPP_DUMP(multimap1, keep_both_ends(2) << keep_both_ends(2) << multimap1);
   CPP_DUMP(multiset1, keep_middle(1) << keep_back(1) << multiset1);
+
+  auto multimap2 = multimap<vector<int>, int>{
+      {{1, 2}, 3},
+      {{1, 2}, 5},
+      {{3, 4, 0}, 8},
+      {{5, 6, 7, 8}, 7},
+      {{1, 2}, 10},
+  };
+  CPP_DUMP(keep_front() << map_key_and_value(keep_back(2), keep_front(2)) << multimap2);
 
   array<non_copyable_and_non_movable_class, 2> array_of_non_copyable_and_non_movable_class{
       {{string("value")}, {string("value")}}};

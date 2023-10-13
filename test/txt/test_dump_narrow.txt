@@ -1527,6 +1527,28 @@ here.`,
            3 (1), 
            ...
          }
+[dump] keep_front() << map_key_and_value(keep_back(2), keep_front(2)) << multimap2
+         => { 
+           [ 1, 2 ] (3): [ 
+             3, 
+             5, 
+             ...
+           ], 
+           [ 
+             ..., 
+             4, 
+             0
+           ] (1): [ 
+             8
+           ], 
+           [ 
+             ..., 
+             7, 
+             8
+           ] (1): [ 
+             7
+           ]
+         }
 [dump] keep_front(2) << keep_middle(1) << keep_back(2) << keep_both_ends(1) << non_copyable_and_non_movable_class1
          => non_copyable_and_non_movable_class{ 
            str_member= "This object has a pointer and reference_wrapper to itself.", 

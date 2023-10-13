@@ -73,6 +73,7 @@ here.`,
 [dump] vec2 => [ ... ], keep_both_ends(2) << keep_both_ends(2) << keep_both_ends(2) << vec2 => [ ... ]
 [dump] multimap1 => { ... }, keep_both_ends(2) << keep_both_ends(2) << multimap1 => { ... }
 [dump] multiset1 => { ... }, keep_middle(1) << keep_back(1) << multiset1 => { ... }
+[dump] keep_front() << map_key_and_value(keep_back(2), keep_front(2)) << multimap2 => { ... }
 [dump] keep_front(2) << keep_middle(1) << keep_back(2) << keep_both_ends(1) << non_copyable_and_non_movable_class1 => non_copyable_and_non_movable_class{ ... }
 [dump] array_of_non_copyable_and_non_movable_class => [ ... ]
 [dump] keep_front(1) << array_of_non_copyable_and_non_movable_class => [ ... ]
