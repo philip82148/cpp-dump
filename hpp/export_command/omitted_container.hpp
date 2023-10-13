@@ -21,144 +21,138 @@ extern inline std::size_t max_iteration_count;
 
 namespace _detail {
 
+template <typename>
+struct omitted_container;
+
+template <typename T, typename It>
+struct omitted_iterator {
+ public:
+  omitted_iterator(
+      const It &it,
+      const std::function<
+          std::optional<std::size_t>(std::size_t, const std::function<std::size_t()> &)>
+          &skip_size_func,
+      const std::function<std::size_t()> &original_size_func
+  )
+      : it(it),
+        skip_size_func(skip_size_func),
+        original_size_func(original_size_func),
+        index(0),
+        done(false) {}
+  omitted_iterator() = delete;
+
+  std::pair<bool, It> operator*() const {
+    bool skip = get_skip_size().value_or(1) != 0;
+    return {skip, it};
+  }
+  template <typename U>
+  bool operator!=(const U &to) const {
+    return !done && it != to.it;
+  }
+  omitted_iterator &operator++() {
+    std::optional<std::size_t> skip_size = get_skip_size();
+
+    if (skip_size) {
+      if (skip_size == 0) {
+        ++it;
+        ++index;
+      } else {
+        iterator_advance(it, skip_size.value());
+        index += skip_size.value();
+      }
+    } else {
+      done = true;
+    }
+
+    return *this;
+  }
+
+ private:
+  It it;
+  const std::function<std::optional<std::size_t>(std::size_t, const std::function<std::size_t()> &)>
+      &skip_size_func;
+  const std::function<std::size_t()> &original_size_func;
+  std::size_t index;
+  bool done;
+
+  std::optional<std::size_t> get_skip_size() const {
+    return skip_size_func(index, original_size_func);
+  }
+};
+
 template <typename T>
 struct omitted_container {
  public:
   omitted_container(
       const T &container,
-      const std::shared_ptr<std::function<
-          std::pair<bool, std::optional<std::size_t>>(std::size_t, std::function<std::size_t()>)>>
-          &it_info_ptr
+      const std::function<
+          std::optional<std::size_t>(std::size_t, const std::function<std::size_t()> &)>
+          &skip_size_func
   )
       : original(container),
-        it_info_ptr(it_info_ptr),
-        _begin(*this, iterable_begin(container)),
-        _end(*this, iterable_end(container)) {}
+        _begin(iterable_begin(original), skip_size_func, original_size_func),
+        _end(iterable_end(original), skip_size_func, original_size_func) {}
   omitted_container() = delete;
 
   auto begin() const { return _begin; }
   auto end() const { return _end; }
 
  private:
-  template <typename It>
-  struct omitted_iterator {
-   public:
-    omitted_iterator(const omitted_container<T> &parent, const It &it)
-        : parent(parent), it(it), index(0), done(false) {}
-    omitted_iterator() = delete;
-
-    std::tuple<bool, std::optional<std::size_t>, It> operator*() const {
-      auto [is_ellipsis, omitted_size] = it_info();
-      return {is_ellipsis, omitted_size, it};
-    }
-    template <typename U>
-    bool operator!=(const U &to) const {
-      return !done && it != to.it;
-    }
-    omitted_iterator &operator++() {
-      auto [is_ellipsis, omitted_size] = it_info();
-
-      if (is_ellipsis) {
-        if (omitted_size) {
-          iterator_advance(it, omitted_size.value());
-          index += omitted_size.value();
-        } else {
-          done = true;
-        }
-      } else {
-        ++it;
-        ++index;
-      }
-
-      return *this;
-    }
-
-   private:
-    const omitted_container<T> &parent;
-    It it;
-    std::size_t index;
-    bool done;
-    mutable std::optional<std::size_t> size;
-
-    std::pair<bool, std::optional<std::size_t>> it_info() const {
-      return parent.it_info_ptr->operator()(index, [this] { return original_size(); });
-    }
-
-    std::size_t original_size() const {
-      if (!size) size = iterable_size(parent.original);
-      return size.value();
-    }
-  };
-
   const T &original;
-  const std::shared_ptr<std::function<
-      std::pair<bool, std::optional<std::size_t>>(std::size_t, std::function<std::size_t()>)>>
-      it_info_ptr;
-  const omitted_iterator<decltype(iterable_begin(original))> _begin;
-  const omitted_iterator<decltype(iterable_end(original))> _end;
+  const omitted_iterator<T, decltype(iterable_begin(original))> _begin;
+  const omitted_iterator<T, decltype(iterable_end(original))> _end;
+
+  std::optional<std::size_t> size;
+  const std::function<std::size_t()> original_size_func = [this] {
+    if (!size) size = iterable_size(original);
+    return size.value();
+  };
 };
 
-namespace it_info_aux {
+namespace skip_size_func {
 
-inline std::pair<bool, std::optional<std::size_t>> keep_front(
-    std::size_t index, std::function<std::size_t()>, std::size_t iteration_count
+inline std::optional<std::size_t> keep_front(
+    std::size_t index, const std::function<std::size_t()> &, std::size_t iteration_count
 ) {
-  bool is_ellipsis                        = index >= iteration_count;
-  std::optional<std::size_t> omitted_size = 0;
-  if (is_ellipsis) omitted_size = std::nullopt;
-
-  return {is_ellipsis, omitted_size};
+  if (index >= iteration_count) return std::nullopt;
+  return 0;
 }
 
-inline std::pair<bool, std::optional<std::size_t>> keep_back(
-    std::size_t index, std::function<std::size_t()> get_size, std::size_t iteration_count
+inline std::optional<std::size_t> keep_back(
+    std::size_t index, const std::function<std::size_t()> &get_size, std::size_t iteration_count
 ) {
   std::size_t size  = get_size();
   std::size_t first = size >= iteration_count ? size - iteration_count : 0;
 
-  bool is_ellipsis                        = index < first;
-  std::optional<std::size_t> omitted_size = 0;
-  if (is_ellipsis) omitted_size = first - index;
-
-  return {is_ellipsis, omitted_size};
+  if (index < first) return first - index;
+  return 0;
 }
 
-inline std::pair<bool, std::optional<std::size_t>> keep_both_ends(
-    std::size_t index, std::function<std::size_t()> get_size, std::size_t iteration_count
+inline std::optional<std::size_t> keep_both_ends(
+    std::size_t index, const std::function<std::size_t()> &get_size, std::size_t iteration_count
 ) {
   std::size_t size              = get_size();
   std::size_t first_half_last   = (iteration_count + 1) / 2;
   std::size_t rest_count        = iteration_count - first_half_last;
   std::size_t latter_half_first = size >= rest_count ? size - rest_count : 0;
 
-  bool is_ellipsis                        = index >= first_half_last && index < latter_half_first;
-  std::optional<std::size_t> omitted_size = 0;
-  if (is_ellipsis) omitted_size = latter_half_first - index;
-
-  return {is_ellipsis, omitted_size};
+  if (index >= first_half_last && index < latter_half_first) return latter_half_first - index;
+  return 0;
 }
 
-inline std::pair<bool, std::optional<std::size_t>> keep_middle(
-    std::size_t index, std::function<std::size_t()> get_size, std::size_t iteration_count
+inline std::optional<std::size_t> keep_middle(
+    std::size_t index, const std::function<std::size_t()> &get_size, std::size_t iteration_count
 ) {
   std::size_t size  = get_size();
   std::size_t first = size >= iteration_count ? (size - iteration_count) / 2 : 0;
   std::size_t last  = first + iteration_count;
 
-  bool is_ellipsis                        = index < first || index >= last;
-  std::optional<std::size_t> omitted_size = 0;
-  if (is_ellipsis) {
-    if (index < first) {
-      omitted_size = first - index;
-    } else {
-      omitted_size = std::nullopt;
-    }
-  }
-
-  return {is_ellipsis, omitted_size};
+  if (index < first) return first - index;
+  if (index >= last) return std::nullopt;
+  return 0;
 }
 
-}  // namespace it_info_aux
+}  // namespace skip_size_func
 
 }  // namespace _detail
 

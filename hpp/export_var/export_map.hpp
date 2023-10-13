@@ -43,7 +43,7 @@ struct _map_wrapper {
     map_wrapper_iterator(const T &map, It it) : map(map), it(it) {}
     map_wrapper_iterator() = delete;
 
-    auto operator*() const { return *it; }
+    const auto &operator*() const { return *it; }
     auto operator->() { return it.operator->(); }
     bool operator!=(const map_wrapper_iterator &to) const { return it != to.it; }
     map_wrapper_iterator &operator++() {
@@ -75,7 +75,7 @@ struct _multimap_value_wrapper {
     multimap_value_iterator(It it) : it(it) {}
     multimap_value_iterator() = delete;
 
-    auto operator*() const { return it->second; }
+    const auto &operator*() const { return it->second; }
     bool operator!=(const multimap_value_iterator &to) const { return it != to.it; }
     multimap_value_iterator &operator++() {
       ++it;
@@ -122,7 +122,7 @@ rollback:
   std::string output = es::bracket("{ ", current_depth);
   bool is_first      = true;
 
-  for (const auto &[is_ellipsis, omitted_size, it] : omitted_map) {
+  for (const auto &[skip, it] : omitted_map) {
     const auto &[key, value] = *it;
 
     if (is_first) {
@@ -133,11 +133,8 @@ rollback:
 
     std::string key_string, value_string;
     if (shift_indent) {
-      if (is_ellipsis) {
-        std::string omitted_size_str =
-            omitted_size ? std::to_string(omitted_size.value()) : "unknown size";
-
-        output += "\n" + new_indent + es::op("... (" + omitted_size_str + " omitted)");
+      if (skip) {
+        output += "\n" + new_indent + es::op("...");
         continue;
       }
 
@@ -168,11 +165,8 @@ rollback:
       continue;
     }
 
-    if (is_ellipsis) {
-      std::string omitted_size_str =
-          omitted_size ? std::to_string(omitted_size.value()) : "unknown size";
-
-      output += es::op("... (" + omitted_size_str + " omitted)");
+    if (skip) {
+      output += es::op("...");
 
       if (last_line_length + get_length(output + " }") <= max_line_width) continue;
 

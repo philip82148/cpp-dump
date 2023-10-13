@@ -58,7 +58,7 @@ rollback:
   std::string output = es::bracket("[ ", current_depth);
   bool is_first      = true;
 
-  for (const auto &[is_ellipsis, omitted_size, it] : omitted) {
+  for (const auto &[skip, it] : omitted) {
     const auto &elem = *it;
 
     if (is_first) {
@@ -68,11 +68,8 @@ rollback:
     }
 
     if (shift_indent) {
-      if (is_ellipsis) {
-        std::string omitted_size_str =
-            omitted_size ? std::to_string(omitted_size.value()) : "unknown size";
-
-        output += "\n" + new_indent + es::op("... (" + omitted_size_str + " omitted)");
+      if (skip) {
+        output += "\n" + new_indent + es::op("...");
         continue;
       }
 
@@ -82,11 +79,8 @@ rollback:
       continue;
     }
 
-    if (is_ellipsis) {
-      std::string omitted_size_str =
-          omitted_size ? std::to_string(omitted_size.value()) : "unknown size";
-
-      output += es::op("... (" + omitted_size_str + " omitted)");
+    if (skip) {
+      output += es::op("...");
 
       if (last_line_length + get_length(output + " ]") <= max_line_width) continue;
 

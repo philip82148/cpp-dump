@@ -43,7 +43,7 @@ struct _set_wrapper {
     set_wrapper_iterator(const T &set, It it) : set(set), it(it) {}
     set_wrapper_iterator() = delete;
 
-    auto operator*() const { return *it; }
+    const auto &operator*() const { return *it; }
     bool operator!=(const set_wrapper_iterator &to) const { return it != to.it; }
     set_wrapper_iterator &operator++() {
       it = set.equal_range(*it).second;
@@ -90,7 +90,7 @@ rollback:
   std::string output = es::bracket("{ ", current_depth);
   bool is_first      = true;
 
-  for (const auto &[is_ellipsis, omitted_size, it] : omitted_set) {
+  for (const auto &[skip, it] : omitted_set) {
     const auto &elem = *it;
 
     if (is_first) {
@@ -100,11 +100,8 @@ rollback:
     }
 
     if (shift_indent) {
-      if (is_ellipsis) {
-        std::string omitted_size_str =
-            omitted_size ? std::to_string(omitted_size.value()) : "unknown size";
-
-        output += "\n" + new_indent + es::op("... (" + omitted_size_str + " omitted)");
+      if (skip) {
+        output += "\n" + new_indent + es::op("...");
         continue;
       }
 
@@ -119,11 +116,8 @@ rollback:
       continue;
     }
 
-    if (is_ellipsis) {
-      std::string omitted_size_str =
-          omitted_size ? std::to_string(omitted_size.value()) : "unknown size";
-
-      output += es::op("... (" + omitted_size_str + " omitted)");
+    if (skip) {
+      output += es::op("...");
 
       if (last_line_length + get_length(output + " }") <= max_line_width) continue;
 
