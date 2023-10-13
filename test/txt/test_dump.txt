@@ -771,253 +771,96 @@ here.`,
          'c' (2): [ 30, 31 ]
        }
 [dump] multiset1 => { 1 (2), 3 (1), 4 (1) }, keep_middle(1) << keep_back(1) << multiset1 => { ..., 3 (1), ... }
-[dump] keep_front() << map_key_and_value(keep_back(2), keep_front(2)) << multimap2 => { 
-         [ 1, 2 ] (3): [ 3, 5, ... ], 
-         [ ..., 4, 0 ] (1): [ 8 ], 
-         [ ..., 7, 8 ] (1): [ 7 ]
+[dump] keep_front(2) << map_key_and_value(keep_back(2), keep_front(2)) << multimap2 => { 
+         [ ..., 4, 2 ] (3): [ 
+           [ 11, 22, 11, 22 ], 
+           [ 14, 21, 11, 22 ], 
+           ...
+         ], 
+         [ ..., 4, 0 ] (1): [ 
+           [ 21, 5, 2, -5 ]
+         ], 
+         ...
        }
+[dump] int_style(12, 3) << keep_front(2) << int_style(2, 0) << map_key_and_value(int_style(16, 3) << keep_back(2), keep_front(2)) << multimap2 => { 
+         [ ..., 004 _16, 002 _16 ] (3): [ 
+           [ 1011 _2, 10110 _2, 1011 _2, 10110 _2 ], 
+           [ 1110 _2, 10101 _2, 1011 _2, 10110 _2 ], 
+           ...
+         ], 
+         [ ..., 004 _16, 000 _16 ] (1): [ 
+           [ 10101 _2, 101 _2, 10 _2, -5 ]
+         ], 
+         ...
+       }
+[dump] int_style(12, 3) << int_style(8, 3) << map_key_and_value(int_style(16, 3) << keep_back(2), keep_front(2)) << multimap2 => { 
+         [ 001 _8, 002 _8, 004 _8, 002 _8 ] (3): [ 
+           [ 013 _8, 026 _8, 013 _8, 026 _8 ], 
+           [ 016 _8, 025 _8, 013 _8, 026 _8 ], 
+           [ 000 _8, 005 _8, 031 _8 ]
+         ], 
+         [ 003 _8, 004 _8, 000 _8 ] (1): [ 
+           [ 025 _8, 005 _8, 002 _8, -5 ]
+         ], 
+         [ 005 _8, 006 _8, 007 _8, 010 _8 ] (1): [ 
+           [ 016 _8, -2 ]
+         ]
+       }
+[dump] keep_front(1) << map_value( int_style(8, 3) << keep_middle(1) << int_style(16, 3) << keep_middle(2) << int_style(5, 3) ) << multimap2 => { 
+         [ 1, 2, 4, 2 ] (3): [ 
+           ..., 
+           [ ..., 015 _16, 00b _16, ... ], 
+           ...
+         ], 
+         ...
+       }
+[dump] i => 0, int_style(i) << 0x10000 => 65536
+[dump] i => 1, int_style(i) << 0x10000 => 65536
+[dump] i => 2, int_style(i) << 0x10000 => 0001 0000 0000 0000 0000 _2
+[dump] i => 3, int_style(i) << 0x10000 => 0100 2222 0021 _3
+[dump] i => 4, int_style(i) << 0x10000 => 0001 0000 0000 _4
+[dump] i => 5, int_style(i) << 0x10000 => 0404 4121 _5
+[dump] i => 6, int_style(i) << 0x10000 => 0122 3224 _6
+[dump] i => 7, int_style(i) << 0x10000 => 0036 2032 _7
+[dump] i => 8, int_style(i) << 0x10000 => 0020 0000 _8
+[dump] i => 9, int_style(i) << 0x10000 => 0010 8807 _9
+[dump] i => 10, int_style(i) << 0x10000 => 0006 5536 _10
+[dump] i => 11, int_style(i) << 0x10000 => 0004 5269 _11
+[dump] i => 12, int_style(i) << 0x10000 => 0003 1b14 _12
+[dump] i => 13, int_style(i) << 0x10000 => 0002 3aa3 _13
+[dump] i => 14, int_style(i) << 0x10000 => 0001 9c52 _14
+[dump] i => 15, int_style(i) << 0x10000 => 0001 4641 _15
+[dump] i => 16, int_style(i) << 0x10000 => 0001 0000 _16
 [dump] keep_front(2) << keep_middle(1) << keep_back(2) << keep_both_ends(1) << non_copyable_and_non_movable_class1 => non_copyable_and_non_movable_class{ 
          str_member= "This object has a pointer and reference_wrapper to itself.", 
          pointer= *non_copyable_and_non_movable_class{ 
            str_member= "This object has a pointer and reference_wrapper to itself.", 
-           pointer= *non_copyable_and_non_movable_class{ 
-             str_member= "This object has a pointer and reference_wrapper to itself.", 
-             pointer= *non_copyable_and_non_movable_class{ 
-               str_member= "This object has a pointer and reference_wrapper to itself.", 
-               pointer= *non_copyable_and_non_movable_class{ ... }, 
-               ref= non_copyable_and_non_movable_class{ ... }
-             }, 
-             ref= non_copyable_and_non_movable_class{ 
-               str_member= "This object has a pointer and reference_wrapper to itself.", 
-               pointer= *non_copyable_and_non_movable_class{ ... }, 
-               ref= non_copyable_and_non_movable_class{ ... }
-             }
-           }, 
-           ref= non_copyable_and_non_movable_class{ 
-             str_member= "This object has a pointer and reference_wrapper to itself.", 
-             pointer= *non_copyable_and_non_movable_class{ 
-               str_member= "This object has a pointer and reference_wrapper to itself.", 
-               pointer= *non_copyable_and_non_movable_class{ ... }, 
-               ref= non_copyable_and_non_movable_class{ ... }
-             }, 
-             ref= non_copyable_and_non_movable_class{ 
-               str_member= "This object has a pointer and reference_wrapper to itself.", 
-               pointer= *non_copyable_and_non_movable_class{ ... }, 
-               ref= non_copyable_and_non_movable_class{ ... }
-             }
-           }
+           pointer= *non_copyable_and_non_movable_class{ ... }, 
+           ref= non_copyable_and_non_movable_class{ ... }
          }, 
          ref= non_copyable_and_non_movable_class{ 
            str_member= "This object has a pointer and reference_wrapper to itself.", 
-           pointer= *non_copyable_and_non_movable_class{ 
-             str_member= "This object has a pointer and reference_wrapper to itself.", 
-             pointer= *non_copyable_and_non_movable_class{ 
-               str_member= "This object has a pointer and reference_wrapper to itself.", 
-               pointer= *non_copyable_and_non_movable_class{ ... }, 
-               ref= non_copyable_and_non_movable_class{ ... }
-             }, 
-             ref= non_copyable_and_non_movable_class{ 
-               str_member= "This object has a pointer and reference_wrapper to itself.", 
-               pointer= *non_copyable_and_non_movable_class{ ... }, 
-               ref= non_copyable_and_non_movable_class{ ... }
-             }
-           }, 
-           ref= non_copyable_and_non_movable_class{ 
-             str_member= "This object has a pointer and reference_wrapper to itself.", 
-             pointer= *non_copyable_and_non_movable_class{ 
-               str_member= "This object has a pointer and reference_wrapper to itself.", 
-               pointer= *non_copyable_and_non_movable_class{ ... }, 
-               ref= non_copyable_and_non_movable_class{ ... }
-             }, 
-             ref= non_copyable_and_non_movable_class{ 
-               str_member= "This object has a pointer and reference_wrapper to itself.", 
-               pointer= *non_copyable_and_non_movable_class{ ... }, 
-               ref= non_copyable_and_non_movable_class{ ... }
-             }
-           }
+           pointer= *non_copyable_and_non_movable_class{ ... }, 
+           ref= non_copyable_and_non_movable_class{ ... }
          }
        }
-[dump] array_of_non_copyable_and_non_movable_class => [ 
-         non_copyable_and_non_movable_class{ 
-           str_member= "value", 
-           pointer= *non_copyable_and_non_movable_class{ 
-             str_member= "value", 
-             pointer= *non_copyable_and_non_movable_class{ 
-               str_member= "value", 
-               pointer= *non_copyable_and_non_movable_class{ ... }, 
-               ref= non_copyable_and_non_movable_class{ ... }
-             }, 
-             ref= non_copyable_and_non_movable_class{ 
-               str_member= "value", 
-               pointer= *non_copyable_and_non_movable_class{ ... }, 
-               ref= non_copyable_and_non_movable_class{ ... }
-             }
-           }, 
-           ref= non_copyable_and_non_movable_class{ 
-             str_member= "value", 
-             pointer= *non_copyable_and_non_movable_class{ 
-               str_member= "value", 
-               pointer= *non_copyable_and_non_movable_class{ ... }, 
-               ref= non_copyable_and_non_movable_class{ ... }
-             }, 
-             ref= non_copyable_and_non_movable_class{ 
-               str_member= "value", 
-               pointer= *non_copyable_and_non_movable_class{ ... }, 
-               ref= non_copyable_and_non_movable_class{ ... }
-             }
-           }
-         }, 
-         non_copyable_and_non_movable_class{ 
-           str_member= "value", 
-           pointer= *non_copyable_and_non_movable_class{ 
-             str_member= "value", 
-             pointer= *non_copyable_and_non_movable_class{ 
-               str_member= "value", 
-               pointer= *non_copyable_and_non_movable_class{ ... }, 
-               ref= non_copyable_and_non_movable_class{ ... }
-             }, 
-             ref= non_copyable_and_non_movable_class{ 
-               str_member= "value", 
-               pointer= *non_copyable_and_non_movable_class{ ... }, 
-               ref= non_copyable_and_non_movable_class{ ... }
-             }
-           }, 
-           ref= non_copyable_and_non_movable_class{ 
-             str_member= "value", 
-             pointer= *non_copyable_and_non_movable_class{ 
-               str_member= "value", 
-               pointer= *non_copyable_and_non_movable_class{ ... }, 
-               ref= non_copyable_and_non_movable_class{ ... }
-             }, 
-             ref= non_copyable_and_non_movable_class{ 
-               str_member= "value", 
-               pointer= *non_copyable_and_non_movable_class{ ... }, 
-               ref= non_copyable_and_non_movable_class{ ... }
-             }
-           }
-         }
-       ]
-[dump] keep_front(1) << array_of_non_copyable_and_non_movable_class => [ 
-         non_copyable_and_non_movable_class{ 
-           str_member= "value", 
-           pointer= *non_copyable_and_non_movable_class{ 
-             str_member= "value", 
-             pointer= *non_copyable_and_non_movable_class{ 
-               str_member= "value", 
-               pointer= *non_copyable_and_non_movable_class{ ... }, 
-               ref= non_copyable_and_non_movable_class{ ... }
-             }, 
-             ref= non_copyable_and_non_movable_class{ 
-               str_member= "value", 
-               pointer= *non_copyable_and_non_movable_class{ ... }, 
-               ref= non_copyable_and_non_movable_class{ ... }
-             }
-           }, 
-           ref= non_copyable_and_non_movable_class{ 
-             str_member= "value", 
-             pointer= *non_copyable_and_non_movable_class{ 
-               str_member= "value", 
-               pointer= *non_copyable_and_non_movable_class{ ... }, 
-               ref= non_copyable_and_non_movable_class{ ... }
-             }, 
-             ref= non_copyable_and_non_movable_class{ 
-               str_member= "value", 
-               pointer= *non_copyable_and_non_movable_class{ ... }, 
-               ref= non_copyable_and_non_movable_class{ ... }
-             }
-           }
-         }, 
-         ...
-       ]
 [dump] non_copyable_and_non_movable_class_container1 => [ 
          non_copyable_and_non_movable_class{ 
            str_member= "This is non_copyable_and_non_movable_class.", 
-           pointer= *non_copyable_and_non_movable_class{ 
-             str_member= "This is non_copyable_and_non_movable_class.", 
-             pointer= *non_copyable_and_non_movable_class{ 
-               str_member= "This is non_copyable_and_non_movable_class.", 
-               pointer= *non_copyable_and_non_movable_class{ ... }, 
-               ref= non_copyable_and_non_movable_class{ ... }
-             }, 
-             ref= non_copyable_and_non_movable_class{ 
-               str_member= "This is non_copyable_and_non_movable_class.", 
-               pointer= *non_copyable_and_non_movable_class{ ... }, 
-               ref= non_copyable_and_non_movable_class{ ... }
-             }
-           }, 
-           ref= non_copyable_and_non_movable_class{ 
-             str_member= "This is non_copyable_and_non_movable_class.", 
-             pointer= *non_copyable_and_non_movable_class{ 
-               str_member= "This is non_copyable_and_non_movable_class.", 
-               pointer= *non_copyable_and_non_movable_class{ ... }, 
-               ref= non_copyable_and_non_movable_class{ ... }
-             }, 
-             ref= non_copyable_and_non_movable_class{ 
-               str_member= "This is non_copyable_and_non_movable_class.", 
-               pointer= *non_copyable_and_non_movable_class{ ... }, 
-               ref= non_copyable_and_non_movable_class{ ... }
-             }
-           }
+           pointer= *non_copyable_and_non_movable_class{ ... }, 
+           ref= non_copyable_and_non_movable_class{ ... }
          }, 
          non_copyable_and_non_movable_class{ 
            str_member= "This is non_copyable_and_non_movable_class.", 
-           pointer= *non_copyable_and_non_movable_class{ 
-             str_member= "This is non_copyable_and_non_movable_class.", 
-             pointer= *non_copyable_and_non_movable_class{ 
-               str_member= "This is non_copyable_and_non_movable_class.", 
-               pointer= *non_copyable_and_non_movable_class{ ... }, 
-               ref= non_copyable_and_non_movable_class{ ... }
-             }, 
-             ref= non_copyable_and_non_movable_class{ 
-               str_member= "This is non_copyable_and_non_movable_class.", 
-               pointer= *non_copyable_and_non_movable_class{ ... }, 
-               ref= non_copyable_and_non_movable_class{ ... }
-             }
-           }, 
-           ref= non_copyable_and_non_movable_class{ 
-             str_member= "This is non_copyable_and_non_movable_class.", 
-             pointer= *non_copyable_and_non_movable_class{ 
-               str_member= "This is non_copyable_and_non_movable_class.", 
-               pointer= *non_copyable_and_non_movable_class{ ... }, 
-               ref= non_copyable_and_non_movable_class{ ... }
-             }, 
-             ref= non_copyable_and_non_movable_class{ 
-               str_member= "This is non_copyable_and_non_movable_class.", 
-               pointer= *non_copyable_and_non_movable_class{ ... }, 
-               ref= non_copyable_and_non_movable_class{ ... }
-             }
-           }
+           pointer= *non_copyable_and_non_movable_class{ ... }, 
+           ref= non_copyable_and_non_movable_class{ ... }
          }
        ]
 [dump] keep_front(1) << non_copyable_and_non_movable_class_container1 => [ 
          non_copyable_and_non_movable_class{ 
            str_member= "This is non_copyable_and_non_movable_class.", 
-           pointer= *non_copyable_and_non_movable_class{ 
-             str_member= "This is non_copyable_and_non_movable_class.", 
-             pointer= *non_copyable_and_non_movable_class{ 
-               str_member= "This is non_copyable_and_non_movable_class.", 
-               pointer= *non_copyable_and_non_movable_class{ ... }, 
-               ref= non_copyable_and_non_movable_class{ ... }
-             }, 
-             ref= non_copyable_and_non_movable_class{ 
-               str_member= "This is non_copyable_and_non_movable_class.", 
-               pointer= *non_copyable_and_non_movable_class{ ... }, 
-               ref= non_copyable_and_non_movable_class{ ... }
-             }
-           }, 
-           ref= non_copyable_and_non_movable_class{ 
-             str_member= "This is non_copyable_and_non_movable_class.", 
-             pointer= *non_copyable_and_non_movable_class{ 
-               str_member= "This is non_copyable_and_non_movable_class.", 
-               pointer= *non_copyable_and_non_movable_class{ ... }, 
-               ref= non_copyable_and_non_movable_class{ ... }
-             }, 
-             ref= non_copyable_and_non_movable_class{ 
-               str_member= "This is non_copyable_and_non_movable_class.", 
-               pointer= *non_copyable_and_non_movable_class{ ... }, 
-               ref= non_copyable_and_non_movable_class{ ... }
-             }
-           }
+           pointer= *non_copyable_and_non_movable_class{ ... }, 
+           ref= non_copyable_and_non_movable_class{ ... }
          }, 
          ...
        ]

@@ -280,24 +280,37 @@ int main(int argc, char *argv[]) {
   CPP_DUMP(multimap1, keep_both_ends(2) << keep_both_ends(2) << multimap1);
   CPP_DUMP(multiset1, keep_middle(1) << keep_back(1) << multiset1);
 
-  auto multimap2 = multimap<vector<int>, int>{
-      {{1, 2}, 3},
-      {{1, 2}, 5},
-      {{3, 4, 0}, 8},
-      {{5, 6, 7, 8}, 7},
-      {{1, 2}, 10},
+  auto multimap2 = multimap<vector<int>, vector<int>>{
+      {{1, 2, 4, 2}, {11, 22, 11, 22}},
+      {{1, 2, 4, 2}, {14, 21, 11, 22}},
+      {{3, 4, 0}, {21, 5, 2, 3 - 8}},
+      {{5, 6, 7, 8}, {14, -2}},
+      {{1, 2, 4, 2}, {0, 5, 25}},
   };
-  CPP_DUMP(keep_front() << map_key_and_value(keep_back(2), keep_front(2)) << multimap2);
+  CPP_DUMP(keep_front(2) << map_key_and_value(keep_back(2), keep_front(2)) << multimap2);
 
-  array<non_copyable_and_non_movable_class, 2> array_of_non_copyable_and_non_movable_class{
-      {{string("value")}, {string("value")}}};
+  CPP_DUMP(
+      int_style(12, 3) << keep_front(2) << int_style(2, 0)
+                       << map_key_and_value(int_style(16, 3) << keep_back(2), keep_front(2))
+                       << multimap2
+  );
+  CPP_DUMP(
+      int_style(12, 3) << int_style(8, 3)
+                       << map_key_and_value(int_style(16, 3) << keep_back(2), keep_front(2))
+                       << multimap2
+  );
+  CPP_DUMP(
+      keep_front(1) << map_value(
+          int_style(8, 3) << keep_middle(1) << int_style(16, 3) << keep_middle(2) << int_style(5, 3)
+      ) << multimap2
+  );
+  rep(i, 17) CPP_DUMP(i, int_style(i) << 0x10000);
 
+  CPP_DUMP_SET_OPTION(max_depth, 2);
   CPP_DUMP(
       keep_front(2) << keep_middle(1) << keep_back(2) << keep_both_ends(1)
                     << non_copyable_and_non_movable_class1
   );
-  CPP_DUMP(array_of_non_copyable_and_non_movable_class);
-  CPP_DUMP(keep_front(1) << array_of_non_copyable_and_non_movable_class);
   CPP_DUMP(non_copyable_and_non_movable_class_container1);
   CPP_DUMP(keep_front(1) << non_copyable_and_non_movable_class_container1);
 }
