@@ -31,6 +31,7 @@
 
 /**
  * Set a value to a variable in cpp_dump namespace.
+ * You can also assign values to the variables directly.
  */
 #define CPP_DUMP_SET_OPTION(variable, value) cpp_dump::variable = value
 

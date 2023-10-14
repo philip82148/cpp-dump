@@ -38,7 +38,7 @@ inline auto export_arithmetic(
     bool,
     const export_command &command
 ) -> std::enable_if_t<is_arithmetic<T> && std::is_integral_v<T>, std::string> {
-  auto [base, length, chunk] = command.get_int_style();
+  auto [base, digits, chunk] = command.get_int_style();
   if (base == 0 || value < 0) return es::number(std::to_string(value));
 
   std::string output;
@@ -58,8 +58,8 @@ inline auto export_arithmetic(
     tmp /= static_cast<T>(base);
   }
 
-  if (length > 0) {
-    for (; i < length; ++i) {
+  if (digits > 0) {
+    for (; i < digits; ++i) {
       if (chunk > 0 && i % chunk == 0) {
         output = "0 " + output;
       } else {

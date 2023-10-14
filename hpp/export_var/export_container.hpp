@@ -52,7 +52,7 @@ inline auto export_container(
   std::size_t next_depth = current_depth + 1;
   auto next_command      = command.next();
 
-  auto skipped = command.get_skip_container(container);
+  auto skipped = command.create_skip_container(container);
 
 rollback:
   std::string output = es::bracket("[ ", current_depth);

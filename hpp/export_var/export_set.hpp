@@ -84,7 +84,7 @@ inline auto export_set(
   auto next_command      = command.next();
 
   _set_wrapper set_wrapper(set);
-  auto skipped_set = command.get_skip_container(set_wrapper);
+  auto skipped_set = command.create_skip_container(set_wrapper);
 
 rollback:
   std::string output = es::bracket("{ ", current_depth);

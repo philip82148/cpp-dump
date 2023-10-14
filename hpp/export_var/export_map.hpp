@@ -117,7 +117,7 @@ inline auto export_map(
   auto value_command     = command.next_for_map_value();
 
   _map_wrapper<T> map_wrapper(map);
-  auto skipped_map = command.get_skip_container(map_wrapper);
+  auto skipped_map = command.create_skip_container(map_wrapper);
 
 rollback:
   std::string output = es::bracket("{ ", current_depth);

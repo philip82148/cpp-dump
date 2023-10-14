@@ -177,14 +177,14 @@ struct export_command {
   }
 
   template <typename T>
-  skip_container<T> get_skip_container(const T &container) const {
+  skip_container<T> create_skip_container(const T &container) const {
     if (skip_size_func_ptr) return skip_container<T>(container, *skip_size_func_ptr);
     return skip_container<T>(container, *_default_skip_size_func_ptr);
   }
 
   std::tuple<int, int, int> get_int_style() const {
-    auto [base, length, chunk] = int_style;
-    return {base >= 2 && base <= 16 ? base : 0, length > 0 ? length : 0, chunk > 0 ? chunk : 0};
+    auto [base, digits, chunk] = int_style;
+    return {base >= 2 && base <= 16 ? base : 0, digits > 0 ? digits : 0, chunk > 0 ? chunk : 0};
   }
 
  private:
@@ -230,8 +230,8 @@ inline constexpr bool is_value_with_command = _is_value_with_command<_remove_cre
 
 }  // namespace _detail
 
-inline auto int_style(int base = 10, int length = 8, int chunk = 4) {
-  return _detail::export_command({base, length, chunk});
+inline auto int_style(int base = 10, int digits = 8, int chunk = 4) {
+  return _detail::export_command({base, digits, chunk});
 }
 
 inline auto show_front(std::size_t iteration_count = max_iteration_count) {

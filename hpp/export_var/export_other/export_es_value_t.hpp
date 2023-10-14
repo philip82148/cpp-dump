@@ -52,7 +52,7 @@ inline std::string _export_es_value_vector(
 
   std::string new_indent = indent + "  ";
 
-  auto skipped = command.get_skip_container(es_vec);
+  auto skipped = command.create_skip_container(es_vec);
 
 rollback:
   std::string output = es::bracket("[ ", current_depth);
