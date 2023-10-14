@@ -10,6 +10,7 @@
 #include <functional>
 #include <memory>
 #include <optional>
+#include <tuple>
 #include <utility>
 
 #include "../type_check.hpp"
@@ -56,14 +57,14 @@ struct export_command {
   }
 
  public:
-  export_command(const std::pair<int, int> &int_style)
+  export_command(const std::tuple<int, int, int> &int_style)
       : int_style(int_style), skip_size_func_ptr(nullptr) {}
 
   export_command(
       std::function<std::optional<std::size_t>(std::size_t, const std::function<std::size_t()> &)>
           &&skip_size_func
   )
-      : int_style(0, 0),
+      : int_style(0, 0, 0),
         skip_size_func_ptr(
             skip_size_func ? std::make_shared<std::function<
                     std::optional<std::size_t>(std::size_t, const std::function<std::size_t()> &)>>(
@@ -77,7 +78,7 @@ struct export_command {
   export_command(export_command &&)                 = default;
   export_command &operator=(export_command &&)      = default;
 
-  export_command() : int_style(0, 0), skip_size_func_ptr(_default_skip_size_func_ptr) {}
+  export_command() : int_style(0, 0, 0), skip_size_func_ptr(_default_skip_size_func_ptr) {}
 
   export_command &&operator<<(export_command &&command) && {
     *this << std::move(command);
@@ -97,16 +98,17 @@ struct export_command {
 
       // assign to map_key_child and map_value_child of the node, which has the last
       // skip_size_func_ptr of the chain. and they inherit int_style from the node.
-      auto &int_style_to_inherit = child && child->child && child->child->int_style.first
+      auto &int_style_to_inherit = child && child->child && std::get<0>(child->child->int_style)
                                        ? child->child->int_style
                                        : int_style;
       if (command.map_key_child) {
         map_key_child = std::move(command.map_key_child);
-        if (!map_key_child->int_style.first) map_key_child->apply_int_style(int_style_to_inherit);
+        if (!std::get<0>(map_key_child->int_style))
+          map_key_child->apply_int_style(int_style_to_inherit);
       }
       if (command.map_value_child) {
         map_value_child = std::move(command.map_value_child);
-        if (!map_value_child->int_style.first)
+        if (!std::get<0>(map_value_child->int_style))
           map_value_child->apply_int_style(int_style_to_inherit);
       }
       return *this;
@@ -180,13 +182,13 @@ struct export_command {
     return skip_container<T>(container, *_default_skip_size_func_ptr);
   }
 
-  std::pair<int, int> get_int_style() const {
-    auto [base, chunk] = int_style;
-    return {base >= 2 && base <= 16 ? base : 0, chunk >= 0 ? chunk : 0};
+  std::tuple<int, int, int> get_int_style() const {
+    auto [base, length, chunk] = int_style;
+    return {base >= 2 && base <= 16 ? base : 0, length > 0 ? length : 0, chunk > 0 ? chunk : 0};
   }
 
  private:
-  std::pair<int, int> int_style;
+  std::tuple<int, int, int> int_style;
   std::shared_ptr<
       std::function<std::optional<std::size_t>(std::size_t, const std::function<std::size_t()> &)>>
       skip_size_func_ptr;
@@ -194,14 +196,15 @@ struct export_command {
   std::shared_ptr<export_command> map_key_child;
   std::shared_ptr<export_command> map_value_child;
 
-  void apply_int_style(const std::pair<int, int> &int_style) {
-    if (!int_style.first) return;
+  void apply_int_style(const std::tuple<int, int, int> &int_style) {
+    if (!std::get<0>(int_style)) return;
 
     this->int_style = int_style;
 
-    if (child && !child->int_style.first) child->apply_int_style(int_style);
-    if (map_key_child && !map_key_child->int_style.first) map_key_child->apply_int_style(int_style);
-    if (map_value_child && !map_value_child->int_style.first)
+    if (child && !std::get<0>(child->int_style)) child->apply_int_style(int_style);
+    if (map_key_child && !std::get<0>(map_key_child->int_style))
+      map_key_child->apply_int_style(int_style);
+    if (map_value_child && !std::get<0>(map_value_child->int_style))
       map_value_child->apply_int_style(int_style);
   }
 };
@@ -227,8 +230,8 @@ inline constexpr bool is_value_with_command = _is_value_with_command<_remove_cre
 
 }  // namespace _detail
 
-inline auto int_style(int base = 10, int chunk = 4) {
-  return _detail::export_command({base, chunk});
+inline auto int_style(int base = 10, int length = 8, int chunk = 4) {
+  return _detail::export_command({base, length, chunk});
 }
 
 inline auto show_front(std::size_t iteration_count = max_iteration_count) {
