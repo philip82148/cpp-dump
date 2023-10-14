@@ -599,6 +599,16 @@ here.`,
              "\e[02m"
            ]
          }
+[dump] int_style(16) << 10000u
+         => 0000 2710 _16, 
+       int_style(16) << 10000l
+         => 0000 2710 _16, 
+       int_style(16) << 10000ul
+         => 0000 2710 _16, 
+       int_style(16) << 10000ll
+         => 0000 2710 _16, 
+       int_style(16) << 10000ull
+         => 0000 2710 _16
 [dump] array50 => [ 
          0, 
          1, 
@@ -1562,7 +1572,7 @@ here.`,
            ], 
            ...
          }
-[dump] int_style(12, 3) << show_front(2) << int_style(2, 0) << map_key_and_value(int_style(16, 3) << show_back(2), show_front(2)) << multimap2
+[dump] int_style(12, 3, 3) << show_front(2) << int_style(2, 0, 0) << map_key_and_value(int_style(16, 3, 3) << show_back(2), show_front(2)) << multimap2
          => { 
            [ 
              ..., 
@@ -1597,7 +1607,7 @@ here.`,
            ], 
            ...
          }
-[dump] int_style(12, 3) << int_style(8, 3) << map_key_and_value(int_style(16, 3) << show_back(2), show_front(2)) << multimap2
+[dump] int_style(12, 3, 3) << int_style(8, 3, 3) << map_key_and_value(int_style(16, 3, 3) << show_back(2), show_front(2)) << multimap2
          => { 
            [ 
              001 _8, 
@@ -1647,7 +1657,7 @@ here.`,
              ]
            ]
          }
-[dump] show_front(1) << map_value( int_style(8, 3) << show_middle(1) << int_style(16, 3) << show_middle(2) << int_style(5, 3) ) << multimap2
+[dump] show_front(1) << map_value( int_style(8, 3, 3) << show_middle(1) << int_style(16, 3, 3) << show_middle(2) << int_style(5, 3, 3) ) << multimap2
          => { 
            [ 
              1, 
@@ -1674,13 +1684,13 @@ here.`,
          => 65536
 [dump] i => 2, 
        int_style(i) << 0x10000
-         => 0001 0000 0000 0000 0000 _2
+         => 1 0000 0000 0000 0000 _2
 [dump] i => 3, 
        int_style(i) << 0x10000
-         => 0100 2222 0021 _3
+         => 100 2222 0021 _3
 [dump] i => 4, 
        int_style(i) << 0x10000
-         => 0001 0000 0000 _4
+         => 1 0000 0000 _4
 [dump] i => 5, 
        int_style(i) << 0x10000
          => 0404 4121 _5

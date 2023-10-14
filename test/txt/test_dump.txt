@@ -177,6 +177,8 @@ here.`,
          unsupported= "\e[31m", 
          bracket_by_depth= [ "\e[02m" ]
        }
+[dump] int_style(16) << 10000u => 0000 2710 _16, int_style(16) << 10000l => 0000 2710 _16, int_style(16) << 10000ul => 0000 2710 _16, 
+       int_style(16) << 10000ll => 0000 2710 _16, int_style(16) << 10000ull => 0000 2710 _16
 [dump] array50 => [ 0, 1, ... ], map50 => { 0: 1, 1: 2, ... }, set50 => { 0, 1, ... }
 [dump] show_front() << array50 => [ 0, 1, ... ], show_front() << map50 => { 0: 1, 1: 2, ... }, show_front() << set50 => { 0, 1, ... }
 [dump] show_middle() << array50 => [ ..., 24, 25, ... ], show_middle() << map50 => { ..., 24: 25, 25: 26, ... }, show_middle() << set50 => { ..., 24, 25, ... }
@@ -782,7 +784,7 @@ here.`,
          ], 
          ...
        }
-[dump] int_style(12, 3) << show_front(2) << int_style(2, 0) << map_key_and_value(int_style(16, 3) << show_back(2), show_front(2)) << multimap2 => { 
+[dump] int_style(12, 3, 3) << show_front(2) << int_style(2, 0, 0) << map_key_and_value(int_style(16, 3, 3) << show_back(2), show_front(2)) << multimap2 => { 
          [ ..., 004 _16, 002 _16 ] (3): [ 
            [ 1011 _2, 10110 _2, 1011 _2, 10110 _2 ], 
            [ 1110 _2, 10101 _2, 1011 _2, 10110 _2 ], 
@@ -793,7 +795,7 @@ here.`,
          ], 
          ...
        }
-[dump] int_style(12, 3) << int_style(8, 3) << map_key_and_value(int_style(16, 3) << show_back(2), show_front(2)) << multimap2 => { 
+[dump] int_style(12, 3, 3) << int_style(8, 3, 3) << map_key_and_value(int_style(16, 3, 3) << show_back(2), show_front(2)) << multimap2 => { 
          [ 001 _8, 002 _8, 004 _8, 002 _8 ] (3): [ 
            [ 013 _8, 026 _8, 013 _8, 026 _8 ], 
            [ 016 _8, 025 _8, 013 _8, 026 _8 ], 
@@ -806,7 +808,7 @@ here.`,
            [ 016 _8, -2 ]
          ]
        }
-[dump] show_front(1) << map_value( int_style(8, 3) << show_middle(1) << int_style(16, 3) << show_middle(2) << int_style(5, 3) ) << multimap2 => { 
+[dump] show_front(1) << map_value( int_style(8, 3, 3) << show_middle(1) << int_style(16, 3, 3) << show_middle(2) << int_style(5, 3, 3) ) << multimap2 => { 
          [ 1, 2, 4, 2 ] (3): [ 
            ..., 
            [ ..., 015 _16, 00b _16, ... ], 
@@ -816,9 +818,9 @@ here.`,
        }
 [dump] i => 0, int_style(i) << 0x10000 => 65536
 [dump] i => 1, int_style(i) << 0x10000 => 65536
-[dump] i => 2, int_style(i) << 0x10000 => 0001 0000 0000 0000 0000 _2
-[dump] i => 3, int_style(i) << 0x10000 => 0100 2222 0021 _3
-[dump] i => 4, int_style(i) << 0x10000 => 0001 0000 0000 _4
+[dump] i => 2, int_style(i) << 0x10000 => 1 0000 0000 0000 0000 _2
+[dump] i => 3, int_style(i) << 0x10000 => 100 2222 0021 _3
+[dump] i => 4, int_style(i) << 0x10000 => 1 0000 0000 _4
 [dump] i => 5, int_style(i) << 0x10000 => 0404 4121 _5
 [dump] i => 6, int_style(i) << 0x10000 => 0122 3224 _6
 [dump] i => 7, int_style(i) << 0x10000 => 0036 2032 _7
