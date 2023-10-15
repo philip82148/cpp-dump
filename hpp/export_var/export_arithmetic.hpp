@@ -90,7 +90,7 @@ inline auto export_arithmetic(
       output = "-" + output;
   }
 
-  return es::number(output) + es::op(" _" + std::to_string(base));
+  return base == 10 ? es::number(output) : es::number(output) + es::op(" _" + std::to_string(base));
 }
 
 template <typename T>

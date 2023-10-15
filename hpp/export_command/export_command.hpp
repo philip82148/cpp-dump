@@ -258,6 +258,14 @@ inline auto int_style(
 }
 
 /*
+ * Manipulator for the display style of decimal integers.
+ * See README for details.
+ */
+inline auto int_style10(int digits, int chunk = 0) {
+  return int_style(10, digits, chunk, true, true);
+}
+
+/*
  * Manipulator for the display style of iterables.
  * See README for details.
  */
