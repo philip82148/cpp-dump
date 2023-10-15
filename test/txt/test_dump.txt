@@ -833,6 +833,18 @@ here.`,
 [dump] i => 14, int_style(i) << 0x10000 => 0001 9c52 _14
 [dump] i => 15, int_style(i) << 0x10000 => 0001 4641 _15
 [dump] i => 16, int_style(i) << 0x10000 => 0001 0000 _16
+[dump] vec3 => [ 
+         [ 1, 20, 4 ], 
+         [ -2, 0, -10 ]
+       ],
+       int_style(10, 2, 0, false, true) << vec3 => [ 
+         [  01 _10,  20 _10,  04 _10 ], 
+         [ -02 _10,  00 _10, -10 _10 ]
+       ],
+       int_style(10, 2, 0, true, true) << vec3 => [ 
+         [   1 _10,  20 _10,   4 _10 ], 
+         [ - 2 _10,   0 _10, -10 _10 ]
+       ]
 [dump] show_front(2) << show_middle(1) << show_back(2) << show_both_ends(1) << non_copyable_and_non_movable_class1 => non_copyable_and_non_movable_class{ 
          str_member= "This object has a pointer and reference_wrapper to itself.", 
          pointer= *non_copyable_and_non_movable_class{ 
