@@ -91,13 +91,8 @@ bool _dump_one(
     const std::string &expr,
     const T &value
 ) {
-  const std::string initial_indent = ([&] {
-    std::string indent;
-    std::size_t length = get_length(log_label);
-    for (std::size_t i = 0; i < length; ++i) indent += " ";
-    return indent;
-  })();
-  const std::string second_indent  = initial_indent + "  ";
+  const std::string initial_indent(get_length(log_label), ' ');
+  const std::string second_indent = initial_indent + "  ";
 
   if (output.length() == 0) {
     output = es::log(log_label);

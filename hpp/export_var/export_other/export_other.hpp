@@ -43,16 +43,14 @@ inline std::string
 export_other(const std::bitset<N> &bitset, const std::string &, std::size_t, std::size_t, bool, const export_command &) {
   std::string bitset_str = bitset.to_string();
 
-  std::string output;
-  for (int end = bitset_str.length(); end > 0; end -= 4) {
-    std::size_t begin = std::max(end - 4, 0);
-    if (output == "") {
-      output = bitset_str.substr(begin, end - begin);
-    } else {
-      output = bitset_str.substr(begin, end - begin) + " " + output;
-    }
+  std::string output = "0b";
+  std::size_t begin  = bitset_str.length() % 4;
+  if (begin != 0) output += " " + bitset_str.substr(0, begin);
+  for (; begin < bitset_str.length(); begin += 4) {
+    std::size_t length = std::min<std::size_t>(4, bitset_str.length() - begin);
+    output.append(1, ' ');
+    output.append(bitset_str.substr(begin, length));
   }
-  output = "0b " + output;
 
   // Make the entire string an identifier
   return es::identifier(output);
