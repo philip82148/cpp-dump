@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <cmath>
 #include <string>
 #include <tuple>
 #include <type_traits>
@@ -38,11 +39,17 @@ inline auto export_arithmetic(
     bool,
     const export_command &command
 ) -> std::enable_if_t<is_arithmetic<T> && std::is_integral_v<T>, std::string> {
-  auto [base, digits, chunk] = command.get_int_style();
-  if (base == 0 || value < 0) return es::number(std::to_string(value));
+  auto [base, digits, chunk, space_fill, support_negative] = command.get_int_style();
+  if (base == 0 || (!support_negative && value < 0)) return es::number(std::to_string(value));
 
   std::string output;
-  T tmp = value;
+  T tmp = ([=]() constexpr -> T {
+    if constexpr (std::is_signed_v<T>) {
+      return std::abs(value);
+    } else {
+      return value;
+    }
+  })();
   int i = 0;
 
   for (; i == 0 || tmp; ++i) {
@@ -61,11 +68,26 @@ inline auto export_arithmetic(
   if (digits > 0) {
     for (; i < digits; ++i) {
       if (chunk > 0 && i % chunk == 0) {
-        output = "0 " + output;
+        if (space_fill) {
+          output = "  " + output;
+        } else {
+          output = "0 " + output;
+        }
       } else {
-        output = "0" + output;
+        if (space_fill) {
+          output = " " + output;
+        } else {
+          output = "0" + output;
+        }
       }
     }
+  }
+
+  if (support_negative) {
+    if (value >= 0)
+      output = " " + output;
+    else
+      output = "-" + output;
   }
 
   return es::number(output) + es::op(" _" + std::to_string(base));

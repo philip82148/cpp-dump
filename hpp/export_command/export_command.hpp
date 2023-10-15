@@ -56,19 +56,19 @@ struct export_command {
  public:
   static const export_command default_command;
 
-  export_command(const std::tuple<int, int, int> &int_style)
+  export_command(const std::tuple<int, int, int, bool, bool> &int_style)
       : int_style(int_style), skip_size_func(nullptr) {}
 
   export_command(
       std::function<std::optional<std::size_t>(std::size_t, const std::function<std::size_t()> &)>
           &&skip_size_func
   )
-      : int_style(0, 0, 0), skip_size_func(std::move(skip_size_func)) {}
+      : int_style(0, 0, 0, false, false), skip_size_func(std::move(skip_size_func)) {}
 
   export_command(const std::function<
                  std::optional<std::size_t>(std::size_t, const std::function<std::size_t()> &)>
                      &skip_size_func)
-      : int_style(0, 0, 0), skip_size_func(skip_size_func) {}
+      : int_style(0, 0, 0, false, false), skip_size_func(skip_size_func) {}
 
   export_command(export_command &&)                 = default;
   export_command &operator=(export_command &&)      = default;
@@ -182,20 +182,26 @@ struct export_command {
     return skip_container<T>(container, _default_skip_size_func);
   }
 
-  std::tuple<int, int, int> get_int_style() const {
-    auto [base, digits, chunk] = int_style;
-    return {base >= 2 && base <= 16 ? base : 0, digits > 0 ? digits : 0, chunk > 0 ? chunk : 0};
+  std::tuple<int, int, int, bool, bool> get_int_style() const {
+    auto [base, digits, chunk, space_fill, support_negative] = int_style;
+    return {
+        base >= 2 && base <= 16 ? base : 0,
+        digits > 0 ? digits : 0,
+        chunk > 0 ? chunk : 0,
+        space_fill,
+        support_negative,
+    };
   }
 
  private:
-  std::tuple<int, int, int> int_style;
+  std::tuple<int, int, int, bool, bool> int_style;
   std::function<std::optional<std::size_t>(std::size_t, const std::function<std::size_t()> &)>
       skip_size_func;
   mutable std::unique_ptr<export_command> child;
   std::unique_ptr<export_command> map_key_child;
   std::unique_ptr<export_command> map_value_child;
 
-  void apply_int_style(const std::tuple<int, int, int> &int_style) {
+  void apply_int_style(const std::tuple<int, int, int, bool, bool> &int_style) {
     if (!std::get<0>(int_style)) return;
 
     this->int_style = int_style;
@@ -231,10 +237,30 @@ inline constexpr bool is_value_with_command = _is_value_with_command<_remove_cre
 
 }  // namespace _detail
 
-inline auto int_style(int base = 10, int digits = 8, int chunk = 4) {
-  return _detail::export_command({base, digits, chunk});
+/*
+ * Manipulator for the display style of integers.
+ * See README for details.
+ */
+inline auto int_style(
+    int base              = 10,
+    int digits            = 8,
+    int chunk             = 4,
+    bool space_fill       = false,
+    bool support_negative = false
+) {
+  return _detail::export_command({
+      base >= 2 && base <= 16 ? base : 0,
+      digits > 0 ? digits : 0,
+      chunk > 0 ? chunk : 0,
+      space_fill,
+      support_negative,
+  });
 }
 
+/*
+ * Manipulator for the display style of iterables.
+ * See README for details.
+ */
 inline auto show_front(std::size_t iteration_count = max_iteration_count) {
   return _detail::export_command(
       [=](std::size_t index,
@@ -245,6 +271,10 @@ inline auto show_front(std::size_t iteration_count = max_iteration_count) {
   );
 }
 
+/*
+ * Manipulator for the display style of iterables.
+ * See README for details.
+ */
 inline auto show_back(std::size_t iteration_count = max_iteration_count) {
   return _detail::export_command(
       [=](std::size_t index,
@@ -258,6 +288,10 @@ inline auto show_back(std::size_t iteration_count = max_iteration_count) {
   );
 }
 
+/*
+ * Manipulator for the display style of iterables.
+ * See README for details.
+ */
 inline auto show_both_ends(std::size_t iteration_count = max_iteration_count) {
   return _detail::export_command(
       [=](std::size_t index,
@@ -273,6 +307,10 @@ inline auto show_both_ends(std::size_t iteration_count = max_iteration_count) {
   );
 }
 
+/*
+ * Manipulator for the display style of iterables.
+ * See README for details.
+ */
 inline auto show_middle(std::size_t iteration_count = max_iteration_count) {
   return _detail::export_command(
       [=](std::size_t index,
@@ -288,10 +326,22 @@ inline auto show_middle(std::size_t iteration_count = max_iteration_count) {
   );
 }
 
+/*
+ * Manipulator for applying manipulators to map keys.
+ * See README for details.
+ */
 auto map_key(_detail::export_command &&command) { return _map_key(std::move(command)); }
 
+/*
+ * Manipulator for applying manipulators to map values.
+ * See README for details.
+ */
 auto map_value(_detail::export_command &&command) { return _map_value(std::move(command)); }
 
+/*
+ * Manipulator for applying manipulators to map keys and values.
+ * See README for details.
+ */
 auto map_key_and_value(_detail::export_command &&key, _detail::export_command &&value) {
   return _map_key_and_value(std::move(key), std::move(value));
 }
