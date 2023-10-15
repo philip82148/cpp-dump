@@ -88,14 +88,14 @@ here.`,
 [dump] i => 7, int_style(i) << 0x10000 => 0036 2032 _7
 [dump] i => 8, int_style(i) << 0x10000 => 0020 0000 _8
 [dump] i => 9, int_style(i) << 0x10000 => 0010 8807 _9
-[dump] i => 10, int_style(i) << 0x10000 => 0006 5536 _10
+[dump] i => 10, int_style(i) << 0x10000 => 0006 5536
 [dump] i => 11, int_style(i) << 0x10000 => 0004 5269 _11
 [dump] i => 12, int_style(i) << 0x10000 => 0003 1b14 _12
 [dump] i => 13, int_style(i) << 0x10000 => 0002 3aa3 _13
 [dump] i => 14, int_style(i) << 0x10000 => 0001 9c52 _14
 [dump] i => 15, int_style(i) << 0x10000 => 0001 4641 _15
 [dump] i => 16, int_style(i) << 0x10000 => 0001 0000 _16
-[dump] vec3 => [ ... ], int_style(10, 2, 0, false, true) << vec3 => [ ... ], int_style(10, 2, 0, true, true) << vec3 => [ ... ]
+[dump] vec3 => [ ... ], int_style(10, 2, 0, false, true) << vec3 => [ ... ], int_style10(2) << vec3 => [ ... ]
 [dump] show_front(2) << show_middle(1) << show_back(2) << show_both_ends(1) << non_copyable_and_non_movable_class1 => non_copyable_and_non_movable_class{ str_member= "This object has a pointer and reference_wrapper to itself.", pointer= *non_copyable_and_non_movable_class{ str_member= "This object has a pointer and reference_wrapper to itself.", pointer= *non_copyable_and_non_movable_class{ ... }, ref= non_copyable_and_non_movable_class{ ... } }, ref= non_copyable_and_non_movable_class{ str_member= "This object has a pointer and reference_wrapper to itself.", pointer= *non_copyable_and_non_movable_class{ ... }, ref= non_copyable_and_non_movable_class{ ... } } }
 [dump] non_copyable_and_non_movable_class_container1 => [ 
          non_copyable_and_non_movable_class{ str_member= "This is non_copyable_and_non_movable_class.", pointer= *non_copyable_and_non_movable_class{ ... }, ref= non_copyable_and_non_movable_class{ ... } }, 

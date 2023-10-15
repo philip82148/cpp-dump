@@ -316,7 +316,7 @@ int main(int argc, char *argv[]) {
   );
   rep(i, 17) CPP_DUMP(i, int_style(i) << 0x10000);
   vector<vector<int>> vec3{{1, 20, 4}, {-2, 0, -10}};
-  CPP_DUMP(vec3, int_style(10, 2, 0, false, true) << vec3, int_style(10, 2, 0, true, true) << vec3);
+  CPP_DUMP(vec3, int_style(10, 2, 0, false, true) << vec3, int_style10(2) << vec3);
 
   CPP_DUMP_SET_OPTION(max_depth, 2);
   CPP_DUMP(
