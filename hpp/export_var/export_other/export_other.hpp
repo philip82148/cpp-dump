@@ -86,7 +86,7 @@ inline std::string export_other(
     const export_command &command
 ) {
   return std::visit(
-      [=, &indent](const auto &value) -> std::string {
+      [&](const auto &value) -> std::string {
         return es::identifier("|")
                + export_var(
                    value, indent, last_line_length + 1, current_depth, fail_on_newline, command

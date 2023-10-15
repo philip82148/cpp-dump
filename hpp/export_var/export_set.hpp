@@ -33,8 +33,8 @@ struct _set_wrapper {
   _set_wrapper(const T &set) : _begin(set, set.begin()), _end(set, set.end()) {}
   _set_wrapper() = delete;
 
-  auto begin() const { return _begin; }
-  auto end() const { return _end; }
+  auto begin() const noexcept { return _begin; }
+  auto end() const noexcept { return _end; }
 
  private:
   struct set_wrapper_iterator {
@@ -43,8 +43,8 @@ struct _set_wrapper {
     set_wrapper_iterator(const T &set, It it) : set(set), it(it) {}
     set_wrapper_iterator() = delete;
 
-    const auto &operator*() const { return *it; }
-    bool operator!=(const set_wrapper_iterator &to) const { return it != to.it; }
+    const auto &operator*() const noexcept { return *it; }
+    bool operator!=(const set_wrapper_iterator &to) const noexcept { return it != to.it; }
     set_wrapper_iterator &operator++() {
       it = set.equal_range(*it).second;
       return *this;
@@ -79,9 +79,9 @@ inline auto export_set(
 
   if (shift_indent && fail_on_newline) return "\n";
 
-  std::string new_indent = indent + "  ";
-  std::size_t next_depth = current_depth + 1;
-  auto next_command      = command.next();
+  std::string new_indent   = indent + "  ";
+  std::size_t next_depth   = current_depth + 1;
+  const auto &next_command = command.next();
 
   _set_wrapper set_wrapper(set);
   auto skipped_set = command.create_skip_container(set_wrapper);

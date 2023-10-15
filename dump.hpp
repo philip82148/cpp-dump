@@ -122,7 +122,12 @@ bool _dump_one(
     auto last_line_length = get_last_line_length(output + prefix);
 
     std::string value_string = export_var(
-        value, indent, last_line_length, 0, no_newline_in_value_string, export_command()
+        value,
+        indent,
+        last_line_length,
+        0,
+        no_newline_in_value_string,
+        export_command::default_command
     );
 
     bool value_string_has_newline = has_newline(value_string);

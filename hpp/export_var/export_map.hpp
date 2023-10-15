@@ -33,8 +33,8 @@ struct _map_wrapper {
   _map_wrapper(const T &map) : _begin(map, map.begin()), _end(map, map.end()) {}
   _map_wrapper() = delete;
 
-  auto begin() const { return _begin; }
-  auto end() const { return _end; }
+  auto begin() const noexcept { return _begin; }
+  auto end() const noexcept { return _end; }
 
  private:
   struct map_wrapper_iterator {
@@ -43,8 +43,8 @@ struct _map_wrapper {
     map_wrapper_iterator(const T &map, It it) : map(map), it(it) {}
     map_wrapper_iterator() = delete;
 
-    const auto &operator*() const { return *it; }
-    auto operator->() { return it.operator->(); }
+    const auto &operator*() const noexcept { return *it; }
+    auto operator->() const noexcept { return it.operator->(); }
     bool operator!=(const map_wrapper_iterator &to) const { return it != to.it; }
     map_wrapper_iterator &operator++() {
       it = map.equal_range(it->first).second;
@@ -66,8 +66,8 @@ struct _multimap_value_wrapper {
   _multimap_value_wrapper(It begin, It end) : _begin(begin), _end(end) {}
   _multimap_value_wrapper() = delete;
 
-  auto begin() const { return _begin; }
-  auto end() const { return _end; }
+  auto begin() const noexcept { return _begin; }
+  auto end() const noexcept { return _end; }
 
  private:
   struct multimap_value_iterator {
@@ -75,8 +75,8 @@ struct _multimap_value_wrapper {
     multimap_value_iterator(It it) : it(it) {}
     multimap_value_iterator() = delete;
 
-    const auto &operator*() const { return it->second; }
-    bool operator!=(const multimap_value_iterator &to) const { return it != to.it; }
+    const auto &operator*() const noexcept { return it->second; }
+    bool operator!=(const multimap_value_iterator &to) const noexcept { return it != to.it; }
     multimap_value_iterator &operator++() {
       ++it;
       return *this;
@@ -111,10 +111,10 @@ inline auto export_map(
 
   if (shift_indent && fail_on_newline) return "\n";
 
-  std::string new_indent = indent + "  ";
-  std::size_t next_depth = current_depth + 1;
-  auto key_command       = command.next_for_map_key();
-  auto value_command     = command.next_for_map_value();
+  std::string new_indent    = indent + "  ";
+  std::size_t next_depth    = current_depth + 1;
+  const auto &key_command   = command.next_for_map_key();
+  const auto &value_command = command.next_for_map_value();
 
   _map_wrapper<T> map_wrapper(map);
   auto skipped_map = command.create_skip_container(map_wrapper);

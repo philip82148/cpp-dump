@@ -95,7 +95,7 @@ std::string export_var(
  */
 template <typename T>
 std::string export_var(const T &value) {
-  return _detail::export_var(value, "", 0, 0, false, _detail::export_command());
+  return _detail::export_var(value, "", 0, 0, false, _detail::export_command::default_command);
 }
 
 }  // namespace cpp_dump

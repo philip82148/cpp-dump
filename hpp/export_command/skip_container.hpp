@@ -8,8 +8,6 @@
 #pragma once
 
 #include <functional>
-#include <iterator>
-#include <memory>
 #include <optional>
 #include <utility>
 
@@ -41,15 +39,15 @@ struct skip_iterator {
         done(false) {}
   skip_iterator() = delete;
 
-  std::pair<bool, It> operator*() const {
+  std::pair<bool, It> operator*() const noexcept {
     bool skip = get_skip_size().value_or(1) != 0;
     return {skip, it};
   }
   template <typename U>
-  bool operator!=(const U &to) const {
+  bool operator!=(const U &to) const noexcept {
     return !done && it != to.it;
   }
-  skip_iterator &operator++() {
+  skip_iterator &operator++() noexcept {
     std::optional<std::size_t> skip_size = get_skip_size();
 
     if (skip_size) {
@@ -75,7 +73,7 @@ struct skip_iterator {
   std::size_t index;
   bool done;
 
-  std::optional<std::size_t> get_skip_size() const {
+  std::optional<std::size_t> get_skip_size() const noexcept {
     return skip_size_func(index, original_size_func);
   }
 };
@@ -94,8 +92,8 @@ struct skip_container {
         _end(iterable_end(original), skip_size_func, original_size_func) {}
   skip_container() = delete;
 
-  auto begin() const { return _begin; }
-  auto end() const { return _end; }
+  auto begin() const noexcept { return _begin; }
+  auto end() const noexcept { return _end; }
 
  private:
   const T &original;
@@ -108,51 +106,6 @@ struct skip_container {
     return size.value();
   };
 };
-
-namespace skip_size_func {
-
-inline std::optional<std::size_t> show_front(
-    std::size_t index, const std::function<std::size_t()> &, std::size_t iteration_count
-) {
-  if (index >= iteration_count) return std::nullopt;
-  return 0;
-}
-
-inline std::optional<std::size_t> show_back(
-    std::size_t index, const std::function<std::size_t()> &get_size, std::size_t iteration_count
-) {
-  std::size_t size  = get_size();
-  std::size_t first = size >= iteration_count ? size - iteration_count : 0;
-
-  if (index < first) return first - index;
-  return 0;
-}
-
-inline std::optional<std::size_t> show_both_ends(
-    std::size_t index, const std::function<std::size_t()> &get_size, std::size_t iteration_count
-) {
-  std::size_t size              = get_size();
-  std::size_t first_half_last   = (iteration_count + 1) / 2;
-  std::size_t rest_count        = iteration_count - first_half_last;
-  std::size_t latter_half_first = size >= rest_count ? size - rest_count : 0;
-
-  if (index >= first_half_last && index < latter_half_first) return latter_half_first - index;
-  return 0;
-}
-
-inline std::optional<std::size_t> show_middle(
-    std::size_t index, const std::function<std::size_t()> &get_size, std::size_t iteration_count
-) {
-  std::size_t size  = get_size();
-  std::size_t first = size >= iteration_count ? (size - iteration_count) / 2 : 0;
-  std::size_t last  = first + iteration_count;
-
-  if (index < first) return first - index;
-  if (index >= last) return std::nullopt;
-  return 0;
-}
-
-}  // namespace skip_size_func
 
 }  // namespace _detail
 
