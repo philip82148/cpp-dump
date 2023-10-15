@@ -28,25 +28,36 @@ std::string
 export_var(const T &, const std::string &, std::size_t, std::size_t, bool, const export_command &);
 
 template <typename T>
-struct _map_wrapper {
+struct _map_dummy_wrapper {
  public:
-  _map_wrapper(const T &map) : _begin(map, map.begin()), _end(map, map.end()) {}
-  _map_wrapper() = delete;
+  _map_dummy_wrapper(const T &map) : map(map) {}
+
+  auto begin() const noexcept { return map.begin(); }
+  auto end() const noexcept { return map.end(); }
+  auto size() const noexcept { return map.size(); }
+
+ private:
+  const T &map;
+};
+
+template <typename T>
+struct _multimap_wrapper {
+ public:
+  _multimap_wrapper(const T &map) : _begin(map, map.begin()), _end(map, map.end()) {}
 
   auto begin() const noexcept { return _begin; }
   auto end() const noexcept { return _end; }
 
  private:
-  struct map_wrapper_iterator {
+  struct multimap_wrapper_iterator {
    public:
     using It = typename T::const_iterator;
-    map_wrapper_iterator(const T &map, It it) : map(map), it(it) {}
-    map_wrapper_iterator() = delete;
+    multimap_wrapper_iterator(const T &map, It it) : map(map), it(it) {}
 
     const auto &operator*() const noexcept { return *it; }
     auto operator->() const noexcept { return it.operator->(); }
-    bool operator!=(const map_wrapper_iterator &to) const { return it != to.it; }
-    map_wrapper_iterator &operator++() {
+    bool operator!=(const multimap_wrapper_iterator &to) const { return it != to.it; }
+    multimap_wrapper_iterator &operator++() {
       it = map.equal_range(it->first).second;
       return *this;
     }
@@ -56,8 +67,8 @@ struct _map_wrapper {
     It it;
   };
 
-  map_wrapper_iterator _begin;
-  map_wrapper_iterator _end;
+  multimap_wrapper_iterator _begin;
+  multimap_wrapper_iterator _end;
 };
 
 template <typename It>
@@ -116,7 +127,14 @@ inline auto export_map(
   const auto &key_command   = command.next_for_map_key();
   const auto &value_command = command.next_for_map_value();
 
-  _map_wrapper<T> map_wrapper(map);
+  auto map_wrapper = ([&]() constexpr {
+    if constexpr (is_multimap<T>) {
+      return _multimap_wrapper(map);
+    } else {
+      // The wrapper is to avoid calling the copy constructor.
+      return _map_dummy_wrapper(map);
+    }
+  })();
   auto skipped_map = command.create_skip_container(map_wrapper);
 
 rollback:

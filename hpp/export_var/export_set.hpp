@@ -28,24 +28,35 @@ std::string
 export_var(const T &, const std::string &, std::size_t, std::size_t, bool, const export_command &);
 
 template <typename T>
-struct _set_wrapper {
+struct _set_dummy_wrapper {
  public:
-  _set_wrapper(const T &set) : _begin(set, set.begin()), _end(set, set.end()) {}
-  _set_wrapper() = delete;
+  _set_dummy_wrapper(const T &set) : set(set) {}
+
+  auto begin() const noexcept { return set.begin(); }
+  auto end() const noexcept { return set.end(); }
+  auto size() const noexcept { return set.size(); }
+
+ private:
+  const T &set;
+};
+
+template <typename T>
+struct _multiset_wrapper {
+ public:
+  _multiset_wrapper(const T &set) : _begin(set, set.begin()), _end(set, set.end()) {}
 
   auto begin() const noexcept { return _begin; }
   auto end() const noexcept { return _end; }
 
  private:
-  struct set_wrapper_iterator {
+  struct multiset_wrapper_iterator {
    public:
     using It = typename T::const_iterator;
-    set_wrapper_iterator(const T &set, It it) : set(set), it(it) {}
-    set_wrapper_iterator() = delete;
+    multiset_wrapper_iterator(const T &set, It it) : set(set), it(it) {}
 
     const auto &operator*() const noexcept { return *it; }
-    bool operator!=(const set_wrapper_iterator &to) const noexcept { return it != to.it; }
-    set_wrapper_iterator &operator++() {
+    bool operator!=(const multiset_wrapper_iterator &to) const noexcept { return it != to.it; }
+    multiset_wrapper_iterator &operator++() {
       it = set.equal_range(*it).second;
       return *this;
     }
@@ -55,8 +66,8 @@ struct _set_wrapper {
     It it;
   };
 
-  set_wrapper_iterator _begin;
-  set_wrapper_iterator _end;
+  multiset_wrapper_iterator _begin;
+  multiset_wrapper_iterator _end;
 };
 
 template <typename T>
@@ -83,7 +94,14 @@ inline auto export_set(
   std::size_t next_depth   = current_depth + 1;
   const auto &next_command = command.next();
 
-  _set_wrapper set_wrapper(set);
+  auto set_wrapper = ([&]() constexpr {
+    if constexpr (is_multiset<T>) {
+      return _multiset_wrapper(set);
+    } else {
+      // The wrapper is to avoid calling the copy constructor.
+      return _set_dummy_wrapper(set);
+    }
+  })();
   auto skipped_set = command.create_skip_container(set_wrapper);
 
 rollback:
