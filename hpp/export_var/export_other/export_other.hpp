@@ -8,7 +8,6 @@
 #pragma once
 
 #include <algorithm>
-#include <cmath>
 #include <complex>
 #include <string>
 #include <type_traits>

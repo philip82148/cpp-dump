@@ -30,11 +30,11 @@ struct skip_iterator {
       const std::function<
           std::optional<std::size_t>(std::size_t, const std::function<std::size_t()> &)>
           &skip_size_func,
-      const std::function<std::size_t()> &original_size_func
+      const std::function<std::size_t()> &orig_container_size
   )
       : it(it),
         skip_size_func(skip_size_func),
-        original_size_func(original_size_func),
+        orig_container_size(orig_container_size),
         index(0),
         done(false) {}
   skip_iterator() = delete;
@@ -69,12 +69,12 @@ struct skip_iterator {
   It it;
   const std::function<std::optional<std::size_t>(std::size_t, const std::function<std::size_t()> &)>
       &skip_size_func;
-  const std::function<std::size_t()> &original_size_func;
+  const std::function<std::size_t()> &orig_container_size;
   std::size_t index;
   bool done;
 
   std::optional<std::size_t> get_skip_size() const noexcept {
-    return skip_size_func(index, original_size_func);
+    return skip_size_func(index, orig_container_size);
   }
 };
 
@@ -88,8 +88,8 @@ struct skip_container {
           &skip_size_func
   )
       : original(container),
-        _begin(iterable_begin(original), skip_size_func, original_size_func),
-        _end(iterable_end(original), skip_size_func, original_size_func) {}
+        _begin(iterable_begin(original), skip_size_func, orig_container_size),
+        _end(iterable_end(original), skip_size_func, orig_container_size) {}
   skip_container() = delete;
 
   auto begin() const noexcept { return _begin; }
@@ -100,10 +100,10 @@ struct skip_container {
   const skip_iterator<T, decltype(iterable_begin(original))> _begin;
   const skip_iterator<T, decltype(iterable_end(original))> _end;
 
-  std::optional<std::size_t> size;
-  const std::function<std::size_t()> original_size_func = [this] {
-    if (!size) size = iterable_size(original);
-    return size.value();
+  std::optional<std::size_t> orig_container_size_cache;
+  const std::function<std::size_t()> orig_container_size = [this] {
+    if (!orig_container_size_cache) orig_container_size_cache = iterable_size(original);
+    return orig_container_size_cache.value();
   };
 };
 
