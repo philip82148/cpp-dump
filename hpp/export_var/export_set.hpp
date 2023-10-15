@@ -94,7 +94,7 @@ inline auto export_set(
   std::size_t next_depth   = current_depth + 1;
   const auto &next_command = command.next();
 
-  auto set_wrapper = ([&]() constexpr {
+  auto set_wrapper = ([&]() {
     if constexpr (is_multiset<T>) {
       return _multiset_wrapper(set);
     } else {

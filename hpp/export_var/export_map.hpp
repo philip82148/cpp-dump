@@ -127,7 +127,7 @@ inline auto export_map(
   const auto &key_command   = command.next_for_map_key();
   const auto &value_command = command.next_for_map_value();
 
-  auto map_wrapper = ([&]() constexpr {
+  auto map_wrapper = ([&]() {
     if constexpr (is_multimap<T>) {
       return _multimap_wrapper(map);
     } else {

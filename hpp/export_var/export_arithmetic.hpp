@@ -43,7 +43,7 @@ inline auto export_arithmetic(
   if (base == 0 || (!support_negative && value < 0)) return es::number(std::to_string(value));
 
   std::string output;
-  T tmp = ([=]() constexpr -> T {
+  T tmp = ([=]() -> T {
     if constexpr (std::is_signed_v<T>) {
       return std::abs(value);
     } else {
