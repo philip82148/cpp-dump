@@ -238,26 +238,22 @@ inline constexpr bool is_value_with_command = _is_value_with_command<_remove_cre
  * See README for details.
  */
 inline auto int_style(
-    int base              = 16,
-    int digits            = 8,
-    int chunk             = 4,
+    unsigned int base     = 16,
+    unsigned int digits   = 8,
+    unsigned int chunk    = 4,
     bool space_fill       = false,
     bool support_negative = false
 ) {
-  return _detail::export_command({
-      base >= 2 && base <= 16 ? base : 0,
-      digits > 0 ? digits : 0,
-      chunk > 0 ? chunk : 0,
-      space_fill,
-      support_negative,
-  });
+  return _detail::export_command(
+      {base >= 2 && base <= 16 ? base : 0, digits, chunk, space_fill, support_negative}
+  );
 }
 
 /*
  * Manipulator for the display style of decimal integers.
  * See README for details.
  */
-inline auto int_style10(int digits, int chunk = 0) {
+inline auto int_style10(unsigned int digits, unsigned int chunk = 0) {
   return int_style(10, digits, chunk, true, true);
 }
 
