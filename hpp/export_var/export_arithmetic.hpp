@@ -144,12 +144,12 @@ inline auto export_arithmetic(
       }
 
       for (; digit_i < digits; digit_i += chunk) {
-        int length = std::min(chunk, digits - digit_i);
+        unsigned int length = std::min(chunk, digits - digit_i);
         output.append(1, ' ');
         output.append(length, '0');
       }
     } else {
-      int fill_length = digits - digit_i;
+      unsigned int fill_length = digits - digit_i;
       if (space_fill) {
         if (chunk > 0) fill_length += ((digits - 1) / chunk) - ((digit_i - 1) / chunk);
         output.append(fill_length, ' ');
