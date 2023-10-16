@@ -153,7 +153,8 @@ here.`,
          }
        }
 [dump] int_ptr => *65, enum_a_s => enum_a::s, enum_a_k => enum_a::k, enum_a_l => enum_a::?
-[dump] bitset1 => 0b 00 1100 1010
+[dump] bitset2 => 0b 01, bitset3 => 0b 010, bitset4 => 0b 0011, bitset5 => 0b 0 0100, bitset7 => 0b 011 1010, bitset8 => 0b 0011 1010, bitset9 => 0b 0 1100 1010, 
+       bitset10 => 0b 00 1100 1010
 [dump] optional1 => ?1
 [dump] optional1 => std::nullopt
 [dump] nullopt => std::nullopt
@@ -845,6 +846,108 @@ here.`,
          [   1,  20,   4 ], 
          [ - 2,   0, -10 ]
        ]
+[dump] 0000 0001
+[dump]  0000 0002
+[dump] -0000 0003
+[dump]         1
+[dump]          2
+[dump] -        3
+[dump] 0 0000 0004
+[dump]  0 0000 0005
+[dump] -0 0000 0006
+[dump]           4
+[dump]            5
+[dump] -          6
+[dump] 000 0007
+[dump]  000 0008
+[dump] -000 0009
+[dump]        7
+[dump]         8
+[dump] -       9
+[dump] 1
+[dump]  2
+[dump] -3
+[dump] 1
+[dump]  2
+[dump] -3
+[dump] 004
+[dump]  005
+[dump] -006
+[dump]   4
+[dump]    5
+[dump] -  6
+[dump] 0007
+[dump]  0008
+[dump] -0009
+[dump]    7
+[dump]     8
+[dump] -   9
+[dump] 0 0000
+[dump]  0 0001
+[dump] -0 0002
+[dump]      0
+[dump]       1
+[dump] -     2
+[dump] 1 0000
+[dump]  2 0000
+[dump] -3 0000
+[dump]   4000
+[dump]    5000
+[dump] -  6000
+[dump]    700
+[dump]     800
+[dump] -   900
+[dump] 1 0000
+[dump]  2 0000
+[dump] -3 0000
+[dump] 4000
+[dump]  5000
+[dump] -6000
+[dump] 700
+[dump]  800
+[dump] -900
+[dump] 10
+[dump]  20
+[dump] -30
+[dump]  4
+[dump]   5
+[dump] - 6
+[dump] 83 _16
+[dump]  84 _16
+[dump] -74 _16
+[dump] -85 _16
+[dump] 86 _16
+[dump]  87 _16
+[dump] -77 _16
+[dump]  88 _16
+[dump]   89 _16
+[dump]    8a _16
+[dump] -  7a _16
+[dump]  0 8b _16
+[dump]    8c _16
+[dump]     8d _16
+[dump] -   7d _16
+[dump]  00 8e _16
+[dump]      8f _16
+[dump]       80 _16
+[dump] -     71 _16
+[dump]  0 00 82 _16
+[dump] 0 0000
+[dump]      0
+[dump] 0 0000 _16
+[dump]      0 _16
+[dump]  0 0000
+[dump]       0
+[dump]  0 0000 _16
+[dump]       0 _16
+[dump] 00000
+[dump]     0
+[dump] 00000 _16
+[dump]     0 _16
+[dump]  00000
+[dump]      0
+[dump]  00000 _16
+[dump]      0 _16
 [dump] show_front(2) << show_middle(1) << show_back(2) << show_both_ends(1) << non_copyable_and_non_movable_class1 => non_copyable_and_non_movable_class{ 
          str_member= "This object has a pointer and reference_wrapper to itself.", 
          pointer= *non_copyable_and_non_movable_class{ 
