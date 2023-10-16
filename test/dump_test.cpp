@@ -40,7 +40,7 @@ struct non_copyable_and_non_movable_class_iterator {
     // rvalue
     return non_copyable_and_non_movable_class{"This is non_copyable_and_non_movable_class."};
   }
-  bool operator!=(const non_copyable_and_non_movable_class_iterator &to) const { return index < 2; }
+  bool operator!=(const non_copyable_and_non_movable_class_iterator &) const { return index < 2; }
   non_copyable_and_non_movable_class_iterator &operator++() {
     ++index;
     return *this;

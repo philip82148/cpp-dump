@@ -83,7 +83,7 @@ inline auto export_arithmetic(
     return es::number(output);
   }
 
-  int digit_i = 0, next_digit_of_chunk = chunk;
+  unsigned int digit_i = 0, next_digit_of_chunk = chunk;
   for (; digit_i == 0 || tmp; ++digit_i) {
     T r;
     switch (base) {
@@ -136,7 +136,7 @@ inline auto export_arithmetic(
 
   if (digits > 0 && digit_i < digits) {
     if (!space_fill && chunk > 0) {
-      int fill_length = chunk - digit_i % chunk;
+      unsigned int fill_length = chunk - digit_i % chunk;
       if (fill_length != chunk) {
         fill_length = std::min(chunk - digit_i % chunk, digits - digit_i);
         output.append(fill_length, '0');
