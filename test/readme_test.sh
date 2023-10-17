@@ -1,5 +1,8 @@
 #!/bin/bash -eux
 
+mkdir -p log
+mkdir -p build
+
 for f in ../readme/*.cpp; do
     basename=$(basename $f .cpp)
 
