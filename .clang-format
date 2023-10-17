@@ -10,10 +10,9 @@ AllowAllArgumentsOnNextLine: true
 BinPackParameters: false
 AllowAllParametersOfDeclarationOnNextLine: true
 
-AlignConsecutiveAssignments:
-  Enabled: true
-  AlignCompound: true
-  PadOperators: true
+AllowShortIfStatementsOnASingleLine: AllIfsAndElse
+
+AlignConsecutiveAssignments: false
 AlignConsecutiveMacros: true
 
 BreakBeforeBinaryOperators: NonAssignment

@@ -48,7 +48,7 @@ struct export_command {
 
   friend export_command _map_key_and_value(export_command &&key, export_command &&value) {
     export_command new_command(nullptr);
-    new_command.map_key_child   = std::make_unique<export_command>(std::move(key));
+    new_command.map_key_child = std::make_unique<export_command>(std::move(key));
     new_command.map_value_child = std::make_unique<export_command>(std::move(value));
     return new_command;
   }
@@ -71,11 +71,11 @@ struct export_command {
                      &skip_size_func)
       : int_style(0, 0, 0, false, false), skip_size_func(skip_size_func) {}
 
-  export_command(export_command &&)                 = default;
-  export_command &operator=(export_command &&)      = default;
-  export_command(const export_command &)            = delete;
+  export_command(export_command &&) = default;
+  export_command &operator=(export_command &&) = default;
+  export_command(const export_command &) = delete;
   export_command &operator=(const export_command &) = delete;
-  export_command()                                  = delete;
+  export_command() = delete;
 
   export_command &&operator<<(export_command &&command) && {
     *this << std::move(command);
@@ -123,7 +123,7 @@ struct export_command {
       if (!skip_size_func) {
         skip_size_func = command.skip_size_func;
       } else {
-        child            = std::make_unique<export_command>(std::move(command));
+        child = std::make_unique<export_command>(std::move(command));
         child->int_style = int_style;
       }
       return *this;
@@ -134,7 +134,7 @@ struct export_command {
     // or create that has no skip_size_func_ptr
     if (skip_size_func) {
       if (!child) {
-        child            = std::make_unique<export_command>(nullptr);
+        child = std::make_unique<export_command>(nullptr);
         child->int_style = int_style;
       }
       *child << std::move(command);
@@ -238,10 +238,10 @@ inline constexpr bool is_value_with_command = _is_value_with_command<_remove_cre
  * See README for details.
  */
 inline auto int_style(
-    unsigned int base     = 16,
-    unsigned int digits   = 8,
-    unsigned int chunk    = 4,
-    bool space_fill       = false,
+    unsigned int base = 16,
+    unsigned int digits = 8,
+    unsigned int chunk = 4,
+    bool space_fill = false,
     bool support_negative = false
 ) {
   return _detail::export_command(
@@ -278,7 +278,7 @@ inline auto show_back(std::size_t iteration_count = max_iteration_count) {
   return _detail::export_command(
       [=](std::size_t index,
           const std::function<std::size_t()> &get_size) -> std::optional<std::size_t> {
-        std::size_t size  = get_size();
+        std::size_t size = get_size();
         std::size_t first = size >= iteration_count ? size - iteration_count : 0;
 
         if (index < first) return first - index;
@@ -295,9 +295,9 @@ inline auto show_both_ends(std::size_t iteration_count = max_iteration_count) {
   return _detail::export_command(
       [=](std::size_t index,
           const std::function<std::size_t()> &get_size) -> std::optional<std::size_t> {
-        std::size_t size              = get_size();
-        std::size_t first_half_last   = (iteration_count + 1) / 2;
-        std::size_t rest_count        = iteration_count - first_half_last;
+        std::size_t size = get_size();
+        std::size_t first_half_last = (iteration_count + 1) / 2;
+        std::size_t rest_count = iteration_count - first_half_last;
         std::size_t latter_half_first = size >= rest_count ? size - rest_count : 0;
 
         if (index >= first_half_last && index < latter_half_first) return latter_half_first - index;
@@ -314,9 +314,9 @@ inline auto show_middle(std::size_t iteration_count = max_iteration_count) {
   return _detail::export_command(
       [=](std::size_t index,
           const std::function<std::size_t()> &get_size) -> std::optional<std::size_t> {
-        std::size_t size  = get_size();
+        std::size_t size = get_size();
         std::size_t first = size >= iteration_count ? (size - iteration_count) / 2 : 0;
-        std::size_t last  = first + iteration_count;
+        std::size_t last = first + iteration_count;
 
         if (index < first) return first - index;
         if (index >= last) return std::nullopt;

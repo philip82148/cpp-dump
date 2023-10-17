@@ -44,7 +44,7 @@ export_other(const std::bitset<N> &bitset, const std::string &, std::size_t, std
   std::string bitset_str = bitset.to_string();
 
   std::string output = "0b";
-  std::size_t begin  = bitset_str.length() % 4;
+  std::size_t begin = bitset_str.length() % 4;
   if (begin != 0) output += " " + bitset_str.substr(0, begin);
   for (; begin < bitset_str.length(); begin += 4) {
     std::size_t length = std::min<std::size_t>(4, bitset_str.length() - begin);
@@ -59,7 +59,7 @@ export_other(const std::bitset<N> &bitset, const std::string &, std::size_t, std
 template <typename... Args>
 inline std::string
 export_other(const std::complex<Args...> &complex, const std::string &, std::size_t, std::size_t current_depth, bool, const export_command &) {
-  auto imag      = std::imag(complex);
+  auto imag = std::imag(complex);
   auto imag_sign = imag >= 0 ? "+" : "-";
 
   // Treat the entire complex string as an identifier

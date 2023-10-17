@@ -122,9 +122,9 @@ inline auto export_map(
 
   if (shift_indent && fail_on_newline) return "\n";
 
-  std::string new_indent    = indent + "  ";
-  std::size_t next_depth    = current_depth + 1;
-  const auto &key_command   = command.next_for_map_key();
+  std::string new_indent = indent + "  ";
+  std::size_t next_depth = current_depth + 1;
+  const auto &key_command = command.next_for_map_key();
   const auto &value_command = command.next_for_map_value();
 
   auto map_wrapper = ([&]() {
@@ -139,7 +139,7 @@ inline auto export_map(
 
 rollback:
   std::string output = es::bracket("{ ", current_depth);
-  bool is_first      = true;
+  bool is_first = true;
 
   for (const auto &[skip, it] : skipped_map) {
     const auto &[key, value] = *it;

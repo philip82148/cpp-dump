@@ -90,8 +90,8 @@ inline auto export_set(
 
   if (shift_indent && fail_on_newline) return "\n";
 
-  std::string new_indent   = indent + "  ";
-  std::size_t next_depth   = current_depth + 1;
+  std::string new_indent = indent + "  ";
+  std::size_t next_depth = current_depth + 1;
   const auto &next_command = command.next();
 
   auto set_wrapper = ([&]() {
@@ -106,7 +106,7 @@ inline auto export_set(
 
 rollback:
   std::string output = es::bracket("{ ", current_depth);
-  bool is_first      = true;
+  bool is_first = true;
 
   for (const auto &[skip, it] : skipped_set) {
     const auto &elem = *it;

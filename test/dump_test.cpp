@@ -10,7 +10,7 @@ using namespace std;
 using namespace cpp_dump;
 
 struct class_a {
-  int int_a   = 314159265;
+  int int_a = 314159265;
   long long_b = 1;
   static long static_long_a;
   string a_str() const { return to_string(int_a); }
@@ -26,7 +26,7 @@ struct non_copyable_and_non_movable_class {
   non_copyable_and_non_movable_class &operator=(const non_copyable_and_non_movable_class &) =
       delete;
 
-  non_copyable_and_non_movable_class(non_copyable_and_non_movable_class &&)            = delete;
+  non_copyable_and_non_movable_class(non_copyable_and_non_movable_class &&) = delete;
   non_copyable_and_non_movable_class &operator=(non_copyable_and_non_movable_class &&) = delete;
 
   non_copyable_and_non_movable_class() = delete;
@@ -61,8 +61,8 @@ CPP_DUMP_DEFINE_EXPORT_OBJECT(non_copyable_and_non_movable_class, str_member, po
 int main(int argc, char *argv[]) {
   if (argc != 4) return 1;
   int max_line_width = stoi(argv[1]);
-  int max_depth      = stoi(argv[2]);
-  int es_index       = stoi(argv[3]);
+  int max_depth = stoi(argv[2]);
+  int es_index = stoi(argv[3]);
 
   CPP_DUMP_SET_OPTION(max_line_width, max_line_width);
   CPP_DUMP_SET_OPTION(max_depth, max_depth);
@@ -180,7 +180,7 @@ int main(int argc, char *argv[]) {
   CPP_DUMP(*int_ptr);
 
   const void *void_ptr = (void *)0x7ffd06586204;
-  char *char_ptr       = (char *)&a;
+  char *char_ptr = (char *)&a;
   CPP_DUMP(void_ptr, char_ptr);
   CPP_DUMP(nullptr);
   shared_ptr<int> shared_ptr1(new int(42));

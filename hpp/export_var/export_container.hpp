@@ -48,15 +48,15 @@ inline auto export_container(
 
   if (shift_indent && fail_on_newline) return "\n";
 
-  std::string new_indent   = indent + "  ";
-  std::size_t next_depth   = current_depth + 1;
+  std::string new_indent = indent + "  ";
+  std::size_t next_depth = current_depth + 1;
   const auto &next_command = command.next();
 
   auto skipped = command.create_skip_container(container);
 
 rollback:
   std::string output = es::bracket("[ ", current_depth);
-  bool is_first      = true;
+  bool is_first = true;
 
   for (const auto &[skip, it] : skipped) {
     const auto &elem = *it;

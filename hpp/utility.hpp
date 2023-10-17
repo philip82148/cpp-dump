@@ -23,7 +23,7 @@ inline std::size_t get_length(std::string_view s) {
 
   std::size_t length = 0, s_first = 0, s_last;
   while ((s_last = s.find("\e[", s_first)) != std::string::npos) {
-    length       += s_last - s_first;
+    length += s_last - s_first;
     auto es_last = s.find_first_not_of("0123456789;", s_last + 2);
     if (es_last == std::string::npos) break;
     s_first = es_last + 1;

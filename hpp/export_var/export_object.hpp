@@ -79,7 +79,7 @@
     };                                                                                                \
                                                                                                       \
   rollback:                                                                                           \
-    output   = es::identifier(#TYPE) + es::bracket("{ ", current_depth);                              \
+    output = es::identifier(#TYPE) + es::bracket("{ ", current_depth);                                \
     is_first = true;                                                                                  \
                                                                                                       \
     _p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_EXPORT_OBJECT, __VA_ARGS__);                         \

@@ -62,10 +62,8 @@ inline auto export_arithmetic(
     }
 
     if (support_negative) {
-      if (value >= 0)
-        output = ' ';
-      else
-        output = '-';
+      if (value >= 0) output = ' ';
+      else output = '-';
     }
 
     if (chunk > 0) {
@@ -160,10 +158,8 @@ inline auto export_arithmetic(
   }
 
   if (support_negative) {
-    if (value >= 0)
-      output.append(1, ' ');
-    else
-      output.append(1, '-');
+    if (value >= 0) output.append(1, ' ');
+    else output.append(1, '-');
   }
 
   std::reverse(output.begin(), output.end());

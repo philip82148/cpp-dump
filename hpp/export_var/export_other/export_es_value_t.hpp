@@ -56,7 +56,7 @@ inline std::string _export_es_value_vector(
 
 rollback:
   std::string output = es::bracket("[ ", current_depth);
-  bool is_first      = true;
+  bool is_first = true;
 
   for (const auto &[skip, it] : skipped) {
     const std::string &es = *it;
@@ -146,7 +146,7 @@ inline std::string export_es_value_t(
   };
 
 rollback:
-  output   = es::identifier("cpp_dump::es_value_t") + es::bracket("{ ", current_depth);
+  output = es::identifier("cpp_dump::es_value_t") + es::bracket("{ ", current_depth);
   is_first = true;
 
   append_output("log", esv.log);

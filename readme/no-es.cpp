@@ -16,8 +16,8 @@
 int main() {
   cpp_dump::es_style = cpp_dump::es_style_t::no_es;
 
-  int my_int     = 15;
-  int *ptr       = &my_int;
+  int my_int = 15;
+  int *ptr = &my_int;
   void *void_ptr = &my_int;
   std::vector<std::vector<int>> my_vector{{3, 5, 8, 9, 7}, {9, 3, 2, 3, 8}};
   std::set<char> my_set{'A', 'p', 'p', 'l', 'e'};
