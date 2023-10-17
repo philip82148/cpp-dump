@@ -7,7 +7,9 @@ args_array=(
     "dump_shallow 4000 0"
 )
 
-g++ -std=c++17 -o ./a.out ./test/dump_test.cpp
+mkdir -p log
+mkdir -p build
+make main=./dump_test.cpp out=./build/dump_test.out
 
 for args in "${args_array[@]}"; do
     args=($args)
@@ -15,10 +17,10 @@ for args in "${args_array[@]}"; do
     width="${args[1]}"
     depth="${args[2]}"
 
-    ./a.out $width $depth 0 2>"./test_${basename}.log"
-    diff -q "./test_${basename}.log" "./test/txt/test_${basename}.txt"
+    ./build/dump_test.out $width $depth 0 2>"./log/${basename}.log"
+    diff -q "./log/${basename}.log" "./txt/${basename}.txt"
 
-    ./a.out $width $depth 1 2>"./test_${basename}.log"
-    sed -i "s/\x1B\[[^m]*m//g" "./test_${basename}.log"
-    diff -q "./test_${basename}.log" "./test/txt/test_${basename}.txt"
+    ./build/dump_test.out $width $depth 1 2>"./log/${basename}.log"
+    sed -i "s/\x1B\[[^m]*m//g" "./log/${basename}.log"
+    diff -q "./log/${basename}.log" "./txt/${basename}.txt"
 done

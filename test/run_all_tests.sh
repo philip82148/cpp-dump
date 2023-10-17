@@ -1,5 +1,5 @@
 #!/bin/bash -eux
 
-for f in ./test/*_test.sh; do
+for f in ./*_test.sh; do
     $f
 done
