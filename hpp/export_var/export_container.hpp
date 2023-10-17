@@ -10,9 +10,11 @@
 #include <string>
 #include <type_traits>
 
-#include "./escape_sequence.hpp"
-#include "./type_check.hpp"
-#include "./utility.hpp"
+#include "../escape_sequence.hpp"
+#include "../export_command/export_command.hpp"
+#include "../iterable.hpp"
+#include "../type_check.hpp"
+#include "../utility.hpp"
 
 namespace cpp_dump {
 
@@ -20,12 +22,11 @@ extern inline std::size_t max_line_width;
 
 extern inline std::size_t max_depth;
 
-extern inline std::size_t max_iteration_count;
-
 namespace _detail {
 
 template <typename T>
-std::string export_var(const T &, const std::string &, std::size_t, std::size_t, bool);
+std::string
+export_var(const T &, const std::string &, std::size_t, std::size_t, bool, const export_command &);
 
 template <typename T>
 inline auto export_container(
@@ -33,7 +34,8 @@ inline auto export_container(
     const std::string &indent,
     std::size_t last_line_length,
     std::size_t current_depth,
-    bool fail_on_newline
+    bool fail_on_newline,
+    const export_command &command
 ) -> std::enable_if_t<is_container<T>, std::string> {
   if (is_empty_iterable(container)) return es::bracket("[ ]", current_depth);
 
@@ -46,14 +48,19 @@ inline auto export_container(
 
   if (shift_indent && fail_on_newline) return "\n";
 
-  std::string new_indent = indent + "  ";
-  std::size_t next_depth = current_depth + 1;
+  std::string new_indent   = indent + "  ";
+  std::size_t next_depth   = current_depth + 1;
+  const auto &next_command = command.next();
+
+  auto skipped = command.create_skip_container(container);
 
 rollback:
-  std::string output          = es::bracket("[ ", current_depth);
-  bool is_first               = true;
-  std::size_t iteration_count = 0;
-  for (const auto &elem : container) {
+  std::string output = es::bracket("[ ", current_depth);
+  bool is_first      = true;
+
+  for (const auto &[skip, it] : skipped) {
+    const auto &elem = *it;
+
     if (is_first) {
       is_first = false;
     } else {
@@ -61,27 +68,29 @@ rollback:
     }
 
     if (shift_indent) {
-      if (++iteration_count > max_iteration_count) {
+      if (skip) {
         output += "\n" + new_indent + es::op("...");
-        break;
+        continue;
       }
 
       output +=
-          "\n" + new_indent + export_var(elem, new_indent, new_indent.length(), next_depth, false);
+          "\n" + new_indent
+          + export_var(elem, new_indent, new_indent.length(), next_depth, false, next_command);
       continue;
     }
 
-    if (++iteration_count > max_iteration_count) {
+    if (skip) {
       output += es::op("...");
 
-      if (last_line_length + get_length(output + " ]") <= max_line_width) break;
+      if (last_line_length + get_length(output + " ]") <= max_line_width) continue;
 
       shift_indent = true;
       goto rollback;
     }
 
-    std::string elem_string =
-        export_var(elem, indent, last_line_length + get_length(output), next_depth, true);
+    std::string elem_string = export_var(
+        elem, indent, last_line_length + get_length(output), next_depth, true, next_command
+    );
     if (!has_newline(elem_string)) {
       output += elem_string;
 

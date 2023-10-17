@@ -14,7 +14,8 @@
 
 #include "hpp/escape_sequence.hpp"
 #include "hpp/expand_va_macro.hpp"
-#include "hpp/export_var.hpp"
+#include "hpp/export_command/export_command.hpp"
+#include "hpp/export_var/export_var.hpp"
 #include "hpp/utility.hpp"
 
 #define _p_CPP_DUMP_EXPAND_FOR_CPP_DUMP(expr) #expr, expr
@@ -30,6 +31,7 @@
 
 /**
  * Set a value to a variable in cpp_dump namespace.
+ * You can also assign values to the variables directly.
  */
 #define CPP_DUMP_SET_OPTION(variable, value) cpp_dump::variable = value
 
@@ -89,13 +91,8 @@ bool _dump_one(
     const std::string &expr,
     const T &value
 ) {
-  const std::string initial_indent = ([&] {
-    std::string indent;
-    std::size_t length = get_length(log_label);
-    for (std::size_t i = 0; i < length; ++i) indent += " ";
-    return indent;
-  })();
-  const std::string second_indent  = initial_indent + "  ";
+  const std::string initial_indent(get_length(log_label), ' ');
+  const std::string second_indent = initial_indent + "  ";
 
   if (output.length() == 0) {
     output = es::log(log_label);
@@ -119,8 +116,14 @@ bool _dump_one(
                                       ) -> prefix_and_value_string {
     auto last_line_length = get_last_line_length(output + prefix);
 
-    std::string value_string =
-        export_var(value, indent, last_line_length, 0, no_newline_in_value_string);
+    std::string value_string = export_var(
+        value,
+        indent,
+        last_line_length,
+        0,
+        no_newline_in_value_string,
+        export_command::default_command
+    );
 
     bool value_string_has_newline = has_newline(value_string);
 

@@ -22,7 +22,7 @@ cpp-dump has a macro version and a function version of dump functions.
 
 ### CPP_DUMP(expressions...) macro
 
-This macro dumps variable(s) along with expression(s). [See Full Example Code](./readme/macro-version.cpp)
+The macro version dumps variable(s) along with the expression(s). [See Full Example Code](./readme/macro-version.cpp)
 
 ```cpp
 std::vector<std::vector<int>> my_vector{{3, 5, 8, 9, 7}, {9, 3, 2, 3, 8}};
@@ -33,7 +33,7 @@ CPP_DUMP(my_vector);
 
 ### cpp_dump::dump(args...) function
 
-This function simply dumps variable(s). [See Full Example Code](./readme/function-version.cpp)
+The function version simply dumps variable(s). [See Full Example Code](./readme/function-version.cpp)
 
 ```cpp
 std::vector<std::vector<int>> my_vector{{3, 5, 8, 9, 7}, {9, 3, 2, 3, 8}};
@@ -121,8 +121,7 @@ cpp_dump::es_value = {
 
 ![customizable-colors.png](./readme/customizable-colors.png)
 
-To turn off output coloring, assign `cpp_dump::es_style_t::no_es` to `cpp_dump::es_style`.
-
+To turn off output coloring, assign `cpp_dump::es_style_t::no_es` to `cpp_dump::es_style`.  
 [See Full Example Code](./readme/no-es.cpp)
 
 ```cpp
@@ -186,10 +185,39 @@ or
 git submodule add https://github.com/philip82148/cpp-dump
 ```
 
-## Usage
+then
 
 ```cpp
 #include "path/to/cpp-dump/dump.hpp"
+```
+
+## Usage
+
+### Functions
+
+```cpp
+/**
+ * Output string representation(s) of variable(s) to std::clog.
+ */
+template <typename... Args>
+void cpp_dump::dump(const Args &...args);
+
+/**
+ * Return a string representation of a variable.
+ * CPP_DUMP() and cpp_dump::dump() use this function internally.
+ */
+template <typename T>
+std::string cpp_dump::export_var(const T &value);
+
+// Manipulators (See 'Formatting with manipulators' for details.)
+cpp_dump::show_front(std::size_t iteration_count = cpp_dump::max_iteration_count);
+cpp_dump::show_middle(std::size_t iteration_count = cpp_dump::max_iteration_count);
+cpp_dump::show_back(std::size_t iteration_count = cpp_dump::max_iteration_count);
+cpp_dump::show_both_ends(std::size_t iteration_count = cpp_dump::max_iteration_count);
+cpp_dump::int_style(int base = 10, int digits = 8, int chunk = 4);
+cpp_dump::map_key(return_value_of_manipulator);
+cpp_dump::map_value(return_value_of_manipulator);
+cpp_dump::map_key_and_value(return_value_of_manipulator_for_key, return_value_of_manipulator_for_value);
 ```
 
 ### Macros
@@ -213,25 +241,10 @@ git submodule add https://github.com/philip82148/cpp-dump
 
 /**
  * Set a value to a variable in cpp_dump namespace.
+ * You can also assign values to the variables directly.
+ * (See 'For competitive programming use' for details.)
  */
 #define CPP_DUMP_SET_OPTION(variable, value)
-```
-
-### Functions
-
-```cpp
-/**
- * Output string representation(s) of variable(s) to std::clog.
- */
-template <typename... Args>
-void cpp_dump::dump(const Args &...args);
-
-/**
- * Return a string representation of a variable.
- * CPP_DUMP() and cpp_dump::dump() use this function internally.
- */
-template <typename T>
-std::string cpp_dump::export_var(const T &value);
 ```
 
 ### Variables
@@ -331,7 +344,73 @@ template <typename T>
 inline constexpr bool cpp_dump::is_exportable;
 ```
 
-## For competitive programming use
+### Formatting with manipulators
+
+[See Full Example Code](./readme/formatting-with-manipulators.cpp)
+
+Using manipulators, you can set which and how many elements of an array/map/set will be displayed.
+
+```cpp
+// Show the last 10 elements for the 1st dimension, the first 5 and the last 5 for the 2nd dimension.
+CPP_DUMP(show_back(10) << show_both_ends(10) << some_huge_vector);
+```
+
+![some-huge-vector](./readme/omitting-a-vector.png)
+
+And you can set how integers are displayed with manipulators.
+
+```cpp
+// Show integers in binary, minimum 8 digits, separated by every 2 characters.
+CPP_DUMP(int_style(2, 8, 2) << show_front(5) << show_front(5) << some_huge_vector);
+```
+
+![int-style](./readme/int-style.png)
+
+#### show\_\* manipulators
+
+```cpp
+cpp_dump::show_front(std::size_t iteration_count = cpp_dump::max_iteration_count);
+cpp_dump::show_middle(std::size_t iteration_count = cpp_dump::max_iteration_count);
+cpp_dump::show_back(std::size_t iteration_count = cpp_dump::max_iteration_count);
+cpp_dump::show_both_ends(std::size_t iteration_count = cpp_dump::max_iteration_count);
+
+// Example
+CPP_DUMP(show_back() << show_back() << variable);
+```
+
+The further left manipulator will act on the more outside dimensions of the array/map/set.
+
+#### int_style manipulator
+
+```cpp
+cpp_dump::int_style(unsigned int base = 16, unsigned int digits = 8,
+    unsigned int chunk = 4, bool space_fill = false, bool support_negative = false);
+cpp_dump::int_style10(unsigned int digits, unsigned int chunk = 0) { return int_style(10, digits, chunk, true, true); }
+
+// Example
+CPP_DUMP(int_style(16) << variable);
+```
+
+`base` supports values of 2 <= `base` <= 16. For other values, this manipulator resets the effects of the previous `int_style()` manipulators.  
+`chunk/digits` supports values of `chunk/digits` >= 0.  
+Unlike `show_*` manipulators, `int_style()` manipulator acts on all integers in the variable.  
+`int_style10(digits, chunk)` is an alias of `int_style(10, digits, chunk, true, true)`
+
+#### map_key, map_value, map_key_and_value manipulator
+
+```cpp
+cpp_dump::map_key(return_value_of_manipulator);
+cpp_dump::map_value(return_value_of_manipulator);
+cpp_dump::map_key_and_value(return_value_of_manipulator_for_key, return_value_of_manipulator_for_value);
+
+// Example
+CPP_DUMP(show_front() << map_key_and_value(int_style(16), show_back()) << map);
+```
+
+These manipulators act on (multi)maps.  
+In this example, the keys are displayed in hexadecimal, and if the values are iterable, the front part of the values is omitted.
+
+### For competitive programming use
 
 ```cpp
 #ifdef DEFINED_ONLY_IN_LOCAL

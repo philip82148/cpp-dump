@@ -1,0 +1,209 @@
+[dump] false => false, 0 => 0, 0.0 => 0.000000, '0' => '0', (const char *)"0" => "0", string{"0"} => "0", string_view{"0"} => "0"
+[dump] true => true, 3.14 => 3.140000, 159265 => 159265, "This is a test string" => "This is a test string"
+[dump] "This contains newline\nhere." => 
+`This contains newline
+here.`,
+       R"(This contains ".)" => `This contains ".`,
+       R"(This contains `.)" => "This contains `."
+[dump] "\n\n\n\n" => 
+`
+
+
+
+`
+[dump] (vector<int>{3, 1, 4}) => [ ... ]
+[dump] (vector<vector<int>>{{3}, {1, 4}, {1, 5, 9}}) => [ ... ]
+[dump] (vector<vector<vector<int>>>{{}, {{2, 6}}, {{5}, {3}, {5}}}) => [ ... ]
+[dump] (vector<int>{3, 1, 4}) => [ ... ], vec => [ ... ], (vector<vector<vector<int>>>{{{2, 4, 6, 7, 8, 9, 0, 1, 1, 1, 3, 45}}}) => [ ... ]
+[dump] (vector<int>{2, 3}) => [ ... ], (vector<int>{3, 4}) => [ ... ], (vector<int>{2, 4, 4, 5, 6, 4, 5, 2, 4, 5, 3, 5, 6, 7, 5, 6, 6, 6, 7, 7, 8, 1}) => [ ... ]
+[dump] (vector<int>{2, 3}) => [ ... ], (vector<int>{3, 4}) => [ ... ], (vector<vector<int>>{{2}, {4}, {4}, {5}, {6}}) => [ ... ]
+[dump] (vector{make_pair(1, 9), make_pair(3, 4), make_pair(5, 7)}) => [ ... ]
+[dump] c_style_array => [ ... ]
+[dump] vec => [ ... ]
+[dump] [ ... ]
+[dump] [ ... ], [ ... ]
+[dump] make_pair(8, 'a') => ( ... )
+[dump] make_tuple( 9, "This is another string.", "This is another string.", "This is another string.", "This is another string.", 7.9 ) => ( ... )
+[dump] (map<double, string>{{3.2, "This is a pen."}, {3.8, "I have an apple."}}) => { ... }
+[dump] (unordered_map<int, int>{{4, 6}, {2, 6}, {4, 3}}) => { ... }
+[dump] multimap1 => { ... }
+[dump] unordered_multimap1 => { ... }
+[dump] (set{"A", "p", "p", "l", "e", " ", "P", "e", "n"}) => { ... }
+[dump] (unordered_set{3, 1, 4, 1, 5}) => { ... }
+[dump] multiset1 => { ... }
+[dump] unordered_multiset1 => { ... }
+[dump] queue1 => std::queue{ ... }
+[dump] priority_queue1 => std::priority_queue{ ... }
+[dump] stack1 => std::stack{ ... }
+[dump] int_ptr => *65
+[dump] *int_ptr => 65
+[dump] void_ptr => 0x7ffd06586204, char_ptr => "A"
+[dump] nullptr => nullptr
+[dump] shared_ptr1 => *42, weak_ptr1 => *42, unique_ptr1 => *42, c => *42
+[dump] shared_ptr1 => *3, weak_ptr1 => nullptr, unique_ptr1 => *42
+[dump] class_a1 => decltype(class_a1){ ... }
+[dump] non_copyable_and_non_movable_class1 => non_copyable_and_non_movable_class{ ... }
+[dump] int_ptr => *65, enum_a_s => enum_a::s, enum_a_k => enum_a::k, enum_a_l => enum_a::?
+[dump] bitset2 => 0b 01, bitset3 => 0b 010, bitset4 => 0b 0011, bitset5 => 0b 0 0100, bitset7 => 0b 011 1010, bitset8 => 0b 0011 1010, bitset9 => 0b 0 1100 1010, bitset10 => 0b 00 1100 1010
+[dump] optional1 => ?1
+[dump] optional1 => std::nullopt
+[dump] nullopt => std::nullopt
+[dump] variant1 => |""
+[dump] variant1 => |0
+[dump] complex1 => 0.000000 - 1.000000i ( abs= 1.000000, arg/pi= -0.500000 )
+[dump] complex2 => 10.000000 + 1.000000i ( abs= 10.049876, arg/pi= 0.031726 )
+[dump] logic_error1 => std::logic_error{ what()= "This is a test error." }, original_error1 => { what()= "This is an original error." }
+[dump] vec.begin() => *...
+[dump] unsupported_enum => Unsupported Type
+[dump] cpp_dump::es_style_t::no_es => cpp_dump::es_style_t::no_es, cpp_dump::es_style_t::by_syntax => cpp_dump::es_style_t::by_syntax, cpp_dump::es_value => cpp_dump::es_value_t{ ... }
+[dump] int_style(16) << 10000u => 0000 2710 _16, int_style(16) << 10000l => 0000 2710 _16, int_style(16) << 10000ul => 0000 2710 _16, int_style(16) << 10000ll => 0000 2710 _16, int_style(16) << 10000ull => 0000 2710 _16
+[dump] array50 => [ ... ], map50 => { ... }, set50 => { ... }
+[dump] show_front() << array50 => [ ... ], show_front() << map50 => { ... }, show_front() << set50 => { ... }
+[dump] show_middle() << array50 => [ ... ], show_middle() << map50 => { ... }, show_middle() << set50 => { ... }
+[dump] show_back() << array50 => [ ... ], show_back() << map50 => { ... }, show_back() << set50 => { ... }
+[dump] show_both_ends() << array50 => [ ... ], show_both_ends() << map50 => { ... }, show_both_ends() << set50 => { ... }
+[dump] show_front(10) << array50 => [ ... ], show_front(10) << map50 => { ... }, show_front(10) << set50 => { ... }
+[dump] show_back(10) << array50 => [ ... ], show_back(10) << map50 => { ... }, show_back(10) << set50 => { ... }
+[dump] show_middle(10) << array50 => [ ... ], show_middle(10) << map50 => { ... }, show_middle(10) << set50 => { ... }
+[dump] show_both_ends(10) << array50 => [ ... ], show_both_ends(10) << map50 => { ... }, show_both_ends(10) << set50 => { ... }
+[dump] show_front(40) << array50 => [ ... ], show_front(40) << map50 => { ... }, show_front(40) << set50 => { ... }
+[dump] show_middle(40) << array50 => [ ... ], show_middle(40) << map50 => { ... }, show_middle(40) << set50 => { ... }
+[dump] show_back(40) << array50 => [ ... ], show_back(40) << map50 => { ... }, show_back(40) << set50 => { ... }
+[dump] show_both_ends(40) << array50 => [ ... ], show_both_ends(40) << map50 => { ... }, show_both_ends(40) << set50 => { ... }
+[dump] vec2 => [ ... ], show_back(2) << show_both_ends(1) << show_back(2) << vec2 => [ ... ]
+[dump] vec2 => [ ... ], show_both_ends(2) << show_both_ends(2) << show_both_ends(2) << vec2 => [ ... ]
+[dump] multimap1 => { ... }, show_both_ends(2) << show_both_ends(2) << multimap1 => { ... }
+[dump] multiset1 => { ... }, show_middle(1) << show_back(1) << multiset1 => { ... }
+[dump] show_front(2) << map_key_and_value(show_back(2), show_front(2)) << multimap2 => { ... }
+[dump] int_style(12, 3, 3) << show_front(2) << int_style(2, 0, 0) << map_key_and_value(int_style(16, 3, 3) << show_back(2), show_front(2)) << multimap2 => { ... }
+[dump] int_style(12, 3, 3) << int_style(8, 3, 3) << map_key_and_value(int_style(16, 3, 3) << show_back(2), show_front(2)) << multimap2 => { ... }
+[dump] show_front(1) << map_value( int_style(8, 3, 3) << show_middle(1) << int_style(16, 3, 3) << show_middle(2) << int_style(5, 3, 3) ) << multimap2 => { ... }
+[dump] i => 0, int_style(i) << 0x10000 => 65536
+[dump] i => 1, int_style(i) << 0x10000 => 65536
+[dump] i => 2, int_style(i) << 0x10000 => 1 0000 0000 0000 0000 _2
+[dump] i => 3, int_style(i) << 0x10000 => 100 2222 0021 _3
+[dump] i => 4, int_style(i) << 0x10000 => 1 0000 0000 _4
+[dump] i => 5, int_style(i) << 0x10000 => 0404 4121 _5
+[dump] i => 6, int_style(i) << 0x10000 => 0122 3224 _6
+[dump] i => 7, int_style(i) << 0x10000 => 0036 2032 _7
+[dump] i => 8, int_style(i) << 0x10000 => 0020 0000 _8
+[dump] i => 9, int_style(i) << 0x10000 => 0010 8807 _9
+[dump] i => 10, int_style(i) << 0x10000 => 0006 5536
+[dump] i => 11, int_style(i) << 0x10000 => 0004 5269 _11
+[dump] i => 12, int_style(i) << 0x10000 => 0003 1b14 _12
+[dump] i => 13, int_style(i) << 0x10000 => 0002 3aa3 _13
+[dump] i => 14, int_style(i) << 0x10000 => 0001 9c52 _14
+[dump] i => 15, int_style(i) << 0x10000 => 0001 4641 _15
+[dump] i => 16, int_style(i) << 0x10000 => 0001 0000 _16
+[dump] vec3 => [ ... ], int_style(10, 2, 0, false, true) << vec3 => [ ... ], int_style10(2) << vec3 => [ ... ]
+[dump] 0000 0001
+[dump]  0000 0002
+[dump] -0000 0003
+[dump]         1
+[dump]          2
+[dump] -        3
+[dump] 0 0000 0004
+[dump]  0 0000 0005
+[dump] -0 0000 0006
+[dump]           4
+[dump]            5
+[dump] -          6
+[dump] 000 0007
+[dump]  000 0008
+[dump] -000 0009
+[dump]        7
+[dump]         8
+[dump] -       9
+[dump] 1
+[dump]  2
+[dump] -3
+[dump] 1
+[dump]  2
+[dump] -3
+[dump] 004
+[dump]  005
+[dump] -006
+[dump]   4
+[dump]    5
+[dump] -  6
+[dump] 0007
+[dump]  0008
+[dump] -0009
+[dump]    7
+[dump]     8
+[dump] -   9
+[dump] 0 0000
+[dump]  0 0001
+[dump] -0 0002
+[dump]      0
+[dump]       1
+[dump] -     2
+[dump] 1 0000
+[dump]  2 0000
+[dump] -3 0000
+[dump]   4000
+[dump]    5000
+[dump] -  6000
+[dump]    700
+[dump]     800
+[dump] -   900
+[dump] 1 0000
+[dump]  2 0000
+[dump] -3 0000
+[dump] 4000
+[dump]  5000
+[dump] -6000
+[dump] 700
+[dump]  800
+[dump] -900
+[dump] 10
+[dump]  20
+[dump] -30
+[dump]  4
+[dump]   5
+[dump] - 6
+[dump] 83 _16
+[dump]  84 _16
+[dump] -74 _16
+[dump] -85 _16
+[dump] 86 _16
+[dump]  87 _16
+[dump] -77 _16
+[dump]  88 _16
+[dump]   89 _16
+[dump]    8a _16
+[dump] -  7a _16
+[dump]  0 8b _16
+[dump]    8c _16
+[dump]     8d _16
+[dump] -   7d _16
+[dump]  00 8e _16
+[dump]      8f _16
+[dump]       80 _16
+[dump] -     71 _16
+[dump]  0 00 82 _16
+[dump] 0 0000
+[dump]      0
+[dump] 0 0000 _16
+[dump]      0 _16
+[dump]  0 0000
+[dump]       0
+[dump]  0 0000 _16
+[dump]       0 _16
+[dump] 00000
+[dump]     0
+[dump] 00000 _16
+[dump]     0 _16
+[dump]  00000
+[dump]      0
+[dump]  00000 _16
+[dump]      0 _16
+[dump] show_front(2) << show_middle(1) << show_back(2) << show_both_ends(1) << non_copyable_and_non_movable_class1 => non_copyable_and_non_movable_class{ str_member= "This object has a pointer and reference_wrapper to itself.", pointer= *non_copyable_and_non_movable_class{ str_member= "This object has a pointer and reference_wrapper to itself.", pointer= *non_copyable_and_non_movable_class{ ... }, ref= non_copyable_and_non_movable_class{ ... } }, ref= non_copyable_and_non_movable_class{ str_member= "This object has a pointer and reference_wrapper to itself.", pointer= *non_copyable_and_non_movable_class{ ... }, ref= non_copyable_and_non_movable_class{ ... } } }
+[dump] non_copyable_and_non_movable_class_container1 => [ 
+         non_copyable_and_non_movable_class{ str_member= "This is non_copyable_and_non_movable_class.", pointer= *non_copyable_and_non_movable_class{ ... }, ref= non_copyable_and_non_movable_class{ ... } }, 
+         non_copyable_and_non_movable_class{ str_member= "This is non_copyable_and_non_movable_class.", pointer= *non_copyable_and_non_movable_class{ ... }, ref= non_copyable_and_non_movable_class{ ... } }
+       ]
+[dump] show_front(1) << non_copyable_and_non_movable_class_container1 => [ 
+         non_copyable_and_non_movable_class{ str_member= "This is non_copyable_and_non_movable_class.", pointer= *non_copyable_and_non_movable_class{ ... }, ref= non_copyable_and_non_movable_class{ ... } }, 
+         ...
+       ]

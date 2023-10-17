@@ -8,21 +8,23 @@
 #pragma once
 
 #include <algorithm>
-#include <cmath>
 #include <complex>
 #include <string>
 #include <type_traits>
 #include <variant>
 
-#include "./escape_sequence.hpp"
-#include "./type_check.hpp"
+#include "../../escape_sequence.hpp"
+#include "../../export_command/export_command.hpp"
+#include "../../type_check.hpp"
+#include "./export_es_value_t.hpp"
 
 namespace cpp_dump {
 
 namespace _detail {
 
 template <typename T>
-std::string export_var(const T &, const std::string &, std::size_t, std::size_t, bool);
+std::string
+export_var(const T &, const std::string &, std::size_t, std::size_t, bool, const export_command &);
 
 template <typename... Args>
 inline std::string export_other(
@@ -30,40 +32,33 @@ inline std::string export_other(
     const std::string &indent,
     std::size_t last_line_length,
     std::size_t current_depth,
-    bool fail_on_newline
+    bool fail_on_newline,
+    const export_command &command
 ) {
-  return export_var(ref.get(), indent, last_line_length, current_depth, fail_on_newline);
+  return export_var(ref.get(), indent, last_line_length, current_depth, fail_on_newline, command);
 }
 
 template <std::size_t N>
-inline std::string export_other(
-    const std::bitset<N> &bitset, const std::string &, std::size_t, std::size_t, bool
-) {
+inline std::string
+export_other(const std::bitset<N> &bitset, const std::string &, std::size_t, std::size_t, bool, const export_command &) {
   std::string bitset_str = bitset.to_string();
 
-  std::string output;
-  for (int end = bitset_str.length(); end > 0; end -= 4) {
-    std::size_t begin = std::max(end - 4, 0);
-    if (output == "") {
-      output = bitset_str.substr(begin, end - begin);
-    } else {
-      output = bitset_str.substr(begin, end - begin) + " " + output;
-    }
+  std::string output = "0b";
+  std::size_t begin  = bitset_str.length() % 4;
+  if (begin != 0) output += " " + bitset_str.substr(0, begin);
+  for (; begin < bitset_str.length(); begin += 4) {
+    std::size_t length = std::min<std::size_t>(4, bitset_str.length() - begin);
+    output.append(1, ' ');
+    output.append(bitset_str.substr(begin, length));
   }
-  output = "0b " + output;
 
   // Make the entire string an identifier
   return es::identifier(output);
 }
 
 template <typename... Args>
-inline std::string export_other(
-    const std::complex<Args...> &complex,
-    const std::string &,
-    std::size_t,
-    std::size_t current_depth,
-    bool
-) {
+inline std::string
+export_other(const std::complex<Args...> &complex, const std::string &, std::size_t, std::size_t current_depth, bool, const export_command &) {
   auto imag      = std::imag(complex);
   auto imag_sign = imag >= 0 ? "+" : "-";
 
@@ -84,12 +79,15 @@ inline std::string export_other(
     const std::string &indent,
     std::size_t last_line_length,
     std::size_t current_depth,
-    bool fail_on_newline
+    bool fail_on_newline,
+    const export_command &command
 ) {
   return std::visit(
-      [=, &indent](const auto &value) -> std::string {
+      [=, &indent, &command](const auto &value) -> std::string {
         return es::identifier("|")
-               + export_var(value, indent, last_line_length + 1, current_depth, fail_on_newline);
+               + export_var(
+                   value, indent, last_line_length + 1, current_depth, fail_on_newline, command
+               );
       },
       variant
   );
@@ -100,9 +98,10 @@ inline std::string export_other(
     const std::string &indent,
     std::size_t last_line_length,
     std::size_t current_depth,
-    bool fail_on_newline
+    bool fail_on_newline,
+    const export_command &command
 ) {
-  return export_es_value_t(esv, indent, last_line_length, current_depth, fail_on_newline);
+  return export_es_value_t(esv, indent, last_line_length, current_depth, fail_on_newline, command);
 }
 
 }  // namespace _detail

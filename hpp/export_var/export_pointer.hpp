@@ -12,15 +12,17 @@
 #include <string>
 #include <type_traits>
 
-#include "./escape_sequence.hpp"
-#include "./type_check.hpp"
+#include "../escape_sequence.hpp"
+#include "../export_command/export_command.hpp"
+#include "../type_check.hpp"
 
 namespace cpp_dump {
 
 namespace _detail {
 
 template <typename T>
-std::string export_var(const T &, const std::string &, std::size_t, std::size_t, bool);
+std::string
+export_var(const T &, const std::string &, std::size_t, std::size_t, bool, const export_command &);
 
 template <typename... Args>
 inline std::string export_pointer(
@@ -28,9 +30,12 @@ inline std::string export_pointer(
     const std::string &indent,
     std::size_t last_line_length,
     std::size_t current_depth,
-    bool fail_on_newline
+    bool fail_on_newline,
+    const export_command &command
 ) {
-  return export_var(pointer.lock(), indent, last_line_length, current_depth, fail_on_newline);
+  return export_var(
+      pointer.lock(), indent, last_line_length, current_depth, fail_on_newline, command
+  );
 }
 
 template <typename T>
@@ -39,7 +44,8 @@ inline auto export_pointer(
     const std::string &indent,
     std::size_t last_line_length,
     std::size_t current_depth,
-    bool fail_on_newline
+    bool fail_on_newline,
+    const export_command &command
 ) -> std::enable_if_t<is_pointer<T>, std::string> {
   if (pointer == nullptr) return es::reserved("nullptr");
 
@@ -51,7 +57,9 @@ inline auto export_pointer(
     return es::identifier(ss.str());
   } else {
     return es::identifier("*")
-           + export_var(*pointer, indent, last_line_length + 1, current_depth, fail_on_newline);
+           + export_var(
+               *pointer, indent, last_line_length + 1, current_depth, fail_on_newline, command
+           );
   }
 }
 

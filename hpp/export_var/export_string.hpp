@@ -11,18 +11,19 @@
 #include <string_view>
 #include <type_traits>
 
-#include "./escape_sequence.hpp"
-#include "./type_check.hpp"
-#include "./utility.hpp"
+#include "../escape_sequence.hpp"
+#include "../export_command/export_command.hpp"
+#include "../type_check.hpp"
+#include "../utility.hpp"
 
 namespace cpp_dump {
 
 namespace _detail {
 
 template <typename T>
-inline auto export_string(
-    const T &value, const std::string &, std::size_t, std::size_t, bool fail_on_newline
-) -> std::enable_if_t<is_string<T>, std::string> {
+inline auto
+export_string(const T &value, const std::string &, std::size_t, std::size_t, bool fail_on_newline, const export_command &)
+    -> std::enable_if_t<is_string<T>, std::string> {
   std::string str{value};
 
   // replace_string(str, R"(\)", R"(\\)");

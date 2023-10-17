@@ -1,9 +1,9 @@
 #!/bin/bash -eux
 
-bash ./test/dump_test.sh || true
-bash ./test/readme_test.sh || true
+bash ./dump_test.sh || true
+bash ./readme_test.sh || true
 
-for f in ./*.log; do
+for f in ./log/*.log; do
     basename=$(basename $f .log)
-    mv $f "./test/txt/${basename}.txt"
+    cp $f "./txt/${basename}.txt"
 done
