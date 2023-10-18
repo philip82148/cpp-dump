@@ -240,7 +240,7 @@ inline constexpr bool is_value_with_command = _is_value_with_command<_remove_cre
 inline auto int_style(
     unsigned int base = 16,
     unsigned int digits = 8,
-    unsigned int chunk = 4,
+    unsigned int chunk = 2,
     bool space_fill = false,
     bool support_negative = false
 ) {

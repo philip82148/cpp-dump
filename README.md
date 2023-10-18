@@ -214,7 +214,9 @@ cpp_dump::show_front(std::size_t iteration_count = cpp_dump::max_iteration_count
 cpp_dump::show_middle(std::size_t iteration_count = cpp_dump::max_iteration_count);
 cpp_dump::show_back(std::size_t iteration_count = cpp_dump::max_iteration_count);
 cpp_dump::show_both_ends(std::size_t iteration_count = cpp_dump::max_iteration_count);
-cpp_dump::int_style(int base = 10, int digits = 8, int chunk = 4);
+cpp_dump::int_style(unsigned int base = 16, unsigned int digits = 8,
+    unsigned int chunk = 2, bool space_fill = false, bool support_negative = false);
+cpp_dump::int_style10(unsigned int digits, unsigned int chunk = 0);
 cpp_dump::map_key(return_value_of_manipulator);
 cpp_dump::map_value(return_value_of_manipulator);
 cpp_dump::map_key_and_value(return_value_of_manipulator_for_key, return_value_of_manipulator_for_value);
@@ -390,7 +392,7 @@ The further left manipulator will act on the more outside dimensions of the arra
 
 ```cpp
 cpp_dump::int_style(unsigned int base = 16, unsigned int digits = 8,
-    unsigned int chunk = 4, bool space_fill = false, bool support_negative = false);
+    unsigned int chunk = 2, bool space_fill = false, bool support_negative = false);
 cpp_dump::int_style10(unsigned int digits, unsigned int chunk = 0) { return int_style(10, digits, chunk, true, true); }
 
 // Example
