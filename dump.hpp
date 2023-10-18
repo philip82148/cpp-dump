@@ -22,12 +22,19 @@
 
 /**
  * Print string representations of expression(s) and result(s) to std::clog.
- * This function uses cpp_dump::export_var() internally.
+ * This macro uses cpp_dump::export_var() internally.
  */
 #define CPP_DUMP(...)                                                                              \
   cpp_dump::_detail::cpp_dump_macro(                                                               \
       _p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_CPP_DUMP, __VA_ARGS__)                          \
   )
+
+/**
+ * Print string representations of expression(s) and result(s) to std::clog.
+ * This macro uses cpp_dump::export_var() internally.
+ * This is an alias of CPP_DUMP(...).
+ */
+#define cpp_dump(...) CPP_DUMP(__VA_ARGS__)
 
 /**
  * Set a value to a variable in cpp_dump namespace.
@@ -55,7 +62,7 @@ inline std::size_t max_depth = 4;
 inline std::size_t max_iteration_count = 16;
 
 /**
- * Function that returns the label that cpp_dump::dump() and CPP_DUMP() print
+ * Function that returns the label that cpp_dump::dump() and cpp_dump() print
  * at the beginning of the output.
  */
 inline std::function<std::string(void)> log_label_func = []() -> std::string { return "[dump] "; };
@@ -164,7 +171,7 @@ bool _dump_one(
     return false;
   }
 
-  // below for _dump_recursively_with_expr(), which is for CPP_DUMP() (macro)
+  // below for _dump_recursively_with_expr(), which is for cpp_dump() (macro)
   auto expr_with_es = es::expression(expr);
 
   if (no_newline_in_value_string) {
@@ -271,7 +278,7 @@ inline bool _dump_recursively_without_expr(
          && _dump_recursively_without_expr(output, log_label, no_newline_in_value_string, args...);
 }
 
-// function called by CPP_DUMP() macro
+// function called by cpp_dump() macro
 template <typename... Args>
 void cpp_dump_macro(const Args &...args) {
   std::string log_label = log_label_func ? log_label_func() : "";

@@ -11,10 +11,10 @@ int main() {
 
   std::vector my_vector{
       "This is a test string.", "This is a test string.", "This is a test string."};
-  CPP_DUMP(my_vector);
+  cpp_dump(my_vector);
 
   my_vector.push_back("This is a test string.");
-  CPP_DUMP(my_vector);
+  cpp_dump(my_vector);
 
   std::clog << std::endl;
 }
