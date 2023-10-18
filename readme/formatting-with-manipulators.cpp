@@ -17,15 +17,15 @@ int main() {
   }
 
   // default: max_iteration_count = 16;
-  CPP_DUMP(some_huge_vector);
+  cpp_dump(some_huge_vector);
 
   std::clog << std::endl;
 
-  CPP_DUMP(show_back(10) << show_both_ends(10) << some_huge_vector);
+  cpp_dump(show_back(10) << show_both_ends(10) << some_huge_vector);
 
   std::clog << std::endl;
 
-  CPP_DUMP(int_style(2, 8, 2) << show_front(5) << show_front(5) << some_huge_vector);
+  cpp_dump(int_style(2, 8, 2) << show_front(5) << show_front(5) << some_huge_vector);
 
   std::clog << std::endl;
 }

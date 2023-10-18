@@ -10,7 +10,7 @@ int main() {
   std::clog << std::endl;
 
   enum_A my_enum_A = enum_A::c;
-  CPP_DUMP(my_enum_A);
+  cpp_dump(my_enum_A);
 
   std::clog << std::endl;
 }

@@ -35,30 +35,30 @@ int main() {
   std::vector<std::pair<int, std::string>> vector_of_pairs{{1, "apple"}, {3, "banana"}};
 
   std::clog << "\n// Basic Type" << std::endl;
-  CPP_DUMP(false, 0, 0.0, '0'), CPP_DUMP(true, 3.14, my_int, 9265);
-  CPP_DUMP("This is a string."), CPP_DUMP(ptr, void_ptr, nullptr);
+  cpp_dump(false, 0, 0.0, '0'), cpp_dump(true, 3.14, my_int, 9265);
+  cpp_dump("This is a string."), cpp_dump(ptr, void_ptr, nullptr);
 
   std::clog << "\n// Container" << std::endl;
-  CPP_DUMP(my_vector);
+  cpp_dump(my_vector);
 
   std::clog << "\n// Set/Map" << std::endl;
-  CPP_DUMP(my_set), CPP_DUMP(my_map);
+  cpp_dump(my_set), cpp_dump(my_map);
 
   std::clog << "\n// Multiset/Multimap" << std::endl;
-  CPP_DUMP(my_multiset), CPP_DUMP(my_multimap);
+  cpp_dump(my_multiset), cpp_dump(my_multimap);
 
   std::clog << "\n// Tuple" << std::endl;
-  CPP_DUMP(my_tuple), CPP_DUMP(my_pair);
+  cpp_dump(my_tuple), cpp_dump(my_pair);
 
   std::clog << "\n// FIFO/LIFO" << std::endl;
-  CPP_DUMP(my_queue), CPP_DUMP(my_priority_queue), CPP_DUMP(my_stack);
+  cpp_dump(my_queue), cpp_dump(my_priority_queue), cpp_dump(my_stack);
 
   std::clog << "\n// Other" << std::endl;
-  CPP_DUMP(my_bitset), CPP_DUMP(my_complex);
-  CPP_DUMP(my_optional, std::nullopt), CPP_DUMP(my_variant);
+  cpp_dump(my_bitset), cpp_dump(my_complex);
+  cpp_dump(my_optional, std::nullopt), cpp_dump(my_variant);
 
   std::clog << "\n// Combination" << std::endl;
-  CPP_DUMP(vector_of_pairs);
+  cpp_dump(vector_of_pairs);
 
   std::clog << std::endl;
 }

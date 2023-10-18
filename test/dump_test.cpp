@@ -72,42 +72,42 @@ int main(int argc, char *argv[]) {
   );
 
   // basic
-  CPP_DUMP(false, 0, 0.0, '0', (const char *)"0", string{"0"}, string_view{"0"});
-  CPP_DUMP(true, 3.14, 159265, "This is a test string");
-  CPP_DUMP("This contains newline\nhere.", R"(This contains ".)", R"(This contains `.)");
-  CPP_DUMP("\n\n\n\n");
+  cpp_dump(false, 0, 0.0, '0', (const char *)"0", string{"0"}, string_view{"0"});
+  cpp_dump(true, 3.14, 159265, "This is a test string");
+  cpp_dump("This contains newline\nhere.", R"(This contains ".)", R"(This contains `.)");
+  cpp_dump("\n\n\n\n");
 
   // vector & auto indent
-  CPP_DUMP((vector<int>{3, 1, 4}));
-  CPP_DUMP((vector<vector<int>>{{3}, {1, 4}, {1, 5, 9}}));
-  CPP_DUMP((vector<vector<vector<int>>>{{}, {{2, 6}}, {{5}, {3}, {5}}}));
+  cpp_dump((vector<int>{3, 1, 4}));
+  cpp_dump((vector<vector<int>>{{3}, {1, 4}, {1, 5, 9}}));
+  cpp_dump((vector<vector<vector<int>>>{{}, {{2, 6}}, {{5}, {3}, {5}}}));
   const auto vec =
       (vector<vector<int>>{{2, 4, 6, 7, 8, 9, 0, 1, 1, 1, 7, 8, 9, 0, 1, 1, 1, 1, 1, 1, 1}});
-  CPP_DUMP(
+  cpp_dump(
       (vector<int>{3, 1, 4}),
       vec,
       (vector<vector<vector<int>>>{{{2, 4, 6, 7, 8, 9, 0, 1, 1, 1, 3, 45}}})
   );
-  CPP_DUMP(
+  cpp_dump(
       (vector<int>{2, 3}), (vector<int>{3, 4}), (vector<int>{2, 4, 4, 5, 6, 4, 5, 2, 4, 5, 3,
                                                              5, 6, 7, 5, 6, 6, 6, 7, 7, 8, 1})
   );
-  CPP_DUMP(
+  cpp_dump(
       (vector<int>{2, 3}), (vector<int>{3, 4}), (vector<vector<int>>{{2}, {4}, {4}, {5}, {6}})
   );
-  CPP_DUMP((vector{make_pair(1, 9), make_pair(3, 4), make_pair(5, 7)}));
+  cpp_dump((vector{make_pair(1, 9), make_pair(3, 4), make_pair(5, 7)}));
   int c_style_array[40]{3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 3, 1, 4, 1, 5, 9, 2, 6, 5, 3,
                         3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 3, 1, 4, 1, 5, 9, 2, 6, 5, 3};
-  CPP_DUMP(c_style_array);
+  cpp_dump(c_style_array);
 
-  CPP_DUMP(vec);
+  cpp_dump(vec);
   dump(vec);
 
   dump(c_style_array, c_style_array);
 
   // pair&tuple
-  CPP_DUMP(make_pair(8, 'a'));
-  CPP_DUMP(make_tuple(
+  cpp_dump(make_pair(8, 'a'));
+  cpp_dump(make_tuple(
       9,
       "This is another string.",
       "This is another string.",
@@ -117,8 +117,8 @@ int main(int argc, char *argv[]) {
   ));
 
   // map
-  CPP_DUMP((map<double, string>{{3.2, "This is a pen."}, {3.8, "I have an apple."}}));
-  CPP_DUMP((unordered_map<int, int>{{4, 6}, {2, 6}, {4, 3}}));
+  cpp_dump((map<double, string>{{3.2, "This is a pen."}, {3.8, "I have an apple."}}));
+  cpp_dump((unordered_map<int, int>{{4, 6}, {2, 6}, {4, 3}}));
 
   // multimap
   multimap<char, int> multimap1;
@@ -130,18 +130,18 @@ int main(int argc, char *argv[]) {
   multimap1.emplace('a', 12);
   multimap1.emplace('b', 23);
   multimap1.emplace('a', 44);
-  CPP_DUMP(multimap1);
+  cpp_dump(multimap1);
 
   unordered_multimap<char, int> unordered_multimap1;
   unordered_multimap1.emplace('c', 30);
   unordered_multimap1.emplace('a', 10);
   unordered_multimap1.emplace('b', 20);
   unordered_multimap1.emplace('a', 40);
-  CPP_DUMP(unordered_multimap1);
+  cpp_dump(unordered_multimap1);
 
   // set
-  CPP_DUMP((set{"A", "p", "p", "l", "e", " ", "P", "e", "n"}));
-  CPP_DUMP((unordered_set{3, 1, 4, 1, 5}));
+  cpp_dump((set{"A", "p", "p", "l", "e", " ", "P", "e", "n"}));
+  cpp_dump((unordered_set{3, 1, 4, 1, 5}));
 
   // multiset
   multiset<int> multiset1;
@@ -149,57 +149,57 @@ int main(int argc, char *argv[]) {
   multiset1.insert(1);
   multiset1.insert(4);
   multiset1.insert(1);
-  CPP_DUMP(multiset1);
+  cpp_dump(multiset1);
 
   unordered_multiset<int> unordered_multiset1;
   unordered_multiset1.insert(3);
   unordered_multiset1.insert(1);
   unordered_multiset1.insert(4);
   unordered_multiset1.insert(1);
-  CPP_DUMP(unordered_multiset1);
+  cpp_dump(unordered_multiset1);
 
   // FIFO/LIFO
   queue<int> queue1;
   for (auto v : {1, 2, 3, 4, 5}) queue1.push(v);
-  CPP_DUMP(queue1);
+  cpp_dump(queue1);
 
   priority_queue<char> priority_queue1;
   for (auto v : {'1', '2', '3', '4', '5'}) priority_queue1.push(v);
-  CPP_DUMP(priority_queue1);
+  cpp_dump(priority_queue1);
 
   stack<string> stack1;
   for (auto v : {"1", "2", "3", "4", "5"}) stack1.push(v);
-  CPP_DUMP(stack1);
+  cpp_dump(stack1);
 
   // pointer
   int a = 65;
   int *int_ptr;
   int_ptr = &a;
 
-  CPP_DUMP(int_ptr);
-  CPP_DUMP(*int_ptr);
+  cpp_dump(int_ptr);
+  cpp_dump(*int_ptr);
 
   const void *void_ptr = (void *)0x7ffd06586204;
   char *char_ptr = (char *)&a;
-  CPP_DUMP(void_ptr, char_ptr);
-  CPP_DUMP(nullptr);
+  cpp_dump(void_ptr, char_ptr);
+  cpp_dump(nullptr);
   shared_ptr<int> shared_ptr1(new int(42));
   weak_ptr<int> weak_ptr1 = shared_ptr1;
   unique_ptr<int> unique_ptr1(new int(42));
   auto c = ref(shared_ptr1);
-  CPP_DUMP(shared_ptr1, weak_ptr1, unique_ptr1, c);
+  cpp_dump(shared_ptr1, weak_ptr1, unique_ptr1, c);
   shared_ptr1.reset(new int(3));
-  CPP_DUMP(shared_ptr1, weak_ptr1, unique_ptr1);
+  cpp_dump(shared_ptr1, weak_ptr1, unique_ptr1);
 
   // object
-  CPP_DUMP(class_a1);
-  CPP_DUMP(non_copyable_and_non_movable_class1);
+  cpp_dump(class_a1);
+  cpp_dump(non_copyable_and_non_movable_class1);
 
   // enum
   enum_a enum_a_s = enum_a::s;
   enum_a enum_a_k = enum_a::k;
   enum_a enum_a_l = enum_a::l;
-  CPP_DUMP(int_ptr, enum_a_s, enum_a_k, enum_a_l);
+  cpp_dump(int_ptr, enum_a_s, enum_a_k, enum_a_l);
 
   // other
   bitset<2> bitset2(0x1);
@@ -210,42 +210,42 @@ int main(int argc, char *argv[]) {
   bitset<8> bitset8(0x3a);
   bitset<9> bitset9(0xca);
   bitset<10> bitset10(0xca);
-  CPP_DUMP(bitset2, bitset3, bitset4, bitset5, bitset7, bitset8, bitset9, bitset10);
+  cpp_dump(bitset2, bitset3, bitset4, bitset5, bitset7, bitset8, bitset9, bitset10);
 
   optional<int> optional1 = 1;
-  CPP_DUMP(optional1);
+  cpp_dump(optional1);
   optional1 = nullopt;
-  CPP_DUMP(optional1);
-  CPP_DUMP(nullopt);
+  cpp_dump(optional1);
+  cpp_dump(nullopt);
 
   variant<int, string> variant1 = "";
-  CPP_DUMP(variant1);
+  cpp_dump(variant1);
   variant1 = 0;
-  CPP_DUMP(variant1);
+  cpp_dump(variant1);
 
   complex complex1{0.0, -1.0};
-  CPP_DUMP(complex1);
+  cpp_dump(complex1);
   complex complex2{10.0, 1.0};
-  CPP_DUMP(complex2);
+  cpp_dump(complex2);
 
   logic_error logic_error1("This is a test error.");
   class original_error : public logic_error {
     using logic_error::logic_error;
   } original_error1("This is an original error.");
-  CPP_DUMP(logic_error1, original_error1);
+  cpp_dump(logic_error1, original_error1);
 
   // iterator
-  CPP_DUMP(vec.begin());
+  cpp_dump(vec.begin());
 
   // unsupported type
   enum class unsupported { k, l } unsupported_enum = unsupported::k;
-  CPP_DUMP(unsupported_enum);
+  cpp_dump(unsupported_enum);
 
   // extra
-  CPP_DUMP(cpp_dump::es_style_t::no_es, cpp_dump::es_style_t::by_syntax, cpp_dump::es_value);
+  cpp_dump(cpp_dump::es_style_t::no_es, cpp_dump::es_style_t::by_syntax, cpp_dump::es_value);
 
   // int_style()
-  CPP_DUMP(
+  cpp_dump(
       int_style(16) << 10000u,
       int_style(16) << 10000l,
       int_style(16) << 10000ul,
@@ -264,22 +264,22 @@ int main(int argc, char *argv[]) {
   }
 
   CPP_DUMP_SET_OPTION(max_iteration_count, 2);
-  CPP_DUMP(array50, map50, set50);
-  CPP_DUMP(show_front() << array50, show_front() << map50, show_front() << set50);
-  CPP_DUMP(show_middle() << array50, show_middle() << map50, show_middle() << set50);
-  CPP_DUMP(show_back() << array50, show_back() << map50, show_back() << set50);
-  CPP_DUMP(show_both_ends() << array50, show_both_ends() << map50, show_both_ends() << set50);
+  cpp_dump(array50, map50, set50);
+  cpp_dump(show_front() << array50, show_front() << map50, show_front() << set50);
+  cpp_dump(show_middle() << array50, show_middle() << map50, show_middle() << set50);
+  cpp_dump(show_back() << array50, show_back() << map50, show_back() << set50);
+  cpp_dump(show_both_ends() << array50, show_both_ends() << map50, show_both_ends() << set50);
 
   CPP_DUMP_SET_OPTION(max_iteration_count, 100);
-  CPP_DUMP(show_front(10) << array50, show_front(10) << map50, show_front(10) << set50);
-  CPP_DUMP(show_back(10) << array50, show_back(10) << map50, show_back(10) << set50);
-  CPP_DUMP(show_middle(10) << array50, show_middle(10) << map50, show_middle(10) << set50);
-  CPP_DUMP(show_both_ends(10) << array50, show_both_ends(10) << map50, show_both_ends(10) << set50);
+  cpp_dump(show_front(10) << array50, show_front(10) << map50, show_front(10) << set50);
+  cpp_dump(show_back(10) << array50, show_back(10) << map50, show_back(10) << set50);
+  cpp_dump(show_middle(10) << array50, show_middle(10) << map50, show_middle(10) << set50);
+  cpp_dump(show_both_ends(10) << array50, show_both_ends(10) << map50, show_both_ends(10) << set50);
 
-  CPP_DUMP(show_front(40) << array50, show_front(40) << map50, show_front(40) << set50);
-  CPP_DUMP(show_middle(40) << array50, show_middle(40) << map50, show_middle(40) << set50);
-  CPP_DUMP(show_back(40) << array50, show_back(40) << map50, show_back(40) << set50);
-  CPP_DUMP(show_both_ends(40) << array50, show_both_ends(40) << map50, show_both_ends(40) << set50);
+  cpp_dump(show_front(40) << array50, show_front(40) << map50, show_front(40) << set50);
+  cpp_dump(show_middle(40) << array50, show_middle(40) << map50, show_middle(40) << set50);
+  cpp_dump(show_back(40) << array50, show_back(40) << map50, show_back(40) << set50);
+  cpp_dump(show_both_ends(40) << array50, show_both_ends(40) << map50, show_both_ends(40) << set50);
 
   auto vec2 = vector<vector<vector<int>>>{
       {{1}},
@@ -290,11 +290,11 @@ int main(int argc, char *argv[]) {
           {5, 7, 8, 10, 11},
       }};
 
-  CPP_DUMP(vec2, show_back(2) << show_both_ends(1) << show_back(2) << vec2);
-  CPP_DUMP(vec2, show_both_ends(2) << show_both_ends(2) << show_both_ends(2) << vec2);
+  cpp_dump(vec2, show_back(2) << show_both_ends(1) << show_back(2) << vec2);
+  cpp_dump(vec2, show_both_ends(2) << show_both_ends(2) << show_both_ends(2) << vec2);
 
-  CPP_DUMP(multimap1, show_both_ends(2) << show_both_ends(2) << multimap1);
-  CPP_DUMP(multiset1, show_middle(1) << show_back(1) << multiset1);
+  cpp_dump(multimap1, show_both_ends(2) << show_both_ends(2) << multimap1);
+  cpp_dump(multiset1, show_middle(1) << show_back(1) << multiset1);
 
   auto multimap2 = multimap<vector<int>, vector<int>>{
       {{1, 2, 4, 2}, {11, 22, 11, 22}},
@@ -303,27 +303,27 @@ int main(int argc, char *argv[]) {
       {{5, 6, 7, 8}, {14, -2}},
       {{1, 2, 4, 2}, {0, 5, 25}},
   };
-  CPP_DUMP(show_front(2) << map_key_and_value(show_back(2), show_front(2)) << multimap2);
+  cpp_dump(show_front(2) << map_key_and_value(show_back(2), show_front(2)) << multimap2);
 
-  CPP_DUMP(
+  cpp_dump(
       int_style(12, 3, 3) << show_front(2) << int_style(2, 0, 0)
                           << map_key_and_value(int_style(16, 3, 3) << show_back(2), show_front(2))
                           << multimap2
   );
-  CPP_DUMP(
+  cpp_dump(
       int_style(12, 3, 3) << int_style(8, 3, 3)
                           << map_key_and_value(int_style(16, 3, 3) << show_back(2), show_front(2))
                           << multimap2
   );
-  CPP_DUMP(
+  cpp_dump(
       show_front(1) << map_value(
           int_style(8, 3, 3) << show_middle(1) << int_style(16, 3, 3) << show_middle(2)
                              << int_style(5, 3, 3)
       ) << multimap2
   );
-  rep(i, 17) CPP_DUMP(i, int_style(i) << 0x10000);
+  rep(i, 17) cpp_dump(i, int_style(i) << 0x10000);
   vector<vector<int>> vec3{{1, 20, 4}, {-2, 0, -10}};
-  CPP_DUMP(vec3, int_style(10, 2, 0, false, true) << vec3, int_style10(2) << vec3);
+  cpp_dump(vec3, int_style(10, 2, 0, false, true) << vec3, int_style10(2) << vec3);
   dump(int_style(10, 8, 4, false, false /**/) << 1);
   dump(int_style(10, 8, 4, false, true /* */) << 2);
   dump(int_style(10, 8, 4, false, true /**/) << -3);
@@ -442,10 +442,10 @@ int main(int argc, char *argv[]) {
   dump(int_style(16, 5, 0, true, true /* */) << 0);
 
   CPP_DUMP_SET_OPTION(max_depth, 2);
-  CPP_DUMP(
+  cpp_dump(
       show_front(2) << show_middle(1) << show_back(2) << show_both_ends(1)
                     << non_copyable_and_non_movable_class1
   );
-  CPP_DUMP(non_copyable_and_non_movable_class_container1);
-  CPP_DUMP(show_front(1) << non_copyable_and_non_movable_class_container1);
+  cpp_dump(non_copyable_and_non_movable_class_container1);
+  cpp_dump(show_front(1) << non_copyable_and_non_movable_class_container1);
 }

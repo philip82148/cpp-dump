@@ -13,7 +13,7 @@ int main() {
   std::clog << std::endl;
 
   class_A my_class_A{10};
-  CPP_DUMP(my_class_A);
+  cpp_dump(my_class_A);
 
   std::clog << std::endl;
 }

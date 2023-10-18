@@ -20,13 +20,13 @@ This library has the following features:
 
 cpp-dump has a macro version and a function version of dump functions.
 
-### CPP_DUMP(expressions...) macro
+### cpp_dump(expressions...) macro
 
 The macro version dumps variable(s) along with the expression(s). [See Full Example Code](./readme/macro-version.cpp)
 
 ```cpp
 std::vector<std::vector<int>> my_vector{{3, 5, 8, 9, 7}, {9, 3, 2, 3, 8}};
-CPP_DUMP(my_vector);
+cpp_dump(my_vector);
 ```
 
 ![macro-version.png](./readme/macro-version.png)
@@ -54,30 +54,30 @@ Both dump functions have the following features.
 ```cpp
 // See the full example code for the definitions of the variables.
 std::clog << "\n// Basic Type" << std::endl;
-CPP_DUMP(false, 0, 0.0, '0'); CPP_DUMP(true, 3.14, my_int, 9265);
-CPP_DUMP("This is a string."); CPP_DUMP(ptr, void_ptr, nullptr);
+cpp_dump(false, 0, 0.0, '0'); cpp_dump(true, 3.14, my_int, 9265);
+cpp_dump("This is a string."); cpp_dump(ptr, void_ptr, nullptr);
 
 std::clog << "\n// Container" << std::endl;
-CPP_DUMP(my_vector);
+cpp_dump(my_vector);
 
 std::clog << "\n// Set/Map" << std::endl;
-CPP_DUMP(my_set); CPP_DUMP(my_map);
+cpp_dump(my_set); cpp_dump(my_map);
 
 std::clog << "\n// Multiset/Multimap" << std::endl;
-CPP_DUMP(my_multiset); CPP_DUMP(my_multimap);
+cpp_dump(my_multiset); cpp_dump(my_multimap);
 
 std::clog << "\n// Tuple" << std::endl;
-CPP_DUMP(my_tuple); CPP_DUMP(my_pair);
+cpp_dump(my_tuple); cpp_dump(my_pair);
 
 std::clog << "\n// FIFO/LIFO" << std::endl;
-CPP_DUMP(my_queue); CPP_DUMP(my_priority_queue); CPP_DUMP(my_stack);
+cpp_dump(my_queue); cpp_dump(my_priority_queue); cpp_dump(my_stack);
 
 std::clog << "\n// Other" << std::endl;
-CPP_DUMP(my_bitset); CPP_DUMP(my_complex);
-CPP_DUMP(my_optional, std::nullopt); CPP_DUMP(my_variant);
+cpp_dump(my_bitset); cpp_dump(my_complex);
+cpp_dump(my_optional, std::nullopt); cpp_dump(my_variant);
 
 std::clog << "\n// Combination" << std::endl;
-CPP_DUMP(vector_of_pairs);
+cpp_dump(vector_of_pairs);
 ```
 
 ![supports-various-types.png](./readme/supports-various-types.png)
@@ -87,9 +87,9 @@ CPP_DUMP(vector_of_pairs);
 Automatically indent so that the output does not exceed the maximum width. [See Full Example Code](./readme/auto-indent.cpp)
 
 ```cpp
-CPP_DUMP(my_vector);
+cpp_dump(my_vector);
 my_vector.push_back("This is a test string.");
-CPP_DUMP(my_vector);
+cpp_dump(my_vector);
 ```
 
 ![Auto indent](./readme/auto-indent.png)
@@ -147,7 +147,7 @@ CPP_DUMP_DEFINE_EXPORT_OBJECT(class_A, i, str());
 
 // In main() or some function
 class_A my_class_A{10};
-CPP_DUMP(my_class_A);
+cpp_dump(my_class_A);
 ```
 
 ![user-defined-class.png](./readme/user-defined-class.png)
@@ -163,7 +163,7 @@ CPP_DUMP_DEFINE_EXPORT_ENUM(enum_A, enum_A::a, enum_A::b, enum_A::c);
 
 // In main() or some function
 enum_A my_enum_A = enum_A::c;
-CPP_DUMP(my_enum_A);
+cpp_dump(my_enum_A);
 ```
 
 ![user-defined-enum.png](./readme/user-defined-enum.png)
@@ -204,7 +204,7 @@ void cpp_dump::dump(const Args &...args);
 
 /**
  * Return a string representation of a variable.
- * CPP_DUMP() and cpp_dump::dump() use this function internally.
+ * cpp_dump() and cpp_dump::dump() use this function internally.
  */
 template <typename T>
 std::string cpp_dump::export_var(const T &value);
@@ -226,7 +226,7 @@ cpp_dump::map_key_and_value(return_value_of_manipulator_for_key, return_value_of
 /**
  * Output string representations of expression(s) and result(s) to std::clog.
  */
-#define CPP_DUMP(expressions...)
+#define cpp_dump(expressions...)
 
 /**
  * Make export_var() support type T.
@@ -268,7 +268,7 @@ inline std::size_t cpp_dump::max_depth = 4;
 inline std::size_t cpp_dump::max_iteration_count = 16;
 
 /**
- * Function that returns the label that cpp_dump::dump() and CPP_DUMP() print
+ * Function that returns the label that cpp_dump::dump() and cpp_dump() print
  * at the beginning of the output.
  */
 inline std::function<std::string(void)> cpp_dump::log_label_func = []() -> std::string { return "[dump] "; };
@@ -352,7 +352,7 @@ Using manipulators, you can set which and how many elements of an array/map/set 
 
 ```cpp
 // Show the last 10 elements for the 1st dimension, the first 5 and the last 5 for the 2nd dimension.
-CPP_DUMP(show_back(10) << show_both_ends(10) << some_huge_vector);
+cpp_dump(show_back(10) << show_both_ends(10) << some_huge_vector);
 ```
 
 ![some-huge-vector](./readme/omitting-a-vector.png)
@@ -361,7 +361,7 @@ And you can set how integers are displayed with manipulators.
 
 ```cpp
 // Show integers in binary, minimum 8 digits, separated by every 2 characters.
-CPP_DUMP(int_style(2, 8, 2) << show_front(5) << show_front(5) << some_huge_vector);
+cpp_dump(int_style(2, 8, 2) << show_front(5) << show_front(5) << some_huge_vector);
 ```
 
 ![int-style](./readme/int-style.png)
@@ -375,7 +375,7 @@ cpp_dump::show_back(std::size_t iteration_count = cpp_dump::max_iteration_count)
 cpp_dump::show_both_ends(std::size_t iteration_count = cpp_dump::max_iteration_count);
 
 // Example
-CPP_DUMP(show_back() << show_back() << variable);
+cpp_dump(show_back() << show_back() << variable);
 ```
 
 The further left manipulator will act on the more outside dimensions of the array/map/set.
@@ -388,7 +388,7 @@ cpp_dump::int_style(unsigned int base = 16, unsigned int digits = 8,
 cpp_dump::int_style10(unsigned int digits, unsigned int chunk = 0) { return int_style(10, digits, chunk, true, true); }
 
 // Example
-CPP_DUMP(int_style(16) << variable);
+cpp_dump(int_style(16) << variable);
 ```
 
 `base` supports values of 2 <= `base` <= 16. For other values, this manipulator resets the effects of the previous `int_style()` manipulators.  
@@ -404,7 +404,7 @@ cpp_dump::map_value(return_value_of_manipulator);
 cpp_dump::map_key_and_value(return_value_of_manipulator_for_key, return_value_of_manipulator_for_value);
 
 // Example
-CPP_DUMP(show_front() << map_key_and_value(int_style(16), show_back()) << map);
+cpp_dump(show_front() << map_key_and_value(int_style(16), show_back()) << map);
 ```
 
 These manipulators act on (multi)maps.  
@@ -415,7 +415,7 @@ In this example, the keys are displayed in hexadecimal, and if the values are it
 ```cpp
 #ifdef DEFINED_ONLY_IN_LOCAL
 #include "./cpp-dump/dump.hpp"
-#define dump(...) CPP_DUMP(__VA_ARGS__)
+#define dump(...) cpp_dump(__VA_ARGS__)
 #else
 #define dump(...)
 #define CPP_DUMP_SET_OPTION(...)
