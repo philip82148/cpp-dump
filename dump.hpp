@@ -22,12 +22,19 @@
 
 /**
  * Print string representations of expression(s) and result(s) to std::clog.
- * This function uses cpp_dump::export_var() internally.
+ * This macro uses cpp_dump::export_var() internally.
  */
 #define CPP_DUMP(...)                                                                              \
   cpp_dump::_detail::cpp_dump_macro(                                                               \
       _p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_CPP_DUMP, __VA_ARGS__)                          \
   )
+
+/**
+ * Print string representations of expression(s) and result(s) to std::clog.
+ * This macro uses cpp_dump::export_var() internally.
+ * This is an alias of CPP_DUMP(...).
+ */
+#define cpp_dump(...) CPP_DUMP(__VA_ARGS__)
 
 /**
  * Set a value to a variable in cpp_dump namespace.
