@@ -226,6 +226,12 @@ cpp_dump::map_key_and_value(return_value_of_manipulator_for_key, return_value_of
 /**
  * Output string representations of expression(s) and result(s) to std::clog.
  */
+#define CPP_DUMP(expressions...)
+
+/**
+ * Output string representations of expression(s) and result(s) to std::clog.
+ * This is an alias of CPP_DUMP(expressions...).
+ */
 #define cpp_dump(expressions...)
 
 /**
