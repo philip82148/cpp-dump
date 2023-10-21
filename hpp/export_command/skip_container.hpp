@@ -25,6 +25,8 @@ struct skip_container;
 template <typename T, typename It>
 struct skip_iterator {
  public:
+  It it;
+
   skip_iterator(
       const It &it,
       const std::function<
@@ -41,10 +43,11 @@ struct skip_iterator {
 
   std::pair<bool, It> operator*() const noexcept {
     bool skip = get_skip_size().value_or(1) != 0;
+    // Pass the iterator to support the case that *it is rvalue.
     return {skip, it};
   }
-  template <typename U>
-  bool operator!=(const U &to) const noexcept {
+  template <typename T2, typename It2>
+  bool operator!=(const skip_iterator<T2, It2> &to) const noexcept {
     return !done && it != to.it;
   }
   skip_iterator &operator++() noexcept {
@@ -66,7 +69,6 @@ struct skip_iterator {
   }
 
  private:
-  It it;
   const std::function<std::optional<std::size_t>(std::size_t, const std::function<std::size_t()> &)>
       &skip_size_func;
   const std::function<std::size_t()> &orig_container_size;
