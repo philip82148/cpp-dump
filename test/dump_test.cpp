@@ -34,13 +34,17 @@ struct non_copyable_and_non_movable_class {
   non_copyable_and_non_movable_class(const string &str_member) : str_member(str_member) {}
 } non_copyable_and_non_movable_class1("This object has a pointer and reference_wrapper to itself.");
 
+struct non_copyable_and_non_movable_class_iterator_end {};
+
 struct non_copyable_and_non_movable_class_iterator {
   int index = 0;
   auto operator*() const {
     // rvalue
     return non_copyable_and_non_movable_class{"This is non_copyable_and_non_movable_class."};
   }
-  bool operator!=(const non_copyable_and_non_movable_class_iterator &) const { return index < 2; }
+  bool operator!=(const non_copyable_and_non_movable_class_iterator_end &) const {
+    return index < 2;
+  }
   non_copyable_and_non_movable_class_iterator &operator++() {
     ++index;
     return *this;
@@ -49,7 +53,7 @@ struct non_copyable_and_non_movable_class_iterator {
 
 struct non_copyable_and_non_movable_class_container {
   auto begin() const { return non_copyable_and_non_movable_class_iterator(); }
-  auto end() const { return non_copyable_and_non_movable_class_iterator(); }
+  auto end() const { return non_copyable_and_non_movable_class_iterator_end(); }
 } non_copyable_and_non_movable_class_container1;
 
 enum class enum_a { s, k, l };
