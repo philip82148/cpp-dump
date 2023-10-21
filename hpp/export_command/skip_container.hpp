@@ -22,7 +22,7 @@ namespace _detail {
 template <typename>
 struct skip_container;
 
-template <typename T, typename It>
+template <typename It>
 struct skip_iterator {
  public:
   It it;
@@ -46,8 +46,8 @@ struct skip_iterator {
     // Pass the iterator to support the case that *it is rvalue.
     return {skip, it};
   }
-  template <typename T2, typename It2>
-  bool operator!=(const skip_iterator<T2, It2> &to) const noexcept {
+  template <typename It2>
+  bool operator!=(const skip_iterator<It2> &to) const noexcept {
     return !done && it != to.it;
   }
   skip_iterator &operator++() noexcept {
@@ -99,8 +99,8 @@ struct skip_container {
 
  private:
   const T &original;
-  const skip_iterator<T, decltype(iterable_begin(original))> _begin;
-  const skip_iterator<T, decltype(iterable_end(original))> _end;
+  const skip_iterator<decltype(iterable_begin(original))> _begin;
+  const skip_iterator<decltype(iterable_end(original))> _end;
 
   std::optional<std::size_t> orig_container_size_cache;
   const std::function<std::size_t()> orig_container_size = [this] {
