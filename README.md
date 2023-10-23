@@ -185,7 +185,7 @@ or
 git submodule add https://github.com/philip82148/cpp-dump
 ```
 
-then
+Then
 
 ```cpp
 #include "path/to/cpp-dump/dump.hpp"
@@ -449,6 +449,18 @@ int main() {
 
   // To be continued...
 }
+```
+
+Then
+
+```shell
+g++ ./main.cpp -D DEFINED_ONLY_IN_LOCAL
+```
+
+or
+
+```shell
+clang++ ./main.cpp -D DEFINED_ONLY_IN_LOCAL
 ```
 
 ## Supported types
