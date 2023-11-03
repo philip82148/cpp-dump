@@ -1,4 +1,4 @@
-name: Dump Test
+name: CTest
 
 on:
   push:
@@ -8,12 +8,13 @@ on:
 
 jobs:
   dump-test:
-    name: Dump Test
+    name: CTest
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Run Test
         run: |
-          cd ./test
-          ./dump_test.sh
+          cmake -S . -B build
+          cmake --build build
+          ctest --test-dir build
