@@ -12,11 +12,11 @@ file(MAKE_DIRECTORY "${source_dir}/log")
 
 string(ASCII 27 esc)
 
-list(GET cmd_args 0 basename)
+list(GET cmd_args 0 suffix)
 list(GET cmd_args 1 width)
 list(GET cmd_args 2 depth)
-set(log_file "${source_dir}/log/${basename}.log")
-set(txt_file "${source_dir}/txt/${basename}.txt")
+set(log_file "${source_dir}/log/dump_${suffix}.log")
+set(txt_file "${source_dir}/txt/dump_${suffix}.txt")
 
 # no color
 execute_process(

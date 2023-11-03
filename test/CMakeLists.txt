@@ -9,12 +9,12 @@ add_compile_options(-Wall -Wextra -Wfloat-equal -Wconversion -Wno-sign-conversio
 add_executable(dump_test "${CMAKE_SOURCE_DIR}/dump_test.cpp")
 
 set(dump_test_path "${CMAKE_BINARY_DIR}/dump_test")
-set(args_array "dump\;160\;4" "dump_narrow\;20\;4" "dump_wide\;4000\;4" "dump_shallow\;4000\;0")
+set(args_array "normal\;160\;4" "narrow\;20\;4" "wide\;4000\;4" "shallow\;4000\;0")
 foreach(args ${args_array})
-    list(GET args 0 basename)
+    list(GET args 0 suffix)
 
     add_test(
-        "DumpTest-${basename}"
+        "DumpTest-${suffix}"
         "${CMAKE_COMMAND}"
         -D "source_dir=${CMAKE_SOURCE_DIR}"
         -D "cmd_path=${dump_test_path}"
