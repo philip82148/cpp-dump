@@ -423,6 +423,7 @@ In this example, the keys are displayed in hexadecimal, and if the values are it
 ```cpp
 #ifdef DEFINED_ONLY_IN_LOCAL
 #include "./cpp-dump/dump.hpp"
+// #include "./cpp-dump/external/atcoder.hpp" // Include this instead of the above if you use AtCoder Library
 #define dump(...) cpp_dump(__VA_ARGS__)
 #else
 #define dump(...)
