@@ -12,7 +12,7 @@ foreach(args ${args_array})
     list(GET args 0 suffix)
 
     add_test(
-        "DumpTest-${suffix}"
+        "dump-${suffix}"
         "${CMAKE_COMMAND}"
         -D "test_dir=${CMAKE_CURRENT_LIST_DIR}/test"
         -D "cmd_path=${CMAKE_CURRENT_BINARY_DIR}/dump_test"
@@ -27,7 +27,7 @@ foreach(file ${files})
 
     add_executable("readme_${basename}" "${file}")
     add_test(
-        "ReadmeTest-${basename}"
+        "readme-${basename}"
         "${CMAKE_COMMAND}"
         -D "test_dir=${CMAKE_CURRENT_LIST_DIR}/test"
         -D "cmd_path=${CMAKE_CURRENT_BINARY_DIR}/readme_${basename}"
