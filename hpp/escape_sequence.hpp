@@ -70,7 +70,7 @@ namespace es {
 
 inline std::string apply(const std::string &es, const std::string &s) {
   if (use_es()) {
-    const std::string reset = "\e[0m";
+    const std::string reset = "\x1b[0m";
     return reset + es + s + reset;
   } else {
     return s;

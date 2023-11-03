@@ -28,7 +28,7 @@ export_var(const T &, const std::string &, std::size_t, std::size_t, bool, const
 
 inline std::string _export_es_value_string(const std::string &es) {
   std::string escaped_es = es;
-  replace_string(escaped_es, "\e", "\\e");
+  replace_string(escaped_es, "\x1b", "\\e");
 
   return es::apply(es, R"(")" + escaped_es + R"(")");
 }

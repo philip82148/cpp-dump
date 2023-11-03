@@ -1,7 +1,11 @@
 cmake_minimum_required(VERSION 3.3.0)
 project(cpp-dump)
 
-add_compile_options(-Wall -Wextra -Wfloat-equal -Wconversion -Wno-sign-conversion -Werror)
+if(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+    add_compile_options(-W4 /Zc:__cplusplus)
+else()
+    add_compile_options(-Wall -Wextra -Wfloat-equal -Wconversion -Wno-sign-conversion -Werror)
+endif()
 
 include(CTest)
 enable_testing()
@@ -12,10 +16,10 @@ foreach(args ${args_array})
     list(GET args 0 suffix)
 
     add_test(
-        "dump-${suffix}"
-        "${CMAKE_COMMAND}"
+        NAME "dump-${suffix}"
+        COMMAND "${CMAKE_COMMAND}"
         -D "test_dir=${CMAKE_CURRENT_LIST_DIR}/test"
-        -D "cmd_path=${CMAKE_CURRENT_BINARY_DIR}/dump_test"
+        -D "cmd_path=$<TARGET_FILE:dump_test>"
         -D "cmd_args=${args}"
         -P "${CMAKE_CURRENT_LIST_DIR}/test/dump_test.cmake"
     )
@@ -27,10 +31,10 @@ foreach(file ${files})
 
     add_executable("readme_${basename}" "${file}")
     add_test(
-        "readme-${basename}"
-        "${CMAKE_COMMAND}"
+        NAME "readme-${basename}"
+        COMMAND "${CMAKE_COMMAND}"
         -D "test_dir=${CMAKE_CURRENT_LIST_DIR}/test"
-        -D "cmd_path=${CMAKE_CURRENT_BINARY_DIR}/readme_${basename}"
+        -D "cmd_path=$<TARGET_FILE:readme_${basename}>"
         -D "basename=${basename}"
         -P "${CMAKE_CURRENT_LIST_DIR}/test/readme_test.cmake"
     )
