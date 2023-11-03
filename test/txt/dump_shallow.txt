@@ -28,7 +28,7 @@ here.`,
 [dump] (unordered_map<int, int>{{4, 6}, {2, 6}, {4, 3}}) => { ... }
 [dump] multimap1 => { ... }
 [dump] unordered_multimap1 => { ... }
-[dump] (set{"A", "p", "p", "l", "e", " ", "P", "e", "n"}) => { ... }
+[dump] (set<string>{"A", "p", "p", "l", "e", " ", "P", "e", "n"}) => { ... }
 [dump] (unordered_set{3, 1, 4, 1, 5}) => { ... }
 [dump] multiset1 => { ... }
 [dump] unordered_multiset1 => { ... }

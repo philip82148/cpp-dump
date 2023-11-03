@@ -26,6 +26,8 @@ execute_process(
    COMMAND "${CMAKE_COMMAND}" -E compare_files "${log_file}" "${txt_file}" RESULT_VARIABLE not_successful
 )
 if(not_successful)
+   file(READ "${log_file}" contents)
+   message(STATUS "${contents}")
    message(SEND_ERROR "${log_file} does not match ${txt_file}!" )
 endif()
 
@@ -39,5 +41,7 @@ execute_process(
    COMMAND "${CMAKE_COMMAND}" -E compare_files "${log_file}" "${txt_file}" RESULT_VARIABLE not_successful
 )
 if(not_successful)
+   file(READ "${log_file}" contents)
+   message(STATUS "${contents}")
    message(SEND_ERROR "${log_file} with color does not match ${txt_file}!" )
 endif()

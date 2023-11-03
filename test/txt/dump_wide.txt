@@ -71,13 +71,12 @@ here.`,
        }
 [dump] unordered_multimap1 => { 
          'b' (1): [ 20 ], 
-         'a' (2): [ 40, 10 ], 
-         'c' (1): [ 30 ]
+         'a' (2): [ 40, 40 ]
        }
-[dump] (set{"A", "p", "p", "l", "e", " ", "P", "e", "n"}) => { "A", "p", "l", "e", " ", "P", "n" }
+[dump] (set<string>{"A", "p", "p", "l", "e", " ", "P", "e", "n"}) => { " ", "A", "P", "e", "l", "n", "p" }
 [dump] (unordered_set{3, 1, 4, 1, 5}) => { 5, 4, 1, 3 }
 [dump] multiset1 => { 1 (2), 3 (1), 4 (1) }
-[dump] unordered_multiset1 => { 4 (1), 1 (2), 3 (1) }
+[dump] unordered_multiset1 => { 4 (1), 1 (2) }
 [dump] queue1 => std::queue{ front()= 1, size()= 5 }
 [dump] priority_queue1 => std::priority_queue{ top()= '5', size()= 5 }
 [dump] stack1 => std::stack{ top()= "5", size()= 5 }

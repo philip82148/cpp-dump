@@ -382,21 +382,18 @@ here.`,
            ], 
            'a' (2): [ 
              40, 
-             10
-           ], 
-           'c' (1): [ 
-             30
+             40
            ]
          }
-[dump] (set{"A", "p", "p", "l", "e", " ", "P", "e", "n"})
+[dump] (set<string>{"A", "p", "p", "l", "e", " ", "P", "e", "n"})
          => { 
-           "A", 
-           "p", 
-           "l", 
-           "e", 
            " ", 
+           "A", 
            "P", 
-           "n"
+           "e", 
+           "l", 
+           "n", 
+           "p"
          }
 [dump] (unordered_set{3, 1, 4, 1, 5})
          => { 
@@ -414,8 +411,7 @@ here.`,
 [dump] unordered_multiset1
          => { 
            4 (1), 
-           1 (2), 
-           3 (1)
+           1 (2)
          }
 [dump] queue1
          => std::queue{

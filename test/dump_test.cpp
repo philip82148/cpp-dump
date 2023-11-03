@@ -1,5 +1,21 @@
-// This is a test for competitive programming.
-#include <bits/stdc++.h>
+#include <array>
+#include <bitset>
+#include <complex>
+#include <exception>
+#include <map>
+#include <memory>
+#include <optional>
+#include <queue>
+#include <set>
+#include <stack>
+#include <string>
+#include <string_view>
+#include <tuple>
+#include <unordered_map>
+#include <unordered_set>
+#include <utility>
+#include <variant>
+#include <vector>
 //
 #include "../dump.hpp"
 
@@ -137,14 +153,13 @@ int main(int argc, char *argv[]) {
   cpp_dump(multimap1);
 
   unordered_multimap<char, int> unordered_multimap1;
-  unordered_multimap1.emplace('c', 30);
-  unordered_multimap1.emplace('a', 10);
+  unordered_multimap1.emplace('a', 40);
   unordered_multimap1.emplace('b', 20);
   unordered_multimap1.emplace('a', 40);
   cpp_dump(unordered_multimap1);
 
   // set
-  cpp_dump((set{"A", "p", "p", "l", "e", " ", "P", "e", "n"}));
+  cpp_dump((set<string>{"A", "p", "p", "l", "e", " ", "P", "e", "n"}));
   cpp_dump((unordered_set{3, 1, 4, 1, 5}));
 
   // multiset
@@ -156,7 +171,6 @@ int main(int argc, char *argv[]) {
   cpp_dump(multiset1);
 
   unordered_multiset<int> unordered_multiset1;
-  unordered_multiset1.insert(3);
   unordered_multiset1.insert(1);
   unordered_multiset1.insert(4);
   unordered_multiset1.insert(1);
