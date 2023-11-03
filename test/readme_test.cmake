@@ -1,7 +1,7 @@
 cmake_policy(SET CMP0057 NEW)
 
-if(NOT source_dir)
-   message(FATAL_ERROR "Variable source_dir not defined" )
+if(NOT test_dir)
+   message(FATAL_ERROR "Variable test_dir not defined" )
 endif()
 if(NOT cmd_path)
    message(FATAL_ERROR "Variable cmd_path not defined" )
@@ -10,10 +10,10 @@ if(NOT basename)
    message(FATAL_ERROR "Variable basename not defined" )
 endif()
 
-file(MAKE_DIRECTORY "${source_dir}/log")
+file(MAKE_DIRECTORY "${test_dir}/log")
 
-set(log_file "${source_dir}/log/readme_${basename}.log")
-set(txt_file "${source_dir}/txt/readme_${basename}.txt")
+set(log_file "${test_dir}/log/readme_${basename}.log")
+set(txt_file "${test_dir}/txt/readme_${basename}.txt")
 
 execute_process(
    COMMAND "${cmd_path}" ERROR_VARIABLE error_contents COMMAND_ERROR_IS_FATAL ANY

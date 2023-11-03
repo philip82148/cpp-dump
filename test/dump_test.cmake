@@ -1,5 +1,5 @@
-if(NOT source_dir)
-   message(FATAL_ERROR "Variable source_dir not defined" )
+if(NOT test_dir)
+   message(FATAL_ERROR "Variable test_dir not defined" )
 endif()
 if(NOT cmd_path)
    message(FATAL_ERROR "Variable cmd_path not defined" )
@@ -8,15 +8,15 @@ if(NOT cmd_args)
    message(FATAL_ERROR "Variable cmd_args not defined" )
 endif()
 
-file(MAKE_DIRECTORY "${source_dir}/log")
+file(MAKE_DIRECTORY "${test_dir}/log")
 
 string(ASCII 27 esc)
 
 list(GET cmd_args 0 suffix)
 list(GET cmd_args 1 width)
 list(GET cmd_args 2 depth)
-set(log_file "${source_dir}/log/dump_${suffix}.log")
-set(txt_file "${source_dir}/txt/dump_${suffix}.txt")
+set(log_file "${test_dir}/log/dump_${suffix}.log")
+set(txt_file "${test_dir}/txt/dump_${suffix}.txt")
 
 # no color
 execute_process(
