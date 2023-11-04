@@ -9,8 +9,7 @@
 
 // This is for MSVC.
 // See https://stackoverflow.com/questions/35210637/macro-expansion-argument-with-commas
-#define _p_CPP_DUMP_BUFFERED_CALL(func, arg) func(arg)
-#define _p_CPP_DUMP_CALL_VA_FUNC_AUX(x)      x
+#define _p_CPP_DUMP_CALL_VA_FUNC_AUX(x) x
 #define _p_CPP_DUMP_CALL_VA_FUNC(func, args_with_paren)                                            \
   _p_CPP_DUMP_CALL_VA_FUNC_AUX(func args_with_paren)
 
@@ -20,6 +19,8 @@
 #define _p_CPP_DUMP_VA_TAIL_AUX(arg1, ...) (__VA_ARGS__)
 #define _p_CPP_DUMP_VA_TAIL(args_width_paren)                                                      \
   _p_CPP_DUMP_CALL_VA_FUNC(_p_CPP_DUMP_VA_TAIL_AUX, args_width_paren)
+
+#define _p_CPP_DUMP_BUFFERED_CALL(func, arg) func(arg)
 
 #define _p_CPP_DUMP_EXPAND_VA1(func, args_with_paren)                                              \
   _p_CPP_DUMP_BUFFERED_CALL(func, _p_CPP_DUMP_VA_HEAD(args_with_paren))
