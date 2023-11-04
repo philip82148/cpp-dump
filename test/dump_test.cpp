@@ -11,8 +11,6 @@
 #include <string>
 #include <string_view>
 #include <tuple>
-#include <unordered_map>
-#include <unordered_set>
 #include <utility>
 #include <variant>
 #include <vector>
@@ -138,7 +136,6 @@ int main(int argc, char *argv[]) {
 
   // map
   cpp_dump((map<double, string>{{3.2, "This is a pen."}, {3.8, "I have an apple."}}));
-  cpp_dump((unordered_map<int, int>{{4, 6}, {2, 6}, {4, 3}}));
 
   // multimap
   multimap<char, int> multimap1;
@@ -152,15 +149,8 @@ int main(int argc, char *argv[]) {
   multimap1.emplace('a', 44);
   cpp_dump(multimap1);
 
-  unordered_multimap<char, int> unordered_multimap1;
-  unordered_multimap1.emplace('a', 40);
-  unordered_multimap1.emplace('b', 20);
-  unordered_multimap1.emplace('a', 40);
-  cpp_dump(unordered_multimap1);
-
   // set
-  cpp_dump((set<string>{"A", "p", "p", "l", "e", " ", "P", "e", "n"}));
-  cpp_dump((unordered_set{3, 1, 4, 1, 5}));
+  cpp_dump((set{"A", "p", "p", "l", "e", " ", "P", "e", "n"}));
 
   // multiset
   multiset<int> multiset1;
@@ -169,12 +159,6 @@ int main(int argc, char *argv[]) {
   multiset1.insert(4);
   multiset1.insert(1);
   cpp_dump(multiset1);
-
-  unordered_multiset<int> unordered_multiset1;
-  unordered_multiset1.insert(1);
-  unordered_multiset1.insert(4);
-  unordered_multiset1.insert(1);
-  cpp_dump(unordered_multiset1);
 
   // FIFO/LIFO
   queue<int> queue1;

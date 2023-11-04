@@ -25,6 +25,15 @@ foreach(args ${args_array})
     )
 endforeach()
 
+add_executable(dump_variable_test test/dump_variable_test.cpp)
+add_test(
+    NAME "dump-variable"
+    COMMAND "${CMAKE_COMMAND}"
+    -D "test_dir=${CMAKE_CURRENT_LIST_DIR}/test"
+    -D "cmd_path=$<TARGET_FILE:dump_variable_test>"
+    -P "${CMAKE_CURRENT_LIST_DIR}/test/dump_variable_test.cmake"
+)
+
 file(GLOB files readme/*.cpp)
 foreach(file ${files})
     get_filename_component(basename "${file}" NAME_WLE)
