@@ -22,8 +22,8 @@ jobs:
           - { os: macos-latest, compiler: "clang++", std: "17" }
           - { os: macos-latest, compiler: "clang++", std: "20" }
           # Windows
-          - { os: windows-2019, compiler: "cl", std: "17" }
-          - { os: windows-2019, compiler: "cl", std: "20" }
+          - { os: windows-latest, compiler: "cl", std: "17" }
+          - { os: windows-latest, compiler: "cl", std: "20" }
     runs-on: ${{ matrix.env.os }}
 
     steps:
