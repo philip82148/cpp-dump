@@ -30,14 +30,14 @@ export_var(const T &, const std::string &, std::size_t, std::size_t, bool, const
 template <typename T>
 struct _map_dummy_wrapper {
  public:
-  _map_dummy_wrapper(const T &map) : map(map) {}
+  _map_dummy_wrapper(const T &map) : _map(map) {}
 
-  auto begin() const noexcept { return map.begin(); }
-  auto end() const noexcept { return map.end(); }
-  auto size() const noexcept { return map.size(); }
+  auto begin() const noexcept { return _map.begin(); }
+  auto end() const noexcept { return _map.end(); }
+  auto size() const noexcept { return _map.size(); }
 
  private:
-  const T &map;
+  const T &_map;
 };
 
 template <typename T>
@@ -52,19 +52,19 @@ struct _multimap_wrapper {
   struct multimap_wrapper_iterator {
    public:
     using It = typename T::const_iterator;
-    multimap_wrapper_iterator(const T &map, It it) : map(map), it(it) {}
+    multimap_wrapper_iterator(const T &map, It it) : _map(map), _it(it) {}
 
-    const auto &operator*() const noexcept { return *it; }
-    auto operator->() const noexcept { return it.operator->(); }
-    bool operator!=(const multimap_wrapper_iterator &to) const { return it != to.it; }
+    const auto &operator*() const noexcept { return *_it; }
+    auto operator->() const noexcept { return _it.operator->(); }
+    bool operator!=(const multimap_wrapper_iterator &to) const { return _it != to._it; }
     multimap_wrapper_iterator &operator++() {
-      it = map.equal_range(it->first).second;
+      _it = _map.equal_range(_it->first).second;
       return *this;
     }
 
    private:
-    const T &map;
-    It it;
+    const T &_map;
+    It _it;
   };
 
   multimap_wrapper_iterator _begin;
@@ -83,18 +83,18 @@ struct _multimap_value_wrapper {
  private:
   struct multimap_value_iterator {
    public:
-    multimap_value_iterator(It it) : it(it) {}
+    multimap_value_iterator(It it) : _it(it) {}
     multimap_value_iterator() = delete;
 
-    const auto &operator*() const noexcept { return it->second; }
-    bool operator!=(const multimap_value_iterator &to) const noexcept { return it != to.it; }
+    const auto &operator*() const noexcept { return _it->second; }
+    bool operator!=(const multimap_value_iterator &to) const noexcept { return _it != to._it; }
     multimap_value_iterator &operator++() {
-      ++it;
+      ++_it;
       return *this;
     }
 
    private:
-    It it;
+    It _it;
   };
 
   multimap_value_iterator _begin;
@@ -117,8 +117,6 @@ inline auto export_map(
 
   bool shift_indent = is_multimap<T> || is_iterable_like<typename T::key_type>
                       || is_iterable_like<typename T::mapped_type>;
-  // 中身がiterable_likeでも常に長さに応じて改行するかどうかを決める場合は次
-  // bool shift_indent = false;
 
   if (shift_indent && fail_on_newline) return "\n";
 

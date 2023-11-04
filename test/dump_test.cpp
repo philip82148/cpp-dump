@@ -45,7 +45,7 @@ struct non_copyable_and_non_movable_class {
 
   non_copyable_and_non_movable_class() = delete;
 
-  non_copyable_and_non_movable_class(const string &str_member) : str_member(str_member) {}
+  non_copyable_and_non_movable_class(const string &s) : str_member(s) {}
 } non_copyable_and_non_movable_class1("This object has a pointer and reference_wrapper to itself.");
 
 struct non_copyable_and_non_movable_class_iterator_end {};
@@ -78,12 +78,12 @@ CPP_DUMP_DEFINE_EXPORT_OBJECT(non_copyable_and_non_movable_class, str_member, po
 
 int main(int argc, char *argv[]) {
   if (argc != 4) return 1;
-  int max_line_width = stoi(argv[1]);
-  int max_depth = stoi(argv[2]);
+  int max_line_width_ = stoi(argv[1]);
+  int max_depth_ = stoi(argv[2]);
   int es_index = stoi(argv[3]);
 
-  CPP_DUMP_SET_OPTION(max_line_width, max_line_width);
-  CPP_DUMP_SET_OPTION(max_depth, max_depth);
+  CPP_DUMP_SET_OPTION(max_line_width, max_line_width_);
+  CPP_DUMP_SET_OPTION(max_depth, max_depth_);
   CPP_DUMP_SET_OPTION(max_iteration_count, 100);
   CPP_DUMP_SET_OPTION(
       es_style, (array{cpp_dump::es_style_t::no_es, cpp_dump::es_style_t::by_syntax}[es_index])
