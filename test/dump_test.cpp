@@ -1,3 +1,8 @@
+#ifdef USE_BITS_STDC
+// This is a test for competitive programming.
+#include <bits/stdc++.h>
+#pragma message("<bits/stdc++.h> is used.")
+#else
 #include <array>
 #include <bitset>
 #include <complex>
@@ -14,6 +19,7 @@
 #include <utility>
 #include <variant>
 #include <vector>
+#endif
 //
 #include "../dump.hpp"
 
