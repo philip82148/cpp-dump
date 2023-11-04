@@ -405,9 +405,7 @@ here.`,
          => *65
 [dump] *int_ptr
          => 65
-[dump] void_ptr
-         => 0x7ffd06586204, 
-       char_ptr
+[dump] char_ptr
          => "A"
 [dump] nullptr
          => nullptr

@@ -18,6 +18,11 @@ int main(int argc, char *argv[]) {
       es_style, (array{cpp_dump::es_style_t::no_es, cpp_dump::es_style_t::by_syntax}[es_index])
   );
 
+  // pointer
+  const void *void_ptr = (void *)0x7ffd06586204;
+  cpp_dump(void_ptr);
+
+  // unordered
   cpp_dump((unordered_map<int, int>{{4, 6}, {2, 6}, {4, 3}}));
 
   unordered_multimap<char, int> unordered_multimap1;

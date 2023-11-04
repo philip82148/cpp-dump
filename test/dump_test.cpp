@@ -181,9 +181,8 @@ int main(int argc, char *argv[]) {
   cpp_dump(int_ptr);
   cpp_dump(*int_ptr);
 
-  const void *void_ptr = (void *)0x7ffd06586204;
   char *char_ptr = (char *)&a;
-  cpp_dump(void_ptr, char_ptr);
+  cpp_dump(char_ptr);
   cpp_dump(nullptr);
   shared_ptr<int> shared_ptr1(new int(42));
   weak_ptr<int> weak_ptr1 = shared_ptr1;

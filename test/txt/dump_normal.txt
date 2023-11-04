@@ -78,7 +78,7 @@ here.`,
 [dump] stack1 => std::stack{ top()= "5", size()= 5 }
 [dump] int_ptr => *65
 [dump] *int_ptr => 65
-[dump] void_ptr => 0x7ffd06586204, char_ptr => "A"
+[dump] char_ptr => "A"
 [dump] nullptr => nullptr
 [dump] shared_ptr1 => *42, weak_ptr1 => *42, unique_ptr1 => *42, c => *42
 [dump] shared_ptr1 => *3, weak_ptr1 => nullptr, unique_ptr1 => *42
