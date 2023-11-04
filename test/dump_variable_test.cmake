@@ -9,15 +9,15 @@ file(MAKE_DIRECTORY "${test_dir}/log")
 
 string(ASCII 27 esc)
 
-if(UNIX)
-   set(log_file "${test_dir}/log/dump_unix.log")
-   set(txt_file "${test_dir}/txt/dump_unix.txt")
+if(UNIX AND NOT APPLE)
+   set(log_file "${test_dir}/log/dump_variable_linux.log")
+   set(txt_file "${test_dir}/txt/dump_variable_linux.txt")
 elseif(APPLE)
-   set(log_file "${test_dir}/log/dump_apple.log")
-   set(txt_file "${test_dir}/txt/dump_apple.txt")
+   set(log_file "${test_dir}/log/dump_variable_apple.log")
+   set(txt_file "${test_dir}/txt/dump_variable_apple.txt")
 else()
-   set(log_file "${test_dir}/log/dump_win32.log")
-   set(txt_file "${test_dir}/txt/dump_win32.txt")
+   set(log_file "${test_dir}/log/dump_variable_win32.log")
+   set(txt_file "${test_dir}/txt/dump_variable_win32.txt")
 endif()
 
 # no color
