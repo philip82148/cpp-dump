@@ -1,0 +1,36 @@
+name: CTest
+
+on:
+  push:
+    branches:
+      - "main"
+  pull_request:
+
+jobs:
+  ctest:
+    name: Test
+    strategy:
+      fail-fast: false
+      matrix:
+        env:
+          # Linux
+          - { os: ubuntu-22.04, compiler: "g++", std: "17" }
+          - { os: ubuntu-22.04, compiler: "g++", std: "20" }
+          - { os: ubuntu-22.04, compiler: "clang++", std: "17" }
+          - { os: ubuntu-22.04, compiler: "clang++", std: "20" }
+          # MacOS
+          - { os: macos-latest, compiler: "clang++", std: "17" }
+          - { os: macos-latest, compiler: "clang++", std: "20" }
+          # Windows
+          - { os: windows-2019, compiler: "cl", std: "17" }
+          - { os: windows-2019, compiler: "cl", std: "20" }
+    runs-on: ${{ matrix.env.os }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Run Test
+        run: |
+          cmake -S . -B build -D CMAKE_CXX_COMPILER=${{matrix.env.compiler}} -D CMAKE_CXX_STANDARD=${{matrix.env.std}} -D CMAKE_CXX_STANDARD_REQUIRED=ON
+          cmake --build build
+          ctest --test-dir build --output-on-failure -C Debug

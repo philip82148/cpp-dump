@@ -35,27 +35,27 @@ struct es_value_t {
   std::string unsupported;
   std::vector<std::string> bracket_by_depth;
   es_value_t(
-      std::string log,
-      std::string expression,
-      std::string reserved,
-      std::string number,
-      std::string character,
-      std::string op,
-      std::string identifier,
-      std::string member,
-      std::string unsupported,
-      std::vector<std::string> bracket_by_depth
+      std::string log_,
+      std::string expression_,
+      std::string reserved_,
+      std::string number_,
+      std::string character_,
+      std::string op_,
+      std::string identifier_,
+      std::string member_,
+      std::string unsupported_,
+      std::vector<std::string> bracket_by_depth_
   )
-      : log(log),
-        expression(expression),
-        reserved(reserved),
-        number(number),
-        character(character),
-        op(op),
-        identifier(identifier),
-        member(member),
-        unsupported(unsupported),
-        bracket_by_depth(bracket_by_depth) {}
+      : log(log_),
+        expression(expression_),
+        reserved(reserved_),
+        number(number_),
+        character(character_),
+        op(op_),
+        identifier(identifier_),
+        member(member_),
+        unsupported(unsupported_),
+        bracket_by_depth(bracket_by_depth_) {}
 };
 
 extern inline es_style_t es_style;
@@ -70,7 +70,7 @@ namespace es {
 
 inline std::string apply(const std::string &es, const std::string &s) {
   if (use_es()) {
-    const std::string reset = "\e[0m";
+    const std::string reset = "\x1b[0m";
     return reset + es + s + reset;
   } else {
     return s;

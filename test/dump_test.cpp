@@ -1,5 +1,19 @@
-// This is a test for competitive programming.
-#include <bits/stdc++.h>
+#include <array>
+#include <bitset>
+#include <complex>
+#include <exception>
+#include <map>
+#include <memory>
+#include <optional>
+#include <queue>
+#include <set>
+#include <stack>
+#include <string>
+#include <string_view>
+#include <tuple>
+#include <utility>
+#include <variant>
+#include <vector>
 //
 #include "../dump.hpp"
 
@@ -31,7 +45,7 @@ struct non_copyable_and_non_movable_class {
 
   non_copyable_and_non_movable_class() = delete;
 
-  non_copyable_and_non_movable_class(const string &str_member) : str_member(str_member) {}
+  non_copyable_and_non_movable_class(const string &s) : str_member(s) {}
 } non_copyable_and_non_movable_class1("This object has a pointer and reference_wrapper to itself.");
 
 struct non_copyable_and_non_movable_class_iterator_end {};
@@ -64,12 +78,12 @@ CPP_DUMP_DEFINE_EXPORT_OBJECT(non_copyable_and_non_movable_class, str_member, po
 
 int main(int argc, char *argv[]) {
   if (argc != 4) return 1;
-  int max_line_width = stoi(argv[1]);
-  int max_depth = stoi(argv[2]);
+  int max_line_width_ = stoi(argv[1]);
+  int max_depth_ = stoi(argv[2]);
   int es_index = stoi(argv[3]);
 
-  CPP_DUMP_SET_OPTION(max_line_width, max_line_width);
-  CPP_DUMP_SET_OPTION(max_depth, max_depth);
+  CPP_DUMP_SET_OPTION(max_line_width, max_line_width_);
+  CPP_DUMP_SET_OPTION(max_depth, max_depth_);
   CPP_DUMP_SET_OPTION(max_iteration_count, 100);
   CPP_DUMP_SET_OPTION(
       es_style, (array{cpp_dump::es_style_t::no_es, cpp_dump::es_style_t::by_syntax}[es_index])
@@ -122,7 +136,6 @@ int main(int argc, char *argv[]) {
 
   // map
   cpp_dump((map<double, string>{{3.2, "This is a pen."}, {3.8, "I have an apple."}}));
-  cpp_dump((unordered_map<int, int>{{4, 6}, {2, 6}, {4, 3}}));
 
   // multimap
   multimap<char, int> multimap1;
@@ -136,16 +149,8 @@ int main(int argc, char *argv[]) {
   multimap1.emplace('a', 44);
   cpp_dump(multimap1);
 
-  unordered_multimap<char, int> unordered_multimap1;
-  unordered_multimap1.emplace('c', 30);
-  unordered_multimap1.emplace('a', 10);
-  unordered_multimap1.emplace('b', 20);
-  unordered_multimap1.emplace('a', 40);
-  cpp_dump(unordered_multimap1);
-
   // set
-  cpp_dump((set{"A", "p", "p", "l", "e", " ", "P", "e", "n"}));
-  cpp_dump((unordered_set{3, 1, 4, 1, 5}));
+  cpp_dump((set<string>{"A", "p", "p", "l", "e", " ", "P", "e", "n"}));
 
   // multiset
   multiset<int> multiset1;
@@ -154,13 +159,6 @@ int main(int argc, char *argv[]) {
   multiset1.insert(4);
   multiset1.insert(1);
   cpp_dump(multiset1);
-
-  unordered_multiset<int> unordered_multiset1;
-  unordered_multiset1.insert(3);
-  unordered_multiset1.insert(1);
-  unordered_multiset1.insert(4);
-  unordered_multiset1.insert(1);
-  cpp_dump(unordered_multiset1);
 
   // FIFO/LIFO
   queue<int> queue1;
@@ -183,9 +181,8 @@ int main(int argc, char *argv[]) {
   cpp_dump(int_ptr);
   cpp_dump(*int_ptr);
 
-  const void *void_ptr = (void *)0x7ffd06586204;
   char *char_ptr = (char *)&a;
-  cpp_dump(void_ptr, char_ptr);
+  cpp_dump(char_ptr);
   cpp_dump(nullptr);
   shared_ptr<int> shared_ptr1(new int(42));
   weak_ptr<int> weak_ptr1 = shared_ptr1;

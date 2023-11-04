@@ -30,14 +30,14 @@ export_var(const T &, const std::string &, std::size_t, std::size_t, bool, const
 template <typename T>
 struct _set_dummy_wrapper {
  public:
-  _set_dummy_wrapper(const T &set) : set(set) {}
+  _set_dummy_wrapper(const T &set) : _set(set) {}
 
-  auto begin() const noexcept { return set.begin(); }
-  auto end() const noexcept { return set.end(); }
-  auto size() const noexcept { return set.size(); }
+  auto begin() const noexcept { return _set.begin(); }
+  auto end() const noexcept { return _set.end(); }
+  auto size() const noexcept { return _set.size(); }
 
  private:
-  const T &set;
+  const T &_set;
 };
 
 template <typename T>
@@ -52,18 +52,18 @@ struct _multiset_wrapper {
   struct multiset_wrapper_iterator {
    public:
     using It = typename T::const_iterator;
-    multiset_wrapper_iterator(const T &set, It it) : set(set), it(it) {}
+    multiset_wrapper_iterator(const T &set, It it) : _set(set), _it(it) {}
 
-    const auto &operator*() const noexcept { return *it; }
-    bool operator!=(const multiset_wrapper_iterator &to) const noexcept { return it != to.it; }
+    const auto &operator*() const noexcept { return *_it; }
+    bool operator!=(const multiset_wrapper_iterator &to) const noexcept { return _it != to._it; }
     multiset_wrapper_iterator &operator++() {
-      it = set.equal_range(*it).second;
+      _it = _set.equal_range(*_it).second;
       return *this;
     }
 
    private:
-    const T &set;
-    It it;
+    const T &_set;
+    It _it;
   };
 
   multiset_wrapper_iterator _begin;
@@ -85,8 +85,6 @@ inline auto export_set(
     return es::bracket("{ ", current_depth) + es::op("...") + es::bracket(" }", current_depth);
 
   bool shift_indent = is_iterable_like<iterable_elem_type<T>>;
-  // 中身がiterable_likeでも常に長さに応じて改行するかどうかを決める場合は次
-  // bool shift_indent = false;
 
   if (shift_indent && fail_on_newline) return "\n";
 

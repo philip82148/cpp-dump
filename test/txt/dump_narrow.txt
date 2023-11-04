@@ -353,11 +353,6 @@ here.`,
            3.200000: "This is a pen.", 
            3.800000: "I have an apple."
          }
-[dump] (unordered_map<int, int>{{4, 6}, {2, 6}, {4, 3}})
-         => { 
-           2: 6, 
-           4: 6
-         }
 [dump] multimap1
          => { 
            'a' (4): [ 
@@ -375,47 +370,21 @@ here.`,
              31
            ]
          }
-[dump] unordered_multimap1
+[dump] (set<string>{"A", "p", "p", "l", "e", " ", "P", "e", "n"})
          => { 
-           'b' (1): [ 
-             20
-           ], 
-           'a' (2): [ 
-             40, 
-             10
-           ], 
-           'c' (1): [ 
-             30
-           ]
-         }
-[dump] (set{"A", "p", "p", "l", "e", " ", "P", "e", "n"})
-         => { 
-           "A", 
-           "p", 
-           "l", 
-           "e", 
            " ", 
+           "A", 
            "P", 
-           "n"
-         }
-[dump] (unordered_set{3, 1, 4, 1, 5})
-         => { 
-           5, 
-           4, 
-           1, 
-           3
+           "e", 
+           "l", 
+           "n", 
+           "p"
          }
 [dump] multiset1
          => { 
            1 (2), 
            3 (1), 
            4 (1)
-         }
-[dump] unordered_multiset1
-         => { 
-           4 (1), 
-           1 (2), 
-           3 (1)
          }
 [dump] queue1
          => std::queue{
@@ -436,9 +405,7 @@ here.`,
          => *65
 [dump] *int_ptr
          => 65
-[dump] void_ptr
-         => 0x7ffd06586204, 
-       char_ptr
+[dump] char_ptr
          => "A"
 [dump] nullptr
          => nullptr

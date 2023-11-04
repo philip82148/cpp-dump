@@ -15,19 +15,19 @@
 
 int main() {
   cpp_dump::es_value = {
-      "\e[02m",  // log: dark
-      "\e[34m",  // expression: blue
-      "\e[36m",  // reserved: cyan
-      "\e[36m",  // number: cyan
-      "\e[36m",  // character: cyan
-      "\e[02m",  // op: dark
-      "\e[32m",  // identifier:  green
-      "\e[36m",  // member: cyan
-      "",        // unsupported: default
+      "\x1b[02m",  // log: dark
+      "\x1b[34m",  // expression: blue
+      "\x1b[36m",  // reserved: cyan
+      "\x1b[36m",  // number: cyan
+      "\x1b[36m",  // character: cyan
+      "\x1b[02m",  // op: dark
+      "\x1b[32m",  // identifier:  green
+      "\x1b[36m",  // member: cyan
+      "",          // unsupported: default
       {
-          "\e[33m",  // bracket_by_depth[0]: yellow
-          "\e[35m",  // bracket_by_depth[1]: magenta
-          "\e[36m",  // bracket_by_depth[2]: cyan
+          "\x1b[33m",  // bracket_by_depth[0]: yellow
+          "\x1b[35m",  // bracket_by_depth[1]: magenta
+          "\x1b[36m",  // bracket_by_depth[2]: cyan
       },
   };
 
