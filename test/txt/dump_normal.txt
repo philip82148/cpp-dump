@@ -71,7 +71,7 @@ here.`,
          'b' (2): [ 20, 23 ], 
          'c' (2): [ 30, 31 ]
        }
-[dump] (set{"A", "p", "p", "l", "e", " ", "P", "e", "n"}) => { "A", "p", "l", "e", " ", "P", "n" }
+[dump] (set<string>{"A", "p", "p", "l", "e", " ", "P", "e", "n"}) => { " ", "A", "P", "e", "l", "n", "p" }
 [dump] multiset1 => { 1 (2), 3 (1), 4 (1) }
 [dump] queue1 => std::queue{ front()= 1, size()= 5 }
 [dump] priority_queue1 => std::priority_queue{ top()= '5', size()= 5 }

@@ -33,4 +33,4 @@ jobs:
         run: |
           cmake -S . -B build -D CMAKE_CXX_COMPILER=${{matrix.env.compiler}} -D CMAKE_CXX_STANDARD=${{matrix.env.std}} -D CMAKE_CXX_STANDARD_REQUIRED=ON
           cmake --build build
-          ctest --test-dir build --output-on-failure
+          ctest --test-dir build --output-on-failure -C Debug

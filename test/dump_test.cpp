@@ -150,7 +150,7 @@ int main(int argc, char *argv[]) {
   cpp_dump(multimap1);
 
   // set
-  cpp_dump((set{"A", "p", "p", "l", "e", " ", "P", "e", "n"}));
+  cpp_dump((set<string>{"A", "p", "p", "l", "e", " ", "P", "e", "n"}));
 
   // multiset
   multiset<int> multiset1;

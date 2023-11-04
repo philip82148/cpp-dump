@@ -26,7 +26,7 @@ here.`,
 [dump] make_tuple( 9, "This is another string.", "This is another string.", "This is another string.", "This is another string.", 7.9 ) => ( ... )
 [dump] (map<double, string>{{3.2, "This is a pen."}, {3.8, "I have an apple."}}) => { ... }
 [dump] multimap1 => { ... }
-[dump] (set{"A", "p", "p", "l", "e", " ", "P", "e", "n"}) => { ... }
+[dump] (set<string>{"A", "p", "p", "l", "e", " ", "P", "e", "n"}) => { ... }
 [dump] multiset1 => { ... }
 [dump] queue1 => std::queue{ ... }
 [dump] priority_queue1 => std::priority_queue{ ... }
