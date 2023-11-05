@@ -39,8 +39,11 @@ inline auto export_arithmetic(
     bool,
     const export_command &command
 ) -> std::enable_if_t<is_arithmetic<T> && std::is_integral_v<T>, std::string> {
-  auto [base, digits, chunk, space_fill, support_negative] = command.get_int_style();
-  if (base == 0 || (!support_negative && value < 0)) return es::number(std::to_string(value));
+  auto int_style = command.get_int_style();
+  if (!int_style) return es::number(std::to_string(value));
+
+  auto [base, digits, chunk, space_fill, support_negative] = int_style.value();
+  if (!support_negative && value < 0) return es::number(std::to_string(value));
 
   std::string output;
   T tmp;

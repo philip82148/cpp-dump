@@ -56,20 +56,22 @@ struct export_command {
  public:
   static const export_command default_command;
 
-  // base = std::get<0>(int_style) must be 2 <= base <= 16 or base == 0
-  export_command(const std::tuple<unsigned int, unsigned int, unsigned int, bool, bool> &int_style)
-      : _int_style(int_style), _skip_size_func(nullptr) {}
+  export_command(const std::tuple<unsigned int, unsigned int, unsigned int, bool, bool> &int_style
+  ) {
+    auto base = std::get<0>(int_style);
+    if (base >= 2 && base <= 16) _int_style = int_style;
+  }
 
   export_command(
       std::function<std::optional<std::size_t>(std::size_t, const std::function<std::size_t()> &)>
           &&skip_size_func
   )
-      : _int_style(0, 0, 0, false, false), _skip_size_func(std::move(skip_size_func)) {}
+      : _skip_size_func(std::move(skip_size_func)) {}
 
   export_command(const std::function<
                  std::optional<std::size_t>(std::size_t, const std::function<std::size_t()> &)>
                      &skip_size_func)
-      : _int_style(0, 0, 0, false, false), _skip_size_func(skip_size_func) {}
+      : _skip_size_func(skip_size_func) {}
 
   export_command(export_command &&) = default;
   export_command &operator=(export_command &&) = default;
@@ -83,38 +85,37 @@ struct export_command {
   }
 
   export_command &operator<<(export_command &&command) & {
-    // export_command has either {map_key_child || map_value_child}, skip_size_func_ptr
+    // export_command has either {map_key_child || map_value_child}, skip_size_func
     // int_style.
     // in case of {map_key_child || map_value_child}
     if (command._map_key_child || command._map_value_child) {
-      // jump to the node whose child has no skip_size_func_ptr.
+      // jump to the node whose child has no skip_size_func.
       if (_child && _child->_skip_size_func) {
         *_child << std::move(command);
         return *this;
       }
 
       // assign to map_key_child and map_value_child of the node, which has the last
-      // skip_size_func_ptr of the chain. and they inherit int_style from the node.
-      auto &int_style_to_inherit =
-          _child && _child->_child && std::get<0>(_child->_child->_int_style)
-              ? _child->_child->_int_style
-              : _int_style;
+      // skip_size_func of the chain. and they inherit int_style from the node.
+      const auto &int_style_to_inherit = _child && _child->_child && _child->_child->_int_style
+                                             ? _child->_child->_int_style
+                                             : _int_style;
       if (command._map_key_child) {
         _map_key_child = std::move(command._map_key_child);
-        if (!std::get<0>(_map_key_child->_int_style))
+        if (int_style_to_inherit && !_map_key_child->_int_style)
           _map_key_child->apply_int_style(int_style_to_inherit);
       }
       if (command._map_value_child) {
         _map_value_child = std::move(command._map_value_child);
-        if (!std::get<0>(_map_value_child->_int_style))
+        if (int_style_to_inherit && !_map_value_child->_int_style)
           _map_value_child->apply_int_style(int_style_to_inherit);
       }
       return *this;
     }
 
-    // in case of skip_size_func_ptr
+    // in case of skip_size_func
     if (command._skip_size_func) {
-      // jump to the node that has no skip_size_func_ptr
+      // jump to the node that has no skip_size_func
       if (_skip_size_func && _child) {
         *_child << std::move(command);
         return *this;
@@ -131,8 +132,8 @@ struct export_command {
     }
 
     // in case of int_style
-    // jump to the node that has no skip_size_func_ptr
-    // or create that has no skip_size_func_ptr
+    // jump to the node that has no skip_size_func
+    // or create that has no skip_size_func
     if (_skip_size_func) {
       if (!_child) {
         _child = std::make_unique<export_command>(nullptr);
@@ -142,7 +143,7 @@ struct export_command {
       return *this;
     }
 
-    // this node is the first node that will have skip_size_func_ptr next.
+    // this node is the first node that will have skip_size_func next.
     // assign int_style to the child of this node, so that int_style applies to the element of the
     // container.
     if (!_child) _child = std::make_unique<export_command>(nullptr);
@@ -153,9 +154,9 @@ struct export_command {
 
   const export_command &next() const {
     if (!_child) {
-      if (!std::get<0>(_int_style)) return default_command;
+      if (!_int_style) return default_command;
 
-      _child = std::make_unique<export_command>(_int_style);
+      _child = std::make_unique<export_command>(_int_style.value());
     }
 
     return *_child;
@@ -184,12 +185,13 @@ struct export_command {
     return skip_container<T>(container, _default_skip_size_func);
   }
 
-  std::tuple<unsigned int, unsigned int, unsigned int, bool, bool> get_int_style() const {
+  std::optional<std::tuple<unsigned int, unsigned int, unsigned int, bool, bool>> get_int_style(
+  ) const {
     return _int_style;
   }
 
  private:
-  std::tuple<unsigned int, unsigned int, unsigned int, bool, bool> _int_style;
+  std::optional<std::tuple<unsigned int, unsigned int, unsigned int, bool, bool>> _int_style;
   std::function<std::optional<std::size_t>(std::size_t, const std::function<std::size_t()> &)>
       _skip_size_func;
   mutable std::unique_ptr<export_command> _child;
@@ -197,16 +199,14 @@ struct export_command {
   std::unique_ptr<export_command> _map_value_child;
 
   void apply_int_style(
-      const std::tuple<unsigned int, unsigned int, unsigned int, bool, bool> &int_style
+      const std::optional<std::tuple<unsigned int, unsigned int, unsigned int, bool, bool>>
+          &int_style
   ) {
-    if (!std::get<0>(int_style)) return;
-
     _int_style = int_style;
 
-    if (_child && !std::get<0>(_child->_int_style)) _child->apply_int_style(int_style);
-    if (_map_key_child && !std::get<0>(_map_key_child->_int_style))
-      _map_key_child->apply_int_style(int_style);
-    if (_map_value_child && !std::get<0>(_map_value_child->_int_style))
+    if (_child && !_child->_int_style) _child->apply_int_style(int_style);
+    if (_map_key_child && !_map_key_child->_int_style) _map_key_child->apply_int_style(int_style);
+    if (_map_value_child && !_map_value_child->_int_style)
       _map_value_child->apply_int_style(int_style);
   }
 };
@@ -244,9 +244,7 @@ inline auto int_style(
     bool space_fill = false,
     bool support_negative = false
 ) {
-  return _detail::export_command(
-      {base >= 2 && base <= 16 ? base : 0, digits, chunk, space_fill, support_negative}
-  );
+  return _detail::export_command({base, digits, chunk, space_fill, support_negative});
 }
 
 /*
