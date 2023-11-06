@@ -35,9 +35,13 @@ template <typename T>
 using _remove_cref = std::remove_const_t<std::remove_reference_t<T>>;
 
 template <typename T>
+auto _incrementable(T &&t) -> decltype(++t);
+
+template <typename T>
 auto _is_iterable(int) -> decltype(
   iterable_begin(std::declval<T>()) != iterable_end(std::declval<T>()),
   *iterable_begin(std::declval<T>()),
+  _incrementable(iterable_begin(std::declval<T>())),
   std::true_type()
   //
 );
