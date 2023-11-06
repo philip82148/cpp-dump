@@ -212,8 +212,9 @@ inline constexpr bool _is_exportable_but_not_operator =
 
 template <typename T>
 auto _is_asterisk(int) -> std::enable_if_t<
-    !_is_exportable_but_not_operator<T>,
-    decltype(*std::declval<const T>(), std::true_type())>;
+    !_is_exportable_but_not_operator<T>
+        && !std::is_same_v<_remove_cref<decltype(*std::declval<const T>())>, T>,
+    std::true_type>;
 template <typename>
 std::false_type _is_asterisk(long);
 
@@ -222,7 +223,8 @@ inline constexpr bool is_asterisk = decltype(_is_asterisk<_remove_cref<T>>(0))::
 
 template <typename T>
 auto _is_ostream(int) -> std::enable_if_t<
-    !_is_exportable_but_not_operator<T> && !is_asterisk<T>,
+    !_is_exportable_but_not_operator<T> && !is_asterisk<T> && !std::is_function_v<T>
+        && !std::is_member_pointer_v<T>,
     decltype(std::declval<std::ostream>() << std::declval<const T>(), std::true_type())>;
 template <typename>
 std::false_type _is_ostream(long);
