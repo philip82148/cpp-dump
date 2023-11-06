@@ -308,8 +308,17 @@ int main(int argc, char *argv[]) {
   cpp_dump(ostream_able_class_a_1);
 
   // unsupported type
-  enum class unsupported { k, l } unsupported_enum = unsupported::k;
-  cpp_dump(unsupported_enum);
+  struct unsupported_class {
+    int k;
+    string str() const { return ""; }
+  } unsupported_class1;
+  cpp_dump(unsupported_class1);
+
+  // unsupported type (function&member pointers)
+  cpp_dump(main, &unsupported_class::k, &unsupported_class::str);
+
+  // unsupported type (manipulators)
+  cpp_dump(setw(5), boolalpha);
 
   // extra
   cpp_dump(cpp_dump::es_style_t::no_es, cpp_dump::es_style_t::by_syntax, cpp_dump::es_value);

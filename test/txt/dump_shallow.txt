@@ -51,7 +51,9 @@ here.`,
 [dump] logic_error1 => std::logic_error{ what()= "This is a test error." }, original_error1 => { what()= "This is an original error." }
 [dump] vec.begin() => *...
 [dump] ostream_able_class_a_1 => ostream_able_class_a
-[dump] unsupported_enum => Unsupported Type
+[dump] unsupported_class1 => Unsupported Type
+[dump] main => Unsupported Type, &unsupported_class::k => Unsupported Type, &unsupported_class::str => Unsupported Type
+[dump] setw(5) => Unsupported Type, boolalpha => Unsupported Type
 [dump] cpp_dump::es_style_t::no_es => cpp_dump::es_style_t::no_es, cpp_dump::es_style_t::by_syntax => cpp_dump::es_style_t::by_syntax, cpp_dump::es_value => cpp_dump::es_value_t{ ... }
 [dump] int_style(16) << 10000u => 00 00 27 10 _16, int_style(16) << 10000l => 00 00 27 10 _16, int_style(16) << 10000ul => 00 00 27 10 _16, int_style(16) << 10000ll => 00 00 27 10 _16, int_style(16) << 10000ull => 00 00 27 10 _16
 [dump] array50 => [ ... ], map50 => { ... }, set50 => { ... }
