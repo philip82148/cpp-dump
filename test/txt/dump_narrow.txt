@@ -1884,3 +1884,14 @@ here.`,
            }, 
            ...
          ]
+[dump] container_of_non_copyable_non_const_iterator1
+         => [ 
+           "This iterator is non-copyable and doesn't support const.", 
+           "This iterator is non-copyable and doesn't support const."
+         ]
+[dump] unsupported_container_of_supported_container_a1
+         => Unsupported Type
+[dump] unsupported_container_of_supported_container_b1
+         => Unsupported Type
+[dump] unsupported_non_const_class1
+         => Unsupported Type

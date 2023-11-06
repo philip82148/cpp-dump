@@ -82,6 +82,52 @@ CPP_DUMP_DEFINE_EXPORT_ENUM(enum_a, enum_a::s, enum_a::k);
 CPP_DUMP_DEFINE_EXPORT_OBJECT(decltype(class_a1), int_a, long_b, a_str());
 CPP_DUMP_DEFINE_EXPORT_OBJECT(non_copyable_and_non_movable_class, str_member, pointer, ref);
 
+// support non copyable iterator
+// https://stackoverflow.com/questions/2568294/is-it-a-good-idea-to-create-an-stl-iterator-which-is-noncopyable
+struct non_copyable_non_const_iterator {
+  int index = 0;
+
+  non_copyable_non_const_iterator(non_copyable_non_const_iterator &&) = default;
+  non_copyable_non_const_iterator &operator=(non_copyable_non_const_iterator &&) = default;
+
+  non_copyable_non_const_iterator(const non_copyable_non_const_iterator &) = delete;
+  non_copyable_non_const_iterator &operator=(const non_copyable_non_const_iterator &) = delete;
+
+  non_copyable_non_const_iterator() = default;
+
+  auto operator*() { return "This iterator is non-copyable and doesn't support const."; }
+  bool operator!=(const non_copyable_non_const_iterator &) { return index < 2; }
+  auto &operator++() {
+    ++index;
+    return *this;
+  }
+};
+
+struct container_of_non_copyable_non_const_iterator {
+  auto begin() const { return non_copyable_non_const_iterator(); }
+  auto end() const { return non_copyable_non_const_iterator(); }
+} container_of_non_copyable_non_const_iterator1;
+
+struct supported_iterator {
+  auto operator*() const { return "This must not be printed since the container is unsupported."; }
+  bool operator!=(const supported_iterator &) const { return true; }
+  auto &operator++() { return *this; }
+};
+
+struct unsupported_container_of_supported_container_a {
+  auto begin() { return supported_iterator(); }
+  auto end() const { return supported_iterator(); }
+} unsupported_container_of_supported_container_a1;
+
+struct unsupported_container_of_supported_container_b {
+  auto begin() const { return supported_iterator(); }
+  auto end() { return supported_iterator(); }
+} unsupported_container_of_supported_container_b1;
+
+struct unsupported_non_const_class {
+  auto operator*() { return "This must not be printed."; }
+} unsupported_non_const_class1;
+
 int main(int argc, char *argv[]) {
   if (argc != 4) return 1;
   int max_line_width_ = stoi(argv[1]);
@@ -448,6 +494,7 @@ int main(int argc, char *argv[]) {
   dump(int_style(16, 5, 0, false, true /* */) << 0);
   dump(int_style(16, 5, 0, true, true /* */) << 0);
 
+  // non_copyable_and_non_movable_class
   CPP_DUMP_SET_OPTION(max_depth, 2);
   cpp_dump(
       show_front(2) << show_middle(1) << show_back(2) << show_both_ends(1)
@@ -455,4 +502,10 @@ int main(int argc, char *argv[]) {
   );
   cpp_dump(non_copyable_and_non_movable_class_container1);
   cpp_dump(show_front(1) << non_copyable_and_non_movable_class_container1);
+  cpp_dump(container_of_non_copyable_non_const_iterator1);
+
+  // unsupported_non_const_class
+  cpp_dump(unsupported_container_of_supported_container_a1);
+  cpp_dump(unsupported_container_of_supported_container_b1);
+  cpp_dump(unsupported_non_const_class1);
 }
