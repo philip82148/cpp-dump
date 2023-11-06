@@ -560,6 +560,8 @@ here.`,
            1, 
            1
          ]
+[dump] ostream_able_class_a_1
+         => ostream_able_class_a
 [dump] unsupported_enum
          => Unsupported Type
 [dump] cpp_dump::es_style_t::no_es

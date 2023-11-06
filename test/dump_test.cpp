@@ -10,6 +10,7 @@
 #include <map>
 #include <memory>
 #include <optional>
+#include <ostream>
 #include <queue>
 #include <set>
 #include <stack>
@@ -81,6 +82,14 @@ enum class enum_a { s, k, l };
 CPP_DUMP_DEFINE_EXPORT_ENUM(enum_a, enum_a::s, enum_a::k);
 CPP_DUMP_DEFINE_EXPORT_OBJECT(decltype(class_a1), int_a, long_b, a_str());
 CPP_DUMP_DEFINE_EXPORT_OBJECT(non_copyable_and_non_movable_class, str_member, pointer, ref);
+
+struct ostream_able_class_a {
+} ostream_able_class_a_1;
+
+ostream &operator<<(ostream &os, const ostream_able_class_a &) {
+  os << "ostream_able_class_a";
+  return os;
+}
 
 int main(int argc, char *argv[]) {
   if (argc != 4) return 1;
@@ -243,6 +252,9 @@ int main(int argc, char *argv[]) {
 
   // iterator
   cpp_dump(vec.begin());
+
+  // ostream
+  cpp_dump(ostream_able_class_a_1);
 
   // unsupported type
   enum class unsupported { k, l } unsupported_enum = unsupported::k;
