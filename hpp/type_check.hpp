@@ -14,6 +14,7 @@
 #include <map>
 #include <memory>
 #include <optional>
+#include <ostream>
 #include <queue>
 #include <set>
 #include <stack>
@@ -199,14 +200,14 @@ template <typename T>
 inline constexpr bool is_external = _is_external<_remove_cref<T>>;
 
 template <typename T>
-inline constexpr bool _is_exportable_but_not_asterisk =
+inline constexpr bool _is_exportable_but_not_operator =
     is_arithmetic<T> || is_string<T> || is_map<T> || is_set<T> || is_container<T> || is_tuple<T>
     || is_xixo<T> || is_pointer<T> || is_optional<T> || is_exception<T> || is_other_type<T>
     || is_exportable_object<T> || is_exportable_enum<T> || is_external<T>;
 
 template <typename T>
 auto _is_asterisk(int) -> std::enable_if_t<
-    !_is_exportable_but_not_asterisk<T>,
+    !_is_exportable_but_not_operator<T>,
     decltype(*std::declval<const T>(), std::true_type())>;
 template <typename>
 std::false_type _is_asterisk(long);
@@ -215,11 +216,22 @@ template <typename T>
 inline constexpr bool is_asterisk = decltype(_is_asterisk<T>(0))::value;
 
 template <typename T>
-inline constexpr bool is_iterable_like = is_container<T> || is_map<T> || is_set<T> || is_tuple<T>
-                                         || is_xixo<T> || is_exportable_object<T>;
+auto _is_ostream(int) -> std::enable_if_t<
+    !_is_exportable_but_not_operator<T> && !is_asterisk<T>,
+    decltype(std::declval<std::ostream>() << std::declval<const T>(), std::true_type())>;
+template <typename>
+std::false_type _is_ostream(long);
 
 template <typename T>
-inline constexpr bool is_exportable = _is_exportable_but_not_asterisk<T> || is_asterisk<T>;
+inline constexpr bool is_ostream = decltype(_is_ostream<T>(0))::value;
+
+template <typename T>
+inline constexpr bool is_exportable =
+    _is_exportable_but_not_operator<T> || is_asterisk<T> || is_ostream<T>;
+
+template <typename T>
+inline constexpr bool is_iterable_like = is_container<T> || is_map<T> || is_set<T> || is_tuple<T>
+                                         || is_xixo<T> || is_exportable_object<T>;
 
 }  // namespace _detail
 
