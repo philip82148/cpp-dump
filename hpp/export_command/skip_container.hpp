@@ -39,15 +39,34 @@ struct skip_iterator {
         _orig_container_size(orig_container_size),
         _index(0),
         _done(false) {}
+  skip_iterator(
+      It &&it_,
+      const std::function<
+          std::optional<std::size_t>(std::size_t, const std::function<std::size_t()> &)>
+          &skip_size_func,
+      const std::function<std::size_t()> &orig_container_size
+  )
+      : it(std::move(it_)),
+        _skip_size_func(skip_size_func),
+        _orig_container_size(orig_container_size),
+        _index(0),
+        _done(false) {}
+
+  skip_iterator(skip_iterator &&) = delete;
+  skip_iterator &operator=(skip_iterator &&) = delete;
+  skip_iterator(const skip_iterator &) = delete;
+  skip_iterator &operator=(const skip_iterator &) = delete;
   skip_iterator() = delete;
 
-  std::pair<bool, It> operator*() const noexcept {
+  std::pair<bool, It &> operator*() const noexcept {
     bool skip = get_skip_size().value_or(1) != 0;
     // Pass the iterator to support the case that *it is rvalue.
-    return {skip, it};
+    // Pass the reference to support non-copyable iterators.
+    // https://stackoverflow.com/questions/2568294/is-it-a-good-idea-to-create-an-stl-iterator-which-is-noncopyable
+    return {skip, const_cast<It &>(it)};
   }
   template <typename It2>
-  bool operator!=(const skip_iterator<It2> &to) const noexcept {
+  bool operator!=(const skip_iterator<It2> &to) noexcept {
     return !_done && it != to.it;
   }
   skip_iterator &operator++() noexcept {
@@ -89,18 +108,25 @@ struct skip_container {
           std::optional<std::size_t>(std::size_t, const std::function<std::size_t()> &)>
           &skip_size_func
   )
-      : _original(container),
-        _begin(iterable_begin(_original), skip_size_func, _orig_container_size),
-        _end(iterable_end(_original), skip_size_func, _orig_container_size) {}
+      : _original(container), _skip_size_func(skip_size_func) {}
+
+  skip_container(skip_container &&) = delete;
+  skip_container &operator=(skip_container &&) = delete;
+  skip_container(const skip_container &) = delete;
+  skip_container &operator=(const skip_container &) = delete;
   skip_container() = delete;
 
-  auto begin() const noexcept { return _begin; }
-  auto end() const noexcept { return _end; }
+  auto begin() const noexcept {
+    return skip_iterator(iterable_begin(_original), _skip_size_func, _orig_container_size);
+  }
+  auto end() const noexcept {
+    return skip_iterator(iterable_end(_original), _skip_size_func, _orig_container_size);
+  }
 
  private:
   const T &_original;
-  const skip_iterator<decltype(iterable_begin(_original))> _begin;
-  const skip_iterator<decltype(iterable_end(_original))> _end;
+  const std::function<std::optional<std::size_t>(std::size_t, const std::function<std::size_t()> &)>
+      &_skip_size_func;
 
   std::optional<std::size_t> _orig_container_size_cache;
   const std::function<std::size_t()> _orig_container_size = [this] {

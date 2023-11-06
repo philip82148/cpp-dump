@@ -36,8 +36,8 @@ using _remove_cref = std::remove_const_t<std::remove_reference_t<T>>;
 
 template <typename T>
 auto _is_iterable(int) -> decltype(
-  iterable_begin(std::declval<T>()) != iterable_end(std::declval<T>()), 
-  *iterable_begin(std::declval<T>()), 
+  iterable_begin(std::declval<T>()) != iterable_end(std::declval<T>()),
+  *iterable_begin(std::declval<T>()),
   std::true_type()
   //
 );
@@ -46,10 +46,11 @@ template <typename>
 std::false_type _is_iterable(long);
 
 template <typename T>
-inline constexpr bool is_iterable = decltype(_is_iterable<T>(0))::value;
+inline constexpr bool is_iterable = decltype(_is_iterable<const _remove_cref<T>>(0))::value;
 
 template <typename T>
-using iterable_elem_type = _remove_cref<decltype(*iterable_begin(std::declval<T>()))>;
+using iterable_elem_type =
+    _remove_cref<decltype(*iterable_begin(std::declval<const _remove_cref<T>>()))>;
 
 template <typename T>
 inline constexpr bool is_arithmetic = std::is_arithmetic_v<_remove_cref<T>>;
@@ -212,7 +213,7 @@ template <typename>
 std::false_type _is_asterisk(long);
 
 template <typename T>
-inline constexpr bool is_asterisk = decltype(_is_asterisk<T>(0))::value;
+inline constexpr bool is_asterisk = decltype(_is_asterisk<_remove_cref<T>>(0))::value;
 
 template <typename T>
 inline constexpr bool is_iterable_like = is_container<T> || is_map<T> || is_set<T> || is_tuple<T>

@@ -349,3 +349,7 @@ here.`,
          non_copyable_and_non_movable_class{ str_member= "This is non_copyable_and_non_movable_class.", pointer= *non_copyable_and_non_movable_class{ ... }, ref= non_copyable_and_non_movable_class{ ... } }, 
          ...
        ]
+[dump] container_of_non_copyable_non_const_iterator1 => [ "This iterator is non-copyable and doesn't support const.", "This iterator is non-copyable and doesn't support const." ]
+[dump] unsupported_container_of_supported_container_a1 => Unsupported Type
+[dump] unsupported_container_of_supported_container_b1 => Unsupported Type
+[dump] unsupported_non_const_class1 => Unsupported Type
