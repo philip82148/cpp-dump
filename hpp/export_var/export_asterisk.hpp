@@ -33,7 +33,7 @@ inline auto export_asterisk(
     bool fail_on_newline,
     const export_command &command
 ) -> std::enable_if_t<is_asterisk<T>, std::string> {
-  if (current_depth >= max_depth) return "*...";
+  if (current_depth >= max_depth) return es::identifier("*") + es::op("...");
 
   // If decltype(*value) == decltype(value), then the program enters an infinite loop.
   // So increment depth.
