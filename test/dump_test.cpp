@@ -137,6 +137,11 @@ struct unsupported_non_const_class {
   auto operator*() { return "This must not be printed."; }
 } unsupported_non_const_class1;
 
+ostream &operator<<(ostream &os, unsupported_non_const_class &) {
+  os << "This must not be printed.";
+  return os;
+}
+
 int main(int argc, char *argv[]) {
   if (argc != 4) return 1;
   int max_line_width_ = stoi(argv[1]);

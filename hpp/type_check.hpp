@@ -228,7 +228,7 @@ template <typename>
 std::false_type _is_ostream(long);
 
 template <typename T>
-inline constexpr bool is_ostream = decltype(_is_ostream<T>(0))::value;
+inline constexpr bool is_ostream = decltype(_is_ostream<_remove_cref<T>>(0))::value;
 
 template <typename T>
 inline constexpr bool is_exportable =
