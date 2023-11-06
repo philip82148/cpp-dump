@@ -25,7 +25,8 @@ export_ostream(const T &value, const std::string &, std::size_t, std::size_t, bo
   std::ostringstream ss;
   ss << value;
 
-  return ss.str();
+  std::string output = ss.str();
+  return output == "" ? es::identifier("manipulator") : output;
 }
 
 }  // namespace _detail
