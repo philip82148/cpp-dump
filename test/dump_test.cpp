@@ -10,6 +10,7 @@
 #include <map>
 #include <memory>
 #include <optional>
+#include <ostream>
 #include <queue>
 #include <set>
 #include <stack>
@@ -82,6 +83,14 @@ CPP_DUMP_DEFINE_EXPORT_ENUM(enum_a, enum_a::s, enum_a::k);
 CPP_DUMP_DEFINE_EXPORT_OBJECT(decltype(class_a1), int_a, long_b, a_str());
 CPP_DUMP_DEFINE_EXPORT_OBJECT(non_copyable_and_non_movable_class, str_member, pointer, ref);
 
+struct ostream_able_class_a {
+} ostream_able_class_a_1;
+
+ostream &operator<<(ostream &os, const ostream_able_class_a &) {
+  os << "ostream_able_class_a";
+  return os;
+}
+
 // support non copyable iterator
 // https://stackoverflow.com/questions/2568294/is-it-a-good-idea-to-create-an-stl-iterator-which-is-noncopyable
 struct non_copyable_non_const_iterator {
@@ -127,6 +136,11 @@ struct unsupported_container_of_supported_container_b {
 struct unsupported_non_const_class {
   auto operator*() { return "This must not be printed."; }
 } unsupported_non_const_class1;
+
+ostream &operator<<(ostream &os, unsupported_non_const_class &) {
+  os << "This must not be printed.";
+  return os;
+}
 
 int main(int argc, char *argv[]) {
   if (argc != 4) return 1;
@@ -289,6 +303,9 @@ int main(int argc, char *argv[]) {
 
   // iterator
   cpp_dump(vec.begin());
+
+  // ostream
+  cpp_dump(ostream_able_class_a_1);
 
   // unsupported type
   enum class unsupported { k, l } unsupported_enum = unsupported::k;

@@ -133,6 +133,9 @@ cpp_dump::es_style = cpp_dump::es_style_t::no_es;
 
 ### User-defined types can also be supported by using macros
 
+One way to support user-types is to define the operator `std::ostream& operator<<(std::ostream&, const T &)`.  
+The other way is to use macros, which can be done more easily.
+
 #### User-defined class
 
 [See Full Example Code](./readme/user-defined-class.cpp)
@@ -484,6 +487,7 @@ Both dump functions dump variables recursively, so they can dump nested variable
 | User-defined | `CPP_DUMP_DEFINE_EXPORT_OBJECT(T, members...);` is at top level and the member functions to be displayed is const.                                                 |                                                   |
 | Enum         | `CPP_DUMP_DEFINE_EXPORT_ENUM(T, members...);` is at top level.                                                                                                     |                                                   |
 | Asterisk     | All of the above are not satisfied and the function `TypeExceptT operator*(const T &)` or the const member function `TypeExceptT T::operator*() const` is defined. | Iterators                                         |
+| Ostream      | All of the above are not satisfied and the function `std::ostream& operator<<(std::ostream&, const T &)` is defined.                                               |                                                   |
 
 ### Display example
 

@@ -21,6 +21,7 @@
 #include "./export_map.hpp"
 #include "./export_object.hpp"
 #include "./export_optional.hpp"
+#include "./export_ostream.hpp"
 #include "./export_other/export_other.hpp"
 #include "./export_pointer.hpp"
 #include "./export_set.hpp"
@@ -81,10 +82,12 @@ std::string export_var(
     );
   } else if constexpr (is_other_type<T>) {
     return export_other(value, indent, last_line_length, current_depth, fail_on_newline, command);
-  } else {
+  } else if constexpr (is_asterisk<T>) {
     return export_asterisk(
         value, indent, last_line_length, current_depth, fail_on_newline, command
     );
+  } else {
+    return export_ostream(value, indent, last_line_length, current_depth, fail_on_newline, command);
   }
 }
 
