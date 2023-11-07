@@ -1,3 +1,6 @@
+#include <array>
+#include <iostream>
+#include <ostream>
 #include <vector>
 //
 #include "../dump.hpp"

@@ -5,55 +5,55 @@
        ]
 // line()
 cpp_dump::log_info_func = log_info::line();
-[:28] vec => [ 
+[:31] vec => [ 
         [ 3, 1, 4 ], 
         [ 1, 5, 9 ]
       ]
 cpp_dump::log_info_func = log_info::line(0, true);
-[:30 (main)] vec => [ 
+[:33 (main)] vec => [ 
                [ 3, 1, 4 ], 
                [ 1, 5, 9 ]
              ]
 cpp_dump::log_info_func = log_info::line(12);
-[:32         ] vec => [ 
+[:35         ] vec => [ 
                  [ 3, 1, 4 ], 
                  [ 1, 5, 9 ]
                ]
 cpp_dump::log_info_func = log_info::line(12, true);
-[:34 (main)  ] vec => [ 
+[:37 (main)  ] vec => [ 
                  [ 3, 1, 4 ], 
                  [ 1, 5, 9 ]
                ]
 // basename()
 cpp_dump::log_info_func = log_info::basename();
-[log_info_test:38] vec => [ 
+[log_info_test:41] vec => [ 
                      [ 3, 1, 4 ], 
                      [ 1, 5, 9 ]
                    ]
 cpp_dump::log_info_func = log_info::basename(true);
-[log_info_test:40 (main)] vec => [ 
+[log_info_test:43 (main)] vec => [ 
                             [ 3, 1, 4 ], 
                             [ 1, 5, 9 ]
                           ]
 // filename()
 cpp_dump::log_info_func = log_info::filename();
-[log_info_test.cpp:44] vec => [ 
+[log_info_test.cpp:47] vec => [ 
                          [ 3, 1, 4 ], 
                          [ 1, 5, 9 ]
                        ]
 cpp_dump::log_info_func = log_info::filename(true);
-[log_info_test.cpp:46 (main)] vec => [ 
+[log_info_test.cpp:49 (main)] vec => [ 
                                 [ 3, 1, 4 ], 
                                 [ 1, 5, 9 ]
                               ]
 // fixed_length()
 cpp_dump::log_info_func = log_info::fixed_length(0, 20);
-[..._info_test.cpp:68] vec => [ 
+[..._info_test.cpp:71] vec => [ 
                          [ 3, 1, 4 ], 
                          [ 1, 5, 9 ]
                        ]
 cpp_dump::log_info_func = log_info::fixed_length(0, 20, true);
-[...est.cpp:70 (main)] vec => [ 
+[...est.cpp:73 (main)] vec => [ 
                          [ 3, 1, 4 ], 
                          [ 1, 5, 9 ]
                        ]
