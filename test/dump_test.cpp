@@ -315,8 +315,8 @@ int main(int argc, char *argv[]) {
   } unsupported_class1;
   cpp_dump(unsupported_class1);
 
-  // unsupported type (function&member pointers)
-  cpp_dump(main, &unsupported_class::k, &unsupported_class::str);
+  // unsupported type (function, function&member pointers)
+  cpp_dump(main, &main, &unsupported_class::k, &unsupported_class::str);
 
   // unsupported type (manipulators)
   cpp_dump(setw(5), boolalpha);

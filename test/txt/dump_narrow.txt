@@ -566,6 +566,8 @@ here.`,
          => Unsupported Type
 [dump] main
          => Unsupported Type, 
+       &main
+         => Unsupported Type, 
        &unsupported_class::k
          => Unsupported Type, 
        &unsupported_class::str

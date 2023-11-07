@@ -158,7 +158,7 @@ here.`,
 [dump] vec.begin() => *[ 2, 4, 6, 7, 8, 9, 0, 1, 1, 1, 7, 8, 9, 0, 1, 1, 1, 1, 1, 1, 1 ]
 [dump] ostream_able_class_a_1 => ostream_able_class_a
 [dump] unsupported_class1 => Unsupported Type
-[dump] main => Unsupported Type, &unsupported_class::k => Unsupported Type, &unsupported_class::str => Unsupported Type
+[dump] main => Unsupported Type, &main => Unsupported Type, &unsupported_class::k => Unsupported Type, &unsupported_class::str => Unsupported Type
 [dump] setw(5) => Unsupported Type, boolalpha => Unsupported Type
 [dump] cpp_dump::es_style_t::no_es => cpp_dump::es_style_t::no_es,
        cpp_dump::es_style_t::by_syntax => cpp_dump::es_style_t::by_syntax,
