@@ -146,13 +146,17 @@ inline constexpr bool is_pointer =
     (std::is_pointer_v<_remove_cref<T>> && !is_string<T>) || is_null_pointer<T>
     || is_smart_pointer<T>;
 
+template <typename T, typename = void>
+struct _remove_pointer {
+  using type = std::remove_pointer_t<T>;
+};
 template <typename T>
-auto _remove_pointer(int) -> std::enable_if_t<is_smart_pointer<T>, typename T::element_type>;
-template <typename T>
-auto _remove_pointer(long) -> std::remove_pointer_t<T>;
+struct _remove_pointer<T, std::enable_if_t<is_smart_pointer<T>>> {
+  using type = typename T::element_type;
+};
 
 template <typename T>
-using remove_pointer = decltype(_remove_pointer<_remove_cref<T>>(0));
+using remove_pointer = typename _remove_pointer<_remove_cref<T>>::type;
 
 template <typename>
 inline constexpr bool _is_optional = false;
