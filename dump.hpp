@@ -16,6 +16,7 @@
 #include "hpp/expand_va_macro.hpp"
 #include "hpp/export_command/export_command.hpp"
 #include "hpp/export_var/export_var.hpp"
+#include "hpp/log_label_funcs.hpp"
 #include "hpp/utility.hpp"
 
 #define _p_CPP_DUMP_EXPAND_FOR_CPP_DUMP(expr) #expr, expr
@@ -26,6 +27,9 @@
  */
 #define CPP_DUMP(...)                                                                              \
   cpp_dump::_detail::cpp_dump_macro(                                                               \
+      __FILE__,                                                                                    \
+      __LINE__,                                                                                    \
+      __func__,                                                                                    \
       _p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_CPP_DUMP, __VA_ARGS__)                          \
   )
 
@@ -65,7 +69,7 @@ inline std::size_t max_iteration_count = 16;
  * Function that returns the label that cpp_dump::dump() and cpp_dump() print
  * at the beginning of the output.
  */
-inline std::function<std::string(void)> log_label_func = []() -> std::string { return "[dump] "; };
+inline log_label::log_label_func_t log_label_func = log_label::default_func;
 
 /**
  * Style of the escape sequences.
@@ -280,8 +284,10 @@ inline bool _dump_recursively_without_expr(
 
 // function called by cpp_dump() macro
 template <typename... Args>
-void cpp_dump_macro(const Args &...args) {
-  std::string log_label = log_label_func ? log_label_func() : "";
+void cpp_dump_macro(
+    const std::string &filename, int line_no, const std::string &func_name, const Args &...args
+) {
+  std::string log_label = log_label_func ? log_label_func(filename, line_no, func_name) : "";
 
   std::string output = "";
   if (!_detail::_dump_recursively_with_expr(output, log_label, true, args...)) {
@@ -300,7 +306,7 @@ void cpp_dump_macro(const Args &...args) {
  */
 template <typename... Args>
 void dump(const Args &...args) {
-  std::string log_label = log_label_func ? log_label_func() : "";
+  std::string log_label = log_label_func ? log_label_func("", 0, "") : "";
 
   std::string output = "";
   if (!_detail::_dump_recursively_without_expr(output, log_label, true, args...)) {
