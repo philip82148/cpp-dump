@@ -8,7 +8,6 @@
 #pragma once
 
 #include <algorithm>
-#include <cstddef>
 #include <functional>
 #include <iomanip>
 #include <sstream>
@@ -16,13 +15,13 @@
 
 namespace cpp_dump {
 
-namespace log_label {
+using log_info_func_t = std::function<std::string(const std::string &, int, const std::string &)>;
+
+namespace log_info {
 
 inline std::string default_func(const std::string &, int, const std::string &) { return "[dump] "; }
 
-using log_label_func_t = std::function<std::string(const std::string &, int, const std::string &)>;
-
-inline log_label_func_t line(int min_width = 0, bool show_func = false) {
+inline log_info_func_t line(int min_width = 0, bool show_func = false) {
   return [=](const std::string &, int line_no, const std::string &func_name) -> std::string {
     std::ostringstream ss;
     ss << std::left << std::setw(min_width);
@@ -37,7 +36,7 @@ inline log_label_func_t line(int min_width = 0, bool show_func = false) {
   };
 }
 
-inline log_label_func_t basename(bool show_func = false) {
+inline log_info_func_t basename(bool show_func = false) {
   return
       [=](const std::string &fullpath, int line_no, const std::string &func_name) -> std::string {
         auto slash_pos = fullpath.find_last_of("/\\");
@@ -56,7 +55,7 @@ inline log_label_func_t basename(bool show_func = false) {
       };
 }
 
-inline log_label_func_t filename(bool show_func = false) {
+inline log_info_func_t filename(bool show_func = false) {
   return
       [=](const std::string &fullpath, int line_no, const std::string &func_name) -> std::string {
         auto slash_pos = fullpath.find_last_of("/\\");
@@ -71,7 +70,7 @@ inline log_label_func_t filename(bool show_func = false) {
       };
 }
 
-inline log_label_func_t filepath(int substr_start = 0, bool show_func = false) {
+inline log_info_func_t filepath(int substr_start = 0, bool show_func = false) {
   return
       [=](const std::string &fullpath, int line_no, const std::string &func_name) -> std::string {
         std::string output = fullpath.substr(substr_start) + ":" + std::to_string(line_no);
@@ -82,7 +81,7 @@ inline log_label_func_t filepath(int substr_start = 0, bool show_func = false) {
       };
 }
 
-inline log_label_func_t fixed_length(int min_width = 0, int max_width = 0, bool show_func = false) {
+inline log_info_func_t fixed_length(int min_width = 0, int max_width = 0, bool show_func = false) {
   return
       [=](const std::string &fullpath, int line_no, const std::string &func_name) -> std::string {
         std::ostringstream ss;
@@ -103,6 +102,6 @@ inline log_label_func_t fixed_length(int min_width = 0, int max_width = 0, bool 
       };
 }
 
-}  // namespace log_label
+}  // namespace log_info
 
 }  // namespace cpp_dump
