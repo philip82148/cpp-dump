@@ -15,6 +15,7 @@
 #include "../escape_sequence.hpp"
 #include "../export_command/export_command.hpp"
 #include "../type_check.hpp"
+#include "./export_unsupported.hpp"
 
 namespace cpp_dump {
 
@@ -50,11 +51,15 @@ inline auto export_pointer(
   if (pointer == nullptr) return es::reserved("nullptr");
 
   if constexpr (is_null_pointer<T> || !is_exportable<remove_pointer<T>>) {
-    std::ostringstream ss;
-    ss << std::hex << pointer;
+    if constexpr (std::is_function_v<remove_pointer<T>>) {
+      return export_unsupported();
+    } else {
+      std::ostringstream ss;
+      ss << std::hex << pointer;
 
-    // Make the entire string an identifier
-    return es::identifier(ss.str());
+      // Make the entire string an identifier
+      return es::identifier(ss.str());
+    }
   } else {
     return es::identifier("*")
            + export_var(

@@ -27,6 +27,7 @@
 #include "./export_set.hpp"
 #include "./export_string.hpp"
 #include "./export_tuple.hpp"
+#include "./export_unsupported.hpp"
 #include "./export_xixo.hpp"
 
 namespace cpp_dump {
@@ -47,7 +48,7 @@ std::string export_var(
         value.value, indent, last_line_length, current_depth, fail_on_newline, value.command
     );
   } else if constexpr (!is_exportable<T>) {
-    return es::unsupported("Unsupported Type");
+    return export_unsupported();
   } else if constexpr (is_exportable_object<T>) {
     return export_object(value, indent, last_line_length, current_depth, fail_on_newline, command);
   } else if constexpr (is_exportable_enum<T>) {
