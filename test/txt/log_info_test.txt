@@ -1,0 +1,59 @@
+// default
+[dump] vec => [ 
+         [ 3, 1, 4 ], 
+         [ 1, 5, 9 ]
+       ]
+// line()
+cpp_dump::log_info_func = log_info::line();
+[:28] vec => [ 
+        [ 3, 1, 4 ], 
+        [ 1, 5, 9 ]
+      ]
+cpp_dump::log_info_func = log_info::line(0, true);
+[:30 (main)] vec => [ 
+               [ 3, 1, 4 ], 
+               [ 1, 5, 9 ]
+             ]
+cpp_dump::log_info_func = log_info::line(12);
+[:32         ] vec => [ 
+                 [ 3, 1, 4 ], 
+                 [ 1, 5, 9 ]
+               ]
+cpp_dump::log_info_func = log_info::line(12, true);
+[:34 (main)  ] vec => [ 
+                 [ 3, 1, 4 ], 
+                 [ 1, 5, 9 ]
+               ]
+// basename()
+cpp_dump::log_info_func = log_info::basename();
+[log_info_test:38] vec => [ 
+                     [ 3, 1, 4 ], 
+                     [ 1, 5, 9 ]
+                   ]
+cpp_dump::log_info_func = log_info::basename(true);
+[log_info_test:40 (main)] vec => [ 
+                            [ 3, 1, 4 ], 
+                            [ 1, 5, 9 ]
+                          ]
+// filename()
+cpp_dump::log_info_func = log_info::filename();
+[log_info_test.cpp:44] vec => [ 
+                         [ 3, 1, 4 ], 
+                         [ 1, 5, 9 ]
+                       ]
+cpp_dump::log_info_func = log_info::filename(true);
+[log_info_test.cpp:46 (main)] vec => [ 
+                                [ 3, 1, 4 ], 
+                                [ 1, 5, 9 ]
+                              ]
+// fixed_length()
+cpp_dump::log_info_func = log_info::fixed_length(0, 20);
+[..._info_test.cpp:68] vec => [ 
+                         [ 3, 1, 4 ], 
+                         [ 1, 5, 9 ]
+                       ]
+cpp_dump::log_info_func = log_info::fixed_length(0, 20, true);
+[...est.cpp:70 (main)] vec => [ 
+                         [ 3, 1, 4 ], 
+                         [ 1, 5, 9 ]
+                       ]
