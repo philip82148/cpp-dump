@@ -297,10 +297,7 @@ int main(int argc, char *argv[]) {
   cpp_dump(complex2);
 
   logic_error logic_error1("This is a test error.");
-  class original_error : public logic_error {
-    using logic_error::logic_error;
-  } original_error1("This is an original error.");
-  cpp_dump(logic_error1, original_error1);
+  cpp_dump(logic_error1);
 
   // iterator
   cpp_dump(vec.begin());

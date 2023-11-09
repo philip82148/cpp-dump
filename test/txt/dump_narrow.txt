@@ -531,10 +531,6 @@ here.`,
 [dump] logic_error1
          => std::logic_error{
            what()= "This is a test error."
-         },
-       original_error1
-         => {
-           what()= "This is an original error."
          }
 [dump] vec.begin()
          => *[ 
