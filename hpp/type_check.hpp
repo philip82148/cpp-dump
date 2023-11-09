@@ -238,16 +238,20 @@ template <typename T>
 inline constexpr bool is_iterable_like = is_container<T> || is_map<T> || is_set<T> || is_tuple<T>
                                          || is_xixo<T> || is_exportable_object<T>;
 
+struct _string_wrapper {
+  std::string str;
+};
+
 template <typename T>
-const char* _get_typename() {
+_string_wrapper _get_typename() {
 #if defined(__GNUC__) && !defined(__clang__)
-  return __PRETTY_FUNCTION__;
+  return {__PRETTY_FUNCTION__};
 #elif defined(__clang__)
-  return __PRETTY_FUNCTION__;
+  return {__PRETTY_FUNCTION__};
 #elif defined(_MSC_VER)
-  return __FUNCSIG__;
+  return {__FUNCSIG__};
 #else
-  return "";
+  return {""};
 #endif
 }
 
@@ -256,22 +260,24 @@ template <typename T>
 std::string get_typename() {
 #if defined(__GNUC__) && !defined(__clang__)
   constexpr std::size_t prefix_length =
-      sizeof("const char* cpp_dump::_detail::_get_typename() [with T = ") - 1;
+      sizeof("cpp_dump::_detail::_string_wrapper cpp_dump::_detail::_get_typename() [with T = ")
+      - 1;
   constexpr std::size_t suffix_length = sizeof("]") - 1;
 #elif defined(__clang__)
   constexpr std::size_t prefix_length =
-      sizeof("const char *cpp_dump::_detail::_get_typename() [T = ") - 1;
+      sizeof("cpp_dump::_detail::_string_wrapper cpp_dump::_detail::_get_typename() [T = ") - 1;
   constexpr std::size_t suffix_length = sizeof("]") - 1;
 #elif defined(_MSC_VER)
   constexpr std::size_t prefix_length =
-      sizeof("const char *__cdecl cpp_dump::_detail::_get_typename<") - 1;
+      sizeof("struct cpp_dump::_detail::_string_wrapper __cdecl cpp_dump::_detail::_get_typename<")
+      - 1;
   constexpr std::size_t suffix_length = sizeof(">(void)") - 1;
 #else
   constexpr std::size_t prefix_length = 0;
   constexpr std::size_t suffix_length = 0;
 #endif
 
-  std::string func_name = _get_typename<_remove_cref<T>>();
+  std::string func_name = _get_typename<_remove_cref<T>>().str;
   std::string type_name =
       func_name.substr(prefix_length, func_name.length() - prefix_length - suffix_length);
 
