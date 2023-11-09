@@ -1,0 +1,1 @@
+[dump] original_error1 => main::original_error{ what()= "This is an original error." }

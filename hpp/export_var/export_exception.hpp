@@ -7,7 +7,6 @@
 
 #pragma once
 
-#include <stdexcept>
 #include <string>
 #include <type_traits>
 
@@ -15,45 +14,6 @@
 #include "../export_command/export_command.hpp"
 #include "../type_check.hpp"
 #include "../utility.hpp"
-
-#define _p_CPP_DUMP_DEFINE_EXPORT_EXCEPTION(TYPE)                                                  \
-  inline std::string export_exception(                                                             \
-      const TYPE &exception,                                                                       \
-      const std::string &indent,                                                                   \
-      std::size_t last_line_length,                                                                \
-      std::size_t current_depth,                                                                   \
-      bool fail_on_newline,                                                                        \
-      const export_command &command                                                                \
-  ) {                                                                                              \
-    std::size_t next_depth = current_depth + 1;                                                    \
-                                                                                                   \
-    std::string prefix = es::identifier(#TYPE) + es::bracket("{ ", current_depth)                  \
-                         + es::member("what()") + es::op("= ");                                    \
-    std::string output = prefix                                                                    \
-                         + export_var(                                                             \
-                             exception.what(),                                                     \
-                             indent,                                                               \
-                             last_line_length + get_length(prefix),                                \
-                             next_depth,                                                           \
-                             true,                                                                 \
-                             command                                                               \
-                         )                                                                         \
-                         + es::bracket(" }", current_depth);                                       \
-                                                                                                   \
-    if (!has_newline(output) && get_length(output) <= max_line_width) return output;               \
-                                                                                                   \
-    if (fail_on_newline) return "\n";                                                              \
-                                                                                                   \
-    std::string new_indent = indent + "  ";                                                        \
-                                                                                                   \
-    prefix = new_indent + es::member("what()") + es::op("= ");                                     \
-    output =                                                                                       \
-        es::identifier(#TYPE) + es::bracket("{\n", current_depth) + prefix                         \
-        + export_var(exception.what(), new_indent, get_length(prefix), next_depth, false, command) \
-        + "\n" + indent + es::bracket("}", current_depth);                                         \
-                                                                                                   \
-    return output;                                                                                 \
-  }
 
 namespace cpp_dump {
 
@@ -66,17 +26,6 @@ std::string export_var(
     const T &, const std::string &, std::size_t, std::size_t, bool, const export_command &command
 );
 
-_p_CPP_DUMP_DEFINE_EXPORT_EXCEPTION(std::logic_error);
-_p_CPP_DUMP_DEFINE_EXPORT_EXCEPTION(std::domain_error);
-_p_CPP_DUMP_DEFINE_EXPORT_EXCEPTION(std::invalid_argument);
-_p_CPP_DUMP_DEFINE_EXPORT_EXCEPTION(std::length_error);
-_p_CPP_DUMP_DEFINE_EXPORT_EXCEPTION(std::out_of_range);
-_p_CPP_DUMP_DEFINE_EXPORT_EXCEPTION(std::runtime_error);
-_p_CPP_DUMP_DEFINE_EXPORT_EXCEPTION(std::range_error);
-_p_CPP_DUMP_DEFINE_EXPORT_EXCEPTION(std::overflow_error);
-_p_CPP_DUMP_DEFINE_EXPORT_EXCEPTION(std::underflow_error);
-_p_CPP_DUMP_DEFINE_EXPORT_EXCEPTION(std::exception);
-
 template <typename T>
 inline auto export_exception(
     const T &exception,
@@ -88,7 +37,9 @@ inline auto export_exception(
 ) -> std::enable_if_t<is_exception<T>, std::string> {
   std::size_t next_depth = current_depth + 1;
 
-  std::string prefix = es::bracket("{ ", current_depth) + es::member("what()") + es::op("= ");
+  std::string type_name = get_typename<T>();
+  std::string prefix = es::identifier(type_name) + es::bracket("{ ", current_depth)
+                       + es::member("what()") + es::op("= ");
   std::string output =
       prefix
       + export_var(
@@ -104,7 +55,7 @@ inline auto export_exception(
 
   prefix = new_indent + es::member("what()") + es::op("= ");
   output =
-      es::bracket("{\n", current_depth) + prefix
+      es::identifier(type_name) + es::bracket("{\n", current_depth) + prefix
       + export_var(exception.what(), new_indent, get_length(prefix), next_depth, false, command)
       + "\n" + indent + es::bracket("}", current_depth);
 
