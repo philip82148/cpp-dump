@@ -506,7 +506,7 @@ In this example, the keys are displayed in hexadecimal, and if the values are it
 #define CPP_DUMP_SET_OPTION(...)
 #define CPP_DUMP_DEFINE_EXPORT_OBJECT(...)
 #define CPP_DUMP_DEFINE_EXPORT_ENUM(...)
-#define CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(members...)
+#define CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(...)
 #endif
 
 #include <bits/stdc++.h>
