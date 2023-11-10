@@ -15,10 +15,10 @@
 
 namespace cpp_dump {
 
+namespace log_label {
+
 using log_label_func_t =
     std::function<std::string(const std::string &, std::size_t, const std::string &)>;
-
-namespace log_label {
 
 inline std::string default_func(const std::string &, std::size_t, const std::string &) {
   return "[dump] ";
