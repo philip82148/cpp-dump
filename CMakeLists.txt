@@ -38,13 +38,13 @@ add_test(
     -P "${CMAKE_CURRENT_LIST_DIR}/test/dump_variable_test.cmake"
 )
 
-add_executable(log_info_test test/log_info_test.cpp)
+add_executable(log_label_test test/log_label_test.cpp)
 add_test(
-    NAME "log-info-test"
+    NAME "log-label-test"
     COMMAND "${CMAKE_COMMAND}"
     -D "test_dir=${CMAKE_CURRENT_LIST_DIR}/test"
-    -D "cmd_path=$<TARGET_FILE:log_info_test>"
-    -P "${CMAKE_CURRENT_LIST_DIR}/test/log_info_test.cmake"
+    -D "cmd_path=$<TARGET_FILE:log_label_test>"
+    -P "${CMAKE_CURRENT_LIST_DIR}/test/log_label_test.cmake"
 )
 
 file(GLOB files readme/*.cpp)

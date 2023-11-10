@@ -9,8 +9,8 @@ file(MAKE_DIRECTORY "${test_dir}/log")
 
 string(ASCII 27 esc)
 
-set(log_file "${test_dir}/log/log_info_test.log")
-set(txt_file "${test_dir}/txt/log_info_test.txt")
+set(log_file "${test_dir}/log/log_label_test.log")
+set(txt_file "${test_dir}/txt/log_label_test.txt")
 
 # no color
 execute_process(

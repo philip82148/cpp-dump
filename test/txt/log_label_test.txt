@@ -1,0 +1,59 @@
+// default
+[dump] vec => [ 
+         [ 3, 1, 4 ], 
+         [ 1, 5, 9 ]
+       ]
+// line()
+cpp_dump::log_label_func = log_label::line();
+[:31] vec => [ 
+        [ 3, 1, 4 ], 
+        [ 1, 5, 9 ]
+      ]
+cpp_dump::log_label_func = log_label::line(0, true);
+[:33 (main)] vec => [ 
+               [ 3, 1, 4 ], 
+               [ 1, 5, 9 ]
+             ]
+cpp_dump::log_label_func = log_label::line(12);
+[:35         ] vec => [ 
+                 [ 3, 1, 4 ], 
+                 [ 1, 5, 9 ]
+               ]
+cpp_dump::log_label_func = log_label::line(12, true);
+[:37 (main)  ] vec => [ 
+                 [ 3, 1, 4 ], 
+                 [ 1, 5, 9 ]
+               ]
+// basename()
+cpp_dump::log_label_func = log_label::basename();
+[log_label_test:41] vec => [ 
+                      [ 3, 1, 4 ], 
+                      [ 1, 5, 9 ]
+                    ]
+cpp_dump::log_label_func = log_label::basename(true);
+[log_label_test:43 (main)] vec => [ 
+                             [ 3, 1, 4 ], 
+                             [ 1, 5, 9 ]
+                           ]
+// filename()
+cpp_dump::log_label_func = log_label::filename();
+[log_label_test.cpp:47] vec => [ 
+                          [ 3, 1, 4 ], 
+                          [ 1, 5, 9 ]
+                        ]
+cpp_dump::log_label_func = log_label::filename(true);
+[log_label_test.cpp:49 (main)] vec => [ 
+                                 [ 3, 1, 4 ], 
+                                 [ 1, 5, 9 ]
+                               ]
+// fixed_length()
+cpp_dump::log_label_func = log_label::fixed_length(0, 20);
+[...label_test.cpp:71] vec => [ 
+                         [ 3, 1, 4 ], 
+                         [ 1, 5, 9 ]
+                       ]
+cpp_dump::log_label_func = log_label::fixed_length(0, 20, true);
+[...est.cpp:73 (main)] vec => [ 
+                         [ 3, 1, 4 ], 
+                         [ 1, 5, 9 ]
+                       ]
