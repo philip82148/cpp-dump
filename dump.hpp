@@ -27,9 +27,7 @@
  */
 #define CPP_DUMP(...)                                                                              \
   cpp_dump::_detail::cpp_dump_macro(                                                               \
-      __FILE__,                                                                                    \
-      __LINE__,                                                                                    \
-      __func__,                                                                                    \
+      {__FILE__, __LINE__, __func__},                                                              \
       _p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_CPP_DUMP, __VA_ARGS__)                          \
   )
 
@@ -282,12 +280,17 @@ inline bool _dump_recursively_without_expr(
          && _dump_recursively_without_expr(output, log_label, no_newline_in_value_string, args...);
 }
 
+struct _source_location {
+  std::string file_name;
+  std::size_t line;
+  std::string function_name;
+};
+
 // function called by cpp_dump() macro
 template <typename... Args>
-void cpp_dump_macro(
-    const std::string &filename, int line_no, const std::string &func_name, const Args &...args
-) {
-  std::string log_label = log_label_func ? log_label_func(filename, line_no, func_name) : "";
+void cpp_dump_macro(_source_location loc, const Args &...args) {
+  std::string log_label =
+      log_label_func ? log_label_func(loc.file_name, loc.line, loc.function_name) : "";
 
   std::string output = "";
   if (!_detail::_dump_recursively_with_expr(output, log_label, true, args...)) {
