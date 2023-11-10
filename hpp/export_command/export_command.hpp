@@ -233,8 +233,6 @@ inline constexpr bool is_value_with_command = _is_value_with_command<_remove_cre
 
 }  // namespace _detail
 
-namespace mn {
-
 /*
  * Manipulator for the display style of integers.
  * See README for details.
@@ -261,7 +259,7 @@ inline auto int_style10(unsigned int digits, bool support_negative = false) {
  * Manipulator for the display style of iterables.
  * See README for details.
  */
-inline auto front(std::size_t iteration_count = max_iteration_count) {
+inline auto show_front(std::size_t iteration_count = max_iteration_count) {
   return _detail::export_command(
       [=](std::size_t index, const std::function<std::size_t()> &) -> std::optional<std::size_t> {
         if (index >= iteration_count) return std::nullopt;
@@ -274,7 +272,7 @@ inline auto front(std::size_t iteration_count = max_iteration_count) {
  * Manipulator for the display style of iterables.
  * See README for details.
  */
-inline auto back(std::size_t iteration_count = max_iteration_count) {
+inline auto show_back(std::size_t iteration_count = max_iteration_count) {
   return _detail::export_command(
       [=](std::size_t index,
           const std::function<std::size_t()> &get_size) -> std::optional<std::size_t> {
@@ -291,7 +289,7 @@ inline auto back(std::size_t iteration_count = max_iteration_count) {
  * Manipulator for the display style of iterables.
  * See README for details.
  */
-inline auto both_ends(std::size_t iteration_count = max_iteration_count) {
+inline auto show_both_ends(std::size_t iteration_count = max_iteration_count) {
   return _detail::export_command(
       [=](std::size_t index,
           const std::function<std::size_t()> &get_size) -> std::optional<std::size_t> {
@@ -310,7 +308,7 @@ inline auto both_ends(std::size_t iteration_count = max_iteration_count) {
  * Manipulator for the display style of iterables.
  * See README for details.
  */
-inline auto middle(std::size_t iteration_count = max_iteration_count) {
+inline auto show_middle(std::size_t iteration_count = max_iteration_count) {
   return _detail::export_command(
       [=](std::size_t index,
           const std::function<std::size_t()> &get_size) -> std::optional<std::size_t> {
@@ -344,7 +342,5 @@ inline auto map_v(_detail::export_command &&c) { return _map_value(std::move(c))
 inline auto map_kv(_detail::export_command &&k, _detail::export_command &&v) {
   return _map_key_and_value(std::move(k), std::move(v));
 }
-
-}  // namespace mn
 
 }  // namespace cpp_dump
