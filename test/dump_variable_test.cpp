@@ -10,6 +10,8 @@
 using namespace std;
 using namespace cpp_dump;
 
+CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(member_var, member_func());
+
 int main(int argc, char *argv[]) {
   if (argc != 3) return 1;
   bool compiler_dependent = static_cast<bool>(stoi(argv[1]));
@@ -23,7 +25,20 @@ int main(int argc, char *argv[]) {
     class original_error : public logic_error {
       using logic_error::logic_error;
     } original_error1("This is an original error.");
+
+    struct original_class {
+      int member_var = 5;
+      std::string member_func() const { return "This is a member_func."; }
+    };
+
+    struct unsupported_original_class {
+      int member_var = 5;
+      std::string member_func() { return "This is a member_func."; }
+    };
+
     cpp_dump(original_error1);
+    cpp_dump(original_class());
+    cpp_dump(unsupported_original_class());
   } else {
     // pointer
     const void *void_ptr = (void *)0x7ffd06586204;

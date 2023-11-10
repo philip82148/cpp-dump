@@ -4,9 +4,10 @@
 
 #include "../dump.hpp"
 
+namespace cp = cpp_dump;
+
 int main() {
   std::clog << std::endl;
-  using namespace cpp_dump;
 
   std::vector<std::vector<int>> some_huge_vector(100, std::vector<int>(100));
 
@@ -21,11 +22,18 @@ int main() {
 
   std::clog << std::endl;
 
-  cpp_dump(show_back(10) << show_both_ends(10) << some_huge_vector);
+  // useful-manipulators.png
+  cpp_dump(cp::int_style10(2) << cp::show_back(10) << cp::show_both_ends(10) << some_huge_vector);
 
   std::clog << std::endl;
 
-  cpp_dump(int_style(2, 8, 2) << show_front(5) << show_front(5) << some_huge_vector);
+  // omitting-a-vector.png
+  cpp_dump(cp::show_back(10) << cp::show_both_ends(10) << some_huge_vector);
+
+  std::clog << std::endl;
+
+  // int-style.png
+  cpp_dump(cp::int_style(2, 8, 2) << cp::show_front(5) << cp::show_front(5) << some_huge_vector);
 
   std::clog << std::endl;
 }

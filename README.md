@@ -10,10 +10,10 @@ This library has the following features:
 
 - Prints string representations of a wide variety of types to the standard error output (std::clog). This includes multidimensional arrays, (multi)maps, and (multi)sets, and even complex numbers, error objects, etc.
 - Automatically indents so that the output fits into the maximum line width.
-- Output is colored, and you can customize the colors.
+- Customizable output color.
 - Header-only library, no build or dependencies required.
 - The macro version can print variables along with the names.
-- Can print even user-defined types by using macros.
+- Can print even user-defined types by using macros or defining operators.
 - The string representation of variables is similar to JavaScript, Python, and C++ syntax.
 
 ## Introduction
@@ -131,45 +131,21 @@ cpp_dump::es_style = cpp_dump::es_style_t::no_es;
 
 ![no-es.png](./readme/no-es.png)
 
-### User-defined types can also be supported by using macros
+### Can print even user-defined types
 
-One way to support user-types is to define the operator `std::ostream& operator<<(std::ostream&, const T &)`.  
-The other way is to use macros, which can be done more easily.
-
-#### User-defined class
-
-[See Full Example Code](./readme/user-defined-class.cpp)
-
-```cpp
-//  At top level
-struct class_A {
-  int i;
-  std::string str() const { return std::to_string(i); }
-};
-CPP_DUMP_DEFINE_EXPORT_OBJECT(class_A, i, str());
-
-// In main() or some function
-class_A my_class_A{10};
-cpp_dump(my_class_A);
-```
+See [How to print a-user-defined type with cpp-dump](#how-to-print-a-user-defined-type-with-cpp-dump) for details.
 
 ![user-defined-class.png](./readme/user-defined-class.png)
 
-#### Enum
-
-[See Full Example Code](./readme/user-defined-enum.cpp)
-
-```cpp
-//  At top level
-enum class enum_A { a, b, c };
-CPP_DUMP_DEFINE_EXPORT_ENUM(enum_A, enum_A::a, enum_A::b, enum_A::c);
-
-// In main() or some function
-enum_A my_enum_A = enum_A::c;
-cpp_dump(my_enum_A);
-```
-
 ![user-defined-enum.png](./readme/user-defined-enum.png)
+
+## Advanced Feature
+
+### Manipulators to change the display style
+
+See [Formatting with manipulators](#formatting-with-manipulators) for details.
+
+![manipulators.png](./readme/manipulators.png)
 
 ## Requirement
 
@@ -219,10 +195,10 @@ cpp_dump::show_back(std::size_t iteration_count = cpp_dump::max_iteration_count)
 cpp_dump::show_both_ends(std::size_t iteration_count = cpp_dump::max_iteration_count);
 cpp_dump::int_style(unsigned int base = 16, unsigned int digits = 8,
     unsigned int chunk = 2, bool space_fill = false, bool support_negative = false);
-cpp_dump::int_style10(unsigned int digits, unsigned int chunk = 0);
-cpp_dump::map_key(return_value_of_manipulator);
-cpp_dump::map_value(return_value_of_manipulator);
-cpp_dump::map_key_and_value(return_value_of_manipulator_for_key, return_value_of_manipulator_for_value);
+cpp_dump::int_style10(unsigned int digits, bool support_negative = false);
+cpp_dump::map_k(return_value_of_manipulator);
+cpp_dump::map_v(return_value_of_manipulator);
+cpp_dump::map_kv(return_value_of_manipulator_for_key, return_value_of_manipulator_for_value);
 ```
 
 ### Macros
@@ -244,6 +220,13 @@ cpp_dump::map_key_and_value(return_value_of_manipulator_for_key, return_value_of
  * Member functions to be displayed must be const.
  */
 #define CPP_DUMP_DEFINE_EXPORT_OBJECT(T, members...)
+
+/**
+ * Make export_var() support every type that has the specified members.
+ * Member functions to be displayed must be const.
+ * Compile errors in this macro, such as ambiguous function calls, are never reported due to SFINAE.
+ */
+#define CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(members...)
 
 /**
  * Make export_var() support enum T.
@@ -355,6 +338,105 @@ template <typename T>
 inline constexpr bool cpp_dump::is_exportable;
 ```
 
+### How to print a user-defined type with cpp-dump
+
+There are three ways to enable the library to print a user type.
+
+#### 1. Use CPP_DUMP_DEFINE_EXPORT_OBJECT() macro
+
+This macro requires the user type to be accessible from the top level, but it is the safest and easiest way to enable the dump functions to print a user type.  
+[See Full Example Code](./readme/user-defined-class.cpp)
+
+```cpp
+// Somewhere accessible from top level (not private or defined in a function)
+struct class_A {
+  int i;
+  std::string str() const { return std::to_string(i); }
+};
+
+// At top level
+// CPP_DUMP_DEFINE_EXPORT_OBJECT(type_name, members...)
+CPP_DUMP_DEFINE_EXPORT_OBJECT(class_A, i, str());
+
+// In a function
+class_A my_class_A{10};
+cpp_dump(my_class_A);
+```
+
+![user-defined-class.png](./readme/user-defined-class.png)
+
+For enums, use CPP_DUMP_DEFINE_EXPORT_ENUM() macro.  
+[See Full Example Code](./readme/user-defined-enum.cpp)
+
+```cpp
+// Somewhere accessible from top level (not private or defined in a function)
+enum class enum_A { a, b, c };
+
+// At top level
+// CPP_DUMP_DEFINE_EXPORT_ENUM(enum_name, members...)
+CPP_DUMP_DEFINE_EXPORT_ENUM(enum_A, enum_A::a, enum_A::b, enum_A::c);
+
+// In a function
+enum_A my_enum_A = enum_A::c;
+cpp_dump(my_enum_A);
+```
+
+![user-defined-enum.png](./readme/user-defined-enum.png)
+
+#### 2. Use CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT() macro
+
+This macro enables both dump functions to print any type with specified members.  
+This macro doesn't require the user type to be accessible from the top level (or even the type name).
+
+However, if you do not use this macro carefully, it might cause ambiguous function call errors.  
+Moreover, the errors are never reported due to SFINAE, and the user type will remain unsupported.
+
+If you use this macro only once, it won't cause ambiguous function call errors.  
+[See Full Example Code](./readme/user-defined-class2.cpp)
+
+```cpp
+// At top level
+// CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(members...)
+CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(i, str());
+
+// Anywhere
+struct class_A {
+  int i;
+  std::string str() const { return std::to_string(i); }
+};
+
+// In a function
+class_A my_class_A{10};
+cpp_dump(my_class_A);
+```
+
+![user-defined-class2.png](./readme/user-defined-class2.png)
+
+#### 3. Define `std::ostream& operator<<(std::ostream&, const T &)` operator
+
+The last way is to define the operator `std::ostream& operator<<(std::ostream&, const T &)`.  
+[See Full Example Code](./readme/user-defined-class3.cpp)
+
+```cpp
+// Somewhere accessible from top level (not private or defined in a function)
+struct class_A {
+  int i;
+  std::string str() const { return std::to_string(i); }
+};
+
+// At top level
+std::ostream &operator<<(std::ostream &os, const class_A &a) {
+  os << "class_A{ i= " << a.i << ", str()= \"" << a.str() << "\" }";
+  return os;
+}
+
+// In a function
+class_A my_class_A{10};
+cpp_dump(my_class_A);
+```
+
+![user-defined-class3.png](./readme/user-defined-class3.png)
+
 ### Formatting with manipulators
 
 [See Full Example Code](./readme/formatting-with-manipulators.cpp)
@@ -363,7 +445,7 @@ Using manipulators, you can set which and how many elements of an array/map/set 
 
 ```cpp
 // Show the last 10 elements for the 1st dimension, the first 5 and the last 5 for the 2nd dimension.
-cpp_dump(show_back(10) << show_both_ends(10) << some_huge_vector);
+cpp_dump(cp::show_back(10) << cp::show_both_ends(10) << some_huge_vector);
 ```
 
 ![some-huge-vector](./readme/omitting-a-vector.png)
@@ -372,10 +454,17 @@ And you can set how integers are displayed with manipulators.
 
 ```cpp
 // Show integers in binary, minimum 8 digits, separated by every 2 characters.
-cpp_dump(int_style(2, 8, 2) << show_front(5) << show_front(5) << some_huge_vector);
+cpp_dump(cp::int_style(2, 8, 2) << cp::show_front(5) << cp::show_front(5) << some_huge_vector);
 ```
 
 ![int-style](./readme/int-style.png)
+
+```cpp
+// Show integers in decimal, minimum 2 digits.
+cpp_dump(cp::int_style10(2) << cp::show_back(10) << cp::show_both_ends(10) << some_huge_vector);
+```
+
+![manipulators.png](./readme/manipulators.png)
 
 #### show\_\* manipulators
 
@@ -386,36 +475,36 @@ cpp_dump::show_back(std::size_t iteration_count = cpp_dump::max_iteration_count)
 cpp_dump::show_both_ends(std::size_t iteration_count = cpp_dump::max_iteration_count);
 
 // Example
-cpp_dump(show_back() << show_back() << variable);
+cpp_dump(cp::show_back() << cp::show_back() << variable);
 ```
 
 The further left manipulator will act on the more outside dimensions of the array/map/set.
 
-#### int_style manipulator
+#### int_style, int_style10 manipulator
 
 ```cpp
 cpp_dump::int_style(unsigned int base = 16, unsigned int digits = 8,
     unsigned int chunk = 2, bool space_fill = false, bool support_negative = false);
-cpp_dump::int_style10(unsigned int digits, unsigned int chunk = 0) { return int_style(10, digits, chunk, true, true); }
+cpp_dump::int_style10(unsigned int digits, bool support_negative = false) { return int_style(10, digits, 0, true, support_negative); }
 
 // Example
-cpp_dump(int_style(16) << variable);
+cpp_dump(cp::int_style(16) << variable);
 ```
 
 `base` supports values of 2 <= `base` <= 16. For other values, this manipulator resets the effects of the previous `int_style()` manipulators.  
 `chunk/digits` supports values of `chunk/digits` >= 0.  
 Unlike `show_*` manipulators, `int_style()` manipulator acts on all integers in the variable.  
-`int_style10(digits, chunk)` is an alias of `int_style(10, digits, chunk, true, true)`
+`int_style10(digits, support_negative)` is an alias of `int_style(10, digits, 0, true, support_negative)`
 
-#### map_key, map_value, map_key_and_value manipulator
+#### map_k, map_v, map_kv manipulator
 
 ```cpp
-cpp_dump::map_key(return_value_of_manipulator);
-cpp_dump::map_value(return_value_of_manipulator);
-cpp_dump::map_key_and_value(return_value_of_manipulator_for_key, return_value_of_manipulator_for_value);
+cpp_dump::map_k(return_value_of_manipulator);
+cpp_dump::map_v(return_value_of_manipulator);
+cpp_dump::map_kv(return_value_of_manipulator_for_key, return_value_of_manipulator_for_value);
 
 // Example
-cpp_dump(show_front() << map_key_and_value(int_style(16), show_back()) << map);
+cpp_dump(cp::show_front() << cp::map_kv(cp::int_style(16), cp::show_back()) << map);
 ```
 
 These manipulators act on (multi)maps.  
@@ -427,11 +516,13 @@ In this example, the keys are displayed in hexadecimal, and if the values are it
 #ifdef DEFINED_ONLY_IN_LOCAL
 #include "./cpp-dump/dump.hpp"
 #define dump(...) cpp_dump(__VA_ARGS__)
+namespace cp = cpp_dump;
 #else
 #define dump(...)
 #define CPP_DUMP_SET_OPTION(...)
 #define CPP_DUMP_DEFINE_EXPORT_OBJECT(...)
 #define CPP_DUMP_DEFINE_EXPORT_ENUM(...)
+#define CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(...)
 #endif
 
 #include <bits/stdc++.h>
@@ -470,23 +561,24 @@ clang++ ./main.cpp -D DEFINED_ONLY_IN_LOCAL
 
 Both dump functions dump variables recursively, so they can dump nested variables of any combination of types in the table below.
 
-| Category     | Type T is supported if ...                                                                                                                                                                                                                                                                            | Example                                           |
-| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- |
-| Arithmetic   | `std::is_arithmetic_v<T> == true`                                                                                                                                                                                                                                                                     | `bool`, `char`, `int`, `long`, `float`, `double`  |
-| String       | T is convertible to `std::string_view`                                                                                                                                                                                                                                                                | `std::string`, `const char *`, `std::string_view` |
-| Container    | T is compatible with the range-based for loop                                                                                                                                                                                                                                                         | `std::vector`, `std::array`, C-style arrays       |
-| Map          | T is either `std::map`, `std::unordered_map`, `std::multimap`, or `std::unordered_multimap`                                                                                                                                                                                                           |                                                   |
-| Set          | T is either `std::set`, `std::unordered_set`, `std::multiset`, or `std::unordered_multiset`                                                                                                                                                                                                           |                                                   |
-| Tuple        | T is compatible with `std::tuple_size_v<T>`                                                                                                                                                                                                                                                           | `std::tuple`, `std::pair`                         |
-| FIFO/LIFO    | T is either `std::queue`, `std::priority_queue`, or `std::stack`                                                                                                                                                                                                                                      |                                                   |
-| Pointer      | T is a pointer or smart pointer                                                                                                                                                                                                                                                                       | `int *`, `std::shared_ptr`, `std::unique_ptr`     |
-| Reference    | T is `std::reference_wrapper`                                                                                                                                                                                                                                                                         |                                                   |
-| Exception    | T is convertible to `std::exception`                                                                                                                                                                                                                                                                  |                                                   |
-| Other        | T is either `std::bitset`, `std::complex`, `std::optional`, or `std::variant`                                                                                                                                                                                                                         |                                                   |
-| User-defined | `CPP_DUMP_DEFINE_EXPORT_OBJECT(T, members...);` is at top level and the member functions to be displayed is const.                                                                                                                                                                                    |                                                   |
-| Enum         | `CPP_DUMP_DEFINE_EXPORT_ENUM(T, members...);` is at top level.                                                                                                                                                                                                                                        |                                                   |
-| Asterisk     | All of the above are not satisfied and the function `TypeExceptT operator*(const T &)` or the const member function `TypeExceptT T::operator*() const` is defined.                                                                                                                                    | Iterators                                         |
-| Ostream      | All of the above are not satisfied, `std::is_function_v<T> == false && std::is_member_pointer_v<T> == false`, and the function `std::ostream& operator<<(std::ostream&, const T &)` is defined. **The string representation of T must not be an empty string** (This makes manipulators unsupported). |                                                   |
+| Category      | Type T is supported if ...                                                                                                                                                                                                                                                                            | Example                                           |
+| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- |
+| Arithmetic    | `std::is_arithmetic_v<T> == true`                                                                                                                                                                                                                                                                     | `bool`, `char`, `int`, `long`, `float`, `double`  |
+| String        | T is convertible to `std::string_view`                                                                                                                                                                                                                                                                | `std::string`, `const char *`, `std::string_view` |
+| Container     | T is compatible with the range-based for loop                                                                                                                                                                                                                                                         | `std::vector`, `std::array`, C-style arrays       |
+| Map           | T is either `std::map`, `std::unordered_map`, `std::multimap`, or `std::unordered_multimap`                                                                                                                                                                                                           |                                                   |
+| Set           | T is either `std::set`, `std::unordered_set`, `std::multiset`, or `std::unordered_multiset`                                                                                                                                                                                                           |                                                   |
+| Tuple         | T is compatible with `std::tuple_size_v<T>`                                                                                                                                                                                                                                                           | `std::tuple`, `std::pair`                         |
+| FIFO/LIFO     | T is either `std::queue`, `std::priority_queue`, or `std::stack`                                                                                                                                                                                                                                      |                                                   |
+| Pointer       | T is a pointer or smart pointer                                                                                                                                                                                                                                                                       | `int *`, `std::shared_ptr`, `std::unique_ptr`     |
+| Reference     | T is `std::reference_wrapper`                                                                                                                                                                                                                                                                         |                                                   |
+| Exception     | T is convertible to `std::exception`                                                                                                                                                                                                                                                                  |                                                   |
+| Other         | T is either `std::bitset`, `std::complex`, `std::optional`, or `std::variant`                                                                                                                                                                                                                         |                                                   |
+| User-defined  | `CPP_DUMP_DEFINE_EXPORT_OBJECT(T, members...);` is at top level and the member functions to be displayed is const.                                                                                                                                                                                    |                                                   |
+| Enum          | `CPP_DUMP_DEFINE_EXPORT_ENUM(T, members...);` is at top level.                                                                                                                                                                                                                                        |                                                   |
+| Asterisk      | All of the above are not satisfied and the function `TypeExceptT operator*(const T &)` or the const member function `TypeExceptT T::operator*() const` is defined.                                                                                                                                    | Iterators                                         |
+| Ostream       | All of the above are not satisfied, `std::is_function_v<T> == false && std::is_member_pointer_v<T> == false`, and the function `std::ostream& operator<<(std::ostream&, const T &)` is defined. **The string representation of T must not be an empty string** (This makes manipulators unsupported). |                                                   |
+| User-defined2 | All of the above are not satisfied and T has the members specified by `CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(members...);` at top level and the member functions to be displayed is const.                                                                                                          |                                                   |
 
 ### Display example
 
@@ -534,8 +626,7 @@ std::logic_error{ what()= "Error Message" }
 *value
 ```
 
-For other categories, see the image in the section...
+For other categories, see the image(s) in the section...
 
 Other -> [A wide variety of supported types](#a-wide-variety-of-supported-types)  
-User-defined -> [User-defined class](#user-defined-class)  
-Enum -> [Enum](#enum)
+User-defined, Enum -> [How to print a user-defined type with cpp-dump](#how-to-print-a-user-defined-type-with-cpp-dump)

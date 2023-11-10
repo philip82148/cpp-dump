@@ -43,9 +43,9 @@ inline auto export_arithmetic(
   if (!int_style) return es::number(std::to_string(value));
 
   auto [base, digits, chunk, space_fill, support_negative] = int_style.value();
-  if (!support_negative && value < 0) return es::number(std::to_string(value));
 
   std::string output;
+
   T tmp;
   if constexpr (std::is_signed_v<T>) {
     tmp = std::abs(value);
@@ -54,118 +54,91 @@ inline auto export_arithmetic(
   }
 
   if (base == 10) {
-    std::string output_tmp = std::to_string(tmp);
+    output = std::to_string(tmp);
+    std::reverse(output.begin(), output.end());
+  } else {
+    bool is_first = true;
+    while (is_first || tmp) {
+      is_first = false;
+      T r;
+      switch (base) {
+        case 2:
+          r = tmp & 0x01;
+          break;
+        case 4:
+          r = tmp & 0x03;
+          break;
+        case 8:
+          r = tmp & 0x07;
+          break;
+        case 16:
+          r = tmp & 0x0f;
+          break;
+        default:
+          r = tmp % static_cast<T>(base);
+          break;
+      }
 
-    if (digits > 0 && digits > output_tmp.length()) {
-      if (space_fill) {
-        output_tmp.insert(0, digits - output_tmp.length(), ' ');
+      if (r <= 9) {
+        output.append(1, static_cast<char>(r + '0'));
       } else {
-        output_tmp.insert(0, digits - output_tmp.length(), '0');
-      }
-    }
-
-    if (support_negative) {
-      if (value >= 0) output = ' ';
-      else output = '-';
-    }
-
-    if (chunk > 0) {
-      std::size_t begin = output_tmp.length() % chunk;
-      if (begin != 0) output.append(output_tmp.substr(0, begin));
-      for (; begin < output_tmp.length(); begin += chunk) {
-        std::size_t length = std::min<std::size_t>(chunk, output_tmp.length() - begin);
-        if (begin != 0) output.append(1, ' ');
-        output.append(output_tmp.substr(begin, length));
-      }
-    } else {
-      output.append(output_tmp);
-    }
-
-    return es::number(output);
-  }
-
-  unsigned int digit_i = 0, next_digit_of_chunk = chunk;
-  for (; digit_i == 0 || tmp; ++digit_i) {
-    T r;
-    switch (base) {
-      case 2:
-        r = tmp & 0x01;
-        break;
-      case 4:
-        r = tmp & 0x03;
-        break;
-      case 8:
-        r = tmp & 0x07;
-        break;
-      case 16:
-        r = tmp & 0x0f;
-        break;
-      default:
-        r = tmp % static_cast<T>(base);
-        break;
-    }
-
-    if (chunk > 0 && digit_i >= next_digit_of_chunk) {
-      output.append(1, ' ');
-      next_digit_of_chunk += chunk;
-    }
-
-    if (r <= 9) {
-      output.append(1, static_cast<char>(r + '0'));
-    } else {
-      output.append(1, static_cast<char>(r - 10 + 'a'));
-    }
-
-    switch (base) {
-      case 2:
-        tmp >>= 1;
-        break;
-      case 4:
-        tmp >>= 2;
-        break;
-      case 8:
-        tmp >>= 3;
-        break;
-      case 16:
-        tmp >>= 4;
-        break;
-      default:
-        tmp /= static_cast<T>(base);
-        break;
-    }
-  }
-
-  if (digits > 0 && digit_i < digits) {
-    if (!space_fill && chunk > 0) {
-      unsigned int fill_length = chunk - digit_i % chunk;
-      if (fill_length != chunk) {
-        fill_length = std::min(chunk - digit_i % chunk, digits - digit_i);
-        output.append(fill_length, '0');
-        digit_i += fill_length;
+        output.append(1, static_cast<char>(r - 10 + 'a'));
       }
 
-      for (; digit_i < digits; digit_i += chunk) {
-        unsigned int length = std::min(chunk, digits - digit_i);
-        output.append(1, ' ');
-        output.append(length, '0');
-      }
-    } else {
-      unsigned int fill_length = digits - digit_i;
-      if (space_fill) {
-        if (chunk > 0) fill_length += ((digits - 1) / chunk) - ((digit_i - 1) / chunk);
-        output.append(fill_length, ' ');
-      } else {
-        output.append(fill_length, '0');
+      switch (base) {
+        case 2:
+          tmp >>= 1;
+          break;
+        case 4:
+          tmp >>= 2;
+          break;
+        case 8:
+          tmp >>= 3;
+          break;
+        case 16:
+          tmp >>= 4;
+          break;
+        default:
+          tmp /= static_cast<T>(base);
+          break;
       }
     }
   }
 
-  if (support_negative) {
-    if (value >= 0) output.append(1, ' ');
-    else output.append(1, '-');
+  bool add_minus = false;
+  if (space_fill && value < 0 && (digits == 0 || output.length() < digits)) {
+    output.append(1, '-');
+    add_minus = true;
+  }
+
+  if (digits > 0 && output.length() < digits) {
+    if (space_fill) {
+      output.append(digits - output.length(), ' ');
+    } else {
+      output.append(digits - output.length(), '0');
+    }
+  }
+
+  bool equal_to_digits = digits > 0 && output.length() == digits;
+  if (chunk > 0) {
+    std::string output_tmp;
+    output.swap(output_tmp);
+    for (std::size_t begin = 0; begin < output_tmp.length(); begin += chunk) {
+      std::size_t length = std::min<std::size_t>(chunk, output_tmp.length() - begin);
+      if (begin > 0) output.append(1, ' ');
+      output.append(output_tmp.substr(begin, length));
+    }
+  }
+
+  if (!add_minus && value < 0) {
+    output.append(1, '-');
+  } else if (support_negative && equal_to_digits) {
+    output.append(1, ' ');
   }
 
   std::reverse(output.begin(), output.end());
+
+  if (base == 10) return es::number(output);
 
   return es::number(output) + es::op(" _" + std::to_string(base));
 }

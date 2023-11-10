@@ -251,8 +251,8 @@ inline auto int_style(
  * Manipulator for the display style of decimal integers.
  * See README for details.
  */
-inline auto int_style10(unsigned int digits, unsigned int chunk = 0) {
-  return int_style(10, digits, chunk, true, true);
+inline auto int_style10(unsigned int digits, bool support_negative = false) {
+  return int_style(10, digits, 0, true, support_negative);
 }
 
 /*
@@ -327,20 +327,20 @@ inline auto show_middle(std::size_t iteration_count = max_iteration_count) {
  * Manipulator for applying manipulators to map keys.
  * See README for details.
  */
-inline auto map_key(_detail::export_command &&command) { return _map_key(std::move(command)); }
+inline auto map_k(_detail::export_command &&c) { return _map_key(std::move(c)); }
 
 /*
  * Manipulator for applying manipulators to map values.
  * See README for details.
  */
-inline auto map_value(_detail::export_command &&command) { return _map_value(std::move(command)); }
+inline auto map_v(_detail::export_command &&c) { return _map_value(std::move(c)); }
 
 /*
  * Manipulator for applying manipulators to map keys and values.
  * See README for details.
  */
-inline auto map_key_and_value(_detail::export_command &&key, _detail::export_command &&value) {
-  return _map_key_and_value(std::move(key), std::move(value));
+inline auto map_kv(_detail::export_command &&k, _detail::export_command &&v) {
+  return _map_key_and_value(std::move(k), std::move(v));
 }
 
 }  // namespace cpp_dump

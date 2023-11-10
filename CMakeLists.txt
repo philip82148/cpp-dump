@@ -57,6 +57,7 @@ foreach(file ${files})
         COMMAND "${CMAKE_COMMAND}"
         -D "test_dir=${CMAKE_CURRENT_LIST_DIR}/test"
         -D "cmd_path=$<TARGET_FILE:readme_${basename}>"
+        -D "compiler_id=${CMAKE_CXX_COMPILER_ID}"
         -D "basename=${basename}"
         -P "${CMAKE_CURRENT_LIST_DIR}/test/readme_test.cmake"
     )
