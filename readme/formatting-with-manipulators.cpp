@@ -22,11 +22,11 @@ int main() {
 
   std::clog << std::endl;
 
-  cpp_dump(mn::show_back(10) << mn::show_both_ends(10) << some_huge_vector);
+  cpp_dump(mn::back(10) << mn::both_ends(10) << some_huge_vector);
 
   std::clog << std::endl;
 
-  cpp_dump(mn::int_style(2, 8, 2) << mn::show_front(5) << mn::show_front(5) << some_huge_vector);
+  cpp_dump(mn::int_style(2, 8, 2) << mn::front(5) << mn::front(5) << some_huge_vector);
 
   std::clog << std::endl;
 }

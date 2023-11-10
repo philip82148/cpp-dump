@@ -343,35 +343,21 @@ int main(int argc, char *argv[]) {
 
   CPP_DUMP_SET_OPTION(max_iteration_count, 2);
   cpp_dump(array50, map50, set50);
-  cpp_dump(mn::show_front() << array50, mn::show_front() << map50, mn::show_front() << set50);
-  cpp_dump(mn::show_middle() << array50, mn::show_middle() << map50, mn::show_middle() << set50);
-  cpp_dump(mn::show_back() << array50, mn::show_back() << map50, mn::show_back() << set50);
-  cpp_dump(
-      mn::show_both_ends() << array50, mn::show_both_ends() << map50, mn::show_both_ends() << set50
-  );
+  cpp_dump(mn::front() << array50, mn::front() << map50, mn::front() << set50);
+  cpp_dump(mn::middle() << array50, mn::middle() << map50, mn::middle() << set50);
+  cpp_dump(mn::back() << array50, mn::back() << map50, mn::back() << set50);
+  cpp_dump(mn::both_ends() << array50, mn::both_ends() << map50, mn::both_ends() << set50);
 
   CPP_DUMP_SET_OPTION(max_iteration_count, 100);
-  cpp_dump(mn::show_front(10) << array50, mn::show_front(10) << map50, mn::show_front(10) << set50);
-  cpp_dump(mn::show_back(10) << array50, mn::show_back(10) << map50, mn::show_back(10) << set50);
-  cpp_dump(
-      mn::show_middle(10) << array50, mn::show_middle(10) << map50, mn::show_middle(10) << set50
-  );
-  cpp_dump(
-      mn::show_both_ends(10) << array50,
-      mn::show_both_ends(10) << map50,
-      mn::show_both_ends(10) << set50
-  );
+  cpp_dump(mn::front(10) << array50, mn::front(10) << map50, mn::front(10) << set50);
+  cpp_dump(mn::back(10) << array50, mn::back(10) << map50, mn::back(10) << set50);
+  cpp_dump(mn::middle(10) << array50, mn::middle(10) << map50, mn::middle(10) << set50);
+  cpp_dump(mn::both_ends(10) << array50, mn::both_ends(10) << map50, mn::both_ends(10) << set50);
 
-  cpp_dump(mn::show_front(40) << array50, mn::show_front(40) << map50, mn::show_front(40) << set50);
-  cpp_dump(
-      mn::show_middle(40) << array50, mn::show_middle(40) << map50, mn::show_middle(40) << set50
-  );
-  cpp_dump(mn::show_back(40) << array50, mn::show_back(40) << map50, mn::show_back(40) << set50);
-  cpp_dump(
-      mn::show_both_ends(40) << array50,
-      mn::show_both_ends(40) << map50,
-      mn::show_both_ends(40) << set50
-  );
+  cpp_dump(mn::front(40) << array50, mn::front(40) << map50, mn::front(40) << set50);
+  cpp_dump(mn::middle(40) << array50, mn::middle(40) << map50, mn::middle(40) << set50);
+  cpp_dump(mn::back(40) << array50, mn::back(40) << map50, mn::back(40) << set50);
+  cpp_dump(mn::both_ends(40) << array50, mn::both_ends(40) << map50, mn::both_ends(40) << set50);
 
   auto vec2 = vector<vector<vector<int>>>{
       {{1}},
@@ -382,11 +368,11 @@ int main(int argc, char *argv[]) {
           {5, 7, 8, 10, 11},
       }};
 
-  cpp_dump(vec2, mn::show_back(2) << mn::show_both_ends(1) << mn::show_back(2) << vec2);
-  cpp_dump(vec2, mn::show_both_ends(2) << mn::show_both_ends(2) << mn::show_both_ends(2) << vec2);
+  cpp_dump(vec2, mn::back(2) << mn::both_ends(1) << mn::back(2) << vec2);
+  cpp_dump(vec2, mn::both_ends(2) << mn::both_ends(2) << mn::both_ends(2) << vec2);
 
-  cpp_dump(multimap1, mn::show_both_ends(2) << mn::show_both_ends(2) << multimap1);
-  cpp_dump(multiset1, mn::show_middle(1) << mn::show_back(1) << multiset1);
+  cpp_dump(multimap1, mn::both_ends(2) << mn::both_ends(2) << multimap1);
+  cpp_dump(multiset1, mn::middle(1) << mn::back(1) << multiset1);
 
   auto multimap2 = multimap<vector<int>, vector<int>>{
       {{1, 2, 4, 2}, {11, 22, 11, 22}},
@@ -395,27 +381,22 @@ int main(int argc, char *argv[]) {
       {{5, 6, 7, 8}, {14, -2}},
       {{1, 2, 4, 2}, {0, 5, 25}},
   };
-  cpp_dump(
-      mn::show_front(2) << mn::map_key_and_value(mn::show_back(2), mn::show_front(2)) << multimap2
-  );
+  cpp_dump(mn::front(2) << mn::map_kv(mn::back(2), mn::front(2)) << multimap2);
 
   cpp_dump(
-      mn::int_style(12, 3, 3) << mn::show_front(2) << mn::int_style(2, 0, 0)
-                              << mn::map_key_and_value(
-                                     mn::int_style(16, 3, 3) << mn::show_back(2), mn::show_front(2)
-                                 )
+      mn::int_style(12, 3, 3) << mn::front(2) << mn::int_style(2, 0, 0)
+                              << mn::map_kv(mn::int_style(16, 3, 3) << mn::back(2), mn::front(2))
                               << multimap2
   );
   cpp_dump(
-      mn::int_style(12, 3, 3) << mn::int_style(
-          8, 3, 3
-      ) << mn::map_key_and_value(mn::int_style(16, 3, 3) << mn::show_back(2), mn::show_front(2))
+      mn::int_style(12, 3, 3) << mn::int_style(8, 3, 3)
+                              << mn::map_kv(mn::int_style(16, 3, 3) << mn::back(2), mn::front(2))
                               << multimap2
   );
   cpp_dump(
-      mn::show_front(1) << mn::map_value(
-          mn::int_style(8, 3, 3) << mn::show_middle(1) << mn::int_style(16, 3, 3)
-                                 << mn::show_middle(2) << mn::int_style(5, 3, 3)
+      mn::front(1) << mn::map_v(
+          mn::int_style(8, 3, 3) << mn::middle(1) << mn::int_style(16, 3, 3) << mn::middle(2)
+                                 << mn::int_style(5, 3, 3)
       ) << multimap2
   );
   rep(i, 17) cpp_dump(i, mn::int_style(i) << 0x10000);
@@ -541,11 +522,11 @@ int main(int argc, char *argv[]) {
   // non_copyable_and_non_movable_class
   CPP_DUMP_SET_OPTION(max_depth, 2);
   cpp_dump(
-      mn::show_front(2) << mn::show_middle(1) << mn::show_back(2) << mn::show_both_ends(1)
-                        << non_copyable_and_non_movable_class1
+      mn::front(2) << mn::middle(1) << mn::back(2) << mn::both_ends(1)
+                   << non_copyable_and_non_movable_class1
   );
   cpp_dump(non_copyable_and_non_movable_class_container1);
-  cpp_dump(mn::show_front(1) << non_copyable_and_non_movable_class_container1);
+  cpp_dump(mn::front(1) << non_copyable_and_non_movable_class_container1);
   cpp_dump(container_of_non_copyable_non_const_iterator1);
 
   // unsupported_non_const_class
