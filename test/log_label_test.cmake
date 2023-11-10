@@ -14,7 +14,7 @@ set(txt_file "${test_dir}/txt/log_label_test.txt")
 
 # no color
 execute_process(
-   COMMAND "${cmd_path}" 0 ERROR_FILE "${log_file}" COMMAND_ERROR_IS_FATAL ANY
+   COMMAND "${cmd_path}" 0 0 ERROR_FILE "${log_file}" COMMAND_ERROR_IS_FATAL ANY
 )
 execute_process(
    COMMAND "${CMAKE_COMMAND}" -E compare_files "${log_file}" "${txt_file}" RESULT_VARIABLE not_successful
@@ -27,7 +27,7 @@ endif()
 
 # with color
 execute_process(
-   COMMAND "${cmd_path}" 1 ERROR_VARIABLE error_contents COMMAND_ERROR_IS_FATAL ANY
+   COMMAND "${cmd_path}" 0 1 ERROR_VARIABLE error_contents COMMAND_ERROR_IS_FATAL ANY
 )
 string(REGEX REPLACE "${esc}\\[[^m]*m" "" error_contents "${error_contents}")
 file(WRITE "${log_file}" "${error_contents}")
