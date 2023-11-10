@@ -18,8 +18,9 @@
 #define _p_CPP_DUMP_EXPAND_FOR_DANGEROUS_EXPORT_OBJECT2(member) append_output(#member, value.member)
 
 /**
- * Make export_var() support types that has PROPERTIES.
+ * Make export_var() support every type that has the specified members.
  * Member functions to be displayed must be const.
+ * Compile errors in this macro, such as ambiguous function calls, are never reported due to SFINAE.
  */
 #define CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(...)                                                                 \
   namespace cpp_dump {                                                                                               \
