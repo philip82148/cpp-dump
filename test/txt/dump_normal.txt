@@ -787,7 +787,7 @@ here.`,
            ...
          ], 
          [ ..., 004 _16, 000 _16 ] (1): [ 
-           [ 10101 _2, 101 _2, 10 _2, -5 ]
+           [ 10101 _2, 101 _2, 10 _2, -101 _2 ]
          ], 
          ...
        }
@@ -798,10 +798,10 @@ here.`,
            [ 000 _8, 005 _8, 031 _8 ]
          ], 
          [ 003 _8, 004 _8, 000 _8 ] (1): [ 
-           [ 025 _8, 005 _8, 002 _8, -5 ]
+           [ 025 _8, 005 _8, 002 _8, -005 _8 ]
          ], 
          [ 005 _8, 006 _8, 007 _8, 010 _8 ] (1): [ 
-           [ 016 _8, -2 ]
+           [ 016 _8, -002 _8 ]
          ]
        }
 [dump] mn::front(1) << mn::map_v( mn::int_style(8, 3, 3) << mn::middle(1) << mn::int_style(16, 3, 3) << mn::middle(2) << mn::int_style(5, 3, 3) ) << multimap2
@@ -839,27 +839,27 @@ here.`,
          [ -02,  00, -10 ]
        ],
        mn::int_style10(2) << vec3 => [ 
-         [   1,  20,   4 ], 
-         [ - 2,   0, -10 ]
+         [  1, 20,  4 ], 
+         [ -2,  0, -10 ]
        ]
 [dump] 0000 0001
 [dump]  0000 0002
 [dump] -0000 0003
 [dump]         1
 [dump]          2
-[dump] -        3
+[dump]         -3
 [dump] 0 0000 0004
 [dump]  0 0000 0005
 [dump] -0 0000 0006
 [dump]           4
 [dump]            5
-[dump] -          6
+[dump]           -6
 [dump] 000 0007
 [dump]  000 0008
 [dump] -000 0009
 [dump]        7
 [dump]         8
-[dump] -       9
+[dump]        -9
 [dump] 1
 [dump]  2
 [dump] -3
@@ -871,45 +871,45 @@ here.`,
 [dump] -006
 [dump]   4
 [dump]    5
-[dump] -  6
+[dump]   -6
 [dump] 0007
 [dump]  0008
 [dump] -0009
 [dump]    7
 [dump]     8
-[dump] -   9
+[dump]    -9
 [dump] 0 0000
 [dump]  0 0001
 [dump] -0 0002
 [dump]      0
 [dump]       1
-[dump] -     2
+[dump]      -2
 [dump] 1 0000
 [dump]  2 0000
 [dump] -3 0000
 [dump]   4000
 [dump]    5000
-[dump] -  6000
+[dump]  - 6000
 [dump]    700
 [dump]     800
-[dump] -   900
+[dump]    -900
 [dump] 1 0000
-[dump]  2 0000
+[dump] 2 0000
 [dump] -3 0000
 [dump] 4000
-[dump]  5000
+[dump] 5000
 [dump] -6000
 [dump] 700
-[dump]  800
+[dump] 800
 [dump] -900
 [dump] 10
 [dump]  20
 [dump] -30
 [dump]  4
 [dump]   5
-[dump] - 6
+[dump]  -6
 [dump] 83 _16
-[dump]  84 _16
+[dump] 84 _16
 [dump] -74 _16
 [dump] -85 _16
 [dump] 86 _16
@@ -918,15 +918,15 @@ here.`,
 [dump]  88 _16
 [dump]   89 _16
 [dump]    8a _16
-[dump] -  7a _16
+[dump]  - 7a _16
 [dump]  0 8b _16
 [dump]    8c _16
 [dump]     8d _16
-[dump] -   7d _16
+[dump]   - 7d _16
 [dump]  00 8e _16
 [dump]      8f _16
 [dump]       80 _16
-[dump] -     71 _16
+[dump]     - 71 _16
 [dump]  0 00 82 _16
 [dump] 0 0000
 [dump]      0
