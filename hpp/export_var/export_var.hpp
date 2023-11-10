@@ -84,14 +84,14 @@ std::string export_var(
     );
   } else if constexpr (is_other_type<T>) {
     return export_other(value, indent, last_line_length, current_depth, fail_on_newline, command);
-  } else if constexpr (is_asterisk<T>) {
-    return export_asterisk(
-        value, indent, last_line_length, current_depth, fail_on_newline, command
-    );
   } else if constexpr (is_ostream<T>) {
     return export_ostream(value, indent, last_line_length, current_depth, fail_on_newline, command);
-  } else {
+  } else if constexpr (is_dangerously_exportable_object<T>) {
     return dangerous_export_object(
+        value, indent, last_line_length, current_depth, fail_on_newline, command
+    );
+  } else {
+    return export_asterisk(
         value, indent, last_line_length, current_depth, fail_on_newline, command
     );
   }

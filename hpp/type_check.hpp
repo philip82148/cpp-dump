@@ -209,20 +209,8 @@ inline constexpr bool _is_exportable_partial =
     || is_exportable_object<T> || is_exportable_enum<T>;
 
 template <typename T>
-auto _is_asterisk(int) -> std::enable_if_t<
-    !_is_exportable_partial<T>
-        && !std::is_same_v<_remove_cref<decltype(*std::declval<const T>())>, T>,
-    std::true_type>;
-template <typename>
-std::false_type _is_asterisk(long);
-
-template <typename T>
-inline constexpr bool is_asterisk = decltype(_is_asterisk<_remove_cref<T>>(0))::value;
-
-template <typename T>
 auto _is_ostream(int) -> std::enable_if_t<
-    !_is_exportable_partial<T> && !is_asterisk<T> && !std::is_function_v<T>
-        && !std::is_member_pointer_v<T>,
+    !_is_exportable_partial<T> && !std::is_function_v<T> && !std::is_member_pointer_v<T>,
     decltype(std::declval<std::ostream>() << std::declval<const T>(), std::true_type())>;
 template <typename>
 std::false_type _is_ostream(long);
@@ -233,22 +221,30 @@ inline constexpr bool is_ostream = decltype(_is_ostream<_remove_cref<T>>(0))::va
 struct export_command;
 
 template <typename T>
-auto _is_dangerously_exportable_object(int) -> decltype(
-  dangerous_export_object(std::declval<T>(), "", 0, 0, false, std::declval<export_command>()),
-  std::true_type()
-  //
-);
+auto _is_dangerously_exportable_object(int) -> std::enable_if_t<
+    !_is_exportable_partial<T> && !is_ostream<T>,
+    decltype(dangerous_export_object(std::declval<T>(), "", 0, 0, false, std::declval<export_command>()), std::true_type())>;
 template <typename>
 std::false_type _is_dangerously_exportable_object(long);
 
 template <typename T>
 inline constexpr bool is_dangerously_exportable_object =
-    !_is_exportable_partial<T> && !is_asterisk<T> && !is_ostream<T>
-    && decltype(_is_dangerously_exportable_object<_remove_cref<T>>(0))::value;
+    decltype(_is_dangerously_exportable_object<_remove_cref<T>>(0))::value;
 
 template <typename T>
-inline constexpr bool is_exportable = _is_exportable_partial<T> || is_asterisk<T> || is_ostream<T>
-                                      || is_dangerously_exportable_object<T>;
+auto _is_asterisk(int) -> std::enable_if_t<
+    !_is_exportable_partial<T> && !is_ostream<T> && !is_dangerously_exportable_object<T>
+        && !std::is_same_v<_remove_cref<decltype(*std::declval<const T>())>, T>,
+    std::true_type>;
+template <typename>
+std::false_type _is_asterisk(long);
+
+template <typename T>
+inline constexpr bool is_asterisk = decltype(_is_asterisk<_remove_cref<T>>(0))::value;
+
+template <typename T>
+inline constexpr bool is_exportable = _is_exportable_partial<T> || is_ostream<T>
+                                      || is_dangerously_exportable_object<T> || is_asterisk<T>;
 
 template <typename T>
 inline constexpr bool is_iterable_like = is_container<T> || is_map<T> || is_set<T> || is_tuple<T>;
