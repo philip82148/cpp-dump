@@ -233,6 +233,8 @@ inline constexpr bool is_value_with_command = _is_value_with_command<_remove_cre
 
 }  // namespace _detail
 
+namespace mn {
+
 /*
  * Manipulator for the display style of integers.
  * See README for details.
@@ -342,5 +344,7 @@ inline auto map_value(_detail::export_command &&command) { return _map_value(std
 inline auto map_key_and_value(_detail::export_command &&key, _detail::export_command &&value) {
   return _map_key_and_value(std::move(key), std::move(value));
 }
+
+}  // namespace mn
 
 }  // namespace cpp_dump
