@@ -55,46 +55,46 @@ here.`,
 [dump] main => Unsupported Type, &main => Unsupported Type, &unsupported_class::k => Unsupported Type, &unsupported_class::str => Unsupported Type
 [dump] setw(5) => Unsupported Type, boolalpha => Unsupported Type
 [dump] cpp_dump::es_style_t::no_es => cpp_dump::es_style_t::no_es, cpp_dump::es_style_t::by_syntax => cpp_dump::es_style_t::by_syntax, cpp_dump::es_value => cpp_dump::es_value_t{ ... }
-[dump] mn::int_style(16) << 10000u => 00 00 27 10 _16, mn::int_style(16) << 10000l => 00 00 27 10 _16, mn::int_style(16) << 10000ul => 00 00 27 10 _16, mn::int_style(16) << 10000ll => 00 00 27 10 _16, mn::int_style(16) << 10000ull => 00 00 27 10 _16
+[dump] cp::int_style(16) << 10000u => 00 00 27 10 _16, cp::int_style(16) << 10000l => 00 00 27 10 _16, cp::int_style(16) << 10000ul => 00 00 27 10 _16, cp::int_style(16) << 10000ll => 00 00 27 10 _16, cp::int_style(16) << 10000ull => 00 00 27 10 _16
 [dump] array50 => [ ... ], map50 => { ... }, set50 => { ... }
-[dump] mn::front() << array50 => [ ... ], mn::front() << map50 => { ... }, mn::front() << set50 => { ... }
-[dump] mn::middle() << array50 => [ ... ], mn::middle() << map50 => { ... }, mn::middle() << set50 => { ... }
-[dump] mn::back() << array50 => [ ... ], mn::back() << map50 => { ... }, mn::back() << set50 => { ... }
-[dump] mn::both_ends() << array50 => [ ... ], mn::both_ends() << map50 => { ... }, mn::both_ends() << set50 => { ... }
-[dump] mn::front(10) << array50 => [ ... ], mn::front(10) << map50 => { ... }, mn::front(10) << set50 => { ... }
-[dump] mn::back(10) << array50 => [ ... ], mn::back(10) << map50 => { ... }, mn::back(10) << set50 => { ... }
-[dump] mn::middle(10) << array50 => [ ... ], mn::middle(10) << map50 => { ... }, mn::middle(10) << set50 => { ... }
-[dump] mn::both_ends(10) << array50 => [ ... ], mn::both_ends(10) << map50 => { ... }, mn::both_ends(10) << set50 => { ... }
-[dump] mn::front(40) << array50 => [ ... ], mn::front(40) << map50 => { ... }, mn::front(40) << set50 => { ... }
-[dump] mn::middle(40) << array50 => [ ... ], mn::middle(40) << map50 => { ... }, mn::middle(40) << set50 => { ... }
-[dump] mn::back(40) << array50 => [ ... ], mn::back(40) << map50 => { ... }, mn::back(40) << set50 => { ... }
-[dump] mn::both_ends(40) << array50 => [ ... ], mn::both_ends(40) << map50 => { ... }, mn::both_ends(40) << set50 => { ... }
-[dump] vec2 => [ ... ], mn::back(2) << mn::both_ends(1) << mn::back(2) << vec2 => [ ... ]
-[dump] vec2 => [ ... ], mn::both_ends(2) << mn::both_ends(2) << mn::both_ends(2) << vec2 => [ ... ]
-[dump] multimap1 => { ... }, mn::both_ends(2) << mn::both_ends(2) << multimap1 => { ... }
-[dump] multiset1 => { ... }, mn::middle(1) << mn::back(1) << multiset1 => { ... }
-[dump] mn::front(2) << mn::map_kv(mn::back(2), mn::front(2)) << multimap2 => { ... }
-[dump] mn::int_style(12, 3, 3) << mn::front(2) << mn::int_style(2, 0, 0) << mn::map_kv(mn::int_style(16, 3, 3) << mn::back(2), mn::front(2)) << multimap2 => { ... }
-[dump] mn::int_style(12, 3, 3) << mn::int_style(8, 3, 3) << mn::map_kv(mn::int_style(16, 3, 3) << mn::back(2), mn::front(2)) << multimap2 => { ... }
-[dump] mn::front(1) << mn::map_v( mn::int_style(8, 3, 3) << mn::middle(1) << mn::int_style(16, 3, 3) << mn::middle(2) << mn::int_style(5, 3, 3) ) << multimap2 => { ... }
-[dump] i => 0, mn::int_style(i) << 0x10000 => 65536
-[dump] i => 1, mn::int_style(i) << 0x10000 => 65536
-[dump] i => 2, mn::int_style(i) << 0x10000 => 1 00 00 00 00 00 00 00 00 _2
-[dump] i => 3, mn::int_style(i) << 0x10000 => 1 00 22 22 00 21 _3
-[dump] i => 4, mn::int_style(i) << 0x10000 => 1 00 00 00 00 _4
-[dump] i => 5, mn::int_style(i) << 0x10000 => 04 04 41 21 _5
-[dump] i => 6, mn::int_style(i) << 0x10000 => 01 22 32 24 _6
-[dump] i => 7, mn::int_style(i) << 0x10000 => 00 36 20 32 _7
-[dump] i => 8, mn::int_style(i) << 0x10000 => 00 20 00 00 _8
-[dump] i => 9, mn::int_style(i) << 0x10000 => 00 10 88 07 _9
-[dump] i => 10, mn::int_style(i) << 0x10000 => 00 06 55 36
-[dump] i => 11, mn::int_style(i) << 0x10000 => 00 04 52 69 _11
-[dump] i => 12, mn::int_style(i) << 0x10000 => 00 03 1b 14 _12
-[dump] i => 13, mn::int_style(i) << 0x10000 => 00 02 3a a3 _13
-[dump] i => 14, mn::int_style(i) << 0x10000 => 00 01 9c 52 _14
-[dump] i => 15, mn::int_style(i) << 0x10000 => 00 01 46 41 _15
-[dump] i => 16, mn::int_style(i) << 0x10000 => 00 01 00 00 _16
-[dump] vec3 => [ ... ], mn::int_style(10, 2, 0, false, true) << vec3 => [ ... ], mn::int_style10(2) << vec3 => [ ... ]
+[dump] cp::show_front() << array50 => [ ... ], cp::show_front() << map50 => { ... }, cp::show_front() << set50 => { ... }
+[dump] cp::show_middle() << array50 => [ ... ], cp::show_middle() << map50 => { ... }, cp::show_middle() << set50 => { ... }
+[dump] cp::show_back() << array50 => [ ... ], cp::show_back() << map50 => { ... }, cp::show_back() << set50 => { ... }
+[dump] cp::show_both_ends() << array50 => [ ... ], cp::show_both_ends() << map50 => { ... }, cp::show_both_ends() << set50 => { ... }
+[dump] cp::show_front(10) << array50 => [ ... ], cp::show_front(10) << map50 => { ... }, cp::show_front(10) << set50 => { ... }
+[dump] cp::show_back(10) << array50 => [ ... ], cp::show_back(10) << map50 => { ... }, cp::show_back(10) << set50 => { ... }
+[dump] cp::show_middle(10) << array50 => [ ... ], cp::show_middle(10) << map50 => { ... }, cp::show_middle(10) << set50 => { ... }
+[dump] cp::show_both_ends(10) << array50 => [ ... ], cp::show_both_ends(10) << map50 => { ... }, cp::show_both_ends(10) << set50 => { ... }
+[dump] cp::show_front(40) << array50 => [ ... ], cp::show_front(40) << map50 => { ... }, cp::show_front(40) << set50 => { ... }
+[dump] cp::show_middle(40) << array50 => [ ... ], cp::show_middle(40) << map50 => { ... }, cp::show_middle(40) << set50 => { ... }
+[dump] cp::show_back(40) << array50 => [ ... ], cp::show_back(40) << map50 => { ... }, cp::show_back(40) << set50 => { ... }
+[dump] cp::show_both_ends(40) << array50 => [ ... ], cp::show_both_ends(40) << map50 => { ... }, cp::show_both_ends(40) << set50 => { ... }
+[dump] vec2 => [ ... ], cp::show_back(2) << cp::show_both_ends(1) << cp::show_back(2) << vec2 => [ ... ]
+[dump] vec2 => [ ... ], cp::show_both_ends(2) << cp::show_both_ends(2) << cp::show_both_ends(2) << vec2 => [ ... ]
+[dump] multimap1 => { ... }, cp::show_both_ends(2) << cp::show_both_ends(2) << multimap1 => { ... }
+[dump] multiset1 => { ... }, cp::show_middle(1) << cp::show_back(1) << multiset1 => { ... }
+[dump] cp::show_front(2) << cp::map_kv(cp::show_back(2), cp::show_front(2)) << multimap2 => { ... }
+[dump] cp::int_style(12, 3, 3) << cp::show_front(2) << cp::int_style(2, 0, 0) << cp::map_kv(cp::int_style(16, 3, 3) << cp::show_back(2), cp::show_front(2)) << multimap2 => { ... }
+[dump] cp::int_style(12, 3, 3) << cp::int_style( 8, 3, 3 ) << cp::map_kv(cp::int_style(16, 3, 3) << cp::show_back(2), cp::show_front(2)) << multimap2 => { ... }
+[dump] cp::show_front(1) << cp::map_v( cp::int_style(8, 3, 3) << cp::show_middle(1) << cp::int_style(16, 3, 3) << cp::show_middle(2) << cp::int_style(5, 3, 3) ) << multimap2 => { ... }
+[dump] i => 0, cp::int_style(i) << 0x10000 => 65536
+[dump] i => 1, cp::int_style(i) << 0x10000 => 65536
+[dump] i => 2, cp::int_style(i) << 0x10000 => 1 00 00 00 00 00 00 00 00 _2
+[dump] i => 3, cp::int_style(i) << 0x10000 => 1 00 22 22 00 21 _3
+[dump] i => 4, cp::int_style(i) << 0x10000 => 1 00 00 00 00 _4
+[dump] i => 5, cp::int_style(i) << 0x10000 => 04 04 41 21 _5
+[dump] i => 6, cp::int_style(i) << 0x10000 => 01 22 32 24 _6
+[dump] i => 7, cp::int_style(i) << 0x10000 => 00 36 20 32 _7
+[dump] i => 8, cp::int_style(i) << 0x10000 => 00 20 00 00 _8
+[dump] i => 9, cp::int_style(i) << 0x10000 => 00 10 88 07 _9
+[dump] i => 10, cp::int_style(i) << 0x10000 => 00 06 55 36
+[dump] i => 11, cp::int_style(i) << 0x10000 => 00 04 52 69 _11
+[dump] i => 12, cp::int_style(i) << 0x10000 => 00 03 1b 14 _12
+[dump] i => 13, cp::int_style(i) << 0x10000 => 00 02 3a a3 _13
+[dump] i => 14, cp::int_style(i) << 0x10000 => 00 01 9c 52 _14
+[dump] i => 15, cp::int_style(i) << 0x10000 => 00 01 46 41 _15
+[dump] i => 16, cp::int_style(i) << 0x10000 => 00 01 00 00 _16
+[dump] vec3 => [ ... ], cp::int_style(10, 2, 0, false, true) << vec3 => [ ... ], cp::int_style10(2) << vec3 => [ ... ]
 [dump] 0000 0001
 [dump]  0000 0002
 [dump] -0000 0003
@@ -197,9 +197,9 @@ here.`,
 [dump]      0
 [dump]  00000 _16
 [dump]      0 _16
-[dump] mn::front(2) << mn::middle(1) << mn::back(2) << mn::both_ends(1) << non_copyable_and_non_movable_class1 => non_copyable_and_non_movable_class{ str_member= "This object has a pointer and reference_wrapper to itself.", pointer= *non_copyable_and_non_movable_class{ str_member= "This object has a pointer and reference_wrapper to itself.", pointer= *non_copyable_and_non_movable_class{ ... }, ref= non_copyable_and_non_movable_class{ ... } }, ref= non_copyable_and_non_movable_class{ str_member= "This object has a pointer and reference_wrapper to itself.", pointer= *non_copyable_and_non_movable_class{ ... }, ref= non_copyable_and_non_movable_class{ ... } } }
+[dump] cp::show_front(2) << cp::show_middle(1) << cp::show_back(2) << cp::show_both_ends(1) << non_copyable_and_non_movable_class1 => non_copyable_and_non_movable_class{ str_member= "This object has a pointer and reference_wrapper to itself.", pointer= *non_copyable_and_non_movable_class{ str_member= "This object has a pointer and reference_wrapper to itself.", pointer= *non_copyable_and_non_movable_class{ ... }, ref= non_copyable_and_non_movable_class{ ... } }, ref= non_copyable_and_non_movable_class{ str_member= "This object has a pointer and reference_wrapper to itself.", pointer= *non_copyable_and_non_movable_class{ ... }, ref= non_copyable_and_non_movable_class{ ... } } }
 [dump] non_copyable_and_non_movable_class_container1 => [ non_copyable_and_non_movable_class{ str_member= "This is non_copyable_and_non_movable_class.", pointer= *non_copyable_and_non_movable_class{ ... }, ref= non_copyable_and_non_movable_class{ ... } }, non_copyable_and_non_movable_class{ str_member= "This is non_copyable_and_non_movable_class.", pointer= *non_copyable_and_non_movable_class{ ... }, ref= non_copyable_and_non_movable_class{ ... } } ]
-[dump] mn::front(1) << non_copyable_and_non_movable_class_container1 => [ non_copyable_and_non_movable_class{ str_member= "This is non_copyable_and_non_movable_class.", pointer= *non_copyable_and_non_movable_class{ ... }, ref= non_copyable_and_non_movable_class{ ... } }, ... ]
+[dump] cp::show_front(1) << non_copyable_and_non_movable_class_container1 => [ non_copyable_and_non_movable_class{ str_member= "This is non_copyable_and_non_movable_class.", pointer= *non_copyable_and_non_movable_class{ ... }, ref= non_copyable_and_non_movable_class{ ... } }, ... ]
 [dump] container_of_non_copyable_non_const_iterator1 => [ "This iterator is non-copyable and doesn't support const.", "This iterator is non-copyable and doesn't support const." ]
 [dump] unsupported_container_of_supported_container_a1 => Unsupported Type
 [dump] unsupported_container_of_supported_container_b1 => Unsupported Type
