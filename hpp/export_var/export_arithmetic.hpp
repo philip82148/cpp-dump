@@ -119,20 +119,20 @@ inline auto export_arithmetic(
     }
   }
 
-  bool less_digits_plus1 = output.length() < digits + 1;
+  bool equal_to_digits = digits > 0 && output.length() == digits;
   if (chunk > 0) {
     std::string output_tmp;
     output.swap(output_tmp);
     for (std::size_t begin = 0; begin < output_tmp.length(); begin += chunk) {
       std::size_t length = std::min<std::size_t>(chunk, output_tmp.length() - begin);
-      if (begin != 0) output.append(1, ' ');
+      if (begin > 0) output.append(1, ' ');
       output.append(output_tmp.substr(begin, length));
     }
   }
 
   if (!add_minus && value < 0) {
     output.append(1, '-');
-  } else if (digits > 0 && support_negative && less_digits_plus1) {
+  } else if (support_negative && equal_to_digits) {
     output.append(1, ' ');
   }
 
