@@ -133,13 +133,19 @@ cpp_dump::es_style = cpp_dump::es_style_t::no_es;
 
 ### Can print even user-defined types
 
-See [How to print a-user-defined type with cpp-dump](#how-to-print-a-user-defined-type-with-cpp-dump) for details.
+See [How to print a user-defined type with cpp-dump](#how-to-print-a-user-defined-type-with-cpp-dump) for details.
 
 ![user-defined-class.png](./readme/user-defined-class.png)
 
 ![user-defined-enum.png](./readme/user-defined-enum.png)
 
-## Advanced Feature
+## Advanced Features
+
+### File name/path instead of `[dump]`
+
+See [Customize `[dump]`](#customize-dump) for details.
+
+![filename-label.png](./readme/filename-label.png)
 
 ### Manipulators to change the display style
 
@@ -199,6 +205,18 @@ cpp_dump::int_style10(unsigned int digits, bool support_negative = false);
 cpp_dump::map_k(return_value_of_manipulator);
 cpp_dump::map_v(return_value_of_manipulator);
 cpp_dump::map_kv(return_value_of_manipulator_for_key, return_value_of_manipulator_for_value);
+
+// See 'Customize "[dump]"'.
+namespace cpp_dump::log_label {
+
+std::string default_func(const std::string &fullpath, std::size_t line, const std::string &func_name);
+log_label_func_t line(int min_width = 0, bool show_func = false);
+log_label_func_t basename(int min_width = 0, bool show_func = false);
+log_label_func_t filename(int min_width = 0, bool show_func = false);
+log_label_func_t fullpath(int min_width = 0, int substr_start = 0, bool show_func = false);
+log_label_func_t fixed_length(int width = 0, int substr_start = 0, bool show_func = false);
+
+}
 ```
 
 ### Macros
@@ -265,7 +283,7 @@ inline std::size_t cpp_dump::max_iteration_count = 16;
  * Function that returns the label that cpp_dump::dump() and cpp_dump() print
  * at the beginning of the output.
  */
-inline std::function<std::string(void)> cpp_dump::log_label_func = []() -> std::string { return "[dump] "; };
+inline cpp_dump::log_label::log_label_func_t cpp_dump::log_label_func = cpp_dump::log_label::default_func;
 
 /**
  * Style of the escape sequences.
@@ -326,6 +344,9 @@ struct cpp_dump::es_value_t {
     std::vector<std::string> bracket_by_depth,
   );
 }
+
+using cpp_dump::log_label::log_label_func_t =
+    std::function<std::string(const std::string &, std::size_t, const std::string &)>;
 ```
 
 ### Meta function
@@ -436,6 +457,44 @@ cpp_dump(my_class_A);
 ```
 
 ![user-defined-class3.png](./readme/user-defined-class3.png)
+
+### Customize `[dump]`
+
+Assigning a function to `cpp_dump::log_label_func`, you can customize `[dump]`.  
+cpp-dump has some functions that create a function to assign to `cpp_dump::log_label_func`, so you don't have to make your own function.
+
+```cpp
+namespace cpp_dump::log_label {
+
+using log_label_func_t =
+    std::function<std::string(const std::string &fullpath, std::size_t line, const std::string &func_name)>;
+
+// Default function assigned to cpp_dump::log_label_func.
+std::string default_func(const std::string &, std::size_t, const std::string &) {
+  return "[dump] ";
+}
+
+// Functions that create a function that can be assigned to cpp_dump::log_label_func.
+log_label_func_t line(int min_width = 0, bool show_func = false);
+log_label_func_t basename(int min_width = 0, bool show_func = false);
+log_label_func_t filename(int min_width = 0, bool show_func = false);
+log_label_func_t fullpath(int min_width = 0, int substr_start = 0, bool show_func = false);
+log_label_func_t fixed_length(int width = 0, int substr_start = 0, bool show_func = false);
+
+}
+
+inline cpp_dump::log_label::log_label_func_t cpp_dump::log_label_func = cpp_dump::log_label::default_func;
+```
+
+In the following example, cpp_dump() macro prints the file name and the line no. instead of `[dump]`.  
+[See Full Example Code](./readme/customize-dump.cpp)
+
+```cpp
+cpp_dump::log_label_func = cpp_dump::log_label::filename();
+cpp_dump(my_vector);
+```
+
+![filename-label.png](./readme/filename-label.png)
 
 ### Formatting with manipulators
 
