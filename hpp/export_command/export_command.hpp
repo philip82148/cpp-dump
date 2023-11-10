@@ -253,8 +253,8 @@ inline auto int_style(
  * Manipulator for the display style of decimal integers.
  * See README for details.
  */
-inline auto int_style10(unsigned int digits, unsigned int chunk = 0) {
-  return int_style(10, digits, chunk, true, true);
+inline auto int_style10(unsigned int digits, bool support_negative = false) {
+  return int_style(10, digits, 0, true, support_negative);
 }
 
 /*
