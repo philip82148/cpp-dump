@@ -139,6 +139,14 @@ See [How to print a-user-defined type with cpp-dump](#how-to-print-a-user-define
 
 ![user-defined-enum.png](./readme/user-defined-enum.png)
 
+## Advanced Feature
+
+### Manipulators to change the display style
+
+See [Formatting with manipulators](#formatting-with-manipulators) for details.
+
+![manipulators.png](./readme/manipulators.png)
+
 ## Requirement
 
 - C++17 or higher.
@@ -187,10 +195,10 @@ cpp_dump::show_back(std::size_t iteration_count = cpp_dump::max_iteration_count)
 cpp_dump::show_both_ends(std::size_t iteration_count = cpp_dump::max_iteration_count);
 cpp_dump::int_style(unsigned int base = 16, unsigned int digits = 8,
     unsigned int chunk = 2, bool space_fill = false, bool support_negative = false);
-cpp_dump::int_style10(unsigned int digits, unsigned int chunk = 0);
-cpp_dump::map_key(return_value_of_manipulator);
-cpp_dump::map_value(return_value_of_manipulator);
-cpp_dump::map_key_and_value(return_value_of_manipulator_for_key, return_value_of_manipulator_for_value);
+cpp_dump::int_style10(unsigned int digits, bool support_negative = false);
+cpp_dump::map_k(return_value_of_manipulator);
+cpp_dump::map_v(return_value_of_manipulator);
+cpp_dump::map_kv(return_value_of_manipulator_for_key, return_value_of_manipulator_for_value);
 ```
 
 ### Macros
@@ -437,7 +445,7 @@ Using manipulators, you can set which and how many elements of an array/map/set 
 
 ```cpp
 // Show the last 10 elements for the 1st dimension, the first 5 and the last 5 for the 2nd dimension.
-cpp_dump(show_back(10) << show_both_ends(10) << some_huge_vector);
+cpp_dump(cp::show_back(10) << cp::show_both_ends(10) << some_huge_vector);
 ```
 
 ![some-huge-vector](./readme/omitting-a-vector.png)
@@ -446,10 +454,17 @@ And you can set how integers are displayed with manipulators.
 
 ```cpp
 // Show integers in binary, minimum 8 digits, separated by every 2 characters.
-cpp_dump(int_style(2, 8, 2) << show_front(5) << show_front(5) << some_huge_vector);
+cpp_dump(cp::int_style(2, 8, 2) << cp::show_front(5) << cp::show_front(5) << some_huge_vector);
 ```
 
 ![int-style](./readme/int-style.png)
+
+```cpp
+// Show integers in decimal, minimum 2 digits.
+cpp_dump(cp::int_style10(2) << cp::show_back(10) << cp::show_both_ends(10) << some_huge_vector);
+```
+
+![manipulators.png](./readme/manipulators.png)
 
 #### show\_\* manipulators
 
@@ -460,36 +475,36 @@ cpp_dump::show_back(std::size_t iteration_count = cpp_dump::max_iteration_count)
 cpp_dump::show_both_ends(std::size_t iteration_count = cpp_dump::max_iteration_count);
 
 // Example
-cpp_dump(show_back() << show_back() << variable);
+cpp_dump(cp::show_back() << cp::show_back() << variable);
 ```
 
 The further left manipulator will act on the more outside dimensions of the array/map/set.
 
-#### int_style manipulator
+#### int_style, int_style10 manipulator
 
 ```cpp
 cpp_dump::int_style(unsigned int base = 16, unsigned int digits = 8,
     unsigned int chunk = 2, bool space_fill = false, bool support_negative = false);
-cpp_dump::int_style10(unsigned int digits, unsigned int chunk = 0) { return int_style(10, digits, chunk, true, true); }
+cpp_dump::int_style10(unsigned int digits, bool support_negative = false) { return int_style(10, digits, 0, true, support_negative); }
 
 // Example
-cpp_dump(int_style(16) << variable);
+cpp_dump(cp::int_style(16) << variable);
 ```
 
 `base` supports values of 2 <= `base` <= 16. For other values, this manipulator resets the effects of the previous `int_style()` manipulators.  
 `chunk/digits` supports values of `chunk/digits` >= 0.  
 Unlike `show_*` manipulators, `int_style()` manipulator acts on all integers in the variable.  
-`int_style10(digits, chunk)` is an alias of `int_style(10, digits, chunk, true, true)`
+`int_style10(digits, support_negative)` is an alias of `int_style(10, digits, 0, true, support_negative)`
 
-#### map_key, map_value, map_key_and_value manipulator
+#### map_k, map_v, map_kv manipulator
 
 ```cpp
-cpp_dump::map_key(return_value_of_manipulator);
-cpp_dump::map_value(return_value_of_manipulator);
-cpp_dump::map_key_and_value(return_value_of_manipulator_for_key, return_value_of_manipulator_for_value);
+cpp_dump::map_k(return_value_of_manipulator);
+cpp_dump::map_v(return_value_of_manipulator);
+cpp_dump::map_kv(return_value_of_manipulator_for_key, return_value_of_manipulator_for_value);
 
 // Example
-cpp_dump(show_front() << map_key_and_value(int_style(16), show_back()) << map);
+cpp_dump(cp::show_front() << cp::map_kv(cp::int_style(16), cp::show_back()) << map);
 ```
 
 These manipulators act on (multi)maps.  
@@ -501,6 +516,7 @@ In this example, the keys are displayed in hexadecimal, and if the values are it
 #ifdef DEFINED_ONLY_IN_LOCAL
 #include "./cpp-dump/dump.hpp"
 #define dump(...) cpp_dump(__VA_ARGS__)
+namespace cp = cpp_dump;
 #else
 #define dump(...)
 #define CPP_DUMP_SET_OPTION(...)
