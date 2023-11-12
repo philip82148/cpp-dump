@@ -1,1 +1,3 @@
 [dump] original_error1 => main::original_error{ what()= "This is an original error." }
+[dump] original_class() => main::original_class{ member_var= 5, member_func()= "This is a member_func." }
+[dump] unsupported_original_class() => Unsupported Type

@@ -13,6 +13,7 @@
 #include "../escape_sequence.hpp"
 #include "../export_command/export_command.hpp"
 #include "../type_check.hpp"
+#include "./dangerous_export_object.hpp"
 #include "./export_arithmetic.hpp"
 #include "./export_asterisk.hpp"
 #include "./export_container.hpp"
@@ -87,8 +88,12 @@ std::string export_var(
     return export_asterisk(
         value, indent, last_line_length, current_depth, fail_on_newline, command
     );
-  } else {
+  } else if constexpr (is_ostream<T>) {
     return export_ostream(value, indent, last_line_length, current_depth, fail_on_newline, command);
+  } else {
+    return dangerous_export_object(
+        value, indent, last_line_length, current_depth, fail_on_newline, command
+    );
   }
 }
 
