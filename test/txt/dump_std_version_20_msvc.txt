@@ -1,6 +1,6 @@
 [0m[02m[dump] [0m[0m[36msource_location::current()[0m[0m[02m => [0m[0m[32mstd::source_location[0m[0m[02m{ [0m
          [0m[36m[0m[0m"[0m[0m[02m, [0m
-         [0m[36mline()[0m[0m[02m= [0m[0m38[0m[0m[02m, [0m
+         [0m[36mline()[0m[0m[02m= [0m[0m40[0m[0m[02m, [0m
          [0m[36mcolumn()[0m[0m[02m= [0m[0m3[0m[0m[02m, [0m
          [0m[36mfunction_name()[0m[0m[02m= [0m[0m"int __cdecl main(void)[0m[0m"[0m
        [0m[02m}[0m

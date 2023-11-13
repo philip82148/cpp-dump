@@ -33,8 +33,10 @@ int main() {
   // dummy
   // dummy
   // dummy
+  // dummy
+  // dummy
 #if __cplusplus >= 202002L
-  // dummy:next is 30 line
+  // dummy:next is line 40
   cpp_dump(source_location::current());
 #endif
 }
