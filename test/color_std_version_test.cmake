@@ -16,20 +16,20 @@ file(MAKE_DIRECTORY "${test_dir}/log")
 string(ASCII 27 esc)
 
 if(compiler_id MATCHES "GNU")
-   set(log_file "${test_dir}/log/dump_std_version_${std_version}_gnu.log")
-   set(txt_file "${test_dir}/txt/dump_std_version_${std_version}_gnu.txt")
+   set(log_file "${test_dir}/log/color_std_version_${std_version}_gnu.log")
+   set(txt_file "${test_dir}/txt/color_std_version_${std_version}_gnu.txt")
 elseif(compiler_id MATCHES "MSVC")
-   set(log_file "${test_dir}/log/dump_std_version_${std_version}_msvc.log")
-   set(txt_file "${test_dir}/txt/dump_std_version_${std_version}_msvc.txt")
+   set(log_file "${test_dir}/log/color_std_version_${std_version}_msvc.log")
+   set(txt_file "${test_dir}/txt/color_std_version_${std_version}_msvc.txt")
 else()
-   set(log_file "${test_dir}/log/dump_std_version_${std_version}_clang.log")
-   set(txt_file "${test_dir}/txt/dump_std_version_${std_version}_clang.txt")
+   set(log_file "${test_dir}/log/color_std_version_${std_version}_clang.log")
+   set(txt_file "${test_dir}/txt/color_std_version_${std_version}_clang.txt")
 endif()
 
 execute_process(
    COMMAND "${cmd_path}" ERROR_VARIABLE error_contents COMMAND_ERROR_IS_FATAL ANY
 )
-string(REGEX REPLACE "file_name.*dump_std_version_test.cpp" "" error_contents "${error_contents}")
+string(REGEX REPLACE "file_name.*color_std_version_test.cpp" "" error_contents "${error_contents}")
 file(WRITE "${log_file}" "${error_contents}")
 execute_process(
    COMMAND "${CMAKE_COMMAND}" -E compare_files "${log_file}" "${txt_file}" RESULT_VARIABLE not_successful

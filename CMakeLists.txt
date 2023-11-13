@@ -40,29 +40,6 @@ add_test(
     -P "${CMAKE_CURRENT_LIST_DIR}/test/dump_variable_test.cmake"
 )
 
-if(CMAKE_CXX_STANDARD GREATER 17) 
-    add_executable(dump_std_version_test test/dump_std_version_test.cpp)
-    add_test(
-        NAME "dump-std-version"
-        COMMAND "${CMAKE_COMMAND}"
-        -D "test_dir=${CMAKE_CURRENT_LIST_DIR}/test"
-        -D "cmd_path=$<TARGET_FILE:dump_std_version_test>"
-        -D "std_version=${CMAKE_CXX_STANDARD}"
-        -D "compiler_id=${CMAKE_CXX_COMPILER_ID}"
-        -P "${CMAKE_CURRENT_LIST_DIR}/test/dump_std_version_test.cmake"
-    )
-endif()
-
-add_executable(dump_rtti_test test/dump_rtti_test.cpp)
-target_compile_options(dump_rtti_test PUBLIC "${rtti_flag}")
-add_test(
-    NAME "dump-rtti"
-    COMMAND "${CMAKE_COMMAND}"
-    -D "test_dir=${CMAKE_CURRENT_LIST_DIR}/test"
-    -D "cmd_path=$<TARGET_FILE:dump_rtti_test>"
-    -P "${CMAKE_CURRENT_LIST_DIR}/test/dump_rtti_test.cmake"
-)
-
 add_executable(color_test test/color_test.cpp)
 set(args_array "wide\;4000\;4" "narrow\;20\;4" "shallow\;4000\;0")
 foreach(args ${args_array})
@@ -77,6 +54,29 @@ foreach(args ${args_array})
         -P "${CMAKE_CURRENT_LIST_DIR}/test/color_test.cmake"
     )
 endforeach()
+
+if(CMAKE_CXX_STANDARD GREATER 17) 
+    add_executable(color_std_version_test test/color_std_version_test.cpp)
+    add_test(
+        NAME "color-std-version"
+        COMMAND "${CMAKE_COMMAND}"
+        -D "test_dir=${CMAKE_CURRENT_LIST_DIR}/test"
+        -D "cmd_path=$<TARGET_FILE:color_std_version_test>"
+        -D "std_version=${CMAKE_CXX_STANDARD}"
+        -D "compiler_id=${CMAKE_CXX_COMPILER_ID}"
+        -P "${CMAKE_CURRENT_LIST_DIR}/test/color_std_version_test.cmake"
+    )
+endif()
+
+add_executable(color_rtti_test test/color_rtti_test.cpp)
+target_compile_options(color_rtti_test PUBLIC "${rtti_flag}")
+add_test(
+    NAME "color-rtti"
+    COMMAND "${CMAKE_COMMAND}"
+    -D "test_dir=${CMAKE_CURRENT_LIST_DIR}/test"
+    -D "cmd_path=$<TARGET_FILE:color_rtti_test>"
+    -P "${CMAKE_CURRENT_LIST_DIR}/test/color_rtti_test.cmake"
+)
 
 file(GLOB files readme/*.cpp)
 foreach(file ${files})

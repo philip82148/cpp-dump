@@ -9,8 +9,8 @@ file(MAKE_DIRECTORY "${test_dir}/log")
 
 string(ASCII 27 esc)
 
-set(log_file "${test_dir}/log/dump_rtti.log")
-set(txt_file "${test_dir}/txt/dump_rtti.txt")
+set(log_file "${test_dir}/log/color_rtti.log")
+set(txt_file "${test_dir}/txt/color_rtti.txt")
 
 execute_process(
    COMMAND "${cmd_path}" ERROR_FILE "${log_file}" COMMAND_ERROR_IS_FATAL ANY
