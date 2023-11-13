@@ -21,7 +21,6 @@
 #include "./export_exception.hpp"
 #include "./export_map.hpp"
 #include "./export_object.hpp"
-#include "./export_optional.hpp"
 #include "./export_ostream.hpp"
 #include "./export_other/export_other.hpp"
 #include "./export_pointer.hpp"
@@ -74,10 +73,6 @@ std::string export_var(
     return export_xixo(value, indent, last_line_length, current_depth, fail_on_newline, command);
   } else if constexpr (is_pointer<T>) {
     return export_pointer(value, indent, last_line_length, current_depth, fail_on_newline, command);
-  } else if constexpr (is_optional<T>) {
-    return export_optional(
-        value, indent, last_line_length, current_depth, fail_on_newline, command
-    );
   } else if constexpr (is_exception<T>) {
     return export_exception(
         value, indent, last_line_length, current_depth, fail_on_newline, command
