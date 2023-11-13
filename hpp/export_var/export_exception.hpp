@@ -10,21 +10,15 @@
 #include <string>
 #include <type_traits>
 
-#include "../escape_sequence.hpp"
 #include "../export_command/export_command.hpp"
 #include "../type_check.hpp"
-#include "../utility.hpp"
+#include "./export_object_common.hpp"
+
+_p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;
 
 namespace cpp_dump {
 
-extern inline std::size_t max_line_width;
-
 namespace _detail {
-
-template <typename T>
-std::string export_var(
-    const T &, const std::string &, std::size_t, std::size_t, bool, const export_command &command
-);
 
 template <typename T>
 inline auto export_exception(
@@ -35,31 +29,13 @@ inline auto export_exception(
     bool fail_on_newline,
     const export_command &command
 ) -> std::enable_if_t<is_exception<T>, std::string> {
-  std::size_t next_depth = current_depth + 1;
-
   std::string type_name = get_typename<T>();
-  std::string prefix = es::identifier(type_name) + es::bracket("{ ", current_depth)
-                       + es::member("what()") + es::op("= ");
-  std::string output =
-      prefix
-      + export_var(
-          exception.what(), indent, last_line_length + get_length(prefix), next_depth, true, command
-      )
-      + es::bracket(" }", current_depth);
 
-  if (!has_newline(output) && get_length(output) <= max_line_width) return output;
+  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2;
 
-  if (fail_on_newline) return "\n";
+  append_output("what()", exception.what());
 
-  std::string new_indent = indent + "  ";
-
-  prefix = new_indent + es::member("what()") + es::op("= ");
-  output =
-      es::identifier(type_name) + es::bracket("{\n", current_depth) + prefix
-      + export_var(exception.what(), new_indent, get_length(prefix), next_depth, false, command)
-      + "\n" + indent + es::bracket("}", current_depth);
-
-  return output;
+  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON3;
 }
 
 }  // namespace _detail
