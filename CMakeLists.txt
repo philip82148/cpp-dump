@@ -4,7 +4,8 @@ project(cpp-dump)
 if(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
     add_compile_options(-W4 /Zc:__cplusplus)
 else()
-    add_compile_options(-Wall -Wextra -Wfloat-equal -Wconversion -Wno-sign-conversion -Werror -Wshadow)
+    add_compile_options(-Wall -Wextra -Wfloat-equal -Wconversion -Wno-sign-conversion -Werror -Wshadow -fno-rtti)
+    set(rtti_flag -frtti)
 endif()
 
 include(CTest)
@@ -50,6 +51,16 @@ if(CMAKE_CXX_STANDARD GREATER 17)
         -P "${CMAKE_CURRENT_LIST_DIR}/test/dump_std_version_test.cmake"
     )
 endif()
+
+add_executable(dump_rtti_test test/dump_rtti_test.cpp)
+target_compile_options(dump_rtti_test PUBLIC "${rtti_flag}")
+add_test(
+    NAME "dump-rtti"
+    COMMAND "${CMAKE_COMMAND}"
+    -D "test_dir=${CMAKE_CURRENT_LIST_DIR}/test"
+    -D "cmd_path=$<TARGET_FILE:dump_rtti_test>"
+    -P "${CMAKE_CURRENT_LIST_DIR}/test/dump_rtti_test.cmake"
+)
 
 file(GLOB files readme/*.cpp)
 foreach(file ${files})

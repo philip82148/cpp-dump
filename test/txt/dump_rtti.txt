@@ -1,0 +1,1 @@
+[0m[02m[dump] [0m[0m[36mtypeid(void)[0m[0m[02m => [0m[0m[32mstd::type_info[0m[0m[02m{ [0m[0m[36mname()[0m[0m[02m= [0m[0m"void[0m[0m"[0m[0m[02m }[0m[0m[02m, [0m[0m[36mtype_index1[0m[0m[02m => [0m[0m[32mstd::type_index[0m[0m[02m{ [0m[0m[36mname()[0m[0m[02m= [0m[0m"void[0m[0m"[0m[0m[02m }[0m

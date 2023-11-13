@@ -310,9 +310,6 @@ int main(int argc, char *argv[]) {
   logic_error logic_error1("This is a test error.");
   cpp_dump(logic_error1);
 
-  std::type_index type_index1 = typeid(void);
-  cpp_dump(typeid(void), type_index1);
-
   // iterator
   cpp_dump(vec.begin());
 

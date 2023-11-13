@@ -576,14 +576,6 @@ here.`,
          => std::logic_error{ 
            what()= "This is a test error."
          }
-[dump] typeid(void)
-         => std::type_info{ 
-           name()= "void"
-         },
-       type_index1
-         => std::type_index{ 
-           name()= "void"
-         }
 [dump] vec.begin()
          => *[ 
            2, 
