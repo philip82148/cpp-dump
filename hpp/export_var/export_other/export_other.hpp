@@ -17,6 +17,7 @@
 #include "../../export_command/export_command.hpp"
 #include "../../type_check.hpp"
 #include "./export_es_value_t.hpp"
+#include "./export_other_object.hpp"
 
 namespace cpp_dump {
 
@@ -104,6 +105,20 @@ inline std::string export_other(
     const export_command &command
 ) {
   return export_es_value_t(esv, indent, last_line_length, current_depth, fail_on_newline, command);
+}
+
+template <typename T>
+inline auto export_other(
+    const T &value,
+    const std::string &indent,
+    std::size_t last_line_length,
+    std::size_t current_depth,
+    bool fail_on_newline,
+    const export_command &command
+) -> std::enable_if_t<is_other_object<T>, std::string> {
+  return export_other_object(
+      value, indent, last_line_length, current_depth, fail_on_newline, command
+  );
 }
 
 }  // namespace _detail

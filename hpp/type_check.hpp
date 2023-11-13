@@ -187,8 +187,14 @@ inline constexpr bool _is_other_type<std::variant<Args...>> = true;
 template <>
 inline constexpr bool _is_other_type<es_value_t> = true;
 
+template <typename>
+inline constexpr bool _is_other_object = false;
+
 template <typename T>
-inline constexpr bool is_other_type = _is_other_type<_remove_cref<T>>;
+inline constexpr bool is_other_object = _is_other_object<_remove_cref<T>>;
+
+template <typename T>
+inline constexpr bool is_other_type = _is_other_type<_remove_cref<T>> || is_other_object<T>;
 
 template <typename>
 inline constexpr bool _is_exportable_object = false;
@@ -266,7 +272,7 @@ _string_wrapper _get_typename() {
 #endif
 }
 
-// Currently, used only by export_exception()
+// Currently, used only by export_exception() and CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT()
 template <typename T>
 std::string get_typename() {
 #if defined(__GNUC__) && !defined(__clang__)
