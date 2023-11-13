@@ -21,6 +21,7 @@
 #include <string_view>
 #include <tuple>
 #include <type_traits>
+#include <typeindex>
 #include <unordered_map>
 #include <unordered_set>
 #include <variant>
@@ -171,6 +172,9 @@ inline constexpr bool _is_optional<std::nullopt_t> = true;
 template <typename T>
 inline constexpr bool is_optional = _is_optional<_remove_cref<T>>;
 
+template <typename T>
+inline constexpr bool is_type_info = std::is_convertible_v<_remove_cref<T>, std::type_index>;
+
 template <typename>
 inline constexpr bool _is_other_object = false;
 
@@ -192,7 +196,7 @@ inline constexpr bool _is_other_type<es_value_t> = true;
 
 template <typename T>
 inline constexpr bool is_other_type =
-    is_optional<T> || is_other_object<T> || _is_other_type<_remove_cref<T>>;
+    is_optional<T> || is_type_info<T> || is_other_object<T> || _is_other_type<_remove_cref<T>>;
 
 template <typename>
 inline constexpr bool _is_exportable_object = false;

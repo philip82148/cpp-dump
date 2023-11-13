@@ -11,6 +11,7 @@
 #include <complex>
 #include <string>
 #include <type_traits>
+#include <typeinfo>
 #include <variant>
 
 #include "../../escape_sequence.hpp"
@@ -19,6 +20,7 @@
 #include "./export_es_value_t.hpp"
 #include "./export_optional.hpp"
 #include "./export_other_object.hpp"
+#include "./export_type_info.hpp"
 
 namespace cpp_dump {
 
@@ -39,6 +41,20 @@ inline auto export_other(
 ) -> std::enable_if_t<is_optional<T>, std::string> {
   return export_optional(
       optional, indent, last_line_length, current_depth, fail_on_newline, command
+  );
+}
+
+template <typename T>
+inline auto export_other(
+    const T &type_info,
+    const std::string &indent,
+    std::size_t last_line_length,
+    std::size_t current_depth,
+    bool fail_on_newline,
+    const export_command &command
+) -> std::enable_if_t<is_type_info<T>, std::string> {
+  return export_type_info(
+      type_info, indent, last_line_length, current_depth, fail_on_newline, command
   );
 }
 

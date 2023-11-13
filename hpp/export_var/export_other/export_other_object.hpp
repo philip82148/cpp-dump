@@ -116,4 +116,4 @@ export_other_object(const T &, const std::string &, std::size_t, std::size_t, bo
 
 // By not using CPP_DUMP_DEFINE_EXPORT_OBJECT() here, users can use CPP_DUMP_DEFINE_EXPORT_OBJECT()
 // to overwrite export_var()
-_p_CPP_DUMP_DEFINE_EXPORT_OTHER_OBJECT(std::type_info, name());
+// _p_CPP_DUMP_DEFINE_EXPORT_OTHER_OBJECT(std::type_info, name());
