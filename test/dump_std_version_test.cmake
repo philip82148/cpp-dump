@@ -15,8 +15,16 @@ file(MAKE_DIRECTORY "${test_dir}/log")
 
 string(ASCII 27 esc)
 
-set(log_file "${test_dir}/log/dump_std_version_${std_version}_${compiler_id}.log")
-set(txt_file "${test_dir}/txt/dump_std_version_${std_version}_${compiler_id}.txt")
+if(compiler_id MATCHES "GNU")
+   set(log_file "${test_dir}/log/dump_std_version_${std_version}_gnu.log")
+   set(txt_file "${test_dir}/txt/dump_std_version_${std_version}_gnu.txt")
+elseif(compiler_id MATCHES "MSVC")
+   set(log_file "${test_dir}/log/dump_std_version_${std_version}_msvc.log")
+   set(txt_file "${test_dir}/txt/dump_std_version_${std_version}_msvc.txt")
+else()
+   set(log_file "${test_dir}/log/dump_std_version_${std_version}_clang.log")
+   set(txt_file "${test_dir}/txt/dump_std_version_${std_version}_clang.txt")
+endif()
 
 execute_process(
    COMMAND "${cmd_path}" ERROR_VARIABLE error_contents COMMAND_ERROR_IS_FATAL ANY
