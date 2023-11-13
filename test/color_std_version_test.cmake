@@ -29,7 +29,7 @@ endif()
 execute_process(
    COMMAND "${cmd_path}" ERROR_VARIABLE error_contents COMMAND_ERROR_IS_FATAL ANY
 )
-string(REGEX REPLACE "file_name.*color_std_version_test.cpp" "" error_contents "${error_contents}")
+string(REGEX REPLACE "\"[^\\}]*.cpp" "\"" error_contents "${error_contents}")
 file(WRITE "${log_file}" "${error_contents}")
 execute_process(
    COMMAND "${CMAKE_COMMAND}" -E compare_files "${log_file}" "${txt_file}" RESULT_VARIABLE not_successful
