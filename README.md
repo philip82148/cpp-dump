@@ -607,7 +607,7 @@ true, 'c', 1, 3.140000
 ( value1, value2, ... )
 
 # FIFO/LIFO
-std::queue{ front()= value, size()= integer }
+std::queue{ front()= value, back()= value, size()= integer }
 
 # Pointer
 *value
