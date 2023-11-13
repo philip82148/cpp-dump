@@ -3,6 +3,7 @@ project(cpp-dump)
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
     add_compile_options(-W4 /Zc:__cplusplus)
+    set(rtti_flag "")
 else()
     add_compile_options(-Wall -Wextra -Wfloat-equal -Wconversion -Wno-sign-conversion -Werror -Wshadow -fno-rtti)
     set(rtti_flag -frtti)
