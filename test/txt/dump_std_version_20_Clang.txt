@@ -1,0 +1,1 @@
+[0m[02m[dump] [0m[0m[36msource_location::current()[0m[0m[02m => [0m[0m"The compiler doesn't support this class.[0m[0m"[0m

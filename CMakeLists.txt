@@ -38,15 +38,18 @@ add_test(
     -P "${CMAKE_CURRENT_LIST_DIR}/test/dump_variable_test.cmake"
 )
 
-add_executable(dump_std_version_test test/dump_std_version_test.cpp)
-add_test(
-    NAME "dump-std-version"
-    COMMAND "${CMAKE_COMMAND}"
-    -D "test_dir=${CMAKE_CURRENT_LIST_DIR}/test"
-    -D "cmd_path=$<TARGET_FILE:dump_std_version_test>"
-    -D "std_version=${CMAKE_CXX_STANDARD}"
-    -P "${CMAKE_CURRENT_LIST_DIR}/test/dump_std_version_test.cmake"
-)
+if(CMAKE_CXX_STANDARD GREATER 17) 
+    add_executable(dump_std_version_test test/dump_std_version_test.cpp)
+    add_test(
+        NAME "dump-std-version"
+        COMMAND "${CMAKE_COMMAND}"
+        -D "test_dir=${CMAKE_CURRENT_LIST_DIR}/test"
+        -D "cmd_path=$<TARGET_FILE:dump_std_version_test>"
+        -D "std_version=${CMAKE_CXX_STANDARD}"
+        -D "compiler_id=${CMAKE_CXX_COMPILER_ID}"
+        -P "${CMAKE_CURRENT_LIST_DIR}/test/dump_std_version_test.cmake"
+    )
+endif()
 
 file(GLOB files readme/*.cpp)
 foreach(file ${files})

@@ -7,13 +7,16 @@ endif()
 if(NOT std_version)
    message(FATAL_ERROR "Variable std_version not defined" )
 endif()
+if(NOT compiler_id)
+   message(FATAL_ERROR "Variable compiler_id not defined" )
+endif()
 
 file(MAKE_DIRECTORY "${test_dir}/log")
 
 string(ASCII 27 esc)
 
-set(log_file "${test_dir}/log/dump_std_version_${std_version}.log")
-set(txt_file "${test_dir}/txt/dump_std_version_${std_version}.txt")
+set(log_file "${test_dir}/log/dump_std_version_${std_version}_${compiler_id}.log")
+set(txt_file "${test_dir}/txt/dump_std_version_${std_version}_${compiler_id}.txt")
 
 execute_process(
    COMMAND "${cmd_path}" ERROR_VARIABLE error_contents COMMAND_ERROR_IS_FATAL ANY

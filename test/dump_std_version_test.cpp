@@ -1,5 +1,13 @@
 #if __cplusplus >= 202002L
+#if !defined(__clang__)
 #include <source_location>
+#else
+#include <string>
+
+struct source_location {
+  static std::string current() { return "The compiler doesn't support this class."; };
+};
+#endif
 #endif
 
 #include "../dump.hpp"

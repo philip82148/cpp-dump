@@ -10,7 +10,11 @@
 #include <string>
 
 #if __cplusplus >= 202002L
+
+#if !defined(__clang__)
 #include <source_location>
+#endif
+
 #endif
 
 #include "../../expand_va_macro.hpp"
@@ -67,7 +71,11 @@ _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;
 // By not using CPP_DUMP_DEFINE_EXPORT_OBJECT() here, users can use CPP_DUMP_DEFINE_EXPORT_OBJECT()
 // to overwrite export_var()
 #if __cplusplus >= 202002L
+
+#if !defined(__clang__)
 _p_CPP_DUMP_DEFINE_EXPORT_OTHER_OBJECT(
     std::source_location, file_name(), line(), column(), function_name()
 );
+#endif
+
 #endif
