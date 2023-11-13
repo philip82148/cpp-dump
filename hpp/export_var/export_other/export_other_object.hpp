@@ -9,6 +9,10 @@
 
 #include <string>
 
+#if __cplusplus >= 202002L
+#include <source_location>
+#endif
+
 #include "../../expand_va_macro.hpp"
 #include "../../export_command/export_command.hpp"
 #include "../../type_check.hpp"
@@ -37,7 +41,7 @@
                                                                                                    \
     _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2;                                                      \
                                                                                                    \
-    _p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_EXPORT_OBJECT, __VA_ARGS__);                      \
+    _p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_EXPORT_OTHER_OBJECT, __VA_ARGS__);                \
                                                                                                    \
     _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON3;                                                      \
   }                                                                                                \
@@ -62,4 +66,8 @@ _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;
 
 // By not using CPP_DUMP_DEFINE_EXPORT_OBJECT() here, users can use CPP_DUMP_DEFINE_EXPORT_OBJECT()
 // to overwrite export_var()
-// _p_CPP_DUMP_DEFINE_EXPORT_OTHER_OBJECT(std::type_info, name());
+#if __cplusplus >= 202002L
+_p_CPP_DUMP_DEFINE_EXPORT_OTHER_OBJECT(
+    std::source_location, file_name(), line(), column(), function_name()
+);
+#endif
