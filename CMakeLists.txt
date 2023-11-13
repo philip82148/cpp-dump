@@ -63,6 +63,21 @@ add_test(
     -P "${CMAKE_CURRENT_LIST_DIR}/test/dump_rtti_test.cmake"
 )
 
+add_executable(color_test test/color_test.cpp)
+set(args_array "wide\;4000\;4" "narrow\;20\;4" "shallow\;4000\;0")
+foreach(args ${args_array})
+    list(GET args 0 suffix)
+
+    add_test(
+        NAME "color-${suffix}"
+        COMMAND "${CMAKE_COMMAND}"
+        -D "test_dir=${CMAKE_CURRENT_LIST_DIR}/test"
+        -D "cmd_path=$<TARGET_FILE:color_test>"
+        -D "cmd_args=${args}"
+        -P "${CMAKE_CURRENT_LIST_DIR}/test/color_test.cmake"
+    )
+endforeach()
+
 file(GLOB files readme/*.cpp)
 foreach(file ${files})
     get_filename_component(basename "${file}" NAME_WLE)
