@@ -58,6 +58,7 @@ here.`,
 [dump] complex1 => 0.000000 - 1.000000i ( abs= 1.000000, arg/pi= -0.500000 )
 [dump] complex2 => 10.000000 + 1.000000i ( abs= 10.049876, arg/pi= 0.031726 )
 [dump] logic_error1 => std::logic_error{ ... }
+[dump] typeid(void) => std::type_info{ ... }, type_index1 => std::type_index{ ... }
 [dump] vec.begin() => *...
 [dump] ostream_able_class_a_1 => ostream_able_class_a
 [dump] unsupported_class1 => Unsupported Type
