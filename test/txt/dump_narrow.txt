@@ -387,19 +387,63 @@ here.`,
            4 (1)
          }
 [dump] queue1
-         => std::queue{
-           front()= 1,
-           size()= 5
+         => std::queue{ 
+           size()= 0
+         }
+[dump] queue1
+         => std::queue{ 
+           front()= 3, 
+           size()= 1
+         }
+[dump] queue1
+         => std::queue{ 
+           front()= 3, 
+           back()= 2, 
+           size()= 2
+         }
+[dump] queue1
+         => std::queue{ 
+           front()= 3, 
+           back()= 1, 
+           size()= 3
          }
 [dump] priority_queue1
-         => std::priority_queue{
-           top()= '5',
-           size()= 5
+         => std::priority_queue{ 
+           size()= 0
+         }
+[dump] priority_queue1
+         => std::priority_queue{ 
+           top()= '3', 
+           size()= 1
+         }
+[dump] priority_queue1
+         => std::priority_queue{ 
+           top()= '3', 
+           size()= 2
+         }
+[dump] priority_queue1
+         => std::priority_queue{ 
+           top()= '3', 
+           size()= 3
          }
 [dump] stack1
-         => std::stack{
-           top()= "5",
-           size()= 5
+         => std::stack{ 
+           size()= 0
+         }
+[dump] stack1
+         => std::stack{ 
+           top()= "3", 
+           size()= 1
+         }
+[dump] stack1
+         => std::stack{ 
+           top()= "2", 
+           size()= 2
+         }
+[dump] stack1
+         => std::stack{ 
+           top()= "1", 
+           size()= 3
          }
 [dump] int_ptr
          => *65
@@ -529,7 +573,7 @@ here.`,
 [dump] complex2
          => 10.000000 + 1.000000i ( abs= 10.049876, arg/pi= 0.031726 )
 [dump] logic_error1
-         => std::logic_error{
+         => std::logic_error{ 
            what()= "This is a test error."
          }
 [dump] vec.begin()
