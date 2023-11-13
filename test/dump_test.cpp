@@ -22,6 +22,7 @@ using cp::dump;
 #include <string>
 #include <string_view>
 #include <tuple>
+#include <typeindex>
 #include <utility>
 #include <variant>
 #include <vector>
@@ -230,15 +231,24 @@ int main(int argc, char *argv[]) {
 
   // FIFO/LIFO
   queue<int> queue1;
-  for (auto v : {1, 2, 3, 4, 5}) queue1.push(v);
+  for (auto v : {3, 2, 1}) {
+    cpp_dump(queue1);
+    queue1.push(v);
+  }
   cpp_dump(queue1);
 
   priority_queue<char> priority_queue1;
-  for (auto v : {'1', '2', '3', '4', '5'}) priority_queue1.push(v);
+  for (auto v : {'3', '2', '1'}) {
+    cpp_dump(priority_queue1);
+    priority_queue1.push(v);
+  }
   cpp_dump(priority_queue1);
 
   stack<string> stack1;
-  for (auto v : {"1", "2", "3", "4", "5"}) stack1.push(v);
+  for (auto v : {"3", "2", "1"}) {
+    cpp_dump(stack1);
+    stack1.push(v);
+  }
   cpp_dump(stack1);
 
   // pointer

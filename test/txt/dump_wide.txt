@@ -70,9 +70,18 @@ here.`,
        }
 [dump] (set<string>{"A", "p", "p", "l", "e", " ", "P", "e", "n"}) => { " ", "A", "P", "e", "l", "n", "p" }
 [dump] multiset1 => { 1 (2), 3 (1), 4 (1) }
-[dump] queue1 => std::queue{ front()= 1, size()= 5 }
-[dump] priority_queue1 => std::priority_queue{ top()= '5', size()= 5 }
-[dump] stack1 => std::stack{ top()= "5", size()= 5 }
+[dump] queue1 => std::queue{ size()= 0 }
+[dump] queue1 => std::queue{ front()= 3, size()= 1 }
+[dump] queue1 => std::queue{ front()= 3, back()= 2, size()= 2 }
+[dump] queue1 => std::queue{ front()= 3, back()= 1, size()= 3 }
+[dump] priority_queue1 => std::priority_queue{ size()= 0 }
+[dump] priority_queue1 => std::priority_queue{ top()= '3', size()= 1 }
+[dump] priority_queue1 => std::priority_queue{ top()= '3', size()= 2 }
+[dump] priority_queue1 => std::priority_queue{ top()= '3', size()= 3 }
+[dump] stack1 => std::stack{ size()= 0 }
+[dump] stack1 => std::stack{ top()= "3", size()= 1 }
+[dump] stack1 => std::stack{ top()= "2", size()= 2 }
+[dump] stack1 => std::stack{ top()= "1", size()= 3 }
 [dump] int_ptr => *65
 [dump] *int_ptr => 65
 [dump] char_ptr => "A"

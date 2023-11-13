@@ -13,6 +13,9 @@
 #include "../../escape_sequence.hpp"
 #include "../../export_command/export_command.hpp"
 #include "../../utility.hpp"
+#include "../export_object_common.hpp"
+
+_p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;
 
 namespace cpp_dump {
 
@@ -21,10 +24,6 @@ extern inline std::size_t max_line_width;
 extern inline std::size_t max_depth;
 
 namespace _detail {
-
-template <typename T>
-std::string
-export_var(const T &, const std::string &, std::size_t, std::size_t, bool, const export_command &);
 
 inline std::string _export_es_value_string(const std::string &es) {
   std::string escaped_es = es;
@@ -113,17 +112,9 @@ inline std::string export_es_value_t(
     bool fail_on_newline,
     const export_command &command
 ) {
-  if (current_depth >= max_depth)
-    return es::identifier("cpp_dump::es_value_t") + es::bracket("{ ", current_depth) + es::op("...")
-           + es::bracket(" }", current_depth);
+  std::string type_name = "cpp_dump::es_value_t";
 
-  std::string new_indent = indent + "  ";
-  std::size_t next_depth = current_depth + 1;
-
-  bool shift_indent = false;
-
-  std::string output;
-  bool is_first;
+  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2_1;
 
   auto append_output = [&](const std::string &member_name, const auto &member) -> void {
     if (is_first) {
@@ -145,9 +136,7 @@ inline std::string export_es_value_t(
     }
   };
 
-rollback:
-  output = es::identifier("cpp_dump::es_value_t") + es::bracket("{ ", current_depth);
-  is_first = true;
+  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2_3;
 
   append_output("log", esv.log);
   append_output("expression", esv.expression);
@@ -159,21 +148,7 @@ rollback:
   append_output("unsupported", esv.unsupported);
   append_output("bracket_by_depth", esv.bracket_by_depth);
 
-  if (!shift_indent) {
-    output += es::bracket(" }", current_depth);
-
-    if (!has_newline(output) && last_line_length + get_length(output) <= max_line_width)
-      return output;
-
-    if (fail_on_newline) return "\n";
-
-    shift_indent = true;
-    goto rollback;
-  }
-
-  output += "\n" + indent + es::bracket("}", current_depth);
-
-  return output;
+  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON3;
 }
 
 }  // namespace _detail

@@ -632,7 +632,7 @@ Both dump functions dump variables recursively, so they can dump nested variable
 | Pointer       | T is a pointer or smart pointer                                                                                                                                                                                                                                                                       | `int *`, `std::shared_ptr`, `std::unique_ptr`     |
 | Reference     | T is `std::reference_wrapper`                                                                                                                                                                                                                                                                         |                                                   |
 | Exception     | T is convertible to `std::exception`                                                                                                                                                                                                                                                                  |                                                   |
-| Other         | T is either `std::bitset`, `std::complex`, `std::optional`, or `std::variant`                                                                                                                                                                                                                         |                                                   |
+| Other         | T is either `std::bitset`, `std::complex`, `std::optional`, `std::variant`, `std::type_info`, `std::type_index` or `std::source_location`(C++20 or higher and g++ and MSVC only)                                                                                                                      |                                                   |
 | User-defined  | `CPP_DUMP_DEFINE_EXPORT_OBJECT(T, members...);` is at top level and the member functions to be displayed is const.                                                                                                                                                                                    |                                                   |
 | Enum          | `CPP_DUMP_DEFINE_EXPORT_ENUM(T, members...);` is at top level.                                                                                                                                                                                                                                        |                                                   |
 | Ostream       | All of the above are not satisfied, `std::is_function_v<T> == false && std::is_member_pointer_v<T> == false`, and the function `std::ostream& operator<<(std::ostream&, const T &)` is defined. **The string representation of T must not be an empty string** (This makes manipulators unsupported). |                                                   |
@@ -666,7 +666,7 @@ true, 'c', 1, 3.140000
 ( value1, value2, ... )
 
 # FIFO/LIFO
-std::queue{ front()= value, size()= integer }
+std::queue{ front()= value, back()= value, size()= integer }
 
 # Pointer
 *value
