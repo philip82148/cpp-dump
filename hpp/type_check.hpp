@@ -21,6 +21,7 @@
 #include <string_view>
 #include <tuple>
 #include <type_traits>
+#include <typeindex>
 #include <unordered_map>
 #include <unordered_set>
 #include <variant>
@@ -158,6 +159,9 @@ struct _remove_pointer<T, std::enable_if_t<is_smart_pointer<T>>> {
 template <typename T>
 using remove_pointer = typename _remove_pointer<_remove_cref<T>>::type;
 
+template <typename T>
+inline constexpr bool is_exception = std::is_convertible_v<_remove_cref<T>, std::exception>;
+
 template <typename>
 inline constexpr bool _is_optional = false;
 template <typename... Args>
@@ -169,11 +173,14 @@ template <typename T>
 inline constexpr bool is_optional = _is_optional<_remove_cref<T>>;
 
 template <typename T>
-inline constexpr bool is_exception = std::is_convertible_v<_remove_cref<T>, std::exception>;
+inline constexpr bool is_type_info = std::is_convertible_v<_remove_cref<T>, std::type_index>;
 
-// Other: Types such that they are the only elements of their respective categories.
-// For example, there are two types that can be considered as std::optional: std::optional<> and
-// std::nullopt_t. So they don't belong to the 'other' category.
+template <typename>
+inline constexpr bool _is_other_object = false;
+
+template <typename T>
+inline constexpr bool is_other_object = _is_other_object<_remove_cref<T>>;
+
 template <typename>
 inline constexpr bool _is_other_type = false;
 template <typename... Args>
@@ -188,7 +195,8 @@ template <>
 inline constexpr bool _is_other_type<es_value_t> = true;
 
 template <typename T>
-inline constexpr bool is_other_type = _is_other_type<_remove_cref<T>>;
+inline constexpr bool is_other_type =
+    is_optional<T> || is_type_info<T> || is_other_object<T> || _is_other_type<_remove_cref<T>>;
 
 template <typename>
 inline constexpr bool _is_exportable_object = false;
@@ -205,8 +213,8 @@ inline constexpr bool is_exportable_enum = _is_exportable_enum<_remove_cref<T>>;
 template <typename T>
 inline constexpr bool _is_exportable_partial =
     is_arithmetic<T> || is_string<T> || is_map<T> || is_set<T> || is_container<T> || is_tuple<T>
-    || is_xixo<T> || is_pointer<T> || is_optional<T> || is_exception<T> || is_other_type<T>
-    || is_exportable_object<T> || is_exportable_enum<T>;
+    || is_xixo<T> || is_pointer<T> || is_exception<T> || is_other_type<T> || is_exportable_object<T>
+    || is_exportable_enum<T>;
 
 template <typename T>
 auto _is_ostream(int) -> std::enable_if_t<
@@ -266,7 +274,7 @@ _string_wrapper _get_typename() {
 #endif
 }
 
-// Currently, used only by export_exception()
+// Currently, used only by export_exception() and CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT()
 template <typename T>
 std::string get_typename() {
 #if defined(__GNUC__) && !defined(__clang__)

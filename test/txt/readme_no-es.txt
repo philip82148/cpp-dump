@@ -28,7 +28,7 @@
 [dump] my_pair => ( 8, 'a' )
 
 // FIFO/LIFO
-[dump] my_queue => std::queue{ front()= 1, size()= 5 }
+[dump] my_queue => std::queue{ front()= 1, back()= 5, size()= 5 }
 [dump] my_priority_queue => std::priority_queue{ top()= 5, size()= 5 }
 [dump] my_stack => std::stack{ top()= 5, size()= 5 }
 

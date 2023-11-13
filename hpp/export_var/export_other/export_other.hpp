@@ -11,12 +11,16 @@
 #include <complex>
 #include <string>
 #include <type_traits>
+#include <typeinfo>
 #include <variant>
 
 #include "../../escape_sequence.hpp"
 #include "../../export_command/export_command.hpp"
 #include "../../type_check.hpp"
 #include "./export_es_value_t.hpp"
+#include "./export_optional.hpp"
+#include "./export_other_object.hpp"
+#include "./export_type_info.hpp"
 
 namespace cpp_dump {
 
@@ -25,6 +29,34 @@ namespace _detail {
 template <typename T>
 std::string
 export_var(const T &, const std::string &, std::size_t, std::size_t, bool, const export_command &);
+
+template <typename T>
+inline auto export_other(
+    const T &optional,
+    const std::string &indent,
+    std::size_t last_line_length,
+    std::size_t current_depth,
+    bool fail_on_newline,
+    const export_command &command
+) -> std::enable_if_t<is_optional<T>, std::string> {
+  return export_optional(
+      optional, indent, last_line_length, current_depth, fail_on_newline, command
+  );
+}
+
+template <typename T>
+inline auto export_other(
+    const T &type_info,
+    const std::string &indent,
+    std::size_t last_line_length,
+    std::size_t current_depth,
+    bool fail_on_newline,
+    const export_command &command
+) -> std::enable_if_t<is_type_info<T>, std::string> {
+  return export_type_info(
+      type_info, indent, last_line_length, current_depth, fail_on_newline, command
+  );
+}
 
 template <typename... Args>
 inline std::string export_other(
@@ -104,6 +136,20 @@ inline std::string export_other(
     const export_command &command
 ) {
   return export_es_value_t(esv, indent, last_line_length, current_depth, fail_on_newline, command);
+}
+
+template <typename T>
+inline auto export_other(
+    const T &value,
+    const std::string &indent,
+    std::size_t last_line_length,
+    std::size_t current_depth,
+    bool fail_on_newline,
+    const export_command &command
+) -> std::enable_if_t<is_other_object<T>, std::string> {
+  return export_other_object(
+      value, indent, last_line_length, current_depth, fail_on_newline, command
+  );
 }
 
 }  // namespace _detail

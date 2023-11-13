@@ -9,29 +9,31 @@
 
 #include <string>
 
-#include "../expand_va_macro.hpp"
-#include "../export_command/export_command.hpp"
-#include "../type_check.hpp"
-#include "./export_object_common.hpp"
+#if __cplusplus >= 202002L
 
-#define _p_CPP_DUMP_EXPAND_FOR_EXPORT_OBJECT(member) append_output(#member, value.member)
+#if !defined(__clang__)
+#include <source_location>
+#endif
 
-/**
- * Make export_var() support type TYPE.
- * Member functions to be displayed must be const.
- */
-#define CPP_DUMP_DEFINE_EXPORT_OBJECT(TYPE, ...)                                                   \
-  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;                                                        \
-                                                                                                   \
+#endif
+
+#include "../../expand_va_macro.hpp"
+#include "../../export_command/export_command.hpp"
+#include "../../type_check.hpp"
+#include "../export_object_common.hpp"
+
+#define _p_CPP_DUMP_EXPAND_FOR_EXPORT_OTHER_OBJECT(member) append_output(#member, value.member)
+
+#define _p_CPP_DUMP_DEFINE_EXPORT_OTHER_OBJECT(TYPE, ...)                                          \
   namespace cpp_dump {                                                                             \
                                                                                                    \
   namespace _detail {                                                                              \
                                                                                                    \
   template <>                                                                                      \
-  inline constexpr bool _is_exportable_object<TYPE> = true;                                        \
+  inline constexpr bool _is_other_object<TYPE> = true;                                             \
                                                                                                    \
   template <>                                                                                      \
-  inline std::string export_object(                                                                \
+  inline std::string export_other_object(                                                          \
       const TYPE &value,                                                                           \
       const std::string &indent,                                                                   \
       std::size_t last_line_length,                                                                \
@@ -43,7 +45,7 @@
                                                                                                    \
     _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2;                                                      \
                                                                                                    \
-    _p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_EXPORT_OBJECT, __VA_ARGS__);                      \
+    _p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_EXPORT_OTHER_OBJECT, __VA_ARGS__);                \
                                                                                                    \
     _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON3;                                                      \
   }                                                                                                \
@@ -58,8 +60,22 @@ namespace _detail {
 
 template <typename T>
 inline std::string
-export_object(const T &, const std::string &, std::size_t, std::size_t, bool, const export_command &);
+export_other_object(const T &, const std::string &, std::size_t, std::size_t, bool, const export_command &);
 
 }  // namespace _detail
 
 }  // namespace cpp_dump
+
+_p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;
+
+// By not using CPP_DUMP_DEFINE_EXPORT_OBJECT() here, users can use CPP_DUMP_DEFINE_EXPORT_OBJECT()
+// to overwrite export_var()
+#if __cplusplus >= 202002L
+
+#if !defined(__clang__)
+_p_CPP_DUMP_DEFINE_EXPORT_OTHER_OBJECT(
+    std::source_location, file_name(), line(), column(), function_name()
+);
+#endif
+
+#endif

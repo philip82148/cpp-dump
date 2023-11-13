@@ -3,8 +3,10 @@ project(cpp-dump)
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
     add_compile_options(-W4 /Zc:__cplusplus)
+    set(rtti_flag "")
 else()
-    add_compile_options(-Wall -Wextra -Wfloat-equal -Wconversion -Wno-sign-conversion -Werror -Wshadow)
+    add_compile_options(-Wall -Wextra -Wfloat-equal -Wconversion -Wno-sign-conversion -Werror -Wshadow -fno-rtti)
+    set(rtti_flag -frtti)
 endif()
 
 include(CTest)
@@ -36,6 +38,44 @@ add_test(
     -D "cmd_path=$<TARGET_FILE:dump_variable_test>"
     -D "compiler_id=${CMAKE_CXX_COMPILER_ID}"
     -P "${CMAKE_CURRENT_LIST_DIR}/test/dump_variable_test.cmake"
+)
+
+add_executable(color_test test/color_test.cpp)
+set(args_array "wide\;4000\;4" "narrow\;20\;4" "shallow\;4000\;0")
+foreach(args ${args_array})
+    list(GET args 0 suffix)
+
+    add_test(
+        NAME "color-${suffix}"
+        COMMAND "${CMAKE_COMMAND}"
+        -D "test_dir=${CMAKE_CURRENT_LIST_DIR}/test"
+        -D "cmd_path=$<TARGET_FILE:color_test>"
+        -D "cmd_args=${args}"
+        -P "${CMAKE_CURRENT_LIST_DIR}/test/color_test.cmake"
+    )
+endforeach()
+
+if(CMAKE_CXX_STANDARD GREATER 17) 
+    add_executable(color_std_version_test test/color_std_version_test.cpp)
+    add_test(
+        NAME "color-std-version"
+        COMMAND "${CMAKE_COMMAND}"
+        -D "test_dir=${CMAKE_CURRENT_LIST_DIR}/test"
+        -D "cmd_path=$<TARGET_FILE:color_std_version_test>"
+        -D "std_version=${CMAKE_CXX_STANDARD}"
+        -D "compiler_id=${CMAKE_CXX_COMPILER_ID}"
+        -P "${CMAKE_CURRENT_LIST_DIR}/test/color_std_version_test.cmake"
+    )
+endif()
+
+add_executable(color_rtti_test test/color_rtti_test.cpp)
+target_compile_options(color_rtti_test PUBLIC "${rtti_flag}")
+add_test(
+    NAME "color-rtti"
+    COMMAND "${CMAKE_COMMAND}"
+    -D "test_dir=${CMAKE_CURRENT_LIST_DIR}/test"
+    -D "cmd_path=$<TARGET_FILE:color_rtti_test>"
+    -P "${CMAKE_CURRENT_LIST_DIR}/test/color_rtti_test.cmake"
 )
 
 file(GLOB files readme/*.cpp)

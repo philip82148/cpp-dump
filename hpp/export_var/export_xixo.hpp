@@ -13,68 +13,14 @@
 #include <string>
 #include <type_traits>
 
-#include "../escape_sequence.hpp"
 #include "../export_command/export_command.hpp"
-#include "../type_check.hpp"
-#include "../utility.hpp"
+#include "./export_object_common.hpp"
+
+_p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;
 
 namespace cpp_dump {
 
-extern inline std::size_t max_line_width;
-
-extern inline std::size_t max_depth;
-
 namespace _detail {
-
-template <typename T>
-std::string
-export_var(const T &, const std::string &, std::size_t, std::size_t, bool, const export_command &);
-
-template <typename T, typename U>
-inline std::string _export_xixo_common(
-    const T &xixo,
-    const U &member,
-    const std::string &class_name,
-    const std::string &member_name,
-    const std::string &indent,
-    std::size_t last_line_length,
-    std::size_t current_depth,
-    bool fail_on_newline,
-    const export_command &command
-) {
-  if (xixo.empty())
-    return es::identifier(class_name) + es::bracket("{ ", current_depth) + es::member("size()")
-           + es::op("= ") + es::number("0") + es::bracket(" }", current_depth);
-
-  if (current_depth >= max_depth)
-    return es::identifier(class_name) + es::bracket("{ ", current_depth) + es::op("...")
-           + es::bracket(" }", current_depth);
-
-  std::size_t next_depth = current_depth + 1;
-
-  std::string prefix = es::identifier(class_name) + es::bracket("{ ", current_depth)
-                       + es::member(member_name) + es::op("= ");
-  std::string output =
-      prefix
-      + export_var(member, indent, last_line_length + get_length(prefix), next_depth, true, command)
-      + es::op(", ") + es::member("size()") + es::op("= ") + es::number(std::to_string(xixo.size()))
-      + es::bracket(" }", current_depth);
-
-  if (!has_newline(output) && get_length(output) <= max_line_width) return output;
-
-  if (fail_on_newline) return "\n";
-
-  std::string new_indent = indent + "  ";
-
-  prefix = new_indent + es::member(member_name) + es::op("= ");
-  output = es::identifier(class_name) + es::bracket("{\n", current_depth) + prefix
-           + export_var(member, new_indent, get_length(prefix), next_depth, false, command)
-           + es::op(",\n") + new_indent + es::member("size()") + es::op("= ")
-           + es::number(std::to_string(xixo.size())) + "\n" + indent
-           + es::bracket("}", current_depth);
-
-  return output;
-}
 
 template <typename... Args>
 inline std::string export_xixo(
@@ -85,17 +31,17 @@ inline std::string export_xixo(
     bool fail_on_newline,
     const export_command &command
 ) {
-  return _export_xixo_common(
-      queue,
-      queue.front(),
-      "std::queue",
-      "front()",
-      indent,
-      last_line_length,
-      current_depth,
-      fail_on_newline,
-      command
-  );
+  std::string type_name = "std::queue";
+
+  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2;
+
+  if (!queue.empty()) {
+    append_output("front()", queue.front());
+    if (queue.size() >= 2) append_output("back()", queue.back());
+  }
+  append_output("size()", queue.size());
+
+  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON3;
 }
 
 template <typename... Args>
@@ -107,17 +53,14 @@ inline std::string export_xixo(
     bool fail_on_newline,
     const export_command &command
 ) {
-  return _export_xixo_common(
-      pq,
-      pq.top(),
-      "std::priority_queue",
-      "top()",
-      indent,
-      last_line_length,
-      current_depth,
-      fail_on_newline,
-      command
-  );
+  std::string type_name = "std::priority_queue";
+
+  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2;
+
+  if (!pq.empty()) append_output("top()", pq.top());
+  append_output("size()", pq.size());
+
+  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON3;
 }
 
 template <typename... Args>
@@ -129,17 +72,14 @@ inline std::string export_xixo(
     bool fail_on_newline,
     const export_command &command
 ) {
-  return _export_xixo_common(
-      stack,
-      stack.top(),
-      "std::stack",
-      "top()",
-      indent,
-      last_line_length,
-      current_depth,
-      fail_on_newline,
-      command
-  );
+  std::string type_name = "std::stack";
+
+  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2;
+
+  if (!stack.empty()) append_output("top()", stack.top());
+  append_output("size()", stack.size());
+
+  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON3;
 }
 
 }  // namespace _detail
