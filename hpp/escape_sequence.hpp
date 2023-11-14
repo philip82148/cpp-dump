@@ -10,57 +10,9 @@
 #include <string>
 #include <vector>
 
+#include "./options.hpp"
+
 namespace cpp_dump {
-
-/**
- * Type of cpp_dump::es_style.
- * cpp_dump::export_var() supports this type.
- */
-enum class es_style_t { no_es, by_syntax };
-
-/**
- * Type of cpp_dump::es_value.
- * cpp_dump::export_var() supports this type.
- */
-struct es_value_t {
- public:
-  std::string log;
-  std::string expression;
-  std::string reserved;
-  std::string number;
-  std::string character;
-  std::string op;
-  std::string identifier;
-  std::string member;
-  std::string unsupported;
-  std::vector<std::string> bracket_by_depth;
-  es_value_t(
-      std::string log_,
-      std::string expression_,
-      std::string reserved_,
-      std::string number_,
-      std::string character_,
-      std::string op_,
-      std::string identifier_,
-      std::string member_,
-      std::string unsupported_,
-      std::vector<std::string> bracket_by_depth_
-  )
-      : log(log_),
-        expression(expression_),
-        reserved(reserved_),
-        number(number_),
-        character(character_),
-        op(op_),
-        identifier(identifier_),
-        member(member_),
-        unsupported(unsupported_),
-        bracket_by_depth(bracket_by_depth_) {}
-};
-
-extern inline es_style_t es_style;
-
-extern inline es_value_t es_value;
 
 namespace _detail {
 

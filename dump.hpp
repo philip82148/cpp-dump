@@ -16,6 +16,8 @@
 #include "hpp/expand_va_macro.hpp"
 #include "hpp/export_command/export_command.hpp"
 #include "hpp/export_var/export_var.hpp"
+#include "hpp/log_label.hpp"
+#include "hpp/options.hpp"
 #include "hpp/utility.hpp"
 
 #define _p_CPP_DUMP_EXPAND_FOR_CPP_DUMP(expr) #expr, expr
@@ -26,6 +28,7 @@
  */
 #define CPP_DUMP(...)                                                                              \
   cpp_dump::_detail::cpp_dump_macro(                                                               \
+      {__FILE__, __LINE__, __func__},                                                              \
       _p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_CPP_DUMP, __VA_ARGS__)                          \
   )
 
@@ -36,57 +39,7 @@
  */
 #define cpp_dump(...) CPP_DUMP(__VA_ARGS__)
 
-/**
- * Set a value to a variable in cpp_dump namespace.
- * You can also assign values to the variables directly.
- */
-#define CPP_DUMP_SET_OPTION(variable, value) cpp_dump::variable = value
-
 namespace cpp_dump {
-
-/**
- * Maximum line width of output strings of cpp_dump::export_var().
- */
-inline std::size_t max_line_width = 160;
-
-/**
- * Maximum number of times cpp_dump::export_var() is applied recursively.
- */
-inline std::size_t max_depth = 4;
-
-/**
- * Maximum number of times cpp_dump::export_var() iterates over an iterator.
- * Note that in a single call, export_var() calls itself at most
- * (max_iteration_count^(max_depth+1)-1)/(max_iteration_count-1)-1 times.
- */
-inline std::size_t max_iteration_count = 16;
-
-/**
- * Function that returns the label that cpp_dump::dump() and cpp_dump() print
- * at the beginning of the output.
- */
-inline std::function<std::string(void)> log_label_func = []() -> std::string { return "[dump] "; };
-
-/**
- * Style of the escape sequences.
- */
-inline es_style_t es_style = es_style_t::by_syntax;
-
-/**
- * Value of the escape sequences.
- */
-inline es_value_t es_value = {
-    "\x1b[02m",    // log: dark
-    "\x1b[36m",    // expression: cyan
-    "",            // reserved: default
-    "",            // number: default
-    "",            // character: default
-    "\x1b[02m",    // op: dark
-    "\x1b[32m",    // identifier: green
-    "\x1b[36m",    // member: cyan
-    "\x1b[31m",    // unsupported: red
-    {"\x1b[02m"},  // bracket_by_depth[0]: dark
-};
 
 namespace _detail {
 
@@ -98,7 +51,7 @@ bool _dump_one(
     const std::string &expr,
     const T &value
 ) {
-  const std::string initial_indent(get_length(log_label), ' ');
+  const std::string initial_indent(get_last_line_length(log_label), ' ');
   const std::string second_indent = initial_indent + "  ";
 
   if (output.length() == 0) {
@@ -278,10 +231,17 @@ inline bool _dump_recursively_without_expr(
          && _dump_recursively_without_expr(output, log_label, no_newline_in_value_string, args...);
 }
 
+struct _source_location {
+  std::string file_name;
+  std::size_t line;
+  std::string function_name;
+};
+
 // function called by cpp_dump() macro
 template <typename... Args>
-void cpp_dump_macro(const Args &...args) {
-  std::string log_label = log_label_func ? log_label_func() : "";
+void cpp_dump_macro(_source_location loc, const Args &...args) {
+  std::string log_label =
+      log_label_func ? log_label_func(loc.file_name, loc.line, loc.function_name) : "";
 
   std::string output = "";
   if (!_detail::_dump_recursively_with_expr(output, log_label, true, args...)) {
@@ -300,7 +260,7 @@ void cpp_dump_macro(const Args &...args) {
  */
 template <typename... Args>
 void dump(const Args &...args) {
-  std::string log_label = log_label_func ? log_label_func() : "";
+  std::string log_label = log_label_func ? log_label_func("", 0, "") : "";
 
   std::string output = "";
   if (!_detail::_dump_recursively_without_expr(output, log_label, true, args...)) {

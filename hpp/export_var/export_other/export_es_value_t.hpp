@@ -12,16 +12,11 @@
 
 #include "../../escape_sequence.hpp"
 #include "../../export_command/export_command.hpp"
+#include "../../options.hpp"
 #include "../../utility.hpp"
 #include "../export_object_common.hpp"
 
-_p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;
-
 namespace cpp_dump {
-
-extern inline std::size_t max_line_width;
-
-extern inline std::size_t max_depth;
 
 namespace _detail {
 
@@ -114,7 +109,7 @@ inline std::string export_es_value_t(
 ) {
   std::string type_name = "cpp_dump::es_value_t";
 
-  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2_1;
+  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1_1;
 
   auto append_output = [&](const std::string &member_name, const auto &member) -> void {
     if (is_first) {
@@ -136,7 +131,7 @@ inline std::string export_es_value_t(
     }
   };
 
-  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2_3;
+  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1_3;
 
   append_output("log", esv.log);
   append_output("expression", esv.expression);
@@ -148,7 +143,7 @@ inline std::string export_es_value_t(
   append_output("unsupported", esv.unsupported);
   append_output("bracket_by_depth", esv.bracket_by_depth);
 
-  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON3;
+  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2;
 }
 
 }  // namespace _detail

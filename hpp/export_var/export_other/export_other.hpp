@@ -17,6 +17,7 @@
 #include "../../escape_sequence.hpp"
 #include "../../export_command/export_command.hpp"
 #include "../../type_check.hpp"
+#include "../export_var_fwd.hpp"
 #include "./export_es_value_t.hpp"
 #include "./export_optional.hpp"
 #include "./export_other_object.hpp"
@@ -25,10 +26,6 @@
 namespace cpp_dump {
 
 namespace _detail {
-
-template <typename T>
-std::string
-export_var(const T &, const std::string &, std::size_t, std::size_t, bool, const export_command &);
 
 template <typename T>
 inline auto export_other(
