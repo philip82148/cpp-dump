@@ -12,7 +12,7 @@ This library has the following features:
 - Prints string representations of a wide variety of types to the standard error output (std::clog). This includes multidimensional arrays, (multi)maps, and (multi)sets, and even complex numbers, error objects, etc.
 - Automatically indents so that the output fits into the maximum line width.
 - Customizable output color.
-- The filename, line, and function name can also be attached to the log output.
+- The file name, line, and function name can also be attached to the log output.
 - Header-only library, no build or dependencies required.
 - Can print even user-defined types by using macros or defining operators.
 - The string representation of variables is similar to JavaScript, Python, and C++ syntax.
@@ -131,7 +131,7 @@ cpp_dump::es_style = cpp_dump::es_style_t::no_es;
 
 ### File name/path can be printed instead of `[dump]`
 
-If you want to print the file name instead of `[dump]`, use the following code. `cpp_dump() macro` automatically will detect and print the filename and the line. (The function version does not support this feature.) You can attach the function name, too. See [Customize `[dump]`](#customize-dump) for details.  
+If you want to print the file name instead of `[dump]`, use the following code. `cpp_dump() macro` automatically will detect and print the file name and the line. (The function version does not support this feature.) You can attach the function name, too. See [Customize `[dump]`](#customize-dump) for details.  
 [See Full Example Code](./readme/customize-dump.cpp)
 
 ```cpp
