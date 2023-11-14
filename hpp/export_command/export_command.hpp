@@ -210,7 +210,7 @@ struct export_command {
   }
 };
 
-const export_command export_command::default_command(_default_skip_size_func);
+inline const export_command export_command::default_command(_default_skip_size_func);
 
 template <typename T>
 struct value_with_command {

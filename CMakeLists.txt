@@ -69,7 +69,7 @@ if(CMAKE_CXX_STANDARD GREATER 17)
 endif()
 
 add_executable(color_rtti_test test/color_rtti_test.cpp)
-target_compile_options(color_rtti_test PUBLIC "${rtti_flag}")
+target_compile_options(color_rtti_test PRIVATE "${rtti_flag}")
 add_test(
     NAME "color-rtti"
     COMMAND "${CMAKE_COMMAND}"
@@ -86,6 +86,8 @@ add_test(
     -D "cmd_path=$<TARGET_FILE:log_label_test>"
     -P "${CMAKE_CURRENT_LIST_DIR}/test/log_label_test.cmake"
 )
+
+add_executable(odr_test test/odr_test.cpp test/odr_test2.cpp)
 
 file(GLOB files readme/*.cpp)
 foreach(file ${files})
