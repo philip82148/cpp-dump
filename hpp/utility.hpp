@@ -10,11 +10,11 @@
 #include <string>
 #include <string_view>
 
+#include "./escape_sequence.hpp"
+
 namespace cpp_dump {
 
 namespace _detail {
-
-inline bool use_es();
 
 inline bool has_newline(std::string_view s) { return s.find("\n") != std::string::npos; }
 

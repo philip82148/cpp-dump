@@ -11,26 +11,11 @@
 
 #include "../escape_sequence.hpp"
 #include "../export_command/export_command.hpp"
+#include "../options.hpp"
 #include "../utility.hpp"
+#include "./export_var_fwd.hpp"
 
-#define _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1                                                      \
-  namespace cpp_dump {                                                                                \
-                                                                                                      \
-  extern inline std::size_t max_line_width;                                                           \
-                                                                                                      \
-  extern inline std::size_t max_depth;                                                                \
-                                                                                                      \
-  namespace _detail {                                                                                 \
-                                                                                                      \
-  template <typename T>                                                                               \
-  std::string                                                                                         \
-  export_var(const T &, const std::string &, std::size_t, std::size_t, bool, const export_command &); \
-                                                                                                      \
-  } /* namespace _detail */                                                                           \
-                                                                                                      \
-  } /* namespace cpp_dump */
-
-#define _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2_1                                                 \
+#define _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1_1                                                 \
   if (current_depth >= max_depth)                                                                  \
     return es::identifier(type_name) + es::bracket("{ ", current_depth) + es::op("...")            \
            + es::bracket(" }", current_depth);                                                     \
@@ -43,7 +28,7 @@
   std::string output;                                                                              \
   bool is_first;
 
-#define _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2_2                                                 \
+#define _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1_2                                                 \
   auto append_output = [&](const std::string &member_name, const auto &member) -> void {           \
     if (is_first) {                                                                                \
       is_first = false;                                                                            \
@@ -64,17 +49,17 @@
     }                                                                                              \
   };
 
-#define _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2_3                                                 \
+#define _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1_3                                                 \
   rollback:                                                                                        \
   output = es::identifier(type_name) + es::bracket("{ ", current_depth);                           \
   is_first = true;
 
-#define _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2                                                   \
-  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2_1;                                                      \
-  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2_2;                                                      \
-  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2_3;
+#define _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1                                                   \
+  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1_1;                                                      \
+  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1_2;                                                      \
+  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1_3;
 
-#define _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON3                                                   \
+#define _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2                                                   \
   if (!shift_indent) {                                                                             \
     output += es::bracket(" }", current_depth);                                                    \
                                                                                                    \

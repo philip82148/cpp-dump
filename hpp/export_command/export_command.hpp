@@ -13,12 +13,11 @@
 #include <tuple>
 #include <utility>
 
+#include "../options.hpp"
 #include "../type_check.hpp"
 #include "./skip_container.hpp"
 
 namespace cpp_dump {
-
-extern inline std::size_t max_iteration_count;
 
 namespace _detail {
 

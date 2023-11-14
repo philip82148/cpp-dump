@@ -17,6 +17,7 @@
 #include "hpp/export_command/export_command.hpp"
 #include "hpp/export_var/export_var.hpp"
 #include "hpp/log_label.hpp"
+#include "hpp/options.hpp"
 #include "hpp/utility.hpp"
 
 #define _p_CPP_DUMP_EXPAND_FOR_CPP_DUMP(expr) #expr, expr
@@ -38,57 +39,7 @@
  */
 #define cpp_dump(...) CPP_DUMP(__VA_ARGS__)
 
-/**
- * Set a value to a variable in cpp_dump namespace.
- * You can also assign values to the variables directly.
- */
-#define CPP_DUMP_SET_OPTION(variable, value) cpp_dump::variable = value
-
 namespace cpp_dump {
-
-/**
- * Maximum line width of output strings of cpp_dump::export_var().
- */
-inline std::size_t max_line_width = 160;
-
-/**
- * Maximum number of times cpp_dump::export_var() is applied recursively.
- */
-inline std::size_t max_depth = 4;
-
-/**
- * Maximum number of times cpp_dump::export_var() iterates over an iterator.
- * Note that in a single call, export_var() calls itself at most
- * (max_iteration_count^(max_depth+1)-1)/(max_iteration_count-1)-1 times.
- */
-inline std::size_t max_iteration_count = 16;
-
-/**
- * Function that returns the label that cpp_dump::dump() and cpp_dump() print
- * at the beginning of the output.
- */
-inline log_label::log_label_func_t log_label_func = log_label::default_func;
-
-/**
- * Style of the escape sequences.
- */
-inline es_style_t es_style = es_style_t::by_syntax;
-
-/**
- * Value of the escape sequences.
- */
-inline es_value_t es_value = {
-    "\x1b[02m",    // log: dark
-    "\x1b[36m",    // expression: cyan
-    "",            // reserved: default
-    "",            // number: default
-    "",            // character: default
-    "\x1b[02m",    // op: dark
-    "\x1b[32m",    // identifier: green
-    "\x1b[36m",    // member: cyan
-    "\x1b[31m",    // unsupported: red
-    {"\x1b[02m"},  // bracket_by_depth[0]: dark
-};
 
 namespace _detail {
 

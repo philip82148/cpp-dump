@@ -13,20 +13,14 @@
 
 #include "../escape_sequence.hpp"
 #include "../export_command/export_command.hpp"
+#include "../options.hpp"
 #include "../type_check.hpp"
 #include "../utility.hpp"
+#include "./export_var_fwd.hpp"
 
 namespace cpp_dump {
 
-extern inline std::size_t max_line_width;
-
-extern inline std::size_t max_depth;
-
 namespace _detail {
-
-template <typename T>
-std::string
-export_var(const T &, const std::string &, std::size_t, std::size_t, bool, const export_command &);
 
 template <const std::size_t i, const std::size_t size, typename T>
 inline auto _export_tuple_in_one_line(

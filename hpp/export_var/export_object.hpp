@@ -21,8 +21,6 @@
  * Member functions to be displayed must be const.
  */
 #define CPP_DUMP_DEFINE_EXPORT_OBJECT(TYPE, ...)                                                   \
-  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;                                                        \
-                                                                                                   \
   namespace cpp_dump {                                                                             \
                                                                                                    \
   namespace _detail {                                                                              \
@@ -41,11 +39,11 @@
   ) {                                                                                              \
     std::string type_name = #TYPE;                                                                 \
                                                                                                    \
-    _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2;                                                      \
+    _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;                                                      \
                                                                                                    \
     _p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_EXPORT_OBJECT, __VA_ARGS__);                      \
                                                                                                    \
-    _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON3;                                                      \
+    _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2;                                                      \
   }                                                                                                \
                                                                                                    \
   } /* namespace _detail */                                                                        \

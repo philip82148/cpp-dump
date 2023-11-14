@@ -16,8 +16,6 @@
 #include "../export_command/export_command.hpp"
 #include "./export_object_common.hpp"
 
-_p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;
-
 namespace cpp_dump {
 
 namespace _detail {
@@ -33,7 +31,7 @@ inline std::string export_xixo(
 ) {
   std::string type_name = "std::queue";
 
-  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2;
+  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;
 
   if (!queue.empty()) {
     append_output("front()", queue.front());
@@ -41,7 +39,7 @@ inline std::string export_xixo(
   }
   append_output("size()", queue.size());
 
-  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON3;
+  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2;
 }
 
 template <typename... Args>
@@ -55,12 +53,12 @@ inline std::string export_xixo(
 ) {
   std::string type_name = "std::priority_queue";
 
-  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2;
+  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;
 
   if (!pq.empty()) append_output("top()", pq.top());
   append_output("size()", pq.size());
 
-  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON3;
+  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2;
 }
 
 template <typename... Args>
@@ -74,12 +72,12 @@ inline std::string export_xixo(
 ) {
   std::string type_name = "std::stack";
 
-  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2;
+  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;
 
   if (!stack.empty()) append_output("top()", stack.top());
   append_output("size()", stack.size());
 
-  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON3;
+  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2;
 }
 
 }  // namespace _detail

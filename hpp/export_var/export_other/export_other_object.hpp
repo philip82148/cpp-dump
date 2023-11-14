@@ -43,11 +43,11 @@
   ) {                                                                                              \
     std::string type_name = #TYPE;                                                                 \
                                                                                                    \
-    _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2;                                                      \
+    _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;                                                      \
                                                                                                    \
     _p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_EXPORT_OTHER_OBJECT, __VA_ARGS__);                \
                                                                                                    \
-    _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON3;                                                      \
+    _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2;                                                      \
   }                                                                                                \
                                                                                                    \
   } /* namespace _detail */                                                                        \
@@ -65,8 +65,6 @@ export_other_object(const T &, const std::string &, std::size_t, std::size_t, bo
 }  // namespace _detail
 
 }  // namespace cpp_dump
-
-_p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;
 
 // By not using CPP_DUMP_DEFINE_EXPORT_OBJECT() here, users can use CPP_DUMP_DEFINE_EXPORT_OBJECT()
 // to overwrite export_var()

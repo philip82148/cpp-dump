@@ -18,8 +18,6 @@
 #include "../../export_command/export_command.hpp"
 #include "../export_object_common.hpp"
 
-_p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;
-
 namespace cpp_dump {
 
 namespace _detail {
@@ -42,11 +40,11 @@ inline auto export_type_info(
   std::string name = type_info.name();
 #endif
 
-  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2;
+  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;
 
   append_output("name()", name);
 
-  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON3;
+  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2;
 }
 
 }  // namespace _detail

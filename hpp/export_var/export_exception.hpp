@@ -14,8 +14,6 @@
 #include "../type_check.hpp"
 #include "./export_object_common.hpp"
 
-_p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;
-
 namespace cpp_dump {
 
 namespace _detail {
@@ -31,11 +29,11 @@ inline auto export_exception(
 ) -> std::enable_if_t<is_exception<T>, std::string> {
   std::string type_name = get_typename<T>();
 
-  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2;
+  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;
 
   append_output("what()", exception.what());
 
-  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON3;
+  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2;
 }
 
 }  // namespace _detail

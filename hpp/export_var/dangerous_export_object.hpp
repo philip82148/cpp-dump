@@ -23,8 +23,6 @@
  * Compile errors in this macro, such as ambiguous function calls, are never reported due to SFINAE.
  */
 #define CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(...)                                                                 \
-  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;                                                                          \
-                                                                                                                     \
   namespace cpp_dump {                                                                                               \
                                                                                                                      \
   namespace _detail {                                                                                                \
@@ -40,11 +38,11 @@
   ) -> decltype(_p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_DANGEROUS_EXPORT_OBJECT, __VA_ARGS__), std::string()) { \
     std::string type_name = get_typename<T>();                                                                       \
                                                                                                                      \
-    _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2;                                                                        \
+    _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;                                                                        \
                                                                                                                      \
     _p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_DANGEROUS_EXPORT_OBJECT2, __VA_ARGS__);                             \
                                                                                                                      \
-    _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON3;                                                                        \
+    _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2;                                                                        \
   }                                                                                                                  \
                                                                                                                      \
   } /* namespace _detail */                                                                                          \
