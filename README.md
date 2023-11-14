@@ -1,28 +1,30 @@
 # cpp-dump
 
-[日本語記事はこちら！](https://zenn.dev/sassan/articles/19db660e4da0a4)
+[日本語記事はこちら！](https://zenn.dev/sassan/articles/19db660e4da0a4)  
+[I Made a C++ Version of Python print() Function (DEV article)](https://dev.to/philip82148/i-made-a-c-version-of-consolelog-o88)
 
 ## Overview
 
-cpp-dump is an all-round dump function library for C++ that supports even user-defined classes.
+cpp-dump is a C++ library for debugging purposes that can print any variable, including user types.
 
 This library has the following features:
 
 - Prints string representations of a wide variety of types to the standard error output (std::clog). This includes multidimensional arrays, (multi)maps, and (multi)sets, and even complex numbers, error objects, etc.
 - Automatically indents so that the output fits into the maximum line width.
 - Customizable output color.
+- The filename, line, and function name can also be attached to the log output.
 - Header-only library, no build or dependencies required.
-- The macro version can print variables along with the names.
 - Can print even user-defined types by using macros or defining operators.
 - The string representation of variables is similar to JavaScript, Python, and C++ syntax.
 
-## Introduction
+## Features
 
-cpp-dump has a macro version and a function version of dump functions.
+### Macro version and function version
 
-### cpp_dump(expressions...) macro
+#### cpp_dump(expressions...) macro
 
-The macro version dumps variable(s) along with the expression(s). [See Full Example Code](./readme/macro-version.cpp)
+`cpp_dump(expressions...)` macro can print variable(s) along with the expression(s).  
+[See Full Example Code](./readme/macro-version.cpp)
 
 ```cpp
 std::vector<std::vector<int>> my_vector{{3, 5, 8, 9, 7}, {9, 3, 2, 3, 8}};
@@ -31,9 +33,10 @@ cpp_dump(my_vector);
 
 ![macro-version.png](./readme/macro-version.png)
 
-### cpp_dump::dump(args...) function
+#### cpp_dump::dump(args...) function
 
-The function version simply dumps variable(s). [See Full Example Code](./readme/function-version.cpp)
+There is a function version of the dump function, too. `cpp_dump::dump(args...)` function simply prints variable(s).  
+[See Full Example Code](./readme/function-version.cpp)
 
 ```cpp
 std::vector<std::vector<int>> my_vector{{3, 5, 8, 9, 7}, {9, 3, 2, 3, 8}};
@@ -42,12 +45,9 @@ cpp_dump::dump(my_vector);
 
 ![function-version.png](./readme/function-version.png)
 
-## Features
-
-Both dump functions have the following features.
-
 ### A wide variety of supported types
 
+cpp-dump supports a wide variety of types. Also, it supports nested containers of any combination of the types. Their string representation is similar to JavaScript, Python, and C++ syntax, which is easy to read.  
 [See All Supported Types](#supported-types)  
 [See Full Example Code](./readme/supports-various-types.cpp)
 
@@ -84,7 +84,7 @@ cpp_dump(vector_of_pairs);
 
 ### Auto indent
 
-Automatically indent so that the output does not exceed the maximum width. [See Full Example Code](./readme/auto-indent.cpp)
+cpp-dump automatically indents so that the output does not exceed the maximum width. [See Full Example Code](./readme/auto-indent.cpp)
 
 ```cpp
 cpp_dump(my_vector);
@@ -94,7 +94,7 @@ cpp_dump(my_vector);
 
 ![Auto indent](./readme/auto-indent.png)
 
-### Customizable output colors
+### Customizable output color
 
 The output color can be changed by assigning an escape sequence to a member of `cpp_dump::es_value`.  
 [See Full Example Code](./readme/customizable-colors.cpp)
@@ -129,26 +129,33 @@ To turn off output coloring, assign `cpp_dump::es_style_t::no_es` to `cpp_dump::
 cpp_dump::es_style = cpp_dump::es_style_t::no_es;
 ```
 
-![no-es.png](./readme/no-es.png)
+### File name/path can be printed instead of `[dump]`
 
-### Can print even user-defined types
+If you want to print the file name instead of `[dump]`, use the following code. `cpp_dump() macro` automatically will detect and print the filename and the line. (The function version does not support this feature.) You can attach the function name, too. See [Customize `[dump]`](#customize-dump) for details.  
+[See Full Example Code](./readme/customize-dump.cpp)
 
-See [How to print a user-defined type with cpp-dump](#how-to-print-a-user-defined-type-with-cpp-dump) for details.
-
-![user-defined-class.png](./readme/user-defined-class.png)
-
-![user-defined-enum.png](./readme/user-defined-enum.png)
-
-## Advanced Features
-
-### File name/path instead of `[dump]`
-
-See [Customize `[dump]`](#customize-dump) for details.
+```cpp
+cpp_dump::log_label_func = cpp_dump::log_label::filename();
+```
 
 ![filename-label.png](./readme/filename-label.png)
 
+### Can print even user-defined types
+
+If you want to print a user-defined type, you can enable the library to print it by using macros or defining an operator. The following is an example of the use of macros. See [How to print a user-defined type with cpp-dump](#how-to-print-a-user-defined-type-with-cpp-dump) for details.  
+[See Full Example Code](./readme/user-defined-class2.cpp)
+
+```cpp
+CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(i, str());
+```
+
+![user-defined-class2.png](./readme/user-defined-class2.png)
+
+## Advanced Feature
+
 ### Manipulators to change the display style
 
+Using manipulators, you can set which and how many elements of an array/map/set, and how integers will be displayed.  
 See [Formatting with manipulators](#formatting-with-manipulators) for details.
 
 ![manipulators.png](./readme/manipulators.png)
@@ -485,16 +492,6 @@ log_label_func_t fixed_length(int width = 0, int substr_start = 0, bool show_fun
 
 inline cpp_dump::log_label::log_label_func_t cpp_dump::log_label_func = cpp_dump::log_label::default_func;
 ```
-
-In the following example, cpp_dump() macro prints the file name and the line no. instead of `[dump]`.  
-[See Full Example Code](./readme/customize-dump.cpp)
-
-```cpp
-cpp_dump::log_label_func = cpp_dump::log_label::filename();
-cpp_dump(my_vector);
-```
-
-![filename-label.png](./readme/filename-label.png)
 
 ### Formatting with manipulators
 
