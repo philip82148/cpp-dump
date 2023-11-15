@@ -37,15 +37,15 @@ inline std::string default_func(const std::string &, std::size_t, const std::str
 inline log_label_func_t line(bool show_func = false, int min_width = 0) {
   return [=](const std::string &, std::size_t line, const std::string &func_name) -> std::string {
     std::ostringstream ss;
-    ss << std::left << std::setw(min_width);
+    ss << std::left << std::setw(min_width - 3);
 
     if (show_func) {
-      ss << "[:" + std::to_string(line) + " (" + func_name + ")] ";
+      ss << ":" + std::to_string(line) + " (" + func_name + ")";
     } else {
-      ss << "[:" + std::to_string(line) + "] ";
+      ss << ":" + std::to_string(line);
     }
 
-    return ss.str();
+    return "[" + ss.str() + "] ";
   };
 }
 
@@ -66,15 +66,15 @@ inline log_label_func_t basename(bool show_func = false, int min_width = 0) {
     std::string basename = filename.substr(0, dot_pos);
 
     std::ostringstream ss;
-    ss << std::left << std::setw(min_width);
+    ss << std::left << std::setw(min_width - 3);
 
     if (show_func) {
-      ss << "[" + basename + ":" + std::to_string(line) + " (" + func_name + ")] ";
+      ss << basename + ":" + std::to_string(line) + " (" + func_name + ")";
     } else {
-      ss << "[" + basename + ":" + std::to_string(line) + "] ";
+      ss << basename + ":" + std::to_string(line);
     }
 
-    return ss.str();
+    return "[" + ss.str() + "] ";
   };
 }
 
@@ -91,15 +91,15 @@ inline log_label_func_t filename(bool show_func = false, int min_width = 0) {
     std::string filename = fullpath.substr(slash_pos);
 
     std::ostringstream ss;
-    ss << std::left << std::setw(min_width);
+    ss << std::left << std::setw(min_width - 3);
 
     if (show_func) {
-      ss << "[" + filename + ":" + std::to_string(line) + " (" + func_name + ")] ";
+      ss << filename + ":" + std::to_string(line) + " (" + func_name + ")";
     } else {
-      ss << "[" + filename + ":" + std::to_string(line) + "] ";
+      ss << filename + ":" + std::to_string(line);
     }
 
-    return ss.str();
+    return "[" + ss.str() + "] ";
   };
 }
 
@@ -111,16 +111,15 @@ inline log_label_func_t fullpath(int substr_start, bool show_func = false, int m
   return [=](const std::string &fullpath, std::size_t line, const std::string &func_name
          ) -> std::string {
     std::ostringstream ss;
-    ss << std::left << std::setw(min_width);
+    ss << std::left << std::setw(min_width - 3);
 
     if (show_func) {
-      ss << "[" + fullpath.substr(substr_start) + ":" + std::to_string(line) + " (" + func_name
-                + ")] ";
+      ss << fullpath.substr(substr_start) + ":" + std::to_string(line) + " (" + func_name + ")";
     } else {
-      ss << "[" + fullpath.substr(substr_start) + ":" + std::to_string(line) + "] ";
+      ss << fullpath.substr(substr_start) + ":" + std::to_string(line);
     }
 
-    return ss.str();
+    return "[" + ss.str() + "] ";
   };
 }
 
@@ -134,21 +133,20 @@ inline log_label_func_t fixed_length(
   return [=](const std::string &fullpath, std::size_t line, const std::string &func_name
          ) -> std::string {
     std::ostringstream ss;
-    ss << std::left << std::setw(min_width);
+    ss << std::left << std::setw(min_width - 3);
 
     if (show_func) {
-      ss << "[" + fullpath.substr(substr_start) + ":" + std::to_string(line) + " (" + func_name
-                + ")] ";
+      ss << fullpath.substr(substr_start) + ":" + std::to_string(line) + " (" + func_name + ")";
     } else {
-      ss << "[" + fullpath.substr(substr_start) + ":" + std::to_string(line) + "] ";
+      ss << fullpath.substr(substr_start) + ":" + std::to_string(line);
     }
 
     std::string output = ss.str();
 
-    if (max_width > 0 && output.length() > static_cast<std::size_t>(max_width))
-      output = "[.. " + output.substr(output.length() - max_width + 4);
+    if (max_width > 0 && output.length() > static_cast<std::size_t>(max_width - 3))
+      output = ".. " + output.substr(output.length() - (max_width - 3) + 3);
 
-    return output;
+    return "[" + output + "] ";
   };
 }
 
