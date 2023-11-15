@@ -114,9 +114,11 @@ inline log_label_func_t fullpath(int substr_start, bool show_func = false, int m
     ss << std::left << std::setw(min_width - 3);
 
     if (show_func) {
-      ss << fullpath.substr(substr_start) + ":" + std::to_string(line) + " (" + func_name + ")";
+      ss << fullpath.substr(std::min<std::size_t>(substr_start, fullpath.length())) + ":"
+                + std::to_string(line) + " (" + func_name + ")";
     } else {
-      ss << fullpath.substr(substr_start) + ":" + std::to_string(line);
+      ss << fullpath.substr(std::min<std::size_t>(substr_start, fullpath.length())) + ":"
+                + std::to_string(line);
     }
 
     return "[" + ss.str() + "] ";
@@ -136,15 +138,17 @@ inline log_label_func_t fixed_length(
     ss << std::left << std::setw(min_width - 3);
 
     if (show_func) {
-      ss << fullpath.substr(substr_start) + ":" + std::to_string(line) + " (" + func_name + ")";
+      ss << fullpath.substr(std::min<std::size_t>(substr_start, fullpath.length())) + ":"
+                + std::to_string(line) + " (" + func_name + ")";
     } else {
-      ss << fullpath.substr(substr_start) + ":" + std::to_string(line);
+      ss << fullpath.substr(std::min<std::size_t>(substr_start, fullpath.length())) + ":"
+                + std::to_string(line);
     }
 
     std::string output = ss.str();
 
     if (max_width > 0 && output.length() > static_cast<std::size_t>(max_width - 3))
-      output = ".. " + output.substr(output.length() - (max_width - 3) + 3);
+      output = ".. " + output.substr(output.length() - std::max(max_width - 6, 0));
 
     return "[" + output + "] ";
   };
