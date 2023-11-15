@@ -34,7 +34,7 @@ inline std::string default_func(const std::string &, std::size_t, const std::str
  * Functions that create a function to assign to `cpp_dump::log_label_func`.
  * See README for details.
  */
-inline log_label_func_t line(int min_width = 0, bool show_func = false) {
+inline log_label_func_t line(bool show_func = false, int min_width = 0) {
   return [=](const std::string &, std::size_t line, const std::string &func_name) -> std::string {
     std::ostringstream ss;
     ss << std::left << std::setw(min_width);
@@ -53,7 +53,7 @@ inline log_label_func_t line(int min_width = 0, bool show_func = false) {
  * Functions that create a function to assign to `cpp_dump::log_label_func`.
  * See README for details.
  */
-inline log_label_func_t basename(int min_width = 0, bool show_func = false) {
+inline log_label_func_t basename(bool show_func = false, int min_width = 0) {
   return [=](const std::string &fullpath, std::size_t line, const std::string &func_name
          ) -> std::string {
     auto slash_pos = fullpath.find_last_of("/\\");
@@ -82,7 +82,7 @@ inline log_label_func_t basename(int min_width = 0, bool show_func = false) {
  * Functions that create a function to assign to `cpp_dump::log_label_func`.
  * See README for details.
  */
-inline log_label_func_t filename(int min_width = 0, bool show_func = false) {
+inline log_label_func_t filename(bool show_func = false, int min_width = 0) {
   return [=](const std::string &fullpath, std::size_t line, const std::string &func_name
          ) -> std::string {
     auto slash_pos = fullpath.find_last_of("/\\");
@@ -107,7 +107,7 @@ inline log_label_func_t filename(int min_width = 0, bool show_func = false) {
  * Functions that create a function to assign to `cpp_dump::log_label_func`.
  * See README for details.
  */
-inline log_label_func_t fullpath(int min_width = 0, int substr_start = 0, bool show_func = false) {
+inline log_label_func_t fullpath(int substr_start, bool show_func = false, int min_width = 0) {
   return [=](const std::string &fullpath, std::size_t line, const std::string &func_name
          ) -> std::string {
     std::ostringstream ss;
@@ -128,11 +128,13 @@ inline log_label_func_t fullpath(int min_width = 0, int substr_start = 0, bool s
  * Functions that create a function to assign to `cpp_dump::log_label_func`.
  * See README for details.
  */
-inline log_label_func_t fixed_length(int width = 0, int substr_start = 0, bool show_func = false) {
+inline log_label_func_t fixed_length(
+    int min_width, int max_width, int substr_start, bool show_func = false
+) {
   return [=](const std::string &fullpath, std::size_t line, const std::string &func_name
          ) -> std::string {
     std::ostringstream ss;
-    ss << std::left << std::setw(width);
+    ss << std::left << std::setw(min_width);
 
     if (show_func) {
       ss << "[" + fullpath.substr(substr_start) + ":" + std::to_string(line) + " (" + func_name
@@ -143,8 +145,8 @@ inline log_label_func_t fixed_length(int width = 0, int substr_start = 0, bool s
 
     std::string output = ss.str();
 
-    if (width > 0 && output.length() > static_cast<std::size_t>(width))
-      output = "[.. " + output.substr(output.length() - width + 4);
+    if (max_width > 0 && output.length() > static_cast<std::size_t>(max_width))
+      output = "[.. " + output.substr(output.length() - max_width + 4);
 
     return output;
   };
