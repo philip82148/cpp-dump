@@ -7,9 +7,7 @@
 
 #pragma once
 
-#include <algorithm>
 #include <string>
-#include <tuple>
 #include <type_traits>
 
 #include "../escape_sequence.hpp"
@@ -43,6 +41,8 @@ inline auto export_arithmetic(
   if (!int_style) return es::number(std::to_string(value));
 
   auto [base, digits, chunk, space_fill, support_negative] = int_style.value();
+
+  if (base == 10 && digits == 0 && chunk == 0) return es::number(std::to_string(value));
 
   std::string output;
 
