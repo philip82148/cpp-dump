@@ -34,18 +34,18 @@ inline std::string default_func(const std::string &, std::size_t, const std::str
  * Functions that create a function to assign to `cpp_dump::log_label_func`.
  * See README for details.
  */
-inline log_label_func_t line(int min_width = 0, bool show_func = false) {
+inline log_label_func_t line(bool show_func = false, int min_width = 0) {
   return [=](const std::string &, std::size_t line, const std::string &func_name) -> std::string {
     std::ostringstream ss;
-    ss << std::left << std::setw(min_width);
+    ss << std::left << std::setw(min_width - 3);
 
     if (show_func) {
-      ss << "[:" + std::to_string(line) + " (" + func_name + ")] ";
+      ss << ":" + std::to_string(line) + " (" + func_name + ")";
     } else {
-      ss << "[:" + std::to_string(line) + "] ";
+      ss << ":" + std::to_string(line);
     }
 
-    return ss.str();
+    return "[" + ss.str() + "] ";
   };
 }
 
@@ -53,7 +53,7 @@ inline log_label_func_t line(int min_width = 0, bool show_func = false) {
  * Functions that create a function to assign to `cpp_dump::log_label_func`.
  * See README for details.
  */
-inline log_label_func_t basename(int min_width = 0, bool show_func = false) {
+inline log_label_func_t basename(bool show_func = false, int min_width = 0) {
   return [=](const std::string &fullpath, std::size_t line, const std::string &func_name
          ) -> std::string {
     auto slash_pos = fullpath.find_last_of("/\\");
@@ -66,15 +66,15 @@ inline log_label_func_t basename(int min_width = 0, bool show_func = false) {
     std::string basename = filename.substr(0, dot_pos);
 
     std::ostringstream ss;
-    ss << std::left << std::setw(min_width);
+    ss << std::left << std::setw(min_width - 3);
 
     if (show_func) {
-      ss << "[" + basename + ":" + std::to_string(line) + " (" + func_name + ")] ";
+      ss << basename + ":" + std::to_string(line) + " (" + func_name + ")";
     } else {
-      ss << "[" + basename + ":" + std::to_string(line) + "] ";
+      ss << basename + ":" + std::to_string(line);
     }
 
-    return ss.str();
+    return "[" + ss.str() + "] ";
   };
 }
 
@@ -82,7 +82,7 @@ inline log_label_func_t basename(int min_width = 0, bool show_func = false) {
  * Functions that create a function to assign to `cpp_dump::log_label_func`.
  * See README for details.
  */
-inline log_label_func_t filename(int min_width = 0, bool show_func = false) {
+inline log_label_func_t filename(bool show_func = false, int min_width = 0) {
   return [=](const std::string &fullpath, std::size_t line, const std::string &func_name
          ) -> std::string {
     auto slash_pos = fullpath.find_last_of("/\\");
@@ -91,15 +91,15 @@ inline log_label_func_t filename(int min_width = 0, bool show_func = false) {
     std::string filename = fullpath.substr(slash_pos);
 
     std::ostringstream ss;
-    ss << std::left << std::setw(min_width);
+    ss << std::left << std::setw(min_width - 3);
 
     if (show_func) {
-      ss << "[" + filename + ":" + std::to_string(line) + " (" + func_name + ")] ";
+      ss << filename + ":" + std::to_string(line) + " (" + func_name + ")";
     } else {
-      ss << "[" + filename + ":" + std::to_string(line) + "] ";
+      ss << filename + ":" + std::to_string(line);
     }
 
-    return ss.str();
+    return "[" + ss.str() + "] ";
   };
 }
 
@@ -107,20 +107,21 @@ inline log_label_func_t filename(int min_width = 0, bool show_func = false) {
  * Functions that create a function to assign to `cpp_dump::log_label_func`.
  * See README for details.
  */
-inline log_label_func_t fullpath(int min_width = 0, int substr_start = 0, bool show_func = false) {
+inline log_label_func_t fullpath(int substr_start, bool show_func = false, int min_width = 0) {
   return [=](const std::string &fullpath, std::size_t line, const std::string &func_name
          ) -> std::string {
     std::ostringstream ss;
-    ss << std::left << std::setw(min_width);
+    ss << std::left << std::setw(min_width - 3);
 
     if (show_func) {
-      ss << "[" + fullpath.substr(substr_start) + ":" + std::to_string(line) + " (" + func_name
-                + ")] ";
+      ss << fullpath.substr(std::min<std::size_t>(substr_start, fullpath.length())) + ":"
+                + std::to_string(line) + " (" + func_name + ")";
     } else {
-      ss << "[" + fullpath.substr(substr_start) + ":" + std::to_string(line) + "] ";
+      ss << fullpath.substr(std::min<std::size_t>(substr_start, fullpath.length())) + ":"
+                + std::to_string(line);
     }
 
-    return ss.str();
+    return "[" + ss.str() + "] ";
   };
 }
 
@@ -128,25 +129,28 @@ inline log_label_func_t fullpath(int min_width = 0, int substr_start = 0, bool s
  * Functions that create a function to assign to `cpp_dump::log_label_func`.
  * See README for details.
  */
-inline log_label_func_t fixed_length(int width = 0, int substr_start = 0, bool show_func = false) {
+inline log_label_func_t fixed_length(
+    int min_width, int max_width, int substr_start, bool show_func = false
+) {
   return [=](const std::string &fullpath, std::size_t line, const std::string &func_name
          ) -> std::string {
     std::ostringstream ss;
-    ss << std::left << std::setw(width);
+    ss << std::left << std::setw(min_width - 3);
 
     if (show_func) {
-      ss << "[" + fullpath.substr(substr_start) + ":" + std::to_string(line) + " (" + func_name
-                + ")] ";
+      ss << fullpath.substr(std::min<std::size_t>(substr_start, fullpath.length())) + ":"
+                + std::to_string(line) + " (" + func_name + ")";
     } else {
-      ss << "[" + fullpath.substr(substr_start) + ":" + std::to_string(line) + "] ";
+      ss << fullpath.substr(std::min<std::size_t>(substr_start, fullpath.length())) + ":"
+                + std::to_string(line);
     }
 
     std::string output = ss.str();
 
-    if (width > 0 && output.length() > static_cast<std::size_t>(width))
-      output = "[.. " + output.substr(output.length() - width + 4);
+    if (max_width > 0 && output.length() > static_cast<std::size_t>(max_width - 3))
+      output = ".. " + output.substr(output.length() - std::max(max_width - 6, 0));
 
-    return output;
+    return "[" + output + "] ";
   };
 }
 

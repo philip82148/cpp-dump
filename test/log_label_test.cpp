@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
   cpp_dump(vec);
   cpp_dump(vec);
   cpp_dump(vec);
-  PRINT(cpp_dump::log_label_func = log_label::line(0, true));
+  PRINT(cpp_dump::log_label_func = log_label::line(true));
   cpp_dump(vec);
   cpp_dump(vec);
   cpp_dump(vec);
@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
   cpp_dump(vec);
   cpp_dump(vec);
   cpp_dump(vec);
-  PRINT(cpp_dump::log_label_func = log_label::basename(0, true));
+  PRINT(cpp_dump::log_label_func = log_label::basename(true));
   cpp_dump(vec);
   cpp_dump(vec);
   cpp_dump(vec);
@@ -52,99 +52,111 @@ int main(int argc, char *argv[]) {
   cpp_dump(vec);
   cpp_dump(vec);
   cpp_dump(vec);
-  PRINT(cpp_dump::log_label_func = log_label::filename(0, true));
+  PRINT(cpp_dump::log_label_func = log_label::filename(true));
   cpp_dump(vec);
   cpp_dump(vec);
   cpp_dump(vec);
 
   if (path_dependent) {
     clog << "// fullpath()" << endl;
-    PRINT(cpp_dump::log_label_func = log_label::fullpath());
+    PRINT(cpp_dump::log_label_func = log_label::fullpath(0));
     cpp_dump(vec);
     cpp_dump(vec);
     cpp_dump(vec);
-    PRINT(cpp_dump::log_label_func = log_label::fullpath(0, 33));
+    PRINT(cpp_dump::log_label_func = log_label::fullpath(0, false, 33));
     cpp_dump(vec);
     cpp_dump(vec);
     cpp_dump(vec);
-    PRINT(cpp_dump::log_label_func = log_label::fullpath(0, 33, true));
+    PRINT(cpp_dump::log_label_func = log_label::fullpath(0, true, 33));
     cpp_dump(vec);
     cpp_dump(vec);
     cpp_dump(vec);
 
     clog << "// fixed_length()" << endl;
-    PRINT(cpp_dump::log_label_func = log_label::fixed_length());
+    PRINT(cpp_dump::log_label_func = log_label::fixed_length(0, 0, 0));
     cpp_dump(vec);
     cpp_dump(vec);
     cpp_dump(vec);
-    PRINT(cpp_dump::log_label_func = log_label::fixed_length(0, 0, true));
+    PRINT(cpp_dump::log_label_func = log_label::fixed_length(0, 0, 0, true));
     cpp_dump(vec);
     cpp_dump(vec);
     cpp_dump(vec);
-    PRINT(cpp_dump::log_label_func = log_label::fixed_length(0, 33));
+    PRINT(cpp_dump::log_label_func = log_label::fixed_length(0, 0, 33));
     cpp_dump(vec);
     cpp_dump(vec);
     cpp_dump(vec);
-    PRINT(cpp_dump::log_label_func = log_label::fixed_length(0, 33, true));
+    PRINT(cpp_dump::log_label_func = log_label::fixed_length(0, 0, 33, true));
+    cpp_dump(vec);
+    cpp_dump(vec);
+    cpp_dump(vec);
+    PRINT(cpp_dump::log_label_func = log_label::fixed_length(0, 40, 33, false));
+    cpp_dump(vec);
+    cpp_dump(vec);
+    cpp_dump(vec);
+    PRINT(cpp_dump::log_label_func = log_label::fixed_length(0, 40, 33, true));
     cpp_dump(vec);
     cpp_dump(vec);
     cpp_dump(vec);
   }
 
   clog << "// line()" << endl;
-  PRINT(cpp_dump::log_label_func = log_label::line(40));
+  PRINT(cpp_dump::log_label_func = log_label::line(false, 40));
   cpp_dump(vec);
   cpp_dump(vec);
   cpp_dump(vec);
-  PRINT(cpp_dump::log_label_func = log_label::line(40, true));
+  PRINT(cpp_dump::log_label_func = log_label::line(true, 40));
   cpp_dump(vec);
   cpp_dump(vec);
   cpp_dump(vec);
 
   clog << "// basename()" << endl;
-  PRINT(cpp_dump::log_label_func = log_label::basename(40));
+  PRINT(cpp_dump::log_label_func = log_label::basename(false, 40));
   cpp_dump(vec);
   cpp_dump(vec);
   cpp_dump(vec);
-  PRINT(cpp_dump::log_label_func = log_label::basename(40, true));
+  PRINT(cpp_dump::log_label_func = log_label::basename(true, 40));
   cpp_dump(vec);
   cpp_dump(vec);
   cpp_dump(vec);
 
   clog << "// filename()" << endl;
-  PRINT(cpp_dump::log_label_func = log_label::filename(40));
+  PRINT(cpp_dump::log_label_func = log_label::filename(false, 40));
   cpp_dump(vec);
   cpp_dump(vec);
   cpp_dump(vec);
-  PRINT(cpp_dump::log_label_func = log_label::filename(40, true));
+  PRINT(cpp_dump::log_label_func = log_label::filename(true, 40));
   cpp_dump(vec);
   cpp_dump(vec);
   cpp_dump(vec);
 
   if (path_dependent) {
     clog << "// fullpath()" << endl;
-    PRINT(cpp_dump::log_label_func = log_label::fullpath(40, 33, false));
+    PRINT(cpp_dump::log_label_func = log_label::fullpath(33, false, 40));
     cpp_dump(vec);
     cpp_dump(vec);
     cpp_dump(vec);
-    PRINT(cpp_dump::log_label_func = log_label::fullpath(40, 33, true));
+    PRINT(cpp_dump::log_label_func = log_label::fullpath(33, true, 40));
     cpp_dump(vec);
     cpp_dump(vec);
     cpp_dump(vec);
   }
 
   clog << "// fixed_length()" << endl;
-  PRINT(cpp_dump::log_label_func = log_label::fixed_length(40));
+  PRINT(cpp_dump::log_label_func = log_label::fixed_length(0, 40, 0));
   cpp_dump(vec);
   cpp_dump(vec);
   cpp_dump(vec);
   if (path_dependent) {
-    PRINT(cpp_dump::log_label_func = log_label::fixed_length(40, 33, true));
+    PRINT(cpp_dump::log_label_func = log_label::fixed_length(40, 50, 33, false));
+    cpp_dump(vec);
+    cpp_dump(vec);
+    cpp_dump(vec);
+    PRINT(cpp_dump::log_label_func = log_label::fixed_length(40, 50, 33, true));
     cpp_dump(vec);
     cpp_dump(vec);
     cpp_dump(vec);
   }
-  PRINT(cpp_dump::log_label_func = log_label::fixed_length(40, 0, true));
+  PRINT(cpp_dump::log_label_func = log_label::fixed_length(0, 40, 0, true));
   cpp_dump(vec);
   cpp_dump(vec);
   cpp_dump(vec);

@@ -131,14 +131,17 @@ cpp_dump::es_style = cpp_dump::es_style_t::no_es;
 
 ### File name/path can be printed instead of `[dump]`
 
-If you want to print the file name instead of `[dump]`, use the following code. `cpp_dump() macro` automatically will detect and print the file name and the line. (The function version does not support this feature.) You can attach the function name, too. See [Customize `[dump]`](#customize-dump) for details.  
+If you want to print the file name instead of `[dump]`, use the following code. `cpp_dump()` macro automatically will detect and print the file name and the line. (The function version does not support this feature.) You can attach the function name, too. See [Customize `[dump]`](#customize-dump) for details.  
 [See Full Example Code](./readme/customize-dump.cpp)
 
 ```cpp
+// Print the filename instead of [dump]
 cpp_dump::log_label_func = cpp_dump::log_label::filename();
+// Print along with the function name
+cpp_dump::log_label_func = cpp_dump::log_label::filename(true);
 ```
 
-![filename-label.png](./readme/filename-label.png)
+![customize-dump.png](./readme/customize-dump.png)
 
 ### Can print even user-defined types
 
@@ -217,11 +220,12 @@ cpp_dump::map_kv(return_value_of_manipulator_for_key, return_value_of_manipulato
 namespace cpp_dump::log_label {
 
 std::string default_func(const std::string &fullpath, std::size_t line, const std::string &func_name);
-log_label_func_t line(int min_width = 0, bool show_func = false);
-log_label_func_t basename(int min_width = 0, bool show_func = false);
-log_label_func_t filename(int min_width = 0, bool show_func = false);
-log_label_func_t fullpath(int min_width = 0, int substr_start = 0, bool show_func = false);
-log_label_func_t fixed_length(int width = 0, int substr_start = 0, bool show_func = false);
+log_label_func_t line(bool show_func = false, int min_width = 0);
+log_label_func_t basename(bool show_func = false, int min_width = 0);
+log_label_func_t filename(bool show_func = false, int min_width = 0);
+log_label_func_t fullpath(int substr_start, bool show_func = false, int min_width = 0);
+log_label_func_t fixed_length(int min_width, int max_width,
+    int substr_start, bool show_func = false);
 
 }
 ```
@@ -482,11 +486,12 @@ std::string default_func(const std::string &, std::size_t, const std::string &) 
 }
 
 // Functions that create a function that can be assigned to cpp_dump::log_label_func.
-log_label_func_t line(int min_width = 0, bool show_func = false);
-log_label_func_t basename(int min_width = 0, bool show_func = false);
-log_label_func_t filename(int min_width = 0, bool show_func = false);
-log_label_func_t fullpath(int min_width = 0, int substr_start = 0, bool show_func = false);
-log_label_func_t fixed_length(int width = 0, int substr_start = 0, bool show_func = false);
+log_label_func_t line(bool show_func = false, int min_width = 0);
+log_label_func_t basename(bool show_func = false, int min_width = 0);
+log_label_func_t filename(bool show_func = false, int min_width = 0);
+log_label_func_t fullpath(int substr_start, bool show_func = false, int min_width = 0);
+log_label_func_t fixed_length(int min_width, int max_width,
+    int substr_start, bool show_func = false);
 
 }
 
@@ -589,6 +594,7 @@ using namespace std;
 
 int main() {
   CPP_DUMP_SET_OPTION(max_line_width, 80);
+  CPP_DUMP_SET_OPTION(log_label_func, cp::log_label::filename());
 
   int N;
   cin >> N;
