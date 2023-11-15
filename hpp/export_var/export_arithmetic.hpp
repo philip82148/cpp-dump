@@ -124,9 +124,8 @@ inline auto export_arithmetic(
     std::string output_tmp;
     output.swap(output_tmp);
     for (std::size_t begin = 0; begin < output_tmp.length(); begin += chunk) {
-      std::size_t length = std::min<std::size_t>(chunk, output_tmp.length() - begin);
       if (begin > 0) output.append(1, ' ');
-      output.append(output_tmp.substr(begin, length));
+      output.append(output_tmp.substr(begin, chunk));
     }
   }
 
