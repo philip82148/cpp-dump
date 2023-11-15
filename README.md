@@ -594,6 +594,7 @@ using namespace std;
 
 int main() {
   CPP_DUMP_SET_OPTION(max_line_width, 80);
+  CPP_DUMP_SET_OPTION(log_label_func, cp::log_label::filename());
 
   int N;
   cin >> N;
