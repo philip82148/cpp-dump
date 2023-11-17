@@ -84,53 +84,55 @@ struct export_command {
   }
 
   export_command &operator<<(export_command &&command) & {
-    // command has either int_style, {map_key_child || map_value_child}, skip_size_func.
-    // in case of int_style
-    if (command._int_style) {
-      apply_int_style(command._int_style);
-      return *this;
-    }
+    // export_command has int_style ||
+    //     (either skip_size_func or {map_key_child || map_value_child}).
+    // in the case of int_style
+    if (command._int_style) apply_int_style(command._int_style);
 
-    // in case of {map_key_child || map_value_child}
-    if (command._map_key_child || command._map_value_child) {
-      // jump to the node whose child has no skip_size_func.
-      if (_child && _child->_skip_size_func) {
+    // in the case of skip_size_func
+    if (command._skip_size_func) {
+      // jump to the node that has no skip_size_func
+      if (_skip_size_func && _child) {
         *_child << std::move(command);
         return *this;
       }
 
-      // assign to map_key_child and map_value_child of the node, which has the last
-      // skip_size_func of the chain. and they inherit int_style from the node.
-      const auto &int_style_to_inherit = _child && _child->_child && _child->_child->_int_style
-                                             ? _child->_child->_int_style
-                                             : _int_style;
-      if (command._map_key_child) {
-        _map_key_child = std::move(command._map_key_child);
-        if (int_style_to_inherit && !_map_key_child->_int_style)
-          _map_key_child->apply_int_style(int_style_to_inherit);
+      // assign
+      if (!_skip_size_func) {
+        _skip_size_func = command._skip_size_func;
+      } else {
+        _child = std::make_unique<export_command>(std::move(command));
+        _child->_int_style = _int_style;
       }
-      if (command._map_value_child) {
-        _map_value_child = std::move(command._map_value_child);
-        if (int_style_to_inherit && !_map_value_child->_int_style)
-          _map_value_child->apply_int_style(int_style_to_inherit);
-      }
+
       return *this;
     }
 
-    // in case of skip_size_func
-    // jump to the node that has no skip_size_func
-    if (_skip_size_func && _child) {
+    if (!command._map_key_child && !command._map_value_child) return *this;
+
+    // in the case of {map_key_child || map_value_child}
+    // jump to the node whose child has no skip_size_func.
+    if (_child && _child->_skip_size_func) {
       *_child << std::move(command);
       return *this;
     }
 
-    // assign
-    if (!_skip_size_func) {
-      _skip_size_func = command._skip_size_func;
-    } else {
-      _child = std::make_unique<export_command>(std::move(command));
-      _child->_int_style = _int_style;
+    // assign to map_key_child and map_value_child of the node, which has the last
+    // skip_size_func of the chain. and they inherit int_style from the node.
+    const auto &int_style_to_inherit = _child && _child->_child && _child->_child->_int_style
+                                           ? _child->_child->_int_style
+                                           : _int_style;
+    if (command._map_key_child) {
+      _map_key_child = std::move(command._map_key_child);
+      if (int_style_to_inherit && !_map_key_child->_int_style)
+        _map_key_child->apply_int_style(int_style_to_inherit);
     }
+    if (command._map_value_child) {
+      _map_value_child = std::move(command._map_value_child);
+      if (int_style_to_inherit && !_map_value_child->_int_style)
+        _map_value_child->apply_int_style(int_style_to_inherit);
+    }
+
     return *this;
   }
 
