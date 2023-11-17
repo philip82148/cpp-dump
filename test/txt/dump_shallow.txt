@@ -84,8 +84,11 @@ here.`,
 [dump] multiset1 => { ... }, cp::show_middle(1) << cp::show_back(1) << multiset1 => { ... }
 [dump] cp::show_front(2) << cp::map_kv(cp::show_back(2), cp::show_front(2)) << multimap2 => { ... }
 [dump] cp::int_style(12, 3, 3) << cp::show_front(2) << cp::int_style(2, 0, 0) << cp::map_kv(cp::int_style(16, 3, 3) << cp::show_back(2), cp::show_front(2)) << multimap2 => { ... }
+[dump] multimap2 | cp::show_front(2) | cp::map_kv(cp::int_style(16, 3, 3) | cp::show_back(2), cp::show_front(2)) | cp::int_style(2, 0, 0) | cp::int_style(12, 3, 3) => { ... }
 [dump] cp::int_style(12, 3, 3) << cp::int_style( 8, 3, 3 ) << cp::map_kv(cp::int_style(16, 3, 3) << cp::show_back(2), cp::show_front(2)) << multimap2 => { ... }
+[dump] multimap2 | cp::map_kv(cp::int_style(16, 3, 3) | cp::show_back(2), cp::show_front(2)) | cp::int_style(12, 3, 3) | cp::int_style(8, 3, 3) => { ... }
 [dump] cp::show_front(1) << cp::map_v( cp::int_style(8, 3, 3) << cp::show_middle(1) << cp::int_style(16, 3, 3) << cp::show_middle(2) << cp::int_style(5, 3, 3) ) << multimap2 => { ... }
+[dump] multimap2 | cp::show_front(1) | cp::map_v( cp::int_style(8, 3, 3) | cp::show_middle(1) | cp::int_style(16, 3, 3) | cp::show_middle(2) | cp::int_style(5, 3, 3) ) => { ... }
 [dump] i => 0, cp::int_style(i) << 0x10000 => 65536
 [dump] i => 1, cp::int_style(i) << 0x10000 => 65536
 [dump] i => 2, cp::int_style(i) << 0x10000 => 1 00 00 00 00 00 00 00 00 _2

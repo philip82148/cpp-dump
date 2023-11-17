@@ -803,6 +803,18 @@ here.`,
            ], 
            ...
          }
+[dump] multimap2 | cp::show_front(2) | cp::map_kv(cp::int_style(16, 3, 3) | cp::show_back(2), cp::show_front(2)) | cp::int_style(2, 0, 0) | cp::int_style(12, 3, 3)
+         => { 
+           [ ..., 004 _16, 002 _16 ] (3): [ 
+             [ 1011 _2, 10110 _2, 1011 _2, 10110 _2 ], 
+             [ 1110 _2, 10101 _2, 1011 _2, 10110 _2 ], 
+             ...
+           ], 
+           [ ..., 004 _16, 000 _16 ] (1): [ 
+             [ 10101 _2, 101 _2, 10 _2, -101 _2 ]
+           ], 
+           ...
+         }
 [dump] cp::int_style(12, 3, 3) << cp::int_style( 8, 3, 3 ) << cp::map_kv(cp::int_style(16, 3, 3) << cp::show_back(2), cp::show_front(2)) << multimap2 => { 
          [ 001 _8, 002 _8, 004 _8, 002 _8 ] (3): [ 
            [ 013 _8, 026 _8, 013 _8, 026 _8 ], 
@@ -816,7 +828,29 @@ here.`,
            [ 016 _8, -002 _8 ]
          ]
        }
+[dump] multimap2 | cp::map_kv(cp::int_style(16, 3, 3) | cp::show_back(2), cp::show_front(2)) | cp::int_style(12, 3, 3) | cp::int_style(8, 3, 3) => { 
+         [ 001 _8, 002 _8, 004 _8, 002 _8 ] (3): [ 
+           [ 013 _8, 026 _8, 013 _8, 026 _8 ], 
+           [ 016 _8, 025 _8, 013 _8, 026 _8 ], 
+           [ 000 _8, 005 _8, 031 _8 ]
+         ], 
+         [ 003 _8, 004 _8, 000 _8 ] (1): [ 
+           [ 025 _8, 005 _8, 002 _8, -005 _8 ]
+         ], 
+         [ 005 _8, 006 _8, 007 _8, 010 _8 ] (1): [ 
+           [ 016 _8, -002 _8 ]
+         ]
+       }
 [dump] cp::show_front(1) << cp::map_v( cp::int_style(8, 3, 3) << cp::show_middle(1) << cp::int_style(16, 3, 3) << cp::show_middle(2) << cp::int_style(5, 3, 3) ) << multimap2
+         => { 
+           [ 1, 2, 4, 2 ] (3): [ 
+             ..., 
+             [ ..., 015 _16, 00b _16, ... ], 
+             ...
+           ], 
+           ...
+         }
+[dump] multimap2 | cp::show_front(1) | cp::map_v( cp::int_style(8, 3, 3) | cp::show_middle(1) | cp::int_style(16, 3, 3) | cp::show_middle(2) | cp::int_style(5, 3, 3) )
          => { 
            [ 1, 2, 4, 2 ] (3): [ 
              ..., 

@@ -413,17 +413,36 @@ int main(int argc, char *argv[]) {
       << cp::map_kv(cp::int_style(16, 3, 3) << cp::show_back(2), cp::show_front(2)) << multimap2
   );
   cpp_dump(
+      multimap2 | cp::show_front(2)
+      | cp::map_kv(cp::int_style(16, 3, 3) | cp::show_back(2), cp::show_front(2))
+      | cp::int_style(2, 0, 0) | cp::int_style(12, 3, 3)
+  );
+
+  cpp_dump(
       cp::int_style(12, 3, 3) << cp::int_style(
           8, 3, 3
       ) << cp::map_kv(cp::int_style(16, 3, 3) << cp::show_back(2), cp::show_front(2))
                               << multimap2
   );
   cpp_dump(
+      multimap2 | cp::map_kv(cp::int_style(16, 3, 3) | cp::show_back(2), cp::show_front(2))
+      | cp::int_style(12, 3, 3) | cp::int_style(8, 3, 3)
+  );
+
+  cpp_dump(
       cp::show_front(1) << cp::map_v(
           cp::int_style(8, 3, 3) << cp::show_middle(1) << cp::int_style(16, 3, 3)
                                  << cp::show_middle(2) << cp::int_style(5, 3, 3)
       ) << multimap2
   );
+  cpp_dump(
+      multimap2 | cp::show_front(1)
+      | cp::map_v(
+          cp::int_style(8, 3, 3) | cp::show_middle(1) | cp::int_style(16, 3, 3) | cp::show_middle(2)
+          | cp::int_style(5, 3, 3)
+      )
+  );
+
   rep(i, 17) cpp_dump(i, cp::int_style(i) << 0x10000);
   vector<vector<int>> vec3{{1, 20, 4}, {-2, 0, -10}};
   cpp_dump(vec3, cp::int_style(10, 2, 0, false, true) << vec3, cp::int_style10(2) << vec3);
