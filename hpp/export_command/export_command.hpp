@@ -84,8 +84,13 @@ struct export_command {
   }
 
   export_command &operator<<(export_command &&command) & {
-    // export_command has either {map_key_child || map_value_child}, skip_size_func
-    // int_style.
+    // command has either int_style, {map_key_child || map_value_child}, skip_size_func.
+    // in case of int_style
+    if (command._int_style) {
+      apply_int_style(command._int_style);
+      return *this;
+    }
+
     // in case of {map_key_child || map_value_child}
     if (command._map_key_child || command._map_value_child) {
       // jump to the node whose child has no skip_size_func.
@@ -113,41 +118,19 @@ struct export_command {
     }
 
     // in case of skip_size_func
-    if (command._skip_size_func) {
-      // jump to the node that has no skip_size_func
-      if (_skip_size_func && _child) {
-        *_child << std::move(command);
-        return *this;
-      }
-
-      // assign
-      if (!_skip_size_func) {
-        _skip_size_func = command._skip_size_func;
-      } else {
-        _child = std::make_unique<export_command>(std::move(command));
-        _child->_int_style = _int_style;
-      }
-      return *this;
-    }
-
-    // in case of int_style
     // jump to the node that has no skip_size_func
-    // or create that has no skip_size_func
-    if (_skip_size_func) {
-      if (!_child) {
-        _child = std::make_unique<export_command>(nullptr);
-        _child->_int_style = _int_style;
-      }
+    if (_skip_size_func && _child) {
       *_child << std::move(command);
       return *this;
     }
 
-    // this node is the first node that will have skip_size_func next.
-    // assign int_style to the child of this node, so that int_style applies to the element of the
-    // container.
-    if (!_child) _child = std::make_unique<export_command>(nullptr);
-    _child->_int_style = command._int_style;
-
+    // assign
+    if (!_skip_size_func) {
+      _skip_size_func = command._skip_size_func;
+    } else {
+      _child = std::make_unique<export_command>(std::move(command));
+      _child->_int_style = _int_style;
+    }
     return *this;
   }
 
@@ -221,6 +204,22 @@ struct value_with_command {
   value_with_command(const T &v, export_command &&c) : value(v), command(std::move(c)) {}
   value_with_command() = delete;
 };
+
+template <typename T>
+value_with_command<T> operator|(const T &value, export_command &&command) {
+  return value_with_command<T>(value, std::move(command));
+}
+
+template <typename T>
+value_with_command<T> operator|(value_with_command<T> &&vc, export_command &&command) {
+  return value_with_command<T>(
+      vc.value, const_cast<export_command &&>(vc.command) << std::move(command)
+  );
+}
+
+inline export_command operator|(export_command &&lhs, export_command &&rhs) {
+  return std::move(lhs) << std::move(rhs);
+}
 
 template <typename>
 inline constexpr bool _is_value_with_command = false;
