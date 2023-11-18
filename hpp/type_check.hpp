@@ -279,18 +279,24 @@ template <typename T>
 std::string get_typename() {
 #if defined(__GNUC__) && !defined(__clang__)
   constexpr std::size_t prefix_length =
-      sizeof("cpp_dump::_detail::_string_wrapper cpp_dump::_detail::_get_typename() [with T = ")
-      - 1;
-  constexpr std::size_t suffix_length = sizeof("]") - 1;
+      std::string_view(
+          "cpp_dump::_detail::_string_wrapper cpp_dump::_detail::_get_typename() [with T = "
+      )
+          .size();
+  constexpr std::size_t suffix_length = std::string_view("]").size();
 #elif defined(__clang__)
   constexpr std::size_t prefix_length =
-      sizeof("cpp_dump::_detail::_string_wrapper cpp_dump::_detail::_get_typename() [T = ") - 1;
-  constexpr std::size_t suffix_length = sizeof("]") - 1;
+      std::string_view("cpp_dump::_detail::_string_wrapper cpp_dump::_detail::_get_typename() [T = "
+      )
+          .size();
+  constexpr std::size_t suffix_length = std::string_view("]").size();
 #elif defined(_MSC_VER)
   constexpr std::size_t prefix_length =
-      sizeof("struct cpp_dump::_detail::_string_wrapper __cdecl cpp_dump::_detail::_get_typename<")
-      - 1;
-  constexpr std::size_t suffix_length = sizeof(">(void)") - 1;
+      std::string_view(
+          "struct cpp_dump::_detail::_string_wrapper __cdecl cpp_dump::_detail::_get_typename<"
+      )
+          .size();
+  constexpr std::size_t suffix_length = std::string_view(">(void)").size();
 #else
   constexpr std::size_t prefix_length = 0;
   constexpr std::size_t suffix_length = 0;
@@ -302,9 +308,9 @@ std::string get_typename() {
 
 #if defined(_MSC_VER)
   if (type_name.find("class ", 0) == 0) {
-    type_name = type_name.substr(sizeof("class ") - 1);
+    type_name = type_name.substr(std::string_view("class ").size());
   } else if (type_name.find("struct ") == 0) {
-    type_name = type_name.substr(sizeof("struct ") - 1);
+    type_name = type_name.substr(std::string_view("struct ").size());
   }
 #endif
 
