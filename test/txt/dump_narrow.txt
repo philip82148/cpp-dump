@@ -1436,6 +1436,42 @@ here.`,
            48, 
            49
          }
+[dump] cp::show_front() << array2
+         => [ 0, 1 ],
+       cp::show_front() << map2
+         => { 
+           0: 1, 
+           1: 2
+         },
+       cp::show_front() << set2
+         => { 0, 1 }
+[dump] cp::show_middle() << array2
+         => [ 0, 1 ],
+       cp::show_middle() << map2
+         => { 
+           0: 1, 
+           1: 2
+         },
+       cp::show_middle() << set2
+         => { 0, 1 }
+[dump] cp::show_back() << array2
+         => [ 0, 1 ],
+       cp::show_back() << map2
+         => { 
+           0: 1, 
+           1: 2
+         },
+       cp::show_back() << set2
+         => { 0, 1 }
+[dump] cp::show_both_ends() << array2
+         => [ 0, 1 ],
+       cp::show_both_ends() << map2
+         => { 
+           0: 1, 
+           1: 2
+         },
+       cp::show_both_ends() << set2
+         => { 0, 1 }
 [dump] vec2 => [ 
          [ 
            [ 1 ]

@@ -383,6 +383,22 @@ int main(int argc, char *argv[]) {
       cp::show_both_ends(40) << set50
   );
 
+  array<int, 2> array2;
+  map<int, int> map2;
+  set<int> set2;
+  rep(i, 2) {
+    array2[i] = i;
+    map2.emplace(i, i + 1);
+    set2.emplace(i);
+  }
+
+  cpp_dump(cp::show_front() << array2, cp::show_front() << map2, cp::show_front() << set2);
+  cpp_dump(cp::show_middle() << array2, cp::show_middle() << map2, cp::show_middle() << set2);
+  cpp_dump(cp::show_back() << array2, cp::show_back() << map2, cp::show_back() << set2);
+  cpp_dump(
+      cp::show_both_ends() << array2, cp::show_both_ends() << map2, cp::show_both_ends() << set2
+  );
+
   auto vec2 = vector<vector<vector<int>>>{
       {{1}},
       {{2, 6}},

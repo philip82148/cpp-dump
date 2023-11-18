@@ -78,6 +78,10 @@ here.`,
 [dump] cp::show_middle(40) << array50 => [ ... ], cp::show_middle(40) << map50 => { ... }, cp::show_middle(40) << set50 => { ... }
 [dump] cp::show_back(40) << array50 => [ ... ], cp::show_back(40) << map50 => { ... }, cp::show_back(40) << set50 => { ... }
 [dump] cp::show_both_ends(40) << array50 => [ ... ], cp::show_both_ends(40) << map50 => { ... }, cp::show_both_ends(40) << set50 => { ... }
+[dump] cp::show_front() << array2 => [ ... ], cp::show_front() << map2 => { ... }, cp::show_front() << set2 => { ... }
+[dump] cp::show_middle() << array2 => [ ... ], cp::show_middle() << map2 => { ... }, cp::show_middle() << set2 => { ... }
+[dump] cp::show_back() << array2 => [ ... ], cp::show_back() << map2 => { ... }, cp::show_back() << set2 => { ... }
+[dump] cp::show_both_ends() << array2 => [ ... ], cp::show_both_ends() << map2 => { ... }, cp::show_both_ends() << set2 => { ... }
 [dump] vec2 => [ ... ], cp::show_back(2) << cp::show_both_ends(1) << cp::show_back(2) << vec2 => [ ... ]
 [dump] vec2 => [ ... ], cp::show_both_ends(2) << cp::show_both_ends(2) << cp::show_both_ends(2) << vec2 => [ ... ]
 [dump] multimap1 => { ... }, cp::show_both_ends(2) << cp::show_both_ends(2) << multimap1 => { ... }
