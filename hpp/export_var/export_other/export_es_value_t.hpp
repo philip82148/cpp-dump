@@ -68,7 +68,7 @@ rollback:
       }
 
       output += "\n" + new_indent;
-      if (command.show_index()) output += es::op(std::to_string(index) + ": ");
+      if (command.show_index()) output += es::member(std::to_string(index)) + es::op(": ");
       output += _export_es_value_string(es);
       continue;
     }
@@ -82,7 +82,7 @@ rollback:
       goto rollback;
     }
 
-    if (command.show_index()) output += es::op(std::to_string(index) + ": ");
+    if (command.show_index()) output += es::member(std::to_string(index)) + es::op(": ");
     output += _export_es_value_string(es);
 
     if (last_line_length + get_length(output + " ]") <= max_line_width) continue;
