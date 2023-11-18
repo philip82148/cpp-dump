@@ -8,6 +8,7 @@
 #pragma once
 
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "../../escape_sequence.hpp"
@@ -74,7 +75,8 @@ rollback:
     if (skip) {
       output += es::op("...");
 
-      if (last_line_length + get_length(output + " ]") <= max_line_width) continue;
+      if (last_line_length + get_length(output) + std::string_view(" ]").size() <= max_line_width)
+        continue;
 
       shift_indent = true;
       goto rollback;
@@ -82,7 +84,8 @@ rollback:
 
     output += _export_es_value_string(es);
 
-    if (last_line_length + get_length(output + " ]") <= max_line_width) continue;
+    if (last_line_length + get_length(output) + std::string_view(" ]").size() <= max_line_width)
+      continue;
 
     if (fail_on_newline) return "\n";
 
