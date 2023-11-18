@@ -347,6 +347,6 @@ inline auto map_kv(_detail::export_command &&k, _detail::export_command &&v) {
  * Manipulator for the display style of containers.
  * See README for details.
  */
-inline auto cont_index(bool show = true) { return _detail::export_command(show); }
+inline auto cont_index() { return _detail::export_command(true); }
 
 }  // namespace cpp_dump
