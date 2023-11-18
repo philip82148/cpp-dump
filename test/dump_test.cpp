@@ -383,6 +383,22 @@ int main(int argc, char *argv[]) {
       cp::show_both_ends(40) << set50
   );
 
+  array<int, 2> array2;
+  map<int, int> map2;
+  set<int> set2;
+  rep(i, 2) {
+    array2[i] = i;
+    map2.emplace(i, i + 1);
+    set2.emplace(i);
+  }
+
+  cpp_dump(cp::show_front() << array2, cp::show_front() << map2, cp::show_front() << set2);
+  cpp_dump(cp::show_middle() << array2, cp::show_middle() << map2, cp::show_middle() << set2);
+  cpp_dump(cp::show_back() << array2, cp::show_back() << map2, cp::show_back() << set2);
+  cpp_dump(
+      cp::show_both_ends() << array2, cp::show_both_ends() << map2, cp::show_both_ends() << set2
+  );
+
   auto vec2 = vector<vector<vector<int>>>{
       {{1}},
       {{2, 6}},
@@ -413,17 +429,36 @@ int main(int argc, char *argv[]) {
       << cp::map_kv(cp::int_style(16, 3, 3) << cp::show_back(2), cp::show_front(2)) << multimap2
   );
   cpp_dump(
+      multimap2 | cp::show_front(2)
+      | cp::map_kv(cp::int_style(16, 3, 3) | cp::show_back(2), cp::show_front(2))
+      | cp::int_style(12, 3, 3) | cp::int_style(2, 0, 0)
+  );
+
+  cpp_dump(
       cp::int_style(12, 3, 3) << cp::int_style(
           8, 3, 3
       ) << cp::map_kv(cp::int_style(16, 3, 3) << cp::show_back(2), cp::show_front(2))
                               << multimap2
   );
   cpp_dump(
+      multimap2 | cp::map_kv(cp::int_style(16, 3, 3) | cp::show_back(2), cp::show_front(2))
+      | cp::int_style(12, 3, 3) | cp::int_style(8, 3, 3)
+  );
+
+  cpp_dump(
       cp::show_front(1) << cp::map_v(
           cp::int_style(8, 3, 3) << cp::show_middle(1) << cp::int_style(16, 3, 3)
                                  << cp::show_middle(2) << cp::int_style(5, 3, 3)
       ) << multimap2
   );
+  cpp_dump(
+      multimap2 | cp::show_front(1)
+      | cp::map_v(
+          cp::int_style(8, 3, 3) | cp::show_middle(1) | cp::int_style(16, 3, 3) | cp::show_middle(2)
+          | cp::int_style(5, 3, 3)
+      )
+  );
+
   rep(i, 17) cpp_dump(i, cp::int_style(i) << 0x10000);
   vector<vector<int>> vec3{{1, 20, 4}, {-2, 0, -10}};
   cpp_dump(vec3, cp::int_style(10, 2, 0, false, true) << vec3, cp::int_style10(2) << vec3);

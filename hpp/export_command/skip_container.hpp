@@ -25,10 +25,9 @@ struct skip_iterator {
  public:
   It it;
 
-  skip_iterator(
+  explicit skip_iterator(
       const It &it_,
-      const std::function<
-          std::optional<std::size_t>(std::size_t, const std::function<std::size_t()> &)>
+      const std::function<std::size_t(std::size_t, const std::function<std::size_t()> &)>
           &skip_size_func,
       const std::function<std::size_t()> &orig_container_size
   )
@@ -37,10 +36,9 @@ struct skip_iterator {
         _orig_container_size(orig_container_size),
         _index(0),
         _done(false) {}
-  skip_iterator(
+  explicit skip_iterator(
       It &&it_,
-      const std::function<
-          std::optional<std::size_t>(std::size_t, const std::function<std::size_t()> &)>
+      const std::function<std::size_t(std::size_t, const std::function<std::size_t()> &)>
           &skip_size_func,
       const std::function<std::size_t()> &orig_container_size
   )
@@ -57,7 +55,7 @@ struct skip_iterator {
   skip_iterator() = delete;
 
   std::pair<bool, It &> operator*() const noexcept {
-    bool skip = get_skip_size().value_or(1) != 0;
+    bool skip = get_skip_size() != 0;
     // Pass the iterator to support the case that *it is rvalue.
     // Pass the reference to support non-copyable iterators.
     // https://stackoverflow.com/questions/2568294/is-it-a-good-idea-to-create-an-stl-iterator-which-is-noncopyable
@@ -68,31 +66,29 @@ struct skip_iterator {
     return !_done && it != to.it;
   }
   skip_iterator &operator++() noexcept {
-    std::optional<std::size_t> skip_size = get_skip_size();
+    std::size_t skip_size = get_skip_size();
 
-    if (skip_size) {
-      if (skip_size == 0) {
-        ++it;
-        ++_index;
-      } else {
-        iterator_advance(it, skip_size.value());
-        _index += skip_size.value();
-      }
-    } else {
+    if (skip_size == static_cast<std::size_t>(-1)) {
       _done = true;
+    } else if (skip_size == 0) {
+      ++it;
+      ++_index;
+    } else {
+      iterator_advance(it, skip_size);
+      _index += skip_size;
     }
 
     return *this;
   }
 
  private:
-  const std::function<std::optional<std::size_t>(std::size_t, const std::function<std::size_t()> &)>
+  const std::function<std::size_t(std::size_t, const std::function<std::size_t()> &)>
       &_skip_size_func;
   const std::function<std::size_t()> &_orig_container_size;
   std::size_t _index;
   bool _done;
 
-  std::optional<std::size_t> get_skip_size() const noexcept {
+  std::size_t get_skip_size() const noexcept {
     return _skip_size_func(_index, _orig_container_size);
   }
 };
@@ -100,10 +96,9 @@ struct skip_iterator {
 template <typename T>
 struct skip_container {
  public:
-  skip_container(
+  explicit skip_container(
       const T &container,
-      const std::function<
-          std::optional<std::size_t>(std::size_t, const std::function<std::size_t()> &)>
+      const std::function<std::size_t(std::size_t, const std::function<std::size_t()> &)>
           &skip_size_func
   )
       : _original(container), _skip_size_func(skip_size_func) {}
@@ -123,7 +118,7 @@ struct skip_container {
 
  private:
   const T &_original;
-  const std::function<std::optional<std::size_t>(std::size_t, const std::function<std::size_t()> &)>
+  const std::function<std::size_t(std::size_t, const std::function<std::size_t()> &)>
       &_skip_size_func;
 
   std::optional<std::size_t> _orig_container_size_cache;
