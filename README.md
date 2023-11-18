@@ -158,10 +158,12 @@ CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(i, str());
 
 ### Manipulators to change the display style
 
-Using manipulators, you can set which and how many elements of an array/map/set, and how integers will be displayed.  
+Using manipulators, you can set which and how many elements of an array/map/set and how the index of an array and integers will be displayed.  
 See [Formatting with manipulators](#formatting-with-manipulators) for details.
 
 ![manipulators.png](./readme/manipulators.png)
+
+![cont-index.png](./readme/cont-index.png)
 
 ## Requirement
 
@@ -211,6 +213,7 @@ cpp_dump::show_back(std::size_t iteration_count = cpp_dump::max_iteration_count)
 cpp_dump::show_both_ends(std::size_t iteration_count = cpp_dump::max_iteration_count);
 cpp_dump::int_style(unsigned int base = 16, unsigned int digits = 8,
     unsigned int chunk = 2, bool space_fill = false, bool support_negative = false);
+cpp_dump::cont_index();
 cpp_dump::int_style10(unsigned int digits, bool support_negative = false);
 cpp_dump::map_k(return_value_of_manipulator);
 cpp_dump::map_v(return_value_of_manipulator);
@@ -502,16 +505,18 @@ inline cpp_dump::log_label::log_label_func_t cpp_dump::log_label_func = cpp_dump
 
 [See Full Example Code](./readme/formatting-with-manipulators.cpp)
 
-Using manipulators, you can set which and how many elements of an array/map/set will be displayed.
+Using manipulators, you can set which and how many elements of an array/map/set will be displayed.  
+See [show\_\* manipulators](#show_-manipulators) for details.
 
 ```cpp
 // Show the last 10 elements for the 1st dimension, the first 5 and the last 5 for the 2nd dimension.
 cpp_dump(cp::show_back(10) << cp::show_both_ends(10) << some_huge_vector);
 ```
 
-![some-huge-vector](./readme/omitting-a-vector.png)
+![omitting-a-vector.png](./readme/omitting-a-vector.png)
 
-And you can set how integers are displayed with manipulators.
+And you can set how integers are displayed with manipulators.  
+See [int_style manipulators](#int_style-manipulators) for details.
 
 ```cpp
 // Show integers in binary, minimum 8 digits, separated by every 2 characters.
@@ -527,6 +532,18 @@ cpp_dump(cp::int_style10(2) << cp::show_back(10) << cp::show_both_ends(10) << so
 
 ![manipulators.png](./readme/manipulators.png)
 
+Furthermore, you can show the indexes of an array by using a manipulator.  
+See [cont_index manipulator](#cont_index-manipulator) for details.
+
+```cpp
+cp::max_iteration_count = 5;
+
+// Show the indexes of the vector.
+cpp_dump(some_huge_vector | cp::int_style10(2) | cp::cont_index());
+```
+
+![cont-index.png](./readme/cont-index.png)
+
 #### show\_\* manipulators
 
 ```cpp
@@ -536,28 +553,49 @@ cpp_dump::show_back(std::size_t iteration_count = cpp_dump::max_iteration_count)
 cpp_dump::show_both_ends(std::size_t iteration_count = cpp_dump::max_iteration_count);
 
 // Example
-cpp_dump(cp::show_back() << cp::show_back() << variable);
+cpp_dump(cp::show_front() << cp::show_back() << variable);
+cpp_dump(variable | cp::show_front() | cp::show_back());
 ```
 
-The further left manipulator will act on the more outside dimensions of the array/map/set.
+The further left manipulator will act on the more outside dimensions of the array/map/set.  
+**Caution:**  
+These manipulators other than show_front() calculate the container's size.  
+Containers whose size cannot be calculated with std::size() will cost O(N) in computation.  
+In particular, passing an infinite sequence to these manipulators will result in an infinite loop.
 
-#### int_style, int_style10 manipulator
+#### int_style manipulators
 
 ```cpp
 cpp_dump::int_style(unsigned int base = 16, unsigned int digits = 8,
     unsigned int chunk = 2, bool space_fill = false, bool support_negative = false);
-cpp_dump::int_style10(unsigned int digits, bool support_negative = false) { return int_style(10, digits, 0, true, support_negative); }
+cpp_dump::int_style10(unsigned int digits, bool support_negative = false) {
+  return int_style(10, digits, 0, true, support_negative);
+}
 
 // Example
-cpp_dump(cp::int_style(16) << variable);
+cpp_dump(... << cp::int_style() << ... << variable);
+cpp_dump(variable | ... | cp::int_style() | ...);
 ```
 
 `base` supports values of 2 <= `base` <= 16. For other values, this manipulator resets the effects of the previous `int_style()` manipulators.  
 `chunk/digits` supports values of `chunk/digits` >= 0.  
-Unlike `show_*` manipulators, `int_style()` manipulator acts on all integers in the variable.  
+Unlike `show_*` manipulators, `int_style()` manipulator acts on all integers in the variable. (The order is irrelevant.)  
 `int_style10(digits, support_negative)` is an alias of `int_style(10, digits, 0, true, support_negative)`
 
-#### map_k, map_v, map_kv manipulator
+#### cont_index manipulator
+
+```cpp
+cpp_dump::cont_index();
+
+// Example
+cpp_dump(... << cp::cont_index() << ... << variable);
+cpp_dump(variable | ... | cp::cont_index() | ...);
+```
+
+Like `int_style` manipulator, this manipulator acts on all sequence containers in the variable. (The order is irrelevant.)  
+It does not affect maps/sets.
+
+#### map\_\* manipulators
 
 ```cpp
 cpp_dump::map_k(return_value_of_manipulator);
@@ -566,6 +604,7 @@ cpp_dump::map_kv(return_value_of_manipulator_for_key, return_value_of_manipulato
 
 // Example
 cpp_dump(cp::show_front() << cp::map_kv(cp::int_style(16), cp::show_back()) << map);
+cpp_dump(map | cp::show_front() | cp::map_kv(cp::int_style(16), cp::show_back()));
 ```
 
 These manipulators act on (multi)maps.  
