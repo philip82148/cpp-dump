@@ -60,7 +60,7 @@ int main(int argc, char *argv[]) {
       "\x1b[36m",                // reserved: cyan
       "\x1b[38;2;181;206;168m",  // number:
       "\x1b[38;2;215;152;61m",   // character:
-      "",                        // op: default
+      "\x1b[38;2;150;150;150m",  // op: dark2
       "\x1b[32m",                // identifier:  green
       "\x1b[38;2;156;220;254m",  // member:
       "\x1b[31m",                // unsupported: red
