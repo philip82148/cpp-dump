@@ -35,3 +35,6 @@ here.[0m[0m[38;2;215;152;61m`[0m[0m[02m,
 [0m[02m[dump] [0m[0m[38;2;86;154;214mcpp_dump::es_style_t::no_es[0m[0m[02m => [0m[0m[32mcpp_dump::es_style_t::no_es[0m
 [0m[02m[dump] [0m[0m[38;2;86;154;214mcpp_dump::es_style_t::by_syntax[0m[0m[02m => [0m[0m[32mcpp_dump::es_style_t::by_syntax[0m
 [0m[02m[dump] [0m[0m[38;2;86;154;214mcpp_dump::es_value[0m[0m[02m => [0m[0m[32mcpp_dump::es_value_t[0m[0m[33m{ [0m[0m...[0m[0m[33m }[0m
+[0m[02m[dump] [0m[0m[38;2;86;154;214mvec2 | cp::cont_index()[0m[0m[02m => [0m[0m[33m[ [0m[0m...[0m[0m[33m ][0m
+[0m[02m[dump] [0m[0m[38;2;86;154;214mvec2 | cp::show_front(3) | cp::cont_index()[0m[0m[02m => [0m[0m[33m[ [0m[0m...[0m[0m[33m ][0m
+[0m[02m[dump] [0m[0m[38;2;86;154;214mcpp_dump::es_value | cp::cont_index()[0m[0m[02m => [0m[0m[32mcpp_dump::es_value_t[0m[0m[33m{ [0m[0m...[0m[0m[33m }[0m
