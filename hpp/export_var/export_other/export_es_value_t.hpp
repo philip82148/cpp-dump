@@ -52,7 +52,7 @@ rollback:
   std::string output = es::bracket("[ ", current_depth);
   bool is_first = true;
 
-  for (const auto &[skip, it] : skipped) {
+  for (const auto &[skip, it, index] : skipped) {
     const std::string &es = *it;
 
     if (is_first) {
@@ -67,7 +67,9 @@ rollback:
         continue;
       }
 
-      output += "\n" + new_indent + _export_es_value_string(es);
+      output += "\n" + new_indent;
+      if (command.show_index()) output += es::op(std::to_string(index) + ": ");
+      output += _export_es_value_string(es);
       continue;
     }
 
@@ -80,6 +82,7 @@ rollback:
       goto rollback;
     }
 
+    if (command.show_index()) output += es::op(std::to_string(index) + ": ");
     output += _export_es_value_string(es);
 
     if (last_line_length + get_length(output + " ]") <= max_line_width) continue;

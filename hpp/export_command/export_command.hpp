@@ -55,12 +55,21 @@ struct export_command {
  public:
   static const export_command default_command;
 
+  explicit export_command(bool show_index) : _show_index(show_index) {}
+
   explicit export_command(
       const std::tuple<unsigned int, unsigned int, unsigned int, bool, bool> &int_style
   ) {
     auto base = std::get<0>(int_style);
     if (base >= 2 && base <= 16) _int_style = int_style;
   }
+
+  explicit export_command(
+      const std::optional<std::tuple<unsigned int, unsigned int, unsigned int, bool, bool>>
+          &int_style,
+      bool show_index
+  )
+      : _int_style(int_style), _show_index(show_index) {}
 
   explicit export_command(
       std::function<std::size_t(std::size_t, const std::function<std::size_t()> &)> &&skip_size_func
@@ -85,10 +94,13 @@ struct export_command {
   }
 
   export_command &operator<<(export_command &&command) & {
-    // export_command has int_style ||
+    // export_command has int_style || show_index ||
     //     (either skip_size_func or {map_key_child || map_value_child}).
     // in the case of int_style
     if (command._int_style) _int_style = command._int_style;
+
+    // in the case of show_index
+    if (command._show_index) _show_index = command._show_index;
 
     // in the case of skip_size_func
     if (command._skip_size_func) {
@@ -127,10 +139,11 @@ struct export_command {
   const export_command &next() const {
     if (_child) {
       if (_int_style && !_child->_int_style) _child->_int_style = _int_style;
+      if (_show_index) _child->_show_index = _show_index;
     } else {
-      if (!_int_style) return default_command;
+      if (!_int_style && !_show_index) return default_command;
 
-      _child = std::make_unique<export_command>(_int_style.value());
+      _child = std::make_unique<export_command>(_int_style, _show_index);
     }
 
     return *_child;
@@ -139,6 +152,7 @@ struct export_command {
   const export_command &next_for_map_key() const {
     if (_skip_size_func && _map_key_child) {
       if (_int_style && !_map_key_child->_int_style) _map_key_child->_int_style = _int_style;
+      if (_show_index) _map_key_child->_show_index = _show_index;
 
       return *_map_key_child;
     }
@@ -149,6 +163,7 @@ struct export_command {
   const export_command &next_for_map_value() const {
     if (_skip_size_func && _map_value_child) {
       if (_int_style && !_map_value_child->_int_style) _map_value_child->_int_style = _int_style;
+      if (_show_index) _map_value_child->_show_index = _show_index;
 
       return *_map_value_child;
     }
@@ -172,8 +187,11 @@ struct export_command {
     return _int_style;
   }
 
+  bool show_index() const { return _show_index; }
+
  private:
   std::optional<std::tuple<unsigned int, unsigned int, unsigned int, bool, bool>> _int_style;
+  bool _show_index{false};
   std::function<std::size_t(std::size_t, const std::function<std::size_t()> &)> _skip_size_func;
   mutable std::unique_ptr<export_command> _child;
   std::unique_ptr<export_command> _map_key_child;
@@ -324,5 +342,11 @@ inline auto map_v(_detail::export_command &&c) { return _map_value(std::move(c))
 inline auto map_kv(_detail::export_command &&k, _detail::export_command &&v) {
   return _map_key_and_value(std::move(k), std::move(v));
 }
+
+/*
+ * Manipulator for the display style of containers.
+ * See README for details.
+ */
+inline auto cont_index(bool show = true) { return _detail::export_command(show); }
 
 }  // namespace cpp_dump
