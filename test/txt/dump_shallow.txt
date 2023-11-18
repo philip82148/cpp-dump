@@ -78,10 +78,6 @@ here.`,
 [dump] cp::show_middle(40) << array50 => [ ... ], cp::show_middle(40) << map50 => { ... }, cp::show_middle(40) << set50 => { ... }
 [dump] cp::show_back(40) << array50 => [ ... ], cp::show_back(40) << map50 => { ... }, cp::show_back(40) << set50 => { ... }
 [dump] cp::show_both_ends(40) << array50 => [ ... ], cp::show_both_ends(40) << map50 => { ... }, cp::show_both_ends(40) << set50 => { ... }
-[dump] cp::show_front() << array2 => [ ... ], cp::show_front() << map2 => { ... }, cp::show_front() << set2 => { ... }
-[dump] cp::show_middle() << array2 => [ ... ], cp::show_middle() << map2 => { ... }, cp::show_middle() << set2 => { ... }
-[dump] cp::show_back() << array2 => [ ... ], cp::show_back() << map2 => { ... }, cp::show_back() << set2 => { ... }
-[dump] cp::show_both_ends() << array2 => [ ... ], cp::show_both_ends() << map2 => { ... }, cp::show_both_ends() << set2 => { ... }
 [dump] vec2 => [ ... ], cp::show_back(2) << cp::show_both_ends(1) << cp::show_back(2) << vec2 => [ ... ]
 [dump] vec2 => [ ... ], cp::show_both_ends(2) << cp::show_both_ends(2) << cp::show_both_ends(2) << vec2 => [ ... ]
 [dump] multimap1 => { ... }, cp::show_both_ends(2) << cp::show_both_ends(2) << multimap1 => { ... }
@@ -213,6 +209,15 @@ here.`,
 [dump]      0
 [dump]  00000 _16
 [dump]      0 _16
+[dump] vec4 | cp::cont_index() => [ ... ]
+[dump] vec4 | cp::show_front(3) | cp::cont_index() => [ ... ]
+[dump] vec4 | cp::show_back(3) | cp::cont_index() => [ ... ]
+[dump] vec4 | cp::show_middle(3) | cp::cont_index() => [ ... ]
+[dump] vec4 | cp::show_both_ends(3) | cp::cont_index() => [ ... ]
+[dump] vec4 | cp::show_front() | cp::show_front(3) | cp::cont_index() => [ ... ]
+[dump] vec4 | cp::show_front() | cp::show_back(3) | cp::cont_index() => [ ... ]
+[dump] vec4 | cp::show_front() | cp::show_middle(3) | cp::cont_index() => [ ... ]
+[dump] vec4 | cp::show_front() | cp::show_both_ends(3) | cp::cont_index() => [ ... ]
 [dump] cp::show_front(2) << cp::show_middle(1) << cp::show_back(2) << cp::show_both_ends(1) << non_copyable_and_non_movable_class1 => non_copyable_and_non_movable_class{ str_member= "This object has a pointer and reference_wrapper to itself.", pointer= *non_copyable_and_non_movable_class{ str_member= "This object has a pointer and reference_wrapper to itself.", pointer= *non_copyable_and_non_movable_class{ ... }, ref= non_copyable_and_non_movable_class{ ... } }, ref= non_copyable_and_non_movable_class{ str_member= "This object has a pointer and reference_wrapper to itself.", pointer= *non_copyable_and_non_movable_class{ ... }, ref= non_copyable_and_non_movable_class{ ... } } }
 [dump] non_copyable_and_non_movable_class_container1 => [ non_copyable_and_non_movable_class{ str_member= "This is non_copyable_and_non_movable_class.", pointer= *non_copyable_and_non_movable_class{ ... }, ref= non_copyable_and_non_movable_class{ ... } }, non_copyable_and_non_movable_class{ str_member= "This is non_copyable_and_non_movable_class.", pointer= *non_copyable_and_non_movable_class{ ... }, ref= non_copyable_and_non_movable_class{ ... } } ]
 [dump] cp::show_front(1) << non_copyable_and_non_movable_class_container1 => [ non_copyable_and_non_movable_class{ str_member= "This is non_copyable_and_non_movable_class.", pointer= *non_copyable_and_non_movable_class{ ... }, ref= non_copyable_and_non_movable_class{ ... } }, ... ]
