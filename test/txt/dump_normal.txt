@@ -803,7 +803,7 @@ here.`,
            ], 
            ...
          }
-[dump] multimap2 | cp::show_front(2) | cp::map_kv(cp::int_style(16, 3, 3) | cp::show_back(2), cp::show_front(2)) | cp::int_style(2, 0, 0) | cp::int_style(12, 3, 3)
+[dump] multimap2 | cp::show_front(2) | cp::map_kv(cp::int_style(16, 3, 3) | cp::show_back(2), cp::show_front(2)) | cp::int_style(12, 3, 3) | cp::int_style(2, 0, 0)
          => { 
            [ ..., 004 _16, 002 _16 ] (3): [ 
              [ 1011 _2, 10110 _2, 1011 _2, 10110 _2 ], 

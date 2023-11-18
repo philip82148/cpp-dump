@@ -415,7 +415,7 @@ int main(int argc, char *argv[]) {
   cpp_dump(
       multimap2 | cp::show_front(2)
       | cp::map_kv(cp::int_style(16, 3, 3) | cp::show_back(2), cp::show_front(2))
-      | cp::int_style(2, 0, 0) | cp::int_style(12, 3, 3)
+      | cp::int_style(12, 3, 3) | cp::int_style(2, 0, 0)
   );
 
   cpp_dump(
