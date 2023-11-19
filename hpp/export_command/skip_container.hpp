@@ -9,6 +9,7 @@
 
 #include <functional>
 #include <optional>
+#include <tuple>
 #include <utility>
 
 #include "../iterable.hpp"
@@ -54,12 +55,12 @@ struct skip_iterator {
   skip_iterator &operator=(const skip_iterator &) = delete;
   skip_iterator() = delete;
 
-  std::pair<bool, It &> operator*() const noexcept {
+  std::tuple<bool, It &, std::size_t> operator*() const noexcept {
     bool skip = get_skip_size() != 0;
     // Pass the iterator to support the case that *it is rvalue.
     // Pass the reference to support non-copyable iterators.
     // https://stackoverflow.com/questions/2568294/is-it-a-good-idea-to-create-an-stl-iterator-which-is-noncopyable
-    return {skip, const_cast<It &>(it)};
+    return {skip, const_cast<It &>(it), _index};
   }
   template <typename It2>
   bool operator!=(const skip_iterator<It2> &to) noexcept {

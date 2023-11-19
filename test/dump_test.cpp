@@ -383,22 +383,6 @@ int main(int argc, char *argv[]) {
       cp::show_both_ends(40) << set50
   );
 
-  array<int, 2> array2;
-  map<int, int> map2;
-  set<int> set2;
-  rep(i, 2) {
-    array2[i] = i;
-    map2.emplace(i, i + 1);
-    set2.emplace(i);
-  }
-
-  cpp_dump(cp::show_front() << array2, cp::show_front() << map2, cp::show_front() << set2);
-  cpp_dump(cp::show_middle() << array2, cp::show_middle() << map2, cp::show_middle() << set2);
-  cpp_dump(cp::show_back() << array2, cp::show_back() << map2, cp::show_back() << set2);
-  cpp_dump(
-      cp::show_both_ends() << array2, cp::show_both_ends() << map2, cp::show_both_ends() << set2
-  );
-
   auto vec2 = vector<vector<vector<int>>>{
       {{1}},
       {{2, 6}},
@@ -578,6 +562,26 @@ int main(int argc, char *argv[]) {
   dump(cp::int_style(10, 5, 0, true, true /* */) << 0);
   dump(cp::int_style(16, 5, 0, false, true /* */) << 0);
   dump(cp::int_style(16, 5, 0, true, true /* */) << 0);
+
+  // show_index() & show_*()
+  vector<vector<int>> vec4 = {
+      {1, 2, 3, 4, 5, 6, 7, 8},
+      {9, 10, 11, 12, 13},
+      {14, 15},
+      {15, 16},
+      {17, 18},
+      {19, 20},
+  };
+
+  cpp_dump(vec4 | cp::cont_index());
+  cpp_dump(vec4 | cp::show_front(3) | cp::cont_index());
+  cpp_dump(vec4 | cp::show_back(3) | cp::cont_index());
+  cpp_dump(vec4 | cp::show_middle(3) | cp::cont_index());
+  cpp_dump(vec4 | cp::show_both_ends(3) | cp::cont_index());
+  cpp_dump(vec4 | cp::show_front() | cp::show_front(3) | cp::cont_index());
+  cpp_dump(vec4 | cp::show_front() | cp::show_back(3) | cp::cont_index());
+  cpp_dump(vec4 | cp::show_front() | cp::show_middle(3) | cp::cont_index());
+  cpp_dump(vec4 | cp::show_front() | cp::show_both_ends(3) | cp::cont_index());
 
   // non_copyable_and_non_movable_class
   CPP_DUMP_SET_OPTION(max_depth, 2);

@@ -51,7 +51,7 @@ rollback:
   std::string output = es::bracket("[ ", current_depth);
   bool is_first = true;
 
-  for (auto &&[skip, it] : skipped) {
+  for (auto &&[skip, it, index] : skipped) {
     const auto &elem = *it;
 
     if (is_first) {
@@ -66,9 +66,11 @@ rollback:
         continue;
       }
 
-      output +=
-          "\n" + new_indent
-          + export_var(elem, new_indent, new_indent.length(), next_depth, false, next_command);
+      output += "\n" + new_indent;
+      if (command.show_index()) output += es::member(std::to_string(index)) + es::op(": ");
+      output += export_var(
+          elem, new_indent, get_last_line_length(output), next_depth, false, next_command
+      );
       continue;
     }
 
@@ -82,6 +84,7 @@ rollback:
       goto rollback;
     }
 
+    if (command.show_index()) output += es::member(std::to_string(index)) + es::op(": ");
     std::string elem_string = export_var(
         elem, indent, last_line_length + get_length(output), next_depth, true, next_command
     );

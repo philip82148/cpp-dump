@@ -60,7 +60,7 @@ int main(int argc, char *argv[]) {
       "\x1b[36m",                // reserved: cyan
       "\x1b[38;2;181;206;168m",  // number:
       "\x1b[38;2;215;152;61m",   // character:
-      "",                        // op: default
+      "\x1b[38;2;150;150;150m",  // op: dark2
       "\x1b[32m",                // identifier:  green
       "\x1b[38;2;156;220;254m",  // member:
       "\x1b[31m",                // unsupported: red
@@ -185,4 +185,12 @@ int main(int argc, char *argv[]) {
   cpp_dump(cpp_dump::es_style_t::no_es);
   cpp_dump(cpp_dump::es_style_t::by_syntax);
   cpp_dump(cpp_dump::es_value);
+
+  // manipulators
+  vector<int> vec2 = {1, 2, 3, 4, 5, 6, 7, 8};
+
+  cpp_dump(vec2 | cp::cont_index());
+  cpp_dump(vec2 | cp::show_front(3) | cp::cont_index());
+  cpp_dump(cpp_dump::es_value | cp::cont_index());
+  cpp_dump(cpp_dump::es_value | cp::cont_index() | cp::show_front(1));
 }

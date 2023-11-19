@@ -134,7 +134,7 @@ rollback:
   std::string output = es::bracket("{ ", current_depth);
   bool is_first = true;
 
-  for (const auto &[skip, it] : skipped_map) {
+  for (const auto &[skip, it, _] : skipped_map) {
     const auto &[key, value] = *it;
 
     if (is_first) {

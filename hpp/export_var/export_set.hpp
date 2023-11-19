@@ -101,7 +101,7 @@ rollback:
   std::string output = es::bracket("{ ", current_depth);
   bool is_first = true;
 
-  for (const auto &[skip, it] : skipped_set) {
+  for (const auto &[skip, it, _] : skipped_set) {
     const auto &elem = *it;
 
     if (is_first) {
