@@ -192,4 +192,5 @@ int main(int argc, char *argv[]) {
   cpp_dump(vec2 | cp::cont_index());
   cpp_dump(vec2 | cp::show_front(3) | cp::cont_index());
   cpp_dump(cpp_dump::es_value | cp::cont_index());
+  cpp_dump(cpp_dump::es_value | cp::cont_index() | cp::show_front(1));
 }
