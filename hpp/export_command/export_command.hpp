@@ -84,11 +84,29 @@ struct export_command {
 
   export_command(export_command &&) = default;
   export_command &operator=(export_command &&) = default;
-  export_command(const export_command &) = delete;
-  export_command &operator=(const export_command &) = delete;
+
+  export_command(const export_command &c)
+      : _int_style(c._int_style), _show_index(c._show_index), _skip_size_func(c._skip_size_func) {
+    if (c._child) _child = std::make_unique<export_command>(*c._child);
+    if (c._map_key_child) _map_key_child = std::make_unique<export_command>(*c._map_key_child);
+    if (c._map_value_child)
+      _map_value_child = std::make_unique<export_command>(*c._map_value_child);
+  }
+
+  export_command &operator=(const export_command &c) {
+    _int_style = c._int_style;
+    _show_index = c._show_index;
+    _skip_size_func = c._skip_size_func;
+    if (c._child) _child = std::make_unique<export_command>(*c._child);
+    if (c._map_key_child) _child = std::make_unique<export_command>(*c._map_key_child);
+    if (c._map_value_child) _child = std::make_unique<export_command>(*c._map_value_child);
+
+    return *this;
+  }
+
   export_command() = delete;
 
-  export_command &&operator<<(export_command &&command) && {
+  export_command operator<<(export_command &&command) && {
     *this << std::move(command);
     return std::move(*this);
   }
@@ -136,6 +154,15 @@ struct export_command {
     return *this;
   }
 
+  export_command operator<<(const export_command &command) && {
+    *this << export_command(command);
+    return std::move(*this);
+  }
+
+  export_command operator<<(const export_command &command) const & {
+    return export_command(*this) << export_command(command);
+  }
+
   const export_command &next() const {
     if (_child) {
       if (_int_style && !_child->_int_style) _child->_int_style = _int_style;
@@ -177,6 +204,11 @@ struct export_command {
   }
 
   template <typename T>
+  value_with_command<T> operator<<(const T &value) const & {
+    return value_with_command<T>(value, *this);
+  }
+
+  template <typename T>
   skip_container<T> create_skip_container(const T &container) const {
     if (_skip_size_func) return skip_container<T>(container, _skip_size_func);
     return skip_container<T>(container, _default_skip_size_func);
@@ -206,7 +238,8 @@ struct value_with_command {
   const T &value;
   const export_command command;
 
-  value_with_command(const T &v, export_command &&c) : value(v), command(std::move(c)) {}
+  explicit value_with_command(const T &v, export_command &&c) : value(v), command(std::move(c)) {}
+  explicit value_with_command(const T &v, const export_command &c) : value(v), command(c) {}
   value_with_command() = delete;
 };
 
@@ -216,14 +249,46 @@ value_with_command<T> operator|(const T &value, export_command &&command) {
 }
 
 template <typename T>
+value_with_command<T> operator|(const T &value, const export_command &command) {
+  return value_with_command<T>(value, command);
+}
+
+template <typename T>
 value_with_command<T> operator|(value_with_command<T> &&vc, export_command &&command) {
   return value_with_command<T>(
       vc.value, const_cast<export_command &&>(vc.command) << std::move(command)
   );
 }
 
+template <typename T>
+value_with_command<T> operator|(value_with_command<T> &&vc, const export_command &command) {
+  return value_with_command<T>(vc.value, const_cast<export_command &&>(vc.command) << command);
+}
+
+template <typename T>
+value_with_command<T> operator|(const value_with_command<T> &vc, export_command &&command) {
+  return value_with_command<T>(vc.value, vc.command << std::move(command));
+}
+
+template <typename T>
+value_with_command<T> operator|(const value_with_command<T> &vc, const export_command &command) {
+  return value_with_command<T>(vc.value, vc.command << command);
+}
+
 inline export_command operator|(export_command &&lhs, export_command &&rhs) {
   return std::move(lhs) << std::move(rhs);
+}
+
+inline export_command operator|(const export_command &lhs, export_command &&rhs) {
+  return lhs << std::move(rhs);
+}
+
+inline export_command operator|(export_command &&lhs, const export_command &rhs) {
+  return std::move(lhs) << rhs;
+}
+
+inline export_command operator|(const export_command &lhs, const export_command &rhs) {
+  return lhs << rhs;
 }
 
 template <typename>
