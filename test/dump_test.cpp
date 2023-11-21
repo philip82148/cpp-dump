@@ -86,6 +86,26 @@ CPP_DUMP_DEFINE_EXPORT_ENUM(enum_a, enum_a::s, enum_a::k);
 CPP_DUMP_DEFINE_EXPORT_OBJECT(decltype(class_a1), int_a, long_b, a_str());
 CPP_DUMP_DEFINE_EXPORT_OBJECT(non_copyable_and_non_movable_class, str_member, pointer, ref);
 
+struct tuple_of_non_copyable_and_non_movable_class {
+  template <std::size_t i>
+  auto &get() const {
+    return non_copyable_and_non_movable_class1;
+  }
+} tuple_of_non_copyable_and_non_movable_class1;
+
+namespace std {
+
+template <>
+struct tuple_size<tuple_of_non_copyable_and_non_movable_class> : integral_constant<std::size_t, 2> {
+};
+
+template <size_t i>
+struct tuple_element<i, tuple_of_non_copyable_and_non_movable_class> {
+  using type = non_copyable_and_non_movable_class;
+};
+
+}  // namespace std
+
 struct ostream_able_class_a {
 } ostream_able_class_a_1;
 
@@ -591,6 +611,7 @@ int main(int argc, char *argv[]) {
   );
   cpp_dump(non_copyable_and_non_movable_class_container1);
   cpp_dump(cp::show_front(1) << non_copyable_and_non_movable_class_container1);
+  cpp_dump(tuple_of_non_copyable_and_non_movable_class1);
   cpp_dump(container_of_non_copyable_non_const_iterator1);
 
   // unsupported_non_const_class
