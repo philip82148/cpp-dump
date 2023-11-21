@@ -22,7 +22,21 @@ namespace cpp_dump {
 
 namespace _detail {
 
-template <const std::size_t i, const std::size_t size, typename T>
+namespace _tuple {
+
+template <std::size_t i, typename T>
+inline auto get(const T &tuple, int) -> decltype(tuple.template get<i>()) {
+  return tuple.template get<i>();
+}
+
+template <std::size_t i, typename T>
+inline auto get(const T &tuple, long) -> decltype(get<i>(tuple)) {
+  return get<i>(tuple);
+}
+
+}  // namespace _tuple
+
+template <std::size_t i, std::size_t size, typename T>
 inline auto _export_tuple_in_one_line(
     const T &tuple,
     const std::string &indent,
@@ -31,7 +45,7 @@ inline auto _export_tuple_in_one_line(
     const export_command &command
 ) -> std::enable_if_t<is_tuple<T>, std::string> {
   std::string output =
-      export_var(std::get<i>(tuple), indent, last_line_length, next_depth, true, command);
+      export_var(_tuple::get<i>(tuple, 0), indent, last_line_length, next_depth, true, command);
   if (has_newline(output)) return "\n";
 
   if constexpr (i < size - 1) {
@@ -44,12 +58,12 @@ inline auto _export_tuple_in_one_line(
   }
 }
 
-template <const std::size_t i, const std::size_t size, typename T>
+template <std::size_t i, std::size_t size, typename T>
 inline auto _export_tuple_in_lines(
     const T &tuple, const std::string &indent, std::size_t next_depth, const export_command &command
 ) -> std::enable_if_t<is_tuple<T>, std::string> {
   std::string output =
-      export_var(std::get<i>(tuple), indent, get_length(indent), next_depth, false, command);
+      export_var(_tuple::get<i>(tuple, 0), indent, get_length(indent), next_depth, false, command);
 
   if constexpr (i < size - 1) {
     return output + es::op(",\n") + indent
