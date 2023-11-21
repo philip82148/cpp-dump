@@ -49,12 +49,17 @@ inline bool is_empty_iterable(const T &t) {
 }
 
 template <typename T>
-inline auto _iterable_size(const T &t, int) -> decltype(std::size(t)) {
+inline auto _iterable_size(const T &t, int, int) -> decltype(size(t)) {
   return std::size(t);
 }
 
 template <typename T>
-inline auto _iterable_size(const T &t, long)
+inline auto _iterable_size(const T &t, int, long) -> decltype(std::size(t)) {
+  return std::size(t);
+}
+
+template <typename T>
+inline auto _iterable_size(const T &t, long, long)
     -> decltype(std::distance(iterable_begin(t), iterable_end(t))) {
   return std::distance(iterable_begin(t), iterable_end(t));
 }
@@ -70,7 +75,7 @@ inline std::size_t _iterable_size(const T &t, ...) {
 
 template <typename T>
 inline std::size_t iterable_size(const T &t) {
-  return _iterable_size(t, 0);
+  return _iterable_size(t, 0, 0);
 }
 
 template <typename It, typename std::iterator_traits<It>::difference_type>
