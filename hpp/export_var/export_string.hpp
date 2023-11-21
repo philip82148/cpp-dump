@@ -20,10 +20,8 @@ namespace cpp_dump {
 
 namespace _detail {
 
-template <typename T>
-inline auto
-export_string(const T &value, const std::string &, std::size_t, std::size_t, bool fail_on_newline, const export_command &)
-    -> std::enable_if_t<is_string<T>, std::string> {
+inline std::string
+export_string(std::string_view value, const std::string &, std::size_t, std::size_t, bool fail_on_newline, const export_command &) {
   std::string str{value};
 
   // replace_string(str, R"(\)", R"(\\)");
