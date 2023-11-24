@@ -577,6 +577,8 @@ here.`,
            what()= "This is a test error."
          }
 [dump] vec.begin()
+         => Unsupported Type
+[dump] vec.begin()
          => *[ 
            2, 
            4, 

@@ -332,6 +332,9 @@ int main(int argc, char *argv[]) {
 
   // iterator
   cpp_dump(vec.begin());
+  CPP_DUMP_SET_OPTION(enable_asterisk, true);
+  cpp_dump(vec.begin());
+  CPP_DUMP_SET_OPTION(enable_asterisk, false);
 
   // ostream
   cpp_dump(ostream_able_class_a_1);
