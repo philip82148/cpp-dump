@@ -173,6 +173,9 @@ int main(int argc, char *argv[]) {
 
   // iterator
   cpp_dump(vec.begin());
+  CPP_DUMP_SET_OPTION(enable_asterisk, true);
+  cpp_dump(vec.begin());
+  CPP_DUMP_SET_OPTION(enable_asterisk, false);
 
   // unsupported type
   struct unsupported_class {
