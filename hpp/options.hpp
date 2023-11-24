@@ -80,6 +80,8 @@ inline std::size_t max_depth = 4;
  */
 inline std::size_t max_iteration_count = 16;
 
+inline bool enable_asterisk = false;
+
 /**
  * Function that returns the label that cpp_dump::dump() and cpp_dump() print
  * at the beginning of the output.
