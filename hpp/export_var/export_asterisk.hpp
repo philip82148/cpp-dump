@@ -14,8 +14,8 @@
 #include "../export_command/export_command.hpp"
 #include "../options.hpp"
 #include "../type_check.hpp"
+#include "./export_unsupported.hpp"
 #include "./export_var_fwd.hpp"
-#include "export_unsupported.hpp"
 
 namespace cpp_dump {
 
