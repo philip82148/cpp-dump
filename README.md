@@ -363,16 +363,6 @@ using cpp_dump::log_label::log_label_func_t =
     std::function<std::string(const std::string &, std::size_t, const std::string &)>;
 ```
 
-### Meta function
-
-```cpp
-/**
- * Check if export_var() supports type T (export_var() returns "Unsupported Type" if false).
- */
-template <typename T>
-inline constexpr bool cpp_dump::is_exportable;
-```
-
 ### How to print a user-defined type with cpp-dump
 
 There are three ways to enable the library to print a user type.
