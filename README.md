@@ -19,7 +19,7 @@ This library has the following features:
 
 ## Introduction
 
-You can print variables of a wide variety of types by passing them to cpp_dump(expressions...) macro.  
+You can print variables of a wide variety of types by passing them to the `cpp_dump(expressions...)` macro.  
 [See Full Example Code](./readme/macro-version.cpp)
 
 ```cpp
@@ -117,7 +117,7 @@ cpp_dump::es_style = cpp_dump::es_style_t::no_es;
 
 ### File name/path can be printed instead of `[dump]`
 
-If you want to print the file name instead of `[dump]`, use the following code. `cpp_dump()` macro automatically will detect and print the file name and the line. You can attach the function name, too. See [Customize `[dump]`](#customize-dump) for details.  
+If you want to print the file name instead of `[dump]`, use the following code. `cpp_dump()` automatically will detect and print the file name and the line. You can attach the function name, too. See [Customize `[dump]`](#customize-dump) for details.  
 [See Full Example Code](./readme/customize-dump.cpp)
 
 ```cpp
