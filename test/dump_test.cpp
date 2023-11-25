@@ -464,7 +464,7 @@ int main(int argc, char *argv[]) {
   vector<vector<int>> vec3{{1, 20, 4}, {-2, 0, -10}};
   cpp_dump(vec3, cp::int_style(10, 2, 0, false, true) << vec3, cp::int_style10(2) << vec3);
 
-  CPP_DUMP_SET_OPTION(show_expr, false);
+  CPP_DUMP_SET_OPTION(print_expr, false);
   cpp_dump(cp::int_style(10, 8, 4, false, false /**/) << 1);
   cpp_dump(cp::int_style(10, 8, 4, false, true /* */) << 2);
   cpp_dump(cp::int_style(10, 8, 4, false, true /**/) << -3);
@@ -581,7 +581,7 @@ int main(int argc, char *argv[]) {
   cpp_dump(cp::int_style(10, 5, 0, true, true /* */) << 0);
   cpp_dump(cp::int_style(16, 5, 0, false, true /* */) << 0);
   cpp_dump(cp::int_style(16, 5, 0, true, true /* */) << 0);
-  CPP_DUMP_SET_OPTION(show_expr, true);
+  CPP_DUMP_SET_OPTION(print_expr, true);
 
   // show_index() & show_*()
   vector<vector<int>> vec4 = {

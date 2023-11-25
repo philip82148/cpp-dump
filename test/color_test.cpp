@@ -78,7 +78,7 @@ int main(int argc, char *argv[]) {
   vector<int> vec3{3, 1};
   cpp_dump(vec);
   for (auto print : {false, true}) {
-    CPP_DUMP_SET_OPTION(show_expr, print);
+    CPP_DUMP_SET_OPTION(print_expr, print);
     cpp_dump(vec2);
     cpp_dump(vec3, vec3);
   }

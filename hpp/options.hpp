@@ -88,7 +88,7 @@ inline bool enable_asterisk = false;
 /**
  * Whether the dump functions print expressions.
  */
-inline bool show_expr = true;
+inline bool print_expr = true;
 
 /**
  * Function that returns the label that cpp_dump::dump() and cpp_dump() print

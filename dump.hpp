@@ -209,7 +209,7 @@ bool _dump(
     const std::initializer_list<std::string> &exprs,
     const Args &...args
 ) {
-  if (!show_expr)
+  if (!print_expr)
     return (... && _dump_one(output, log_label, no_newline_in_value_string, "", args));
 
   auto it = exprs.begin();
