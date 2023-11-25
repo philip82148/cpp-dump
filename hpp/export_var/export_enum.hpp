@@ -13,8 +13,8 @@
 #include "../escape_sequence.hpp"
 #include "../expand_va_macro.hpp"
 #include "../export_command/export_command.hpp"
+#include "../options.hpp"
 #include "../type_check.hpp"
-#include "../utility.hpp"
 
 #define _p_CPP_DUMP_EXPAND_FOR_EXPORT_ENUM(member)                                                 \
   { member, #member }

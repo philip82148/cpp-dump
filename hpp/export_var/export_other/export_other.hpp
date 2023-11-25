@@ -10,7 +10,6 @@
 #include <complex>
 #include <string>
 #include <type_traits>
-#include <typeinfo>
 #include <variant>
 
 #include "../../escape_sequence.hpp"

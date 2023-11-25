@@ -9,7 +9,6 @@
 
 #include <string>
 #include <string_view>
-#include <type_traits>
 
 #include "../escape_sequence.hpp"
 #include "../export_command/export_command.hpp"

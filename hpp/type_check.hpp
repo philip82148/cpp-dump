@@ -26,8 +26,8 @@
 #include <unordered_set>
 #include <variant>
 
-#include "./escape_sequence.hpp"
 #include "./iterable.hpp"
+#include "./options.hpp"
 
 namespace cpp_dump {
 

@@ -10,13 +10,11 @@
 #include <functional>
 #include <iostream>
 #include <string>
-#include <utility>
 
 #include "hpp/escape_sequence.hpp"
 #include "hpp/expand_va_macro.hpp"
 #include "hpp/export_command/export_command.hpp"
 #include "hpp/export_var/export_var.hpp"
-#include "hpp/log_label.hpp"
 #include "hpp/options.hpp"
 #include "hpp/utility.hpp"
 

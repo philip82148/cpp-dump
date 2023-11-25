@@ -8,9 +8,7 @@
 #pragma once
 
 #include <string>
-#include <type_traits>
 
-#include "../escape_sequence.hpp"
 #include "../export_command/export_command.hpp"
 #include "../type_check.hpp"
 #include "./dangerous_export_object.hpp"
