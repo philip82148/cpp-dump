@@ -8,6 +8,7 @@
 #pragma once
 
 #include <functional>
+#include <initializer_list>
 #include <iostream>
 #include <string>
 
@@ -18,7 +19,8 @@
 #include "hpp/options.hpp"
 #include "hpp/utility.hpp"
 
-#define _p_CPP_DUMP_EXPAND_FOR_CPP_DUMP(expr) #expr, expr
+#define _p_CPP_DUMP_EXPAND_FOR_CPP_DUMP(expr)  #expr
+#define _p_CPP_DUMP_EXPAND_FOR_CPP_DUMP2(expr) (expr)
 
 /**
  * Print string representations of expression(s) and result(s) to std::clog.
@@ -27,7 +29,8 @@
 #define CPP_DUMP(...)                                                                              \
   cpp_dump::_detail::cpp_dump_macro(                                                               \
       {__FILE__, __LINE__, __func__},                                                              \
-      _p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_CPP_DUMP, __VA_ARGS__)                          \
+      {_p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_CPP_DUMP, __VA_ARGS__)},                       \
+      _p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_CPP_DUMP2, __VA_ARGS__)                         \
   )
 
 /**
@@ -198,35 +201,26 @@ bool _dump_one(
   return true;
 }
 
-inline bool _dump_recursively_with_expr(std::string &, const std::string &, bool) { return true; }
-
-template <typename T, typename... Args>
-inline bool _dump_recursively_with_expr(
+template <typename... Args>
+bool _dump_recursively_with_expr(
     std::string &output,
     const std::string &log_label,
     bool no_newline_in_value_string,
-    const std::string &expr,
-    const T &value,
+    const std::initializer_list<const char *> &exprs,
     const Args &...args
 ) {
-  return _dump_one(output, log_label, no_newline_in_value_string, expr, value)
-         && _dump_recursively_with_expr(output, log_label, no_newline_in_value_string, args...);
+  auto it = exprs.begin();
+  return (... && _dump_one(output, log_label, no_newline_in_value_string, *it++, args));
 }
 
-inline bool _dump_recursively_without_expr(std::string &, const std::string &, bool) {
-  return true;
-}
-
-template <typename T, typename... Args>
-inline bool _dump_recursively_without_expr(
+template <typename... Args>
+bool _dump_recursively_without_expr(
     std::string &output,
     const std::string &log_label,
     bool no_newline_in_value_string,
-    const T &value,
     const Args &...args
 ) {
-  return _dump_one(output, log_label, no_newline_in_value_string, "", value)
-         && _dump_recursively_without_expr(output, log_label, no_newline_in_value_string, args...);
+  return (... && _dump_one(output, log_label, no_newline_in_value_string, "", args));
 }
 
 struct _source_location {
@@ -237,14 +231,16 @@ struct _source_location {
 
 // function called by cpp_dump() macro
 template <typename... Args>
-void cpp_dump_macro(_source_location loc, const Args &...args) {
+void cpp_dump_macro(
+    _source_location loc, std::initializer_list<const char *> exprs, const Args &...args
+) {
   std::string log_label =
       log_label_func ? log_label_func(loc.file_name, loc.line, loc.function_name) : "";
 
   std::string output = "";
-  if (!_detail::_dump_recursively_with_expr(output, log_label, true, args...)) {
+  if (!_detail::_dump_recursively_with_expr(output, log_label, true, exprs, args...)) {
     output = "";
-    _detail::_dump_recursively_with_expr(output, log_label, false, args...);
+    _detail::_dump_recursively_with_expr(output, log_label, false, exprs, args...);
   }
 
   std::clog << output << std::endl;
