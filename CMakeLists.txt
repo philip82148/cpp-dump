@@ -87,7 +87,7 @@ add_test(
     -P "${CMAKE_CURRENT_LIST_DIR}/test/log_label_test.cmake"
 )
 
-add_executable(odr_test test/odr_test.cpp test/odr_test2.cpp)
+add_executable(static_test test/static_test.cpp test/odr_test.cpp)
 
 file(GLOB files readme/*.cpp)
 foreach(file ${files})
