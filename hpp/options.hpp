@@ -80,6 +80,9 @@ inline std::size_t max_depth = 4;
  */
 inline std::size_t max_iteration_count = 16;
 
+/**
+ * Whether the dump functions print types of the Asterisk category (See README.md).
+ */
 inline bool enable_asterisk = false;
 
 /**
