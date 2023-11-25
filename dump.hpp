@@ -98,7 +98,6 @@ bool _dump_one(
     output += pattern.prefix + pattern.value_string;
   };
 
-  // for _dump_recursively_without_expr(), which is for cpp_dump::dump() (function)
   if (expr == "") {
     prefix_and_value_string pattern1 = make_prefix_and_value_string("", initial_indent);
 

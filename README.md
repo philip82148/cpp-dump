@@ -17,13 +17,9 @@ This library has the following features:
 - Can print even user-defined types by using macros or defining operators.
 - The string representation of variables is similar to JavaScript, Python, and C++ syntax.
 
-## Features
+## Introduction
 
-### Macro version and function version
-
-#### cpp_dump(expressions...) macro
-
-`cpp_dump(expressions...)` macro can print variable(s) along with the expression(s).  
+You can print variables of a wide variety of types by passing them to cpp_dump(expressions...) macro.  
 [See Full Example Code](./readme/macro-version.cpp)
 
 ```cpp
@@ -33,17 +29,7 @@ cpp_dump(my_vector);
 
 ![macro-version.png](./readme/macro-version.png)
 
-#### cpp_dump::dump(args...) function
-
-There is a function version of the dump function, too. `cpp_dump::dump(args...)` function simply prints variable(s).  
-[See Full Example Code](./readme/function-version.cpp)
-
-```cpp
-std::vector<std::vector<int>> my_vector{{3, 5, 8, 9, 7}, {9, 3, 2, 3, 8}};
-cpp_dump::dump(my_vector);
-```
-
-![function-version.png](./readme/function-version.png)
+## Features
 
 ### A wide variety of supported types
 
@@ -131,7 +117,7 @@ cpp_dump::es_style = cpp_dump::es_style_t::no_es;
 
 ### File name/path can be printed instead of `[dump]`
 
-If you want to print the file name instead of `[dump]`, use the following code. `cpp_dump()` macro automatically will detect and print the file name and the line. (The function version does not support this feature.) You can attach the function name, too. See [Customize `[dump]`](#customize-dump) for details.  
+If you want to print the file name instead of `[dump]`, use the following code. `cpp_dump()` macro automatically will detect and print the file name and the line. You can attach the function name, too. See [Customize `[dump]`](#customize-dump) for details.  
 [See Full Example Code](./readme/customize-dump.cpp)
 
 ```cpp
@@ -194,14 +180,8 @@ Then
 
 ```cpp
 /**
- * Output string representation(s) of variable(s) to std::clog.
- */
-template <typename... Args>
-void cpp_dump::dump(const Args &...args);
-
-/**
  * Return a string representation of a variable.
- * cpp_dump() and cpp_dump::dump() use this function internally.
+ * cpp_dump() uses this function internally.
  */
 template <typename T>
 std::string cpp_dump::export_var(const T &value);
@@ -294,13 +274,12 @@ inline std::size_t cpp_dump::max_depth = 4;
 inline std::size_t cpp_dump::max_iteration_count = 16;
 
 /**
- * Whether the dump functions print types of the Asterisk category (See 'Supported types').
+ * Whether cpp_dump() prints types of the Asterisk category (See 'Supported types').
  */
 inline bool cpp_dump::enable_asterisk = false;
 
 /**
- * Function that returns the label that cpp_dump::dump() and cpp_dump() print
- * at the beginning of the output.
+ * Function that returns the label that cpp_dump() prints at the beginning of the output.
  */
 inline cpp_dump::log_label::log_label_func_t cpp_dump::log_label_func = cpp_dump::log_label::default_func;
 
@@ -374,7 +353,7 @@ There are three ways to enable the library to print a user type.
 
 #### 1. Use CPP_DUMP_DEFINE_EXPORT_OBJECT() macro
 
-This macro requires the user type to be accessible from the top level, but it is the safest and easiest way to enable the dump functions to print a user type.  
+This macro requires the user type to be accessible from the top level, but it is the safest and easiest way to enable `cpp_dump()` to print a user type.  
 [See Full Example Code](./readme/user-defined-class.cpp)
 
 ```cpp
@@ -415,7 +394,7 @@ cpp_dump(my_enum_A);
 
 #### 2. Use CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT() macro
 
-This macro enables both dump functions to print any type with specified members.  
+This macro enables `cpp_dump()` to print any type with specified members.  
 This macro doesn't require the user type to be accessible from the top level (or even the type name).
 
 However, if you do not use this macro carefully, it might cause ambiguous function call errors.  
@@ -655,7 +634,7 @@ clang++ ./main.cpp -D DEFINED_ONLY_IN_LOCAL
 
 ## Supported types
 
-Both dump functions dump variables recursively, so they can dump nested variables of any combination of types in the table below.
+cpp_dump() prints variables recursively, so they can dump nested variables of any combination of types in the table below.
 
 | Category      | Type T is supported if ...                                                                                                                                                                                                                                                                            | Example                                           |
 | ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- |
