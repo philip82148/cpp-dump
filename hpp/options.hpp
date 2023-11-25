@@ -86,6 +86,11 @@ inline std::size_t max_iteration_count = 16;
 inline bool enable_asterisk = false;
 
 /**
+ * Whether the dump functions print expressions.
+ */
+inline bool show_expr = true;
+
+/**
  * Function that returns the label that cpp_dump::dump() and cpp_dump() print
  * at the beginning of the output.
  */
