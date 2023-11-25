@@ -14,6 +14,7 @@
 #include "../export_command/export_command.hpp"
 #include "../options.hpp"
 #include "../type_check.hpp"
+#include "./export_unsupported.hpp"
 #include "./export_var_fwd.hpp"
 
 namespace cpp_dump {
@@ -29,6 +30,8 @@ inline auto export_asterisk(
     bool fail_on_newline,
     const export_command &command
 ) -> std::enable_if_t<is_asterisk<T>, std::string> {
+  if (!enable_asterisk) return export_unsupported();
+
   if (current_depth >= max_depth) return es::identifier("*") + es::op("...");
 
   // If decltype(*value) == decltype(value), then the program enters an infinite loop.

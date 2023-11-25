@@ -294,6 +294,11 @@ inline std::size_t cpp_dump::max_depth = 4;
 inline std::size_t cpp_dump::max_iteration_count = 16;
 
 /**
+ * Whether the dump functions print types of the Asterisk category (See 'Supported types').
+ */
+inline bool cpp_dump::enable_asterisk = false;
+
+/**
  * Function that returns the label that cpp_dump::dump() and cpp_dump() print
  * at the beginning of the output.
  */
@@ -361,16 +366,6 @@ struct cpp_dump::es_value_t {
 
 using cpp_dump::log_label::log_label_func_t =
     std::function<std::string(const std::string &, std::size_t, const std::string &)>;
-```
-
-### Meta function
-
-```cpp
-/**
- * Check if export_var() supports type T (export_var() returns "Unsupported Type" if false).
- */
-template <typename T>
-inline constexpr bool cpp_dump::is_exportable;
 ```
 
 ### How to print a user-defined type with cpp-dump
@@ -679,7 +674,7 @@ Both dump functions dump variables recursively, so they can dump nested variable
 | Enum          | `CPP_DUMP_DEFINE_EXPORT_ENUM(T, members...);` is at top level.                                                                                                                                                                                                                                        |                                                   |
 | Ostream       | All of the above are not satisfied, `std::is_function_v<T> == false && std::is_member_pointer_v<T> == false`, and the function `std::ostream& operator<<(std::ostream&, const T &)` is defined. **The string representation of T must not be an empty string** (This makes manipulators unsupported). |                                                   |
 | User-defined2 | All of the above are not satisfied, T has all members specified by just one `CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(members...);` at top level, and the member functions to be displayed is const.                                                                                                   |                                                   |
-| Asterisk      | All of the above are not satisfied and the function `TypeExceptT operator*(const T &)` or the const member function `TypeExceptT T::operator*() const` is defined.                                                                                                                                    | Iterators                                         |
+| Asterisk      | All of the above are not satisfied, `cpp_dump::enable_asterisk == true` and the function `TypeExceptT operator*(const T &)` or the const member function `TypeExceptT T::operator*() const` is defined.                                                                                                                                    | Iterators                                         |
 
 ### Display example
 

@@ -319,10 +319,4 @@ std::string get_typename() {
 
 }  // namespace _detail
 
-/**
- * Check if export_var() supports type T (export_var() returns "Unsupported Type" if false).
- */
-template <typename T>
-inline constexpr bool is_exportable = _detail::is_exportable<T>;
-
 }  // namespace cpp_dump
