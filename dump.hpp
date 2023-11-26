@@ -98,7 +98,7 @@ bool _dump_one(
     output += pattern.prefix + pattern.value_string;
   };
 
-  if (expr == "") {
+  if (!print_expr) {
     prefix_and_value_string pattern1 = make_prefix_and_value_string("", initial_indent);
 
     if (!no_newline_in_value_string) {
@@ -208,9 +208,6 @@ bool _dump(
     const std::initializer_list<std::string> &exprs,
     const Args &...args
 ) {
-  if (!print_expr)
-    return (... && _dump_one(output, log_label, no_newline_in_value_string, "", args));
-
   auto it = exprs.begin();
   return (... && _dump_one(output, log_label, no_newline_in_value_string, *it++, args));
 }
