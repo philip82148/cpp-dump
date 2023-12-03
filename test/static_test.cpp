@@ -4,10 +4,10 @@
 template <typename... Args>
 constexpr bool check_iota(Args... args) {
   int x = 0;
-  return (... && (args == x++));
+  return (... && (args == x--));
 }
 
-#define BUFFER(x)      x
+#define BUFFER(x)      -x
 #define EXPAND_VA(...) _p_CPP_DUMP_EXPAND_VA(BUFFER, __VA_ARGS__)
 
 int main() {
