@@ -11,7 +11,7 @@
 // See https://stackoverflow.com/questions/5134523/msvc-doesnt-expand-va-args-correctly
 #define _p_CPP_DUMP_BUFFER(x) x
 
-#define _p_CPP_DUMP_EXPAND_VA1(func, arg1) _p_CPP_DUMP_BUFFER(func(arg1))
+#define _p_CPP_DUMP_EXPAND_VA1(func, arg1) func(arg1)
 #define _p_CPP_DUMP_EXPAND_VA2(func, arg1, ...)                                                    \
   func(arg1), _p_CPP_DUMP_BUFFER(_p_CPP_DUMP_EXPAND_VA1(func, __VA_ARGS__))
 #define _p_CPP_DUMP_EXPAND_VA3(func, arg1, ...)                                                    \
