@@ -12,6 +12,8 @@ endif()
 include(CTest)
 enable_testing()
 
+add_executable(static_test test/static_test.cpp test/odr_test.cpp)
+
 add_executable(dump_test test/dump_test.cpp)
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
     target_compile_definitions(dump_test PRIVATE USE_BITS_STDC)
@@ -86,8 +88,6 @@ add_test(
     -D "cmd_path=$<TARGET_FILE:log_label_test>"
     -P "${CMAKE_CURRENT_LIST_DIR}/test/log_label_test.cmake"
 )
-
-add_executable(static_test test/static_test.cpp test/odr_test.cpp)
 
 file(GLOB files readme/*.cpp)
 foreach(file ${files})
