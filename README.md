@@ -80,6 +80,20 @@ cpp_dump(my_vector);
 
 ![Auto indent](./readme/auto-indent.png)
 
+### File name/path can be printed instead of `[dump]`
+
+If you want to print the file name instead of `[dump]`, use the following code. The `cpp_dump()` macro will automatically detect and print the file name and the line. You can attach the function name, too. See [Customize `[dump]`](#customize-dump) for details.  
+[See Full Example Code](./readme/customize-dump.cpp)
+
+```cpp
+// Print the filename instead of [dump]
+cpp_dump::log_label_func = cpp_dump::log_label::filename();
+// Print along with the function name
+cpp_dump::log_label_func = cpp_dump::log_label::filename(true);
+```
+
+![customize-dump.png](./readme/customize-dump.png)
+
 ### Customizable output color
 
 The output color can be changed by assigning an escape sequence to a member of `cpp_dump::es_value`.  
@@ -114,20 +128,6 @@ To turn off output coloring, assign `cpp_dump::es_style_t::no_es` to `cpp_dump::
 // Turn off output coloring
 cpp_dump::es_style = cpp_dump::es_style_t::no_es;
 ```
-
-### File name/path can be printed instead of `[dump]`
-
-If you want to print the file name instead of `[dump]`, use the following code. `cpp_dump()` automatically will detect and print the file name and the line. You can attach the function name, too. See [Customize `[dump]`](#customize-dump) for details.  
-[See Full Example Code](./readme/customize-dump.cpp)
-
-```cpp
-// Print the filename instead of [dump]
-cpp_dump::log_label_func = cpp_dump::log_label::filename();
-// Print along with the function name
-cpp_dump::log_label_func = cpp_dump::log_label::filename(true);
-```
-
-![customize-dump.png](./readme/customize-dump.png)
 
 ### Can print even user-defined types
 
@@ -277,6 +277,11 @@ inline std::size_t cpp_dump::max_iteration_count = 16;
  * Whether cpp_dump() prints types of the Asterisk category (See 'Supported types').
  */
 inline bool cpp_dump::enable_asterisk = false;
+
+/**
+ * Whether cpp_dump() prints the expressions.
+ */
+inline bool cpp_dump::print_expr = true;
 
 /**
  * Function that returns the label that cpp_dump() prints at the beginning of the output.
@@ -608,6 +613,7 @@ using namespace std;
 int main() {
   CPP_DUMP_SET_OPTION(max_line_width, 80);
   CPP_DUMP_SET_OPTION(log_label_func, cp::log_label::filename());
+  CPP_DUMP_SET_OPTION(enable_asterisk, true);
 
   int N;
   cin >> N;
