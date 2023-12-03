@@ -1,6 +1,5 @@
 #include "../dump.hpp"
 namespace cp = cpp_dump;
-using cp::dump;
 
 #ifdef USE_BITS_STDC
 // This is a test for competitive programming.
@@ -10,7 +9,6 @@ using cp::dump;
 #include <array>
 #include <bitset>
 #include <complex>
-#include <exception>
 #include <iomanip>
 #include <map>
 #include <memory>
@@ -22,7 +20,6 @@ using cp::dump;
 #include <string>
 #include <string_view>
 #include <tuple>
-#include <typeindex>
 #include <utility>
 #include <variant>
 #include <vector>
@@ -208,9 +205,6 @@ int main(int argc, char *argv[]) {
   cpp_dump(c_style_array);
 
   cpp_dump(vec);
-  dump(vec);
-
-  dump(c_style_array, c_style_array);
 
   // pair&tuple
   cpp_dump(make_pair(8, 'a'));
@@ -469,122 +463,125 @@ int main(int argc, char *argv[]) {
   rep(i, 17) cpp_dump(i, cp::int_style(i) << 0x10000);
   vector<vector<int>> vec3{{1, 20, 4}, {-2, 0, -10}};
   cpp_dump(vec3, cp::int_style(10, 2, 0, false, true) << vec3, cp::int_style10(2) << vec3);
-  dump(cp::int_style(10, 8, 4, false, false /**/) << 1);
-  dump(cp::int_style(10, 8, 4, false, true /* */) << 2);
-  dump(cp::int_style(10, 8, 4, false, true /**/) << -3);
-  dump(cp::int_style(10, 8, 4, true, false /**/) << 1);
-  dump(cp::int_style(10, 8, 4, true, true /* */) << 2);
-  dump(cp::int_style(10, 8, 4, true, true /**/) << -3);
 
-  dump(cp::int_style(10, 9, 4, false, false /**/) << 4);
-  dump(cp::int_style(10, 9, 4, false, true /* */) << 5);
-  dump(cp::int_style(10, 9, 4, false, true /**/) << -6);
-  dump(cp::int_style(10, 9, 4, true, false /**/) << 4);
-  dump(cp::int_style(10, 9, 4, true, true /* */) << 5);
-  dump(cp::int_style(10, 9, 4, true, true /**/) << -6);
+  CPP_DUMP_SET_OPTION(print_expr, false);
+  cpp_dump(cp::int_style(10, 8, 4, false, false /**/) << 1);
+  cpp_dump(cp::int_style(10, 8, 4, false, true /* */) << 2);
+  cpp_dump(cp::int_style(10, 8, 4, false, true /**/) << -3);
+  cpp_dump(cp::int_style(10, 8, 4, true, false /**/) << 1);
+  cpp_dump(cp::int_style(10, 8, 4, true, true /* */) << 2);
+  cpp_dump(cp::int_style(10, 8, 4, true, true /**/) << -3);
 
-  dump(cp::int_style(10, 7, 4, false, false /**/) << 7);
-  dump(cp::int_style(10, 7, 4, false, true /* */) << 8);
-  dump(cp::int_style(10, 7, 4, false, true /**/) << -9);
-  dump(cp::int_style(10, 7, 4, true, false /**/) << 7);
-  dump(cp::int_style(10, 7, 4, true, true /* */) << 8);
-  dump(cp::int_style(10, 7, 4, true, true /**/) << -9);
+  cpp_dump(cp::int_style(10, 9, 4, false, false /**/) << 4);
+  cpp_dump(cp::int_style(10, 9, 4, false, true /* */) << 5);
+  cpp_dump(cp::int_style(10, 9, 4, false, true /**/) << -6);
+  cpp_dump(cp::int_style(10, 9, 4, true, false /**/) << 4);
+  cpp_dump(cp::int_style(10, 9, 4, true, true /* */) << 5);
+  cpp_dump(cp::int_style(10, 9, 4, true, true /**/) << -6);
 
-  dump(cp::int_style(10, 1, 4, false, false /**/) << 1);
-  dump(cp::int_style(10, 1, 4, false, true /* */) << 2);
-  dump(cp::int_style(10, 1, 4, false, true /**/) << -3);
-  dump(cp::int_style(10, 1, 4, true, false /**/) << 1);
-  dump(cp::int_style(10, 1, 4, true, true /* */) << 2);
-  dump(cp::int_style(10, 1, 4, true, true /**/) << -3);
+  cpp_dump(cp::int_style(10, 7, 4, false, false /**/) << 7);
+  cpp_dump(cp::int_style(10, 7, 4, false, true /* */) << 8);
+  cpp_dump(cp::int_style(10, 7, 4, false, true /**/) << -9);
+  cpp_dump(cp::int_style(10, 7, 4, true, false /**/) << 7);
+  cpp_dump(cp::int_style(10, 7, 4, true, true /* */) << 8);
+  cpp_dump(cp::int_style(10, 7, 4, true, true /**/) << -9);
 
-  dump(cp::int_style(10, 3, 4, false, false /**/) << 4);
-  dump(cp::int_style(10, 3, 4, false, true /* */) << 5);
-  dump(cp::int_style(10, 3, 4, false, true /**/) << -6);
-  dump(cp::int_style(10, 3, 4, true, false /**/) << 4);
-  dump(cp::int_style(10, 3, 4, true, true /* */) << 5);
-  dump(cp::int_style(10, 3, 4, true, true /**/) << -6);
+  cpp_dump(cp::int_style(10, 1, 4, false, false /**/) << 1);
+  cpp_dump(cp::int_style(10, 1, 4, false, true /* */) << 2);
+  cpp_dump(cp::int_style(10, 1, 4, false, true /**/) << -3);
+  cpp_dump(cp::int_style(10, 1, 4, true, false /**/) << 1);
+  cpp_dump(cp::int_style(10, 1, 4, true, true /* */) << 2);
+  cpp_dump(cp::int_style(10, 1, 4, true, true /**/) << -3);
 
-  dump(cp::int_style(10, 4, 4, false, false /**/) << 7);
-  dump(cp::int_style(10, 4, 4, false, true /* */) << 8);
-  dump(cp::int_style(10, 4, 4, false, true /**/) << -9);
-  dump(cp::int_style(10, 4, 4, true, false /**/) << 7);
-  dump(cp::int_style(10, 4, 4, true, true /* */) << 8);
-  dump(cp::int_style(10, 4, 4, true, true /**/) << -9);
+  cpp_dump(cp::int_style(10, 3, 4, false, false /**/) << 4);
+  cpp_dump(cp::int_style(10, 3, 4, false, true /* */) << 5);
+  cpp_dump(cp::int_style(10, 3, 4, false, true /**/) << -6);
+  cpp_dump(cp::int_style(10, 3, 4, true, false /**/) << 4);
+  cpp_dump(cp::int_style(10, 3, 4, true, true /* */) << 5);
+  cpp_dump(cp::int_style(10, 3, 4, true, true /**/) << -6);
 
-  dump(cp::int_style(10, 5, 4, false, false /**/) << 0);
-  dump(cp::int_style(10, 5, 4, false, true /* */) << 1);
-  dump(cp::int_style(10, 5, 4, false, true /**/) << -2);
-  dump(cp::int_style(10, 5, 4, true, false /**/) << 0);
-  dump(cp::int_style(10, 5, 4, true, true /* */) << 1);
-  dump(cp::int_style(10, 5, 4, true, true /**/) << -2);
+  cpp_dump(cp::int_style(10, 4, 4, false, false /**/) << 7);
+  cpp_dump(cp::int_style(10, 4, 4, false, true /* */) << 8);
+  cpp_dump(cp::int_style(10, 4, 4, false, true /**/) << -9);
+  cpp_dump(cp::int_style(10, 4, 4, true, false /**/) << 7);
+  cpp_dump(cp::int_style(10, 4, 4, true, true /* */) << 8);
+  cpp_dump(cp::int_style(10, 4, 4, true, true /**/) << -9);
 
-  dump(cp::int_style(10, 5, 4, true, false /**/) << 10000);
-  dump(cp::int_style(10, 5, 4, true, true /* */) << 20000);
-  dump(cp::int_style(10, 5, 4, true, true /**/) << -30000);
-  dump(cp::int_style(10, 5, 4, true, false /**/) << 4000);
-  dump(cp::int_style(10, 5, 4, true, true /* */) << 5000);
-  dump(cp::int_style(10, 5, 4, true, true /**/) << -6000);
-  dump(cp::int_style(10, 5, 4, true, false /**/) << 700);
-  dump(cp::int_style(10, 5, 4, true, true /* */) << 800);
-  dump(cp::int_style(10, 5, 4, true, true /**/) << -900);
-  dump(cp::int_style(10, 2, 4, true, false /**/) << 10000);
-  dump(cp::int_style(10, 2, 4, true, true /* */) << 20000);
-  dump(cp::int_style(10, 2, 4, true, true /**/) << -30000);
-  dump(cp::int_style(10, 2, 4, true, false /**/) << 4000);
-  dump(cp::int_style(10, 2, 4, true, true /* */) << 5000);
-  dump(cp::int_style(10, 2, 4, true, true /**/) << -6000);
-  dump(cp::int_style(10, 2, 4, true, false /**/) << 700);
-  dump(cp::int_style(10, 2, 4, true, true /* */) << 800);
-  dump(cp::int_style(10, 2, 4, true, true /**/) << -900);
-  dump(cp::int_style(10, 2, 4, true, false /**/) << 10);
-  dump(cp::int_style(10, 2, 4, true, true /* */) << 20);
-  dump(cp::int_style(10, 2, 4, true, true /**/) << -30);
-  dump(cp::int_style(10, 2, 4, true, false /**/) << 4);
-  dump(cp::int_style(10, 2, 4, true, true /* */) << 5);
-  dump(cp::int_style(10, 2, 4, true, true /**/) << -6);
+  cpp_dump(cp::int_style(10, 5, 4, false, false /**/) << 0);
+  cpp_dump(cp::int_style(10, 5, 4, false, true /* */) << 1);
+  cpp_dump(cp::int_style(10, 5, 4, false, true /**/) << -2);
+  cpp_dump(cp::int_style(10, 5, 4, true, false /**/) << 0);
+  cpp_dump(cp::int_style(10, 5, 4, true, true /* */) << 1);
+  cpp_dump(cp::int_style(10, 5, 4, true, true /**/) << -2);
 
-  dump(cp::int_style(16, 1, 2, true, false) << 0x83);
-  dump(cp::int_style(16, 1, 2, true, true) << 0x84);
-  dump(cp::int_style(16, 1, 2, true, true) << -0x74);
-  dump(cp::int_style(16, 1, 2, false, true) << -0x85);
+  cpp_dump(cp::int_style(10, 5, 4, true, false /**/) << 10000);
+  cpp_dump(cp::int_style(10, 5, 4, true, true /* */) << 20000);
+  cpp_dump(cp::int_style(10, 5, 4, true, true /**/) << -30000);
+  cpp_dump(cp::int_style(10, 5, 4, true, false /**/) << 4000);
+  cpp_dump(cp::int_style(10, 5, 4, true, true /* */) << 5000);
+  cpp_dump(cp::int_style(10, 5, 4, true, true /**/) << -6000);
+  cpp_dump(cp::int_style(10, 5, 4, true, false /**/) << 700);
+  cpp_dump(cp::int_style(10, 5, 4, true, true /* */) << 800);
+  cpp_dump(cp::int_style(10, 5, 4, true, true /**/) << -900);
+  cpp_dump(cp::int_style(10, 2, 4, true, false /**/) << 10000);
+  cpp_dump(cp::int_style(10, 2, 4, true, true /* */) << 20000);
+  cpp_dump(cp::int_style(10, 2, 4, true, true /**/) << -30000);
+  cpp_dump(cp::int_style(10, 2, 4, true, false /**/) << 4000);
+  cpp_dump(cp::int_style(10, 2, 4, true, true /* */) << 5000);
+  cpp_dump(cp::int_style(10, 2, 4, true, true /**/) << -6000);
+  cpp_dump(cp::int_style(10, 2, 4, true, false /**/) << 700);
+  cpp_dump(cp::int_style(10, 2, 4, true, true /* */) << 800);
+  cpp_dump(cp::int_style(10, 2, 4, true, true /**/) << -900);
+  cpp_dump(cp::int_style(10, 2, 4, true, false /**/) << 10);
+  cpp_dump(cp::int_style(10, 2, 4, true, true /* */) << 20);
+  cpp_dump(cp::int_style(10, 2, 4, true, true /**/) << -30);
+  cpp_dump(cp::int_style(10, 2, 4, true, false /**/) << 4);
+  cpp_dump(cp::int_style(10, 2, 4, true, true /* */) << 5);
+  cpp_dump(cp::int_style(10, 2, 4, true, true /**/) << -6);
 
-  dump(cp::int_style(16, 2, 2, true, false) << 0x86);
-  dump(cp::int_style(16, 2, 2, true, true) << 0x87);
-  dump(cp::int_style(16, 2, 2, true, true) << -0x77);
-  dump(cp::int_style(16, 2, 2, false, true) << 0x88);
+  cpp_dump(cp::int_style(16, 1, 2, true, false) << 0x83);
+  cpp_dump(cp::int_style(16, 1, 2, true, true) << 0x84);
+  cpp_dump(cp::int_style(16, 1, 2, true, true) << -0x74);
+  cpp_dump(cp::int_style(16, 1, 2, false, true) << -0x85);
 
-  dump(cp::int_style(16, 3, 2, true, false) << 0x89);
-  dump(cp::int_style(16, 3, 2, true, true) << 0x8a);
-  dump(cp::int_style(16, 3, 2, true, true) << -0x7a);
-  dump(cp::int_style(16, 3, 2, false, true) << 0x8b);
+  cpp_dump(cp::int_style(16, 2, 2, true, false) << 0x86);
+  cpp_dump(cp::int_style(16, 2, 2, true, true) << 0x87);
+  cpp_dump(cp::int_style(16, 2, 2, true, true) << -0x77);
+  cpp_dump(cp::int_style(16, 2, 2, false, true) << 0x88);
 
-  dump(cp::int_style(16, 4, 2, true, false) << 0x8c);
-  dump(cp::int_style(16, 4, 2, true, true) << 0x8d);
-  dump(cp::int_style(16, 4, 2, true, true) << -0x7d);
-  dump(cp::int_style(16, 4, 2, false, true) << 0x8e);
+  cpp_dump(cp::int_style(16, 3, 2, true, false) << 0x89);
+  cpp_dump(cp::int_style(16, 3, 2, true, true) << 0x8a);
+  cpp_dump(cp::int_style(16, 3, 2, true, true) << -0x7a);
+  cpp_dump(cp::int_style(16, 3, 2, false, true) << 0x8b);
 
-  dump(cp::int_style(16, 5, 2, true, false) << 0x8f);
-  dump(cp::int_style(16, 5, 2, true, true) << 0x80);
-  dump(cp::int_style(16, 5, 2, true, true) << -0x71);
-  dump(cp::int_style(16, 5, 2, false, true) << 0x82);
+  cpp_dump(cp::int_style(16, 4, 2, true, false) << 0x8c);
+  cpp_dump(cp::int_style(16, 4, 2, true, true) << 0x8d);
+  cpp_dump(cp::int_style(16, 4, 2, true, true) << -0x7d);
+  cpp_dump(cp::int_style(16, 4, 2, false, true) << 0x8e);
 
-  dump(cp::int_style(10, 5, 4, false, false /**/) << 0);
-  dump(cp::int_style(10, 5, 4, true, false /**/) << 0);
-  dump(cp::int_style(16, 5, 4, false, false /**/) << 0);
-  dump(cp::int_style(16, 5, 4, true, false /**/) << 0);
-  dump(cp::int_style(10, 5, 4, false, true /* */) << 0);
-  dump(cp::int_style(10, 5, 4, true, true /* */) << 0);
-  dump(cp::int_style(16, 5, 4, false, true /* */) << 0);
-  dump(cp::int_style(16, 5, 4, true, true /* */) << 0);
+  cpp_dump(cp::int_style(16, 5, 2, true, false) << 0x8f);
+  cpp_dump(cp::int_style(16, 5, 2, true, true) << 0x80);
+  cpp_dump(cp::int_style(16, 5, 2, true, true) << -0x71);
+  cpp_dump(cp::int_style(16, 5, 2, false, true) << 0x82);
 
-  dump(cp::int_style(10, 5, 0, false, false /**/) << 0);
-  dump(cp::int_style(10, 5, 0, true, false /**/) << 0);
-  dump(cp::int_style(16, 5, 0, false, false /**/) << 0);
-  dump(cp::int_style(16, 5, 0, true, false /**/) << 0);
-  dump(cp::int_style(10, 5, 0, false, true /* */) << 0);
-  dump(cp::int_style(10, 5, 0, true, true /* */) << 0);
-  dump(cp::int_style(16, 5, 0, false, true /* */) << 0);
-  dump(cp::int_style(16, 5, 0, true, true /* */) << 0);
+  cpp_dump(cp::int_style(10, 5, 4, false, false /**/) << 0);
+  cpp_dump(cp::int_style(10, 5, 4, true, false /**/) << 0);
+  cpp_dump(cp::int_style(16, 5, 4, false, false /**/) << 0);
+  cpp_dump(cp::int_style(16, 5, 4, true, false /**/) << 0);
+  cpp_dump(cp::int_style(10, 5, 4, false, true /* */) << 0);
+  cpp_dump(cp::int_style(10, 5, 4, true, true /* */) << 0);
+  cpp_dump(cp::int_style(16, 5, 4, false, true /* */) << 0);
+  cpp_dump(cp::int_style(16, 5, 4, true, true /* */) << 0);
+
+  cpp_dump(cp::int_style(10, 5, 0, false, false /**/) << 0);
+  cpp_dump(cp::int_style(10, 5, 0, true, false /**/) << 0);
+  cpp_dump(cp::int_style(16, 5, 0, false, false /**/) << 0);
+  cpp_dump(cp::int_style(16, 5, 0, true, false /**/) << 0);
+  cpp_dump(cp::int_style(10, 5, 0, false, true /* */) << 0);
+  cpp_dump(cp::int_style(10, 5, 0, true, true /* */) << 0);
+  cpp_dump(cp::int_style(16, 5, 0, false, true /* */) << 0);
+  cpp_dump(cp::int_style(16, 5, 0, true, true /* */) << 0);
+  CPP_DUMP_SET_OPTION(print_expr, true);
 
   // show_index() & show_*()
   vector<vector<int>> vec4 = {

@@ -81,13 +81,17 @@ inline std::size_t max_depth = 4;
 inline std::size_t max_iteration_count = 16;
 
 /**
- * Whether the dump functions print types of the Asterisk category (See README.md).
+ * Whether cpp_dump() prints types of the Asterisk category (See README.md).
  */
 inline bool enable_asterisk = false;
 
 /**
- * Function that returns the label that cpp_dump::dump() and cpp_dump() print
- * at the beginning of the output.
+ * Whether cpp_dump() prints the expressions.
+ */
+inline bool print_expr = true;
+
+/**
+ * Function that returns the label that cpp_dump() prints at the beginning of the output.
  */
 inline log_label::log_label_func_t log_label_func = log_label::default_func;
 

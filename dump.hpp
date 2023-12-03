@@ -98,8 +98,7 @@ bool _dump_one(
     output += pattern.prefix + pattern.value_string;
   };
 
-  // for _dump_recursively_without_expr(), which is for cpp_dump::dump() (function)
-  if (expr == "") {
+  if (!print_expr) {
     prefix_and_value_string pattern1 = make_prefix_and_value_string("", initial_indent);
 
     if (!no_newline_in_value_string) {
@@ -202,25 +201,15 @@ bool _dump_one(
 }
 
 template <typename... Args>
-bool _dump_recursively_with_expr(
+bool _dump(
     std::string &output,
     const std::string &log_label,
     bool no_newline_in_value_string,
-    const std::initializer_list<const char *> &exprs,
+    const std::initializer_list<std::string> &exprs,
     const Args &...args
 ) {
   auto it = exprs.begin();
   return (... && _dump_one(output, log_label, no_newline_in_value_string, *it++, args));
-}
-
-template <typename... Args>
-bool _dump_recursively_without_expr(
-    std::string &output,
-    const std::string &log_label,
-    bool no_newline_in_value_string,
-    const Args &...args
-) {
-  return (... && _dump_one(output, log_label, no_newline_in_value_string, "", args));
 }
 
 struct _source_location {
@@ -232,37 +221,20 @@ struct _source_location {
 // function called by cpp_dump() macro
 template <typename... Args>
 void cpp_dump_macro(
-    _source_location loc, std::initializer_list<const char *> exprs, const Args &...args
+    _source_location loc, std::initializer_list<std::string> exprs, const Args &...args
 ) {
   std::string log_label =
       log_label_func ? log_label_func(loc.file_name, loc.line, loc.function_name) : "";
 
   std::string output = "";
-  if (!_detail::_dump_recursively_with_expr(output, log_label, true, exprs, args...)) {
+  if (!_detail::_dump(output, log_label, true, exprs, args...)) {
     output = "";
-    _detail::_dump_recursively_with_expr(output, log_label, false, exprs, args...);
+    _detail::_dump(output, log_label, false, exprs, args...);
   }
 
   std::clog << output << std::endl;
 }
 
 }  // namespace _detail
-
-/**
- * Print string representation(s) of variable(s) to std::clog.
- * This function uses cpp_dump::export_var() internally.
- */
-template <typename... Args>
-void dump(const Args &...args) {
-  std::string log_label = log_label_func ? log_label_func("", 0, "") : "";
-
-  std::string output = "";
-  if (!_detail::_dump_recursively_without_expr(output, log_label, true, args...)) {
-    output = "";
-    _detail::_dump_recursively_without_expr(output, log_label, false, args...);
-  }
-
-  std::clog << output << std::endl;
-}
 
 }  // namespace cpp_dump

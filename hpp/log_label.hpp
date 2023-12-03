@@ -31,7 +31,7 @@ inline std::string default_func(const std::string &, std::size_t, const std::str
 }
 
 /*
- * Functions that create a function to assign to `cpp_dump::log_label_func`.
+ * Function that create a function to assign to `cpp_dump::log_label_func`.
  * See README for details.
  */
 inline log_label_func_t line(bool show_func = false, int min_width = 0) {
@@ -50,7 +50,7 @@ inline log_label_func_t line(bool show_func = false, int min_width = 0) {
 }
 
 /*
- * Functions that create a function to assign to `cpp_dump::log_label_func`.
+ * Function that create a function to assign to `cpp_dump::log_label_func`.
  * See README for details.
  */
 inline log_label_func_t basename(bool show_func = false, int min_width = 0) {
@@ -79,7 +79,7 @@ inline log_label_func_t basename(bool show_func = false, int min_width = 0) {
 }
 
 /*
- * Functions that create a function to assign to `cpp_dump::log_label_func`.
+ * Function that create a function to assign to `cpp_dump::log_label_func`.
  * See README for details.
  */
 inline log_label_func_t filename(bool show_func = false, int min_width = 0) {
@@ -104,7 +104,7 @@ inline log_label_func_t filename(bool show_func = false, int min_width = 0) {
 }
 
 /*
- * Functions that create a function to assign to `cpp_dump::log_label_func`.
+ * Function that create a function to assign to `cpp_dump::log_label_func`.
  * See README for details.
  */
 inline log_label_func_t fullpath(int substr_start, bool show_func = false, int min_width = 0) {
@@ -126,7 +126,7 @@ inline log_label_func_t fullpath(int substr_start, bool show_func = false, int m
 }
 
 /*
- * Functions that create a function to assign to `cpp_dump::log_label_func`.
+ * Function that create a function to assign to `cpp_dump::log_label_func`.
  * See README for details.
  */
 inline log_label_func_t fixed_length(

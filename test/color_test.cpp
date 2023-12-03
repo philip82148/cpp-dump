@@ -1,8 +1,6 @@
 #include "../dump.hpp"
 namespace cp = cpp_dump;
-using cp::dump;
 
-#include <exception>
 #include <map>
 #include <queue>
 #include <set>
@@ -10,7 +8,6 @@ using cp::dump;
 #include <string>
 #include <string_view>
 #include <tuple>
-#include <typeindex>
 #include <utility>
 #include <variant>
 #include <vector>
@@ -77,8 +74,14 @@ int main(int argc, char *argv[]) {
 
   // vector
   auto vec = vector<vector<vector<int>>>{{}, {{2, 6}}, {{5}, {3}, {5}}};
+  vector<int> vec2 = {1, 2, 3, 4, 5, 6, 7, 8};
+  vector<int> vec3{3, 1};
   cpp_dump(vec);
-  dump(vec);
+  for (auto print : {false, true}) {
+    CPP_DUMP_SET_OPTION(print_expr, print);
+    cpp_dump(vec2);
+    cpp_dump(vec3, vec3);
+  }
 
   // pair&tuple
   auto pair1 = make_pair(8, 'a');
@@ -190,8 +193,6 @@ int main(int argc, char *argv[]) {
   cpp_dump(cpp_dump::es_value);
 
   // manipulators
-  vector<int> vec2 = {1, 2, 3, 4, 5, 6, 7, 8};
-
   cpp_dump(vec2 | cp::cont_index());
   cpp_dump(vec2 | cp::show_front(3) | cp::cont_index());
   cpp_dump(cpp_dump::es_value | cp::cont_index());
