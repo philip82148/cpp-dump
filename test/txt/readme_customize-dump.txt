@@ -1,5 +1,5 @@
 
-// Print the filename instead of [dump]
+// Print the filename and line instead of [dump]
 [0m[02m[customize-dump.cpp:23] [0m[0m[36mmy_vector[0m[0m[02m => [0m[0m[02m[ [0m
                           [0m[02m[ [0m[0m3[0m[0m[02m, [0m[0m5[0m[0m[02m, [0m[0m8[0m[0m[02m, [0m[0m9[0m[0m[02m, [0m[0m7[0m[0m[02m ][0m[0m[02m, [0m
                           [0m[02m[ [0m[0m9[0m[0m[02m, [0m[0m3[0m[0m[02m, [0m[0m2[0m[0m[02m, [0m[0m3[0m[0m[02m, [0m[0m8[0m[0m[02m ][0m
