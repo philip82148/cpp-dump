@@ -227,9 +227,9 @@ void cpp_dump_macro(
       log_label_func ? log_label_func(loc.file_name, loc.line, loc.function_name) : "";
 
   std::string output = "";
-  if (!_detail::_dump(output, log_label, true, exprs, args...)) {
+  if (!_dump(output, log_label, true, exprs, args...)) {
     output = "";
-    _detail::_dump(output, log_label, false, exprs, args...);
+    _dump(output, log_label, false, exprs, args...);
   }
 
   std::clog << output << std::endl;
