@@ -17,7 +17,7 @@ int main() {
 
   std::vector<std::vector<int>> my_vector{{3, 5, 8, 9, 7}, {9, 3, 2, 3, 8}};
 
-  std::clog << "// Print the filename instead of [dump]" << std::endl;
+  std::clog << "// Print the filename and line instead of [dump]" << std::endl;
   cpp_dump::log_label_func = cpp_dump::log_label::filename();
 
   cpp_dump(my_vector);

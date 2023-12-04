@@ -80,13 +80,13 @@ cpp_dump(my_vector);
 
 ![Auto indent](./readme/auto-indent.png)
 
-### File name/path can be printed instead of `[dump]`
+### Filename and line can be printed instead of `[dump]`
 
-If you want to print the file name instead of `[dump]`, use the following code. The `cpp_dump()` macro will automatically detect and print the file name and the line. You can attach the function name, too. See [Customize `[dump]`](#customize-dump) for details.  
+If you want to print the filename and line instead of `[dump]`, use the following code. The `cpp_dump()` macro will automatically detect and print the filename and the line. You can attach the function name, too. See [Customize `[dump]`](#customize-dump) for details.  
 [See Full Example Code](./readme/customize-dump.cpp)
 
 ```cpp
-// Print the filename instead of [dump]
+// Print the filename and line instead of [dump]
 cpp_dump::log_label_func = cpp_dump::log_label::filename();
 // Print along with the function name
 cpp_dump::log_label_func = cpp_dump::log_label::filename(true);
