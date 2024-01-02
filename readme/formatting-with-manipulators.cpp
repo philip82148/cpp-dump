@@ -22,17 +22,17 @@ int main() {
   std::clog << std::endl;
 
   // manipulators.png
-  cpp_dump(cp::int_style10(2) << cp::show_back(10) << cp::show_both_ends(10) << some_huge_vector);
+  cpp_dump(some_huge_vector | cp::show_back(10) | cp::show_both_ends(10) | cp::int_style10(2));
 
   std::clog << std::endl;
 
   // omitting-a-vector.png
-  cpp_dump(cp::show_back(10) << cp::show_both_ends(10) << some_huge_vector);
+  cpp_dump(some_huge_vector | cp::show_back(10) | cp::show_both_ends(10));
 
   std::clog << std::endl;
 
   // int-style.png
-  cpp_dump(cp::int_style(2, 8, 2) << cp::show_front(5) << cp::show_front(5) << some_huge_vector);
+  cpp_dump(some_huge_vector | cp::int_style(2, 8, 2) | cp::show_front(5) | cp::show_front(5));
 
   std::clog << std::endl;
 

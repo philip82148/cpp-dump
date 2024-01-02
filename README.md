@@ -489,7 +489,7 @@ See [show\_\* manipulators](#show_-manipulators) for details.
 
 ```cpp
 // Show the last 10 elements for the 1st dimension, the first 5 and the last 5 for the 2nd dimension.
-cpp_dump(cp::show_back(10) << cp::show_both_ends(10) << some_huge_vector);
+cpp_dump(some_huge_vector | cp::show_back(10) | cp::show_both_ends(10));
 ```
 
 ![omitting-a-vector.png](./readme/omitting-a-vector.png)
@@ -499,14 +499,14 @@ See [int_style manipulators](#int_style-manipulators) for details.
 
 ```cpp
 // Show integers in binary, minimum 8 digits, separated by every 2 characters.
-cpp_dump(cp::int_style(2, 8, 2) << cp::show_front(5) << cp::show_front(5) << some_huge_vector);
+cpp_dump(some_huge_vector | cp::int_style(2, 8, 2) | cp::show_front(5) | cp::show_front(5));
 ```
 
 ![int-style](./readme/int-style.png)
 
 ```cpp
 // Show integers in decimal, minimum 2 digits.
-cpp_dump(cp::int_style10(2) << cp::show_back(10) << cp::show_both_ends(10) << some_huge_vector);
+cpp_dump(some_huge_vector | cp::show_back(10) | cp::show_both_ends(10) | cp::int_style10(2));
 ```
 
 ![manipulators.png](./readme/manipulators.png)
@@ -659,7 +659,7 @@ cpp_dump() prints variables recursively, so they can dump nested variables of an
 | Enum          | `CPP_DUMP_DEFINE_EXPORT_ENUM(T, members...);` is at top level.                                                                                                                                                                                                                                        |                                                   |
 | Ostream       | All of the above are not satisfied, `std::is_function_v<T> == false && std::is_member_pointer_v<T> == false`, and the function `std::ostream& operator<<(std::ostream&, const T &)` is defined. **The string representation of T must not be an empty string** (This makes manipulators unsupported). |                                                   |
 | User-defined2 | All of the above are not satisfied, T has all members specified by just one `CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(members...);` at top level, and the member functions to be displayed is const.                                                                                                   |                                                   |
-| Asterisk      | All of the above are not satisfied, `cpp_dump::enable_asterisk == true` and the function `TypeExceptT operator*(const T &)` or the const member function `TypeExceptT T::operator*() const` is defined.                                                                                                                                    | Iterators                                         |
+| Asterisk      | All of the above are not satisfied, `cpp_dump::enable_asterisk == true` and the function `TypeExceptT operator*(const T &)` or the const member function `TypeExceptT T::operator*() const` is defined.                                                                                               | Iterators                                         |
 
 ### Display example
 
