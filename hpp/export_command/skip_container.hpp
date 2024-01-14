@@ -30,22 +30,22 @@ struct skip_iterator {
       const It &it_,
       const std::function<std::size_t(std::size_t, const std::function<std::size_t()> &)>
           &skip_size_func,
-      const std::function<std::size_t()> &orig_container_size
+      const std::function<std::size_t()> &orig_size_func
   )
       : it(it_),
         _skip_size_func(skip_size_func),
-        _orig_container_size(orig_container_size),
+        _orig_size_func(orig_size_func),
         _index(0),
         _done(false) {}
   explicit skip_iterator(
       It &&it_,
       const std::function<std::size_t(std::size_t, const std::function<std::size_t()> &)>
           &skip_size_func,
-      const std::function<std::size_t()> &orig_container_size
+      const std::function<std::size_t()> &orig_size_func
   )
       : it(std::move(it_)),
         _skip_size_func(skip_size_func),
-        _orig_container_size(orig_container_size),
+        _orig_size_func(orig_size_func),
         _index(0),
         _done(false) {}
 
@@ -56,7 +56,7 @@ struct skip_iterator {
   skip_iterator() = delete;
 
   std::tuple<bool, It &, std::size_t> operator*() const noexcept {
-    bool skip = get_skip_size() != 0;
+    bool skip = calc_skip_size() != 0;
     // Pass the iterator to support the case that *it is rvalue.
     // Pass the reference to support non-copyable iterators.
     // https://stackoverflow.com/questions/2568294/is-it-a-good-idea-to-create-an-stl-iterator-which-is-noncopyable
@@ -67,7 +67,7 @@ struct skip_iterator {
     return !_done && it != to.it;
   }
   skip_iterator &operator++() noexcept {
-    std::size_t skip_size = get_skip_size();
+    std::size_t skip_size = calc_skip_size();
 
     if (skip_size == static_cast<std::size_t>(-1)) {
       _done = true;
@@ -85,13 +85,11 @@ struct skip_iterator {
  private:
   const std::function<std::size_t(std::size_t, const std::function<std::size_t()> &)>
       &_skip_size_func;
-  const std::function<std::size_t()> &_orig_container_size;
+  const std::function<std::size_t()> &_orig_size_func;
   std::size_t _index;
   bool _done;
 
-  std::size_t get_skip_size() const noexcept {
-    return _skip_size_func(_index, _orig_container_size);
-  }
+  std::size_t calc_skip_size() const noexcept { return _skip_size_func(_index, _orig_size_func); }
 };
 
 template <typename T>
@@ -111,10 +109,10 @@ struct skip_container {
   skip_container() = delete;
 
   auto begin() const noexcept {
-    return skip_iterator(iterable_begin(_original), _skip_size_func, _orig_container_size);
+    return skip_iterator(iterable_begin(_original), _skip_size_func, _orig_size_func);
   }
   auto end() const noexcept {
-    return skip_iterator(iterable_end(_original), _skip_size_func, _orig_container_size);
+    return skip_iterator(iterable_end(_original), _skip_size_func, _orig_size_func);
   }
 
  private:
@@ -122,10 +120,10 @@ struct skip_container {
   const std::function<std::size_t(std::size_t, const std::function<std::size_t()> &)>
       &_skip_size_func;
 
-  std::optional<std::size_t> _orig_container_size_cache;
-  const std::function<std::size_t()> _orig_container_size = [this] {
-    if (!_orig_container_size_cache) _orig_container_size_cache = iterable_size(_original);
-    return _orig_container_size_cache.value();
+  std::optional<std::size_t> _orig_size_cache;
+  const std::function<std::size_t()> _orig_size_func = [this] {
+    if (!_orig_size_cache) _orig_size_cache = iterable_size(_original);
+    return _orig_size_cache.value();
   };
 };
 

@@ -85,11 +85,11 @@ rollback:
     }
 
     if (command.show_index()) output += es::member(std::to_string(index)) + es::op(": ");
-    std::string elem_string = export_var(
+    std::string elem_str = export_var(
         elem, indent, last_line_length + get_length(output), next_depth, true, next_command
     );
-    if (!has_newline(elem_string)) {
-      output += elem_string;
+    if (!has_newline(elem_str)) {
+      output += elem_str;
 
       if (last_line_length + get_length(output) + std::string_view(" ]").size() <= max_line_width)
         continue;

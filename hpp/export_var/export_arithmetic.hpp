@@ -53,6 +53,7 @@ inline auto export_arithmetic(
     tmp = value;
   }
 
+  // Create a string of an integer with base as the radix
   if (base == 10) {
     output = std::to_string(tmp);
     std::reverse(output.begin(), output.end());
@@ -105,13 +106,15 @@ inline auto export_arithmetic(
     }
   }
 
-  bool add_minus = false;
+  bool added_minus = false;
   if (space_fill && value < 0 && (digits == 0 || output.length() < digits)) {
+    // Add a minus when value < 0 (part 1)
     output.append(1, '-');
-    add_minus = true;
+    added_minus = true;
   }
 
   if (digits > 0 && output.length() < digits) {
+    // Fill with spaces/zeros
     if (space_fill) {
       output.append(digits - output.length(), ' ');
     } else {
@@ -119,8 +122,9 @@ inline auto export_arithmetic(
     }
   }
 
-  bool equal_to_digits = digits > 0 && output.length() == digits;
+  bool length_was_greater_than_digits = output.length() > digits;
   if (chunk > 0) {
+    // Add a space between chunks
     std::string output_tmp;
     output.swap(output_tmp);
     for (std::size_t begin = 0; begin < output_tmp.length(); begin += chunk) {
@@ -129,9 +133,10 @@ inline auto export_arithmetic(
     }
   }
 
-  if (!add_minus && value < 0) {
+  // Add a minus when value < 0 (part 2) or a space when not and support_negative
+  if (!added_minus && value < 0) {
     output.append(1, '-');
-  } else if (support_negative && equal_to_digits) {
+  } else if (support_negative && !length_was_greater_than_digits) {
     output.append(1, ' ');
   }
 

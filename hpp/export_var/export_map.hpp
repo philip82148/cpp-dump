@@ -143,7 +143,7 @@ rollback:
       output += es::op(", ");
     }
 
-    std::string key_string, value_string;
+    std::string key_str, value_str;
     if (shift_indent) {
       if (skip) {
         output += "\n" + new_indent + es::op("...");
@@ -156,24 +156,22 @@ rollback:
 
         // Treat the multiplicity as a member to distinguish it from the keys & values.
         // Also, multiplicities are similar to members since they are on the left side of values.
-        key_string =
-            "\n" + new_indent
-            + export_var(key, new_indent, new_indent.length(), next_depth, false, key_command)
-            + es::member(" (" + std::to_string(map.count(key)) + ")") + es::op(": ");
-        value_string = export_var(
-            values, new_indent, get_last_line_length(key_string), next_depth, false, value_command
+        key_str = "\n" + new_indent
+                  + export_var(key, new_indent, new_indent.length(), next_depth, false, key_command)
+                  + es::member(" (" + std::to_string(map.count(key)) + ")") + es::op(": ");
+        value_str = export_var(
+            values, new_indent, get_last_line_length(key_str), next_depth, false, value_command
         );
       } else {
-        key_string =
-            "\n" + new_indent
-            + export_var(key, new_indent, new_indent.length(), next_depth, false, key_command)
-            + es::op(": ");
-        value_string = export_var(
-            value, new_indent, get_last_line_length(key_string), next_depth, false, value_command
+        key_str = "\n" + new_indent
+                  + export_var(key, new_indent, new_indent.length(), next_depth, false, key_command)
+                  + es::op(": ");
+        value_str = export_var(
+            value, new_indent, get_last_line_length(key_str), next_depth, false, value_command
         );
       }
 
-      output += key_string + value_string;
+      output += key_str + value_str;
       continue;
     }
 
@@ -193,38 +191,38 @@ rollback:
 
       // Treat the multiplicity as a member to distinguish it from the keys & values.
       // Also, multiplicities are similar to members since they are on the left side of values.
-      key_string =
+      key_str =
           export_var(
               key, indent, last_line_length + get_length(output), next_depth, true, key_command
           )
           + es::member(" (" + std::to_string(map.count(key)) + ")") + es::op(": ");
-      value_string = export_var(
+      value_str = export_var(
           values,
           indent,
-          last_line_length + get_length(output) + get_length(key_string),
+          last_line_length + get_length(output) + get_length(key_str),
           next_depth,
           true,
           value_command
       );
     } else {
-      key_string =
+      key_str =
           export_var(
               key, indent, last_line_length + get_length(output), next_depth, true, key_command
           )
           + es::op(": ");
-      value_string = export_var(
+      value_str = export_var(
           value,
           indent,
-          last_line_length + get_length(output) + get_length(key_string),
+          last_line_length + get_length(output) + get_length(key_str),
           next_depth,
           true,
           value_command
       );
     }
 
-    std::string elem_string = key_string + value_string;
-    if (!has_newline(elem_string)) {
-      output += elem_string;
+    std::string elem_str = key_str + value_str;
+    if (!has_newline(elem_str)) {
+      output += elem_str;
 
       if (last_line_length + get_length(output) + std::string_view(" }").size() <= max_line_width)
         continue;

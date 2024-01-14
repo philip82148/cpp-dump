@@ -342,8 +342,8 @@ inline auto show_front(std::size_t iteration_count = max_iteration_count) {
  */
 inline auto show_back(std::size_t iteration_count = max_iteration_count) {
   return _detail::export_command(
-      [=](std::size_t index, const std::function<std::size_t()> &get_size) -> std::size_t {
-        std::size_t size = get_size();
+      [=](std::size_t index, const std::function<std::size_t()> &cont_size) -> std::size_t {
+        std::size_t size = cont_size();
         std::size_t first = size >= iteration_count ? size - iteration_count : 0;
 
         if (index < first) return first - index;
@@ -358,8 +358,8 @@ inline auto show_back(std::size_t iteration_count = max_iteration_count) {
  */
 inline auto show_both_ends(std::size_t iteration_count = max_iteration_count) {
   return _detail::export_command(
-      [=](std::size_t index, const std::function<std::size_t()> &get_size) -> std::size_t {
-        std::size_t size = get_size();
+      [=](std::size_t index, const std::function<std::size_t()> &cont_size) -> std::size_t {
+        std::size_t size = cont_size();
         std::size_t first_half_last = (iteration_count + 1) / 2;
         std::size_t rest_count = iteration_count - first_half_last;
         std::size_t latter_half_first = size >= rest_count ? size - rest_count : 0;
@@ -376,8 +376,8 @@ inline auto show_both_ends(std::size_t iteration_count = max_iteration_count) {
  */
 inline auto show_middle(std::size_t iteration_count = max_iteration_count) {
   return _detail::export_command(
-      [=](std::size_t index, const std::function<std::size_t()> &get_size) -> std::size_t {
-        std::size_t size = get_size();
+      [=](std::size_t index, const std::function<std::size_t()> &cont_size) -> std::size_t {
+        std::size_t size = cont_size();
         std::size_t first = size >= iteration_count ? (size - iteration_count) / 2 : 0;
         std::size_t last = first + iteration_count;
 

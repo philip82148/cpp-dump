@@ -137,16 +137,16 @@ rollback:
       goto rollback;
     }
 
-    std::string elem_string = export_var(
+    std::string elem_str = export_var(
         elem, indent, last_line_length + get_length(output), next_depth, true, next_command
     );
 
     // Treat the multiplicity as a member as export_map() does.
     if constexpr (is_multiset<T>)
-      elem_string += es::member(" (" + std::to_string(set.count(elem)) + ")");
+      elem_str += es::member(" (" + std::to_string(set.count(elem)) + ")");
 
-    if (!has_newline(elem_string)) {
-      output += elem_string;
+    if (!has_newline(elem_str)) {
+      output += elem_str;
 
       if (last_line_length + get_length(output) + std::string_view(" }").size() <= max_line_width)
         continue;

@@ -21,7 +21,7 @@ namespace cpp_dump {
 
 namespace _detail {
 
-inline std::string _export_es_value_string(const std::string &es) {
+inline std::string _export_es_value_str(const std::string &es) {
   std::string escaped_es = es;
   replace_string(escaped_es, "\x1b", "\\e");
 
@@ -70,7 +70,7 @@ rollback:
 
       output += "\n" + new_indent;
       if (command.show_index()) output += es::member(std::to_string(index)) + es::op(": ");
-      output += _export_es_value_string(es);
+      output += _export_es_value_str(es);
       continue;
     }
 
@@ -85,7 +85,7 @@ rollback:
     }
 
     if (command.show_index()) output += es::member(std::to_string(index)) + es::op(": ");
-    output += _export_es_value_string(es);
+    output += _export_es_value_str(es);
 
     if (last_line_length + get_length(output) + std::string_view(" ]").size() <= max_line_width)
       continue;
@@ -128,7 +128,7 @@ inline std::string export_es_value_t(
 
     if constexpr (std::is_same_v<decltype(member), const std::string &>) {
       output += es::apply(member, member_name + "= ");
-      output += _export_es_value_string(member);
+      output += _export_es_value_str(member);
     } else {
       output += es::member(member_name) + es::op("= ");
       output += _export_es_value_vector(
