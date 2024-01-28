@@ -118,7 +118,6 @@ bool _dump_one(
     return false;
   }
 
-  // below for _dump_recursively_with_expr(), which is for cpp_dump() (macro)
   auto expr_with_es = es::expression(expr);
 
   if (no_newline_in_value_str) {
