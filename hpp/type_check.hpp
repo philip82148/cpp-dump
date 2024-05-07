@@ -51,6 +51,8 @@ auto _is_iterable(int) -> decltype(
 template <typename>
 std::false_type _is_iterable(long);
 
+// inline constexpr:
+// https://stackoverflow.com/questions/48041618/why-does-cppreference-define-type-traits-xxx-v-shortcuts-as-inline-constexpr-and
 template <typename T>
 inline constexpr bool is_iterable = decltype(_is_iterable<const _remove_cref<T>>(0))::value;
 
