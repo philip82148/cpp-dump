@@ -666,7 +666,7 @@ cpp_dump() prints variables recursively, so they can dump nested variables of an
 See also the image in the section ["A wide variety of supported types"](#a-wide-variety-of-supported-types).
 
 ```console
-# Arithmatic
+# Arithmetic
 true, 'c', 1, 3.140000
 
 # String
