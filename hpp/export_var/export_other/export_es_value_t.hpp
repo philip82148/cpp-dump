@@ -41,66 +41,74 @@ inline std::string _export_es_value_vector(
   if (current_depth >= max_depth)
     return es::bracket("[ ", current_depth) + es::op("...") + es::bracket(" ]", current_depth);
 
+  auto skipped_es_vec = command.create_skip_container(es_vec);
+
   bool shift_indent = false;
-
-  if (shift_indent && fail_on_newline) return "\n";
-
-  std::string new_indent = indent + "  ";
-
-  auto skipped = command.create_skip_container(es_vec);
-
-rollback:
   std::string output = es::bracket("[ ", current_depth);
-  bool is_first = true;
+  bool is_first_elem = true;
 
-  for (const auto &[skip, it, index] : skipped) {
+  for (const auto &[skip, it, index] : skipped_es_vec) {
     const std::string &es = *it;
 
-    if (is_first) {
-      is_first = false;
+    if (is_first_elem) {
+      is_first_elem = false;
     } else {
       output += es::op(", ");
-    }
-
-    if (shift_indent) {
-      if (skip) {
-        output += "\n" + new_indent + es::op("...");
-        continue;
-      }
-
-      output += "\n" + new_indent;
-      if (command.show_index()) output += es::member(std::to_string(index)) + es::op(": ");
-      output += _export_es_value_str(es);
-      continue;
     }
 
     if (skip) {
       output += es::op("...");
 
-      if (last_line_length + get_length(output) + std::string_view(" ]").size() <= max_line_width)
-        continue;
+      if (last_line_length + get_length(output) + std::string_view(" ]").size() > max_line_width) {
+        shift_indent = true;
+        break;
+      }
 
-      shift_indent = true;
-      goto rollback;
+      continue;
     }
 
     if (command.show_index()) output += es::member(std::to_string(index)) + es::op(": ");
+
     output += _export_es_value_str(es);
-
-    if (last_line_length + get_length(output) + std::string_view(" ]").size() <= max_line_width)
-      continue;
-
-    if (fail_on_newline) return "\n";
-
-    shift_indent = true;
-    goto rollback;
+    if (last_line_length + get_length(output) + std::string_view(" ]").size() > max_line_width) {
+      shift_indent = true;
+      break;
+    }
   }
 
-  if (shift_indent) {
-    output += "\n" + indent + es::bracket("]", current_depth);
-  } else {
+  if (!shift_indent) {
     output += es::bracket(" ]", current_depth);
+
+    return output;
   }
+
+  if (fail_on_newline) return "\n";
+
+  std::string new_indent = indent + "  ";
+
+  output = es::bracket("[ ", current_depth);
+  is_first_elem = true;
+
+  for (const auto &[skip, it, index] : skipped_es_vec) {
+    const std::string &es = *it;
+
+    if (is_first_elem) {
+      is_first_elem = false;
+    } else {
+      output += es::op(", ");
+    }
+
+    if (skip) {
+      output += "\n" + new_indent + es::op("...");
+      continue;
+    }
+
+    output += "\n" + new_indent;
+    if (command.show_index()) output += es::member(std::to_string(index)) + es::op(": ");
+
+    output += _export_es_value_str(es);
+  }
+  output += "\n" + indent + es::bracket("]", current_depth);
 
   return output;
 }

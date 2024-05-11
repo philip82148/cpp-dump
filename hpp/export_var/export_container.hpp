@@ -37,75 +37,89 @@ inline auto export_container(
   if (current_depth >= max_depth)
     return es::bracket("[ ", current_depth) + es::op("...") + es::bracket(" ]", current_depth);
 
-  bool shift_indent = is_iterable_like<iterable_elem_type<T>>;
-
-  if (shift_indent && fail_on_newline) return "\n";
-
-  std::string new_indent = indent + "  ";
   std::size_t next_depth = current_depth + 1;
   const auto &next_command = command.next();
+  auto skipped_container = command.create_skip_container(container);
 
-  auto skipped = command.create_skip_container(container);
+  bool shift_indent = is_iterable_like<iterable_elem_type<T>>;
+  if (!shift_indent) {
+    std::string output = es::bracket("[ ", current_depth);
+    bool is_first_elem = true;
 
-rollback:
+    for (auto &&[skip, it, index] : skipped_container) {
+      const auto &elem = *it;
+
+      if (is_first_elem) {
+        is_first_elem = false;
+      } else {
+        output += es::op(", ");
+      }
+
+      if (skip) {
+        output += es::op("...");
+
+        if (last_line_length + get_length(output) + std::string_view(" ]").size()
+            > max_line_width) {
+          shift_indent = true;
+          break;
+        }
+
+        continue;
+      }
+
+      if (command.show_index()) output += es::member(std::to_string(index)) + es::op(": ");
+
+      std::string elem_str = export_var(
+          elem, indent, last_line_length + get_length(output), next_depth, true, next_command
+      );
+
+      if (has_newline(elem_str)) {
+        shift_indent = true;
+        break;
+      }
+
+      output += elem_str;
+      if (last_line_length + get_length(output) + std::string_view(" ]").size() > max_line_width) {
+        shift_indent = true;
+        break;
+      }
+    }
+
+    if (!shift_indent) {
+      output += es::bracket(" ]", current_depth);
+
+      return output;
+    }
+  }
+
+  if (fail_on_newline) return "\n";
+
+  std::string new_indent = indent + "  ";
+
   std::string output = es::bracket("[ ", current_depth);
-  bool is_first = true;
+  bool is_first_elem = true;
 
-  for (auto &&[skip, it, index] : skipped) {
+  for (auto &&[skip, it, index] : skipped_container) {
     const auto &elem = *it;
 
-    if (is_first) {
-      is_first = false;
+    if (is_first_elem) {
+      is_first_elem = false;
     } else {
       output += es::op(", ");
     }
 
-    if (shift_indent) {
-      if (skip) {
-        output += "\n" + new_indent + es::op("...");
-        continue;
-      }
-
-      output += "\n" + new_indent;
-      if (command.show_index()) output += es::member(std::to_string(index)) + es::op(": ");
-      output += export_var(
-          elem, new_indent, get_last_line_length(output), next_depth, false, next_command
-      );
+    if (skip) {
+      output += "\n" + new_indent + es::op("...");
       continue;
     }
 
-    if (skip) {
-      output += es::op("...");
-
-      if (last_line_length + get_length(output) + std::string_view(" ]").size() <= max_line_width)
-        continue;
-
-      shift_indent = true;
-      goto rollback;
-    }
-
+    output += "\n" + new_indent;
     if (command.show_index()) output += es::member(std::to_string(index)) + es::op(": ");
-    std::string elem_str = export_var(
-        elem, indent, last_line_length + get_length(output), next_depth, true, next_command
-    );
-    if (!has_newline(elem_str)) {
-      output += elem_str;
 
-      if (last_line_length + get_length(output) + std::string_view(" ]").size() <= max_line_width)
-        continue;
-    }
-
-    if (fail_on_newline) return "\n";
-
-    shift_indent = true;
-    goto rollback;
+    output +=
+        export_var(elem, new_indent, get_last_line_length(output), next_depth, false, next_command);
   }
-
-  if (shift_indent) {
-    output += "\n" + indent + es::bracket("]", current_depth);
-  } else {
-    output += es::bracket(" ]", current_depth);
-  }
+  output += "\n" + indent + es::bracket("]", current_depth);
 
   return output;
 }
