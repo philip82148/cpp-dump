@@ -1,8 +1,8 @@
 [dump] void_ptr => 0x7ffd06586204
 [dump] (unordered_map<int, int>{{4, 6}, {2, 6}, {4, 3}}) => { 2: 6, 4: 6 }
-[dump] unordered_multimap1 => { 
-         'b' (1): [ 20 ], 
-         'c' (1): [ 30 ], 
+[dump] unordered_multimap1 => {
+         'b' (1): [ 20 ],
+         'c' (1): [ 30 ],
          'a' (2): [ 10, 40 ]
        }
 [dump] (unordered_set{3, 1, 4, 1, 5}) => { 5, 4, 1, 3 }
