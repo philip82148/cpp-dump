@@ -262,46 +262,51 @@ inline constexpr bool is_iterable_like = is_container<T> || is_map<T> || is_set<
 // The return type must be a built-in type, otherwise we don't know how it will be stringified.
 template <typename T>
 const char* _get_typename() {
-  static std::string type_name;
-
 #if defined(__GNUC__) && !defined(__clang__)
-  std::string func_name = __PRETTY_FUNCTION__;
-  constexpr std::size_t prefix_length =
-      std::string_view("const char* cpp_dump::_detail::_get_typename() [with T = ").size();
-  constexpr std::size_t suffix_length = std::string_view("]").size();
-
-  type_name = func_name.substr(prefix_length, func_name.length() - prefix_length - suffix_length);
+  return __PRETTY_FUNCTION__;
 #elif defined(__clang__)
-  std::string func_name = __PRETTY_FUNCTION__;
-  constexpr std::size_t prefix_length =
-      std::string_view("const char *cpp_dump::_detail::_get_typename() [T = ").size();
-  constexpr std::size_t suffix_length = std::string_view("]").size();
-
-  type_name = func_name.substr(prefix_length, func_name.length() - prefix_length - suffix_length);
+  return __PRETTY_FUNCTION__;
 #elif defined(_MSC_VER)
-  std::string func_name = __FUNCSIG__;
-  constexpr std::size_t prefix_length =
-      std::string_view("const char *__cdecl cpp_dump::_detail::_get_typename<").size();
-  constexpr std::size_t suffix_length = std::string_view(">(void)").size();
-
-  type_name = func_name.substr(prefix_length, func_name.length() - prefix_length - suffix_length);
-
-  if (type_name.find("class ", 0) == 0) {
-    type_name = type_name.substr(std::string_view("class ").size());
-  } else if (type_name.find("struct ") == 0) {
-    type_name = type_name.substr(std::string_view("struct ").size());
-  }
+  return __FUNCSIG__;
 #else
-  type_name = "";
+  static const char func_name[] = "";
+  return func_name;
 #endif
-
-  return type_name.c_str();
 }
 
 // Currently, used only by export_exception() and CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT()
 template <typename T>
 std::string get_typename() {
-  return _get_typename<T>();
+#if defined(__GNUC__) && !defined(__clang__)
+  constexpr std::size_t prefix_length =
+      std::string_view("const char* cpp_dump::_detail::_get_typename() [with T = ").size();
+  constexpr std::size_t suffix_length = std::string_view("]").size();
+#elif defined(__clang__)
+  constexpr std::size_t prefix_length =
+      std::string_view("const char *cpp_dump::_detail::_get_typename() [T = ").size();
+  constexpr std::size_t suffix_length = std::string_view("]").size();
+#elif defined(_MSC_VER)
+  constexpr std::size_t prefix_length =
+      std::string_view("const char *__cdecl cpp_dump::_detail::_get_typename<").size();
+  constexpr std::size_t suffix_length = std::string_view(">(void)").size();
+#else
+  constexpr std::size_t prefix_length = 0;
+  constexpr std::size_t suffix_length = 0;
+#endif
+
+  std::string func_name = _get_typename<T>();
+  std::string type_name =
+      func_name.substr(prefix_length, func_name.length() - prefix_length - suffix_length);
+
+#if defined(_MSC_VER)
+  if (type_name.find("class ", 0) == 0) {
+    type_name = type_name.substr(std::string_view("class ").size());
+  } else if (type_name.find("struct ") == 0) {
+    type_name = type_name.substr(std::string_view("struct ").size());
+  }
+#endif
+
+  return type_name;
 }
 
 }  // namespace _detail
