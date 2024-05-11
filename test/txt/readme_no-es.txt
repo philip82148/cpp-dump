@@ -6,8 +6,8 @@
 [dump] ptr => *15, void_ptr => , nullptr => nullptr
 
 // Container
-[dump] my_vector => [ 
-         [ 3, 5, 8, 9, 7 ], 
+[dump] my_vector => [
+         [ 3, 5, 8, 9, 7 ],
          [ 9, 3, 2, 3, 8 ]
        ]
 
@@ -17,9 +17,9 @@
 
 // Multiset/Multimap
 [dump] my_multiset => { 'A' (1), 'e' (1), 'l' (1), 'p' (2) }
-[dump] my_multimap => { 
-         2 (1): [ 4 ], 
-         4 (2): [ 6, 7 ], 
+[dump] my_multimap => {
+         2 (1): [ 4 ],
+         4 (2): [ 6, 7 ],
          5 (1): [ 3 ]
        }
 
@@ -39,8 +39,8 @@
 [dump] my_variant => |"1"
 
 // Combination
-[dump] vector_of_pairs => [ 
-         ( 1, "apple" ), 
+[dump] vector_of_pairs => [
+         ( 1, "apple" ),
          ( 3, "banana" )
        ]
 

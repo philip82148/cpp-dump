@@ -1,194 +1,194 @@
 // default
-[dump] vec => [ 
-         [ 3, 1, 4 ], 
+[dump] vec => [
+         [ 3, 1, 4 ],
          [ 1, 5, 9 ]
        ]
 // line()
 cpp_dump::log_label_func = log_label::line();
-[:32] vec => [ 
-        [ 3, 1, 4 ], 
+[:32] vec => [
+        [ 3, 1, 4 ],
         [ 1, 5, 9 ]
       ]
-[:33] vec => [ 
-        [ 3, 1, 4 ], 
+[:33] vec => [
+        [ 3, 1, 4 ],
         [ 1, 5, 9 ]
       ]
-[:34] vec => [ 
-        [ 3, 1, 4 ], 
+[:34] vec => [
+        [ 3, 1, 4 ],
         [ 1, 5, 9 ]
       ]
 cpp_dump::log_label_func = log_label::line(true);
-[:36 (main)] vec => [ 
-               [ 3, 1, 4 ], 
+[:36 (main)] vec => [
+               [ 3, 1, 4 ],
                [ 1, 5, 9 ]
              ]
-[:37 (main)] vec => [ 
-               [ 3, 1, 4 ], 
+[:37 (main)] vec => [
+               [ 3, 1, 4 ],
                [ 1, 5, 9 ]
              ]
-[:38 (main)] vec => [ 
-               [ 3, 1, 4 ], 
+[:38 (main)] vec => [
+               [ 3, 1, 4 ],
                [ 1, 5, 9 ]
              ]
 // basename()
 cpp_dump::log_label_func = log_label::basename();
-[log_label_test:42] vec => [ 
-                      [ 3, 1, 4 ], 
+[log_label_test:42] vec => [
+                      [ 3, 1, 4 ],
                       [ 1, 5, 9 ]
                     ]
-[log_label_test:43] vec => [ 
-                      [ 3, 1, 4 ], 
+[log_label_test:43] vec => [
+                      [ 3, 1, 4 ],
                       [ 1, 5, 9 ]
                     ]
-[log_label_test:44] vec => [ 
-                      [ 3, 1, 4 ], 
+[log_label_test:44] vec => [
+                      [ 3, 1, 4 ],
                       [ 1, 5, 9 ]
                     ]
 cpp_dump::log_label_func = log_label::basename(true);
-[log_label_test:46 (main)] vec => [ 
-                             [ 3, 1, 4 ], 
+[log_label_test:46 (main)] vec => [
+                             [ 3, 1, 4 ],
                              [ 1, 5, 9 ]
                            ]
-[log_label_test:47 (main)] vec => [ 
-                             [ 3, 1, 4 ], 
+[log_label_test:47 (main)] vec => [
+                             [ 3, 1, 4 ],
                              [ 1, 5, 9 ]
                            ]
-[log_label_test:48 (main)] vec => [ 
-                             [ 3, 1, 4 ], 
+[log_label_test:48 (main)] vec => [
+                             [ 3, 1, 4 ],
                              [ 1, 5, 9 ]
                            ]
 // filename()
 cpp_dump::log_label_func = log_label::filename();
-[log_label_test.cpp:52] vec => [ 
-                          [ 3, 1, 4 ], 
+[log_label_test.cpp:52] vec => [
+                          [ 3, 1, 4 ],
                           [ 1, 5, 9 ]
                         ]
-[log_label_test.cpp:53] vec => [ 
-                          [ 3, 1, 4 ], 
+[log_label_test.cpp:53] vec => [
+                          [ 3, 1, 4 ],
                           [ 1, 5, 9 ]
                         ]
-[log_label_test.cpp:54] vec => [ 
-                          [ 3, 1, 4 ], 
+[log_label_test.cpp:54] vec => [
+                          [ 3, 1, 4 ],
                           [ 1, 5, 9 ]
                         ]
 cpp_dump::log_label_func = log_label::filename(true);
-[log_label_test.cpp:56 (main)] vec => [ 
-                                 [ 3, 1, 4 ], 
+[log_label_test.cpp:56 (main)] vec => [
+                                 [ 3, 1, 4 ],
                                  [ 1, 5, 9 ]
                                ]
-[log_label_test.cpp:57 (main)] vec => [ 
-                                 [ 3, 1, 4 ], 
+[log_label_test.cpp:57 (main)] vec => [
+                                 [ 3, 1, 4 ],
                                  [ 1, 5, 9 ]
                                ]
-[log_label_test.cpp:58 (main)] vec => [ 
-                                 [ 3, 1, 4 ], 
+[log_label_test.cpp:58 (main)] vec => [
+                                 [ 3, 1, 4 ],
                                  [ 1, 5, 9 ]
                                ]
 // line()
 cpp_dump::log_label_func = log_label::line(false, 40);
-[:104                                 ] vec => [ 
-                                          [ 3, 1, 4 ], 
+[:104                                 ] vec => [
+                                          [ 3, 1, 4 ],
                                           [ 1, 5, 9 ]
                                         ]
-[:105                                 ] vec => [ 
-                                          [ 3, 1, 4 ], 
+[:105                                 ] vec => [
+                                          [ 3, 1, 4 ],
                                           [ 1, 5, 9 ]
                                         ]
-[:106                                 ] vec => [ 
-                                          [ 3, 1, 4 ], 
+[:106                                 ] vec => [
+                                          [ 3, 1, 4 ],
                                           [ 1, 5, 9 ]
                                         ]
 cpp_dump::log_label_func = log_label::line(true, 40);
-[:108 (main)                          ] vec => [ 
-                                          [ 3, 1, 4 ], 
+[:108 (main)                          ] vec => [
+                                          [ 3, 1, 4 ],
                                           [ 1, 5, 9 ]
                                         ]
-[:109 (main)                          ] vec => [ 
-                                          [ 3, 1, 4 ], 
+[:109 (main)                          ] vec => [
+                                          [ 3, 1, 4 ],
                                           [ 1, 5, 9 ]
                                         ]
-[:110 (main)                          ] vec => [ 
-                                          [ 3, 1, 4 ], 
+[:110 (main)                          ] vec => [
+                                          [ 3, 1, 4 ],
                                           [ 1, 5, 9 ]
                                         ]
 // basename()
 cpp_dump::log_label_func = log_label::basename(false, 40);
-[log_label_test:114                   ] vec => [ 
-                                          [ 3, 1, 4 ], 
+[log_label_test:114                   ] vec => [
+                                          [ 3, 1, 4 ],
                                           [ 1, 5, 9 ]
                                         ]
-[log_label_test:115                   ] vec => [ 
-                                          [ 3, 1, 4 ], 
+[log_label_test:115                   ] vec => [
+                                          [ 3, 1, 4 ],
                                           [ 1, 5, 9 ]
                                         ]
-[log_label_test:116                   ] vec => [ 
-                                          [ 3, 1, 4 ], 
+[log_label_test:116                   ] vec => [
+                                          [ 3, 1, 4 ],
                                           [ 1, 5, 9 ]
                                         ]
 cpp_dump::log_label_func = log_label::basename(true, 40);
-[log_label_test:118 (main)            ] vec => [ 
-                                          [ 3, 1, 4 ], 
+[log_label_test:118 (main)            ] vec => [
+                                          [ 3, 1, 4 ],
                                           [ 1, 5, 9 ]
                                         ]
-[log_label_test:119 (main)            ] vec => [ 
-                                          [ 3, 1, 4 ], 
+[log_label_test:119 (main)            ] vec => [
+                                          [ 3, 1, 4 ],
                                           [ 1, 5, 9 ]
                                         ]
-[log_label_test:120 (main)            ] vec => [ 
-                                          [ 3, 1, 4 ], 
+[log_label_test:120 (main)            ] vec => [
+                                          [ 3, 1, 4 ],
                                           [ 1, 5, 9 ]
                                         ]
 // filename()
 cpp_dump::log_label_func = log_label::filename(false, 40);
-[log_label_test.cpp:124               ] vec => [ 
-                                          [ 3, 1, 4 ], 
+[log_label_test.cpp:124               ] vec => [
+                                          [ 3, 1, 4 ],
                                           [ 1, 5, 9 ]
                                         ]
-[log_label_test.cpp:125               ] vec => [ 
-                                          [ 3, 1, 4 ], 
+[log_label_test.cpp:125               ] vec => [
+                                          [ 3, 1, 4 ],
                                           [ 1, 5, 9 ]
                                         ]
-[log_label_test.cpp:126               ] vec => [ 
-                                          [ 3, 1, 4 ], 
+[log_label_test.cpp:126               ] vec => [
+                                          [ 3, 1, 4 ],
                                           [ 1, 5, 9 ]
                                         ]
 cpp_dump::log_label_func = log_label::filename(true, 40);
-[log_label_test.cpp:128 (main)        ] vec => [ 
-                                          [ 3, 1, 4 ], 
+[log_label_test.cpp:128 (main)        ] vec => [
+                                          [ 3, 1, 4 ],
                                           [ 1, 5, 9 ]
                                         ]
-[log_label_test.cpp:129 (main)        ] vec => [ 
-                                          [ 3, 1, 4 ], 
+[log_label_test.cpp:129 (main)        ] vec => [
+                                          [ 3, 1, 4 ],
                                           [ 1, 5, 9 ]
                                         ]
-[log_label_test.cpp:130 (main)        ] vec => [ 
-                                          [ 3, 1, 4 ], 
+[log_label_test.cpp:130 (main)        ] vec => [
+                                          [ 3, 1, 4 ],
                                           [ 1, 5, 9 ]
                                         ]
 // fixed_length()
 cpp_dump::log_label_func = log_label::fixed_length(0, 40, 0);
-[.. p-dump/test/log_label_test.cpp:146] vec => [ 
-                                          [ 3, 1, 4 ], 
+[.. p-dump/test/log_label_test.cpp:146] vec => [
+                                          [ 3, 1, 4 ],
                                           [ 1, 5, 9 ]
                                         ]
-[.. p-dump/test/log_label_test.cpp:147] vec => [ 
-                                          [ 3, 1, 4 ], 
+[.. p-dump/test/log_label_test.cpp:147] vec => [
+                                          [ 3, 1, 4 ],
                                           [ 1, 5, 9 ]
                                         ]
-[.. p-dump/test/log_label_test.cpp:148] vec => [ 
-                                          [ 3, 1, 4 ], 
+[.. p-dump/test/log_label_test.cpp:148] vec => [
+                                          [ 3, 1, 4 ],
                                           [ 1, 5, 9 ]
                                         ]
 cpp_dump::log_label_func = log_label::fixed_length(0, 40, 0, true);
-[.. test/log_label_test.cpp:160 (main)] vec => [ 
-                                          [ 3, 1, 4 ], 
+[.. test/log_label_test.cpp:160 (main)] vec => [
+                                          [ 3, 1, 4 ],
                                           [ 1, 5, 9 ]
                                         ]
-[.. test/log_label_test.cpp:161 (main)] vec => [ 
-                                          [ 3, 1, 4 ], 
+[.. test/log_label_test.cpp:161 (main)] vec => [
+                                          [ 3, 1, 4 ],
                                           [ 1, 5, 9 ]
                                         ]
-[.. test/log_label_test.cpp:162 (main)] vec => [ 
-                                          [ 3, 1, 4 ], 
+[.. test/log_label_test.cpp:162 (main)] vec => [
+                                          [ 3, 1, 4 ],
                                           [ 1, 5, 9 ]
                                         ]
