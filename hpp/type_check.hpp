@@ -261,6 +261,7 @@ inline constexpr bool is_iterable_like = is_container<T> || is_map<T> || is_set<
 template <typename T>
 const char* _get_typename() {
   static std::string type_name;
+
 #if defined(__GNUC__) && !defined(__clang__)
   std::string func_name = __PRETTY_FUNCTION__;
   constexpr std::size_t prefix_length =
@@ -291,6 +292,7 @@ const char* _get_typename() {
 #else
   type_name = "";
 #endif
+
   return type_name.c_str();
 }
 
