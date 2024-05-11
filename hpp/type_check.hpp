@@ -264,20 +264,24 @@ const char* _get_typename() {
   static std::string type_name;
 #if defined(__GNUC__) && !defined(__clang__)
   std::string func_name = __PRETTY_FUNCTION__;
-  constexpr std::size_t prefix_length = std::string_view("").size();
-  constexpr std::size_t suffix_length = std::string_view("").size();
+  constexpr std::size_t prefix_length =
+      std::string_view("const char* cpp_dump::_detail::_get_typename() [with T = ").size();
+  constexpr std::size_t suffix_length = std::string_view("]").size();
 
   type_name = func_name.substr(prefix_length, func_name.length() - prefix_length - suffix_length);
 #elif defined(__clang__)
   std::string func_name = __PRETTY_FUNCTION__;
-  constexpr std::size_t prefix_length = std::string_view("").size();
-  constexpr std::size_t suffix_length = std::string_view("").size();
+  constexpr std::size_t prefix_length =
+      std::string_view("const char *cpp_dump::_detail::_get_typename() [T = ").size();
+  constexpr std::size_t suffix_length = std::string_view("]").size();
 
   type_name = func_name.substr(prefix_length, func_name.length() - prefix_length - suffix_length);
 #elif defined(_MSC_VER)
   std::string func_name = __FUNCSIG__;
-  constexpr std::size_t prefix_length = std::string_view("").size();
-  constexpr std::size_t suffix_length = std::string_view("").size();
+  constexpr std::size_t prefix_length =
+      std::string_view("const char *__cdecl cpp_dump::_detail::_get_typename<").size();
+  constexpr std::size_t suffix_length = std::string_view(">(void)").size();
+
   type_name = func_name.substr(prefix_length, func_name.length() - prefix_length - suffix_length);
 
   if (type_name.find("class ", 0) == 0) {
