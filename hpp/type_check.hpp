@@ -267,7 +267,8 @@ const char* _get_typename() {
 #elif defined(__clang__)
   return __PRETTY_FUNCTION__;
 #elif defined(_MSC_VER)
-  return __FUNCSIG__;
+  static const char func_name[] = __FUNCSIG__;
+  return func_name;
 #else
   static const char func_name[] = "";
   return func_name;
