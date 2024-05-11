@@ -257,64 +257,49 @@ inline constexpr bool is_exportable = _is_exportable_partial<T> || is_ostream<T>
 template <typename T>
 inline constexpr bool is_iterable_like = is_container<T> || is_map<T> || is_set<T> || is_tuple<T>;
 
-struct _string_wrapper {
-  std::string str;
-};
-
+// The return type must be a built-in type, otherwise we don't know how it will be stringified.
 template <typename T>
-_string_wrapper _get_typename() {
-#if defined(__GNUC__) && !defined(__clang__)
-  return {__PRETTY_FUNCTION__};
-#elif defined(__clang__)
-  return {__PRETTY_FUNCTION__};
-#elif defined(_MSC_VER)
-  return {__FUNCSIG__};
-#else
-  return {""};
-#endif
-}
+const char* _get_typename() {
+  static std::string type_name;
 
-// Currently, used only by export_exception() and CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT()
-template <typename T>
-std::string get_typename() {
 #if defined(__GNUC__) && !defined(__clang__)
+  std::string func_name = __PRETTY_FUNCTION__;
   constexpr std::size_t prefix_length =
-      std::string_view(
-          "cpp_dump::_detail::_string_wrapper cpp_dump::_detail::_get_typename() [with T = "
-      )
-          .size();
+      std::string_view("const char* cpp_dump::_detail::_get_typename() [with T = ").size();
   constexpr std::size_t suffix_length = std::string_view("]").size();
+
+  type_name = func_name.substr(prefix_length, func_name.length() - prefix_length - suffix_length);
 #elif defined(__clang__)
+  std::string func_name = __PRETTY_FUNCTION__;
   constexpr std::size_t prefix_length =
-      std::string_view("cpp_dump::_detail::_string_wrapper cpp_dump::_detail::_get_typename() [T = "
-      )
-          .size();
+      std::string_view("const char *cpp_dump::_detail::_get_typename() [T = ").size();
   constexpr std::size_t suffix_length = std::string_view("]").size();
+
+  type_name = func_name.substr(prefix_length, func_name.length() - prefix_length - suffix_length);
 #elif defined(_MSC_VER)
+  std::string func_name = __FUNCSIG__;
   constexpr std::size_t prefix_length =
-      std::string_view(
-          "struct cpp_dump::_detail::_string_wrapper __cdecl cpp_dump::_detail::_get_typename<"
-      )
-          .size();
+      std::string_view("const char *__cdecl cpp_dump::_detail::_get_typename<").size();
   constexpr std::size_t suffix_length = std::string_view(">(void)").size();
-#else
-  constexpr std::size_t prefix_length = 0;
-  constexpr std::size_t suffix_length = 0;
-#endif
 
-  std::string func_name = _get_typename<_remove_cref<T>>().str;
-  std::string type_name =
-      func_name.substr(prefix_length, func_name.length() - prefix_length - suffix_length);
+  type_name = func_name.substr(prefix_length, func_name.length() - prefix_length - suffix_length);
 
-#if defined(_MSC_VER)
   if (type_name.find("class ", 0) == 0) {
     type_name = type_name.substr(std::string_view("class ").size());
   } else if (type_name.find("struct ") == 0) {
     type_name = type_name.substr(std::string_view("struct ").size());
   }
+#else
+  type_name = "";
 #endif
 
-  return type_name;
+  return type_name.c_str();
+}
+
+// Currently, used only by export_exception() and CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT()
+template <typename T>
+std::string get_typename() {
+  return _get_typename<T>();
 }
 
 }  // namespace _detail
