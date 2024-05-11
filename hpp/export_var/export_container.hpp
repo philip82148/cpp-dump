@@ -96,7 +96,7 @@ inline auto export_container(
 
   std::string new_indent = indent + "  ";
 
-  std::string output = es::bracket("[ ", current_depth);
+  std::string output = es::bracket("[", current_depth);
   bool is_first_elem = true;
 
   for (auto &&[skip, it, index] : skipped_container) {
@@ -105,7 +105,7 @@ inline auto export_container(
     if (is_first_elem) {
       is_first_elem = false;
     } else {
-      output += es::op(", ");
+      output += es::op(",");
     }
 
     if (skip) {
