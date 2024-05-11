@@ -86,7 +86,7 @@ inline std::string _export_es_value_vector(
 
   std::string new_indent = indent + "  ";
 
-  output = es::bracket("[ ", current_depth);
+  output = es::bracket("[", current_depth);
   is_first_elem = true;
 
   for (const auto &[skip, it, index] : skipped_es_vec) {
@@ -95,7 +95,7 @@ inline std::string _export_es_value_vector(
     if (is_first_elem) {
       is_first_elem = false;
     } else {
-      output += es::op(", ");
+      output += es::op(",");
     }
 
     if (skip) {

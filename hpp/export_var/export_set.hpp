@@ -149,7 +149,7 @@ inline auto export_set(
 
   std::string new_indent = indent + "  ";
 
-  std::string output = es::bracket("{ ", current_depth);
+  std::string output = es::bracket("{", current_depth);
   bool is_first_elem = true;
 
   for (const auto &[skip, it, _] : skipped_set) {
@@ -158,7 +158,7 @@ inline auto export_set(
     if (is_first_elem) {
       is_first_elem = false;
     } else {
-      output += es::op(", ");
+      output += es::op(",");
     }
 
     if (skip) {
