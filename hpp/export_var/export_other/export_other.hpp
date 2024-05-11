@@ -85,7 +85,7 @@ export_other(const std::bitset<N> &bitset, const std::string &, std::size_t, std
 template <typename T>
 inline std::string
 export_other(const std::complex<T> &complex, const std::string &, std::size_t, std::size_t current_depth, bool, const export_command &) {
-  constexpr long double pi = 3.141592653589793238462643383279502884L;
+  constexpr T pi = static_cast<T>(3.141592653589793238462643383279502884L);
 
   auto imag = std::imag(complex);
   auto imag_sign = imag >= 0 ? "+" : "-";
@@ -97,7 +97,7 @@ export_other(const std::complex<T> &complex, const std::string &, std::size_t, s
          )
          + es::bracket("( ", current_depth) + es::member("abs") + es::op("= ")
          + es::number(std::to_string(std::abs(complex))) + es::op(", ") + es::member("arg/pi")
-         + es::op("= ") + es::number(std::to_string(std::arg(complex) / static_cast<T>(pi)))
+         + es::op("= ") + es::number(std::to_string(std::arg(complex) / pi))
          + es::bracket(" )", current_depth);
 }
 
