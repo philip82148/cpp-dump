@@ -11,6 +11,7 @@
 #include <complex>
 #include <exception>
 #include <functional>
+#include <iostream>
 #include <map>
 #include <memory>
 #include <optional>
@@ -303,6 +304,7 @@ std::string get_typename() {
 #endif
 
   std::string func_name = _get_typename<_remove_cref<T>>().str;
+  std::cout << func_name << std::endl;
   std::string type_name =
       func_name.substr(prefix_length, func_name.length() - prefix_length - suffix_length);
 
