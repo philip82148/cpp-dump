@@ -14,32 +14,32 @@ namespace cpp_dump {
 namespace _detail {
 
 template <typename T>
-auto _iterable_begin(const T &t, int) -> decltype(begin(t)) {
+inline auto _iterable_begin(const T &t, int) -> decltype(begin(t)) {
   return begin(t);
 }
 
 template <typename T>
-auto _iterable_begin(const T &t, long) -> decltype(std::begin(t)) {
+inline auto _iterable_begin(const T &t, long) -> decltype(std::begin(t)) {
   return std::begin(t);
 }
 
 template <typename T>
-auto iterable_begin(const T &t) -> decltype(_iterable_begin(t, 0)) {
+inline auto iterable_begin(const T &t) -> decltype(_iterable_begin(t, 0)) {
   return _iterable_begin(t, 0);
 }
 
 template <typename T>
-auto _iterable_end(const T &t, int) -> decltype(end(t)) {
+inline auto _iterable_end(const T &t, int) -> decltype(end(t)) {
   return end(t);
 }
 
 template <typename T>
-auto _iterable_end(const T &t, long) -> decltype(std::end(t)) {
+inline auto _iterable_end(const T &t, long) -> decltype(std::end(t)) {
   return std::end(t);
 }
 
 template <typename T>
-auto iterable_end(const T &t) -> decltype(_iterable_end(t, 0)) {
+inline auto iterable_end(const T &t) -> decltype(_iterable_end(t, 0)) {
   return _iterable_end(t, 0);
 }
 

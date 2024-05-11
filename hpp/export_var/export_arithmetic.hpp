@@ -25,7 +25,7 @@ export_arithmetic(bool value, const std::string &, std::size_t, std::size_t, boo
 
 inline std::string
 export_arithmetic(char value, const std::string &, std::size_t, std::size_t, bool, const export_command &) {
-  return es::character("'" + std::string{value} + "'");
+  return es::character("'" + std::string({value}) + "'");
 }
 
 template <typename T>
