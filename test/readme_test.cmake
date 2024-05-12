@@ -46,5 +46,5 @@ execute_process(
 )
 
 if(not_successful)
-   message(SEND_ERROR "${log_file} does not match ${txt_file}!" )
+   message(SEND_ERROR "${log_file} does not match ${txt_file} !" )
 endif()

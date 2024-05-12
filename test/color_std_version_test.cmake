@@ -35,7 +35,7 @@ execute_process(
    COMMAND "${CMAKE_COMMAND}" -E compare_files "${log_file}" "${txt_file}" RESULT_VARIABLE not_successful
 )
 if(not_successful)
-   message(SEND_ERROR "${log_file} with color does not match ${txt_file}!" )
+   message(SEND_ERROR "${log_file} with color does not match ${txt_file} !" )
    file(READ "${log_file}" contents)
    message(STATUS "${contents}")
 endif()
