@@ -266,10 +266,10 @@ inline std::string _get_typename_aux(
       func_name.substr(prefix_length, func_name.length() - prefix_length - suffix_length);
 
 #if defined(_MSC_VER)
-  if (retval.find("class ", 0) == 0) {
-    retval = type_name.substr(std::string_view("class ").size());
+  if (type_name.find("class ", 0) == 0) {
+    type_name = type_name.substr(std::string_view("class ").size());
   } else if (type_name.find("struct ") == 0) {
-    retval = type_name.substr(std::string_view("struct ").size());
+    type_name = type_name.substr(std::string_view("struct ").size());
   }
 #endif
 
