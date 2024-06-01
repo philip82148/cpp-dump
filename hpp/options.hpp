@@ -67,7 +67,7 @@ struct es_value_t {
  * Type of cpp_dump::cont_indent_style.
  * cpp_dump::export_var() supports this type.
  */
-enum class cont_indent_style_t { minimal, when_nested, always };
+enum class cont_indent_style_t { minimal, when_nested, except_nested_tuples, always };
 
 /**
  * Maximum line width of output strings of cpp_dump::export_var().

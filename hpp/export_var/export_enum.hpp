@@ -62,5 +62,6 @@ CPP_DUMP_DEFINE_EXPORT_ENUM(
     cpp_dump::cont_indent_style_t,
     cpp_dump::cont_indent_style_t::minimal,
     cpp_dump::cont_indent_style_t::when_nested,
+    cpp_dump::cont_indent_style_t::except_nested_tuples,
     cpp_dump::cont_indent_style_t::always
 );
