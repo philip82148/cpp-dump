@@ -92,7 +92,11 @@ inline auto export_set(
   })();
   auto skipped_set = command.create_skip_container(set_wrapper);
 
-  bool shift_indent = is_iterable_like<iterable_elem_type<T>>;
+  bool shift_indent = cont_indent_style == cont_indent_style_t::always;
+  if (cont_indent_style == cont_indent_style_t::when_nested) {
+    shift_indent = is_iterable_like<iterable_elem_type<T>>;
+  }
+
   if (!shift_indent) {
     std::string output = es::bracket("{ ", current_depth);
     bool is_first_elem = true;

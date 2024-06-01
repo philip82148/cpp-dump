@@ -64,6 +64,12 @@ struct es_value_t {
 };
 
 /**
+ * Type of cpp_dump::cont_indent_style.
+ * cpp_dump::export_var() supports this type.
+ */
+enum class cont_indent_style_t { minimal, when_nested, always };
+
+/**
  * Maximum line width of output strings of cpp_dump::export_var().
  */
 inline std::size_t max_line_width = 160;
@@ -115,5 +121,10 @@ inline es_value_t es_value = {
     "\x1b[31m",    // unsupported: red
     {"\x1b[02m"},  // bracket_by_depth[0]: dark
 };
+
+/**
+ * Style of indents of containers.
+ */
+inline cont_indent_style_t cont_indent_style = cont_indent_style_t::when_nested;
 
 }  // namespace cpp_dump
