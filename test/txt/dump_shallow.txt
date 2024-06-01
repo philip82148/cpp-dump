@@ -63,6 +63,7 @@ here.`,
 [dump] main => Unsupported Type, &main => Unsupported Type, &unsupported_class::k => Unsupported Type, &unsupported_class::str => Unsupported Type
 [dump] setw(5) => Unsupported Type, boolalpha => Unsupported Type
 [dump] cpp_dump::es_style_t::no_es => cpp_dump::es_style_t::no_es, cpp_dump::es_style_t::by_syntax => cpp_dump::es_style_t::by_syntax, cpp_dump::es_value => cpp_dump::es_value_t{ ... }
+[dump] cpp_dump::cont_indent_style_t::minimal => cpp_dump::cont_indent_style_t::minimal, cpp_dump::cont_indent_style_t::when_nested => cpp_dump::cont_indent_style_t::when_nested, cpp_dump::cont_indent_style_t::except_nested_tuples => cpp_dump::cont_indent_style_t::except_nested_tuples, cpp_dump::cont_indent_style_t::always => cpp_dump::cont_indent_style_t::always, cpp_dump::cont_indent_style => cpp_dump::cont_indent_style_t::when_nested
 [dump] cp::int_style(16) << 10000u => 00 00 27 10 _16, cp::int_style(16) << 10000l => 00 00 27 10 _16, cp::int_style(16) << 10000ul => 00 00 27 10 _16, cp::int_style(16) << 10000ll => 00 00 27 10 _16, cp::int_style(16) << 10000ull => 00 00 27 10 _16
 [dump] array50 => [ ... ], map50 => { ... }, set50 => { ... }
 [dump] cp::show_front() << array50 => [ ... ], cp::show_front() << map50 => { ... }, cp::show_front() << set50 => { ... }
@@ -208,6 +209,38 @@ here.`,
 [dump]      0
 [dump]  00000 _16
 [dump]      0 _16
+[dump] vec2 => [ ... ]
+[dump] vector_of_pairs => [ ... ]
+[dump] map_of_vectors => { ... }
+[dump] vector_map => { ... }
+[dump] set_of_vectors => { ... }
+[dump] map_of_pairs => { ... }
+[dump] pair_map => { ... }
+[dump] set_of_tuples => { ... }
+[dump] vec2 => [ ... ]
+[dump] vector_of_pairs => [ ... ]
+[dump] map_of_vectors => { ... }
+[dump] vector_map => { ... }
+[dump] set_of_vectors => { ... }
+[dump] map_of_pairs => { ... }
+[dump] pair_map => { ... }
+[dump] set_of_tuples => { ... }
+[dump] vec2 => [ ... ]
+[dump] vector_of_pairs => [ ... ]
+[dump] map_of_vectors => { ... }
+[dump] vector_map => { ... }
+[dump] set_of_vectors => { ... }
+[dump] map_of_pairs => { ... }
+[dump] pair_map => { ... }
+[dump] set_of_tuples => { ... }
+[dump] vec2 => [ ... ]
+[dump] vector_of_pairs => [ ... ]
+[dump] map_of_vectors => { ... }
+[dump] vector_map => { ... }
+[dump] set_of_vectors => { ... }
+[dump] map_of_pairs => { ... }
+[dump] pair_map => { ... }
+[dump] set_of_tuples => { ... }
 [dump] vec4 | cp::cont_index() => [ ... ]
 [dump] vec4 | cp::show_front(3) | cp::cont_index() => [ ... ]
 [dump] vec4 | cp::show_back(3) | cp::cont_index() => [ ... ]

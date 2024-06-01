@@ -103,6 +103,7 @@ here.`,
 [dump] main => Unsupported Type, &main => Unsupported Type, &unsupported_class::k => Unsupported Type, &unsupported_class::str => Unsupported Type
 [dump] setw(5) => Unsupported Type, boolalpha => Unsupported Type
 [dump] cpp_dump::es_style_t::no_es => cpp_dump::es_style_t::no_es, cpp_dump::es_style_t::by_syntax => cpp_dump::es_style_t::by_syntax, cpp_dump::es_value => cpp_dump::es_value_t{ log= "\e[02m", expression= "\e[36m", reserved= "", character= "", op= "\e[02m", identifier= "\e[32m", member= "\e[36m", unsupported= "\e[31m", bracket_by_depth= [ "\e[02m" ] }
+[dump] cpp_dump::cont_indent_style_t::minimal => cpp_dump::cont_indent_style_t::minimal, cpp_dump::cont_indent_style_t::when_nested => cpp_dump::cont_indent_style_t::when_nested, cpp_dump::cont_indent_style_t::except_nested_tuples => cpp_dump::cont_indent_style_t::except_nested_tuples, cpp_dump::cont_indent_style_t::always => cpp_dump::cont_indent_style_t::always, cpp_dump::cont_indent_style => cpp_dump::cont_indent_style_t::when_nested
 [dump] cp::int_style(16) << 10000u => 00 00 27 10 _16, cp::int_style(16) << 10000l => 00 00 27 10 _16, cp::int_style(16) << 10000ul => 00 00 27 10 _16, cp::int_style(16) << 10000ll => 00 00 27 10 _16, cp::int_style(16) << 10000ull => 00 00 27 10 _16
 [dump] array50 => [ 0, 1, ... ], map50 => { 0: 1, 1: 2, ... }, set50 => { 0, 1, ... }
 [dump] cp::show_front() << array50 => [ 0, 1, ... ], cp::show_front() << map50 => { 0: 1, 1: 2, ... }, cp::show_front() << set50 => { 0, 1, ... }
@@ -381,6 +382,256 @@ here.`,
 [dump]      0
 [dump]  00000 _16
 [dump]      0 _16
+[dump] vec2 => [ [ [ 1 ] ], [ [ 2, 6 ] ], [ [ 5, 6, 7 ], [ 3, 6, 8, 9 ], [ 5, 7, 8, 10, 11 ] ] ]
+[dump] vector_of_pairs => [ ( 0, 0 ), ( 0, 0 ), ( 0, 0 ), ( 0, 0 ), ( 0, 0 ), ( 0, 0 ), ( 0, 0 ), ( 0, 0 ), ( 0, 0 ), ( 0, 0 ) ]
+[dump] map_of_vectors => { 1: [ 2, 3 ], 4: [ 5, 6 ], 7: [ 8, 9 ], 10: [ 11, 12 ], 13: [ 14, 15 ] }
+[dump] vector_map => { [ 1, 2 ]: 3, [ 4, 5 ]: 6, [ 7, 8 ]: 9, [ 10, 11 ]: 12, [ 13, 14 ]: 15 }
+[dump] set_of_vectors => { [ 1, 2, 3 ], [ 4, 5, 6 ], [ 7, 8, 9 ], [ 10, 11, 12 ], [ 13, 14, 15 ] }
+[dump] map_of_pairs => { 1: ( 2, 3 ), 4: ( 5, 6 ), 7: ( 8, 9 ), 10: ( 11, 12 ), 13: ( 14, 15 ) }
+[dump] pair_map => { ( 1, 2 ): 3, ( 4, 5 ): 6, ( 7, 8 ): 9, ( 10, 11 ): 12, ( 13, 14 ): 15 }
+[dump] set_of_tuples => { ( 1, 2, 3 ), ( 4, 5, 6 ), ( 7, 8, 9 ), ( 10, 11, 12 ), ( 13, 14, 15 ) }
+[dump] vec2 => [
+         [
+           [ 1 ]
+         ],
+         [
+           [ 2, 6 ]
+         ],
+         [
+           [ 5, 6, 7 ],
+           [ 3, 6, 8, 9 ],
+           [ 5, 7, 8, 10, 11 ]
+         ]
+       ]
+[dump] vector_of_pairs => [
+         ( 0, 0 ),
+         ( 0, 0 ),
+         ( 0, 0 ),
+         ( 0, 0 ),
+         ( 0, 0 ),
+         ( 0, 0 ),
+         ( 0, 0 ),
+         ( 0, 0 ),
+         ( 0, 0 ),
+         ( 0, 0 )
+       ]
+[dump] map_of_vectors => {
+         1: [ 2, 3 ],
+         4: [ 5, 6 ],
+         7: [ 8, 9 ],
+         10: [ 11, 12 ],
+         13: [ 14, 15 ]
+       }
+[dump] vector_map => {
+         [ 1, 2 ]: 3,
+         [ 4, 5 ]: 6,
+         [ 7, 8 ]: 9,
+         [ 10, 11 ]: 12,
+         [ 13, 14 ]: 15
+       }
+[dump] set_of_vectors => {
+         [ 1, 2, 3 ],
+         [ 4, 5, 6 ],
+         [ 7, 8, 9 ],
+         [ 10, 11, 12 ],
+         [ 13, 14, 15 ]
+       }
+[dump] map_of_pairs => {
+         1: ( 2, 3 ),
+         4: ( 5, 6 ),
+         7: ( 8, 9 ),
+         10: ( 11, 12 ),
+         13: ( 14, 15 )
+       }
+[dump] pair_map => {
+         ( 1, 2 ): 3,
+         ( 4, 5 ): 6,
+         ( 7, 8 ): 9,
+         ( 10, 11 ): 12,
+         ( 13, 14 ): 15
+       }
+[dump] set_of_tuples => {
+         ( 1, 2, 3 ),
+         ( 4, 5, 6 ),
+         ( 7, 8, 9 ),
+         ( 10, 11, 12 ),
+         ( 13, 14, 15 )
+       }
+[dump] vec2 => [
+         [
+           [ 1 ]
+         ],
+         [
+           [ 2, 6 ]
+         ],
+         [
+           [ 5, 6, 7 ],
+           [ 3, 6, 8, 9 ],
+           [ 5, 7, 8, 10, 11 ]
+         ]
+       ]
+[dump] vector_of_pairs => [ ( 0, 0 ), ( 0, 0 ), ( 0, 0 ), ( 0, 0 ), ( 0, 0 ), ( 0, 0 ), ( 0, 0 ), ( 0, 0 ), ( 0, 0 ), ( 0, 0 ) ]
+[dump] map_of_vectors => {
+         1: [ 2, 3 ],
+         4: [ 5, 6 ],
+         7: [ 8, 9 ],
+         10: [ 11, 12 ],
+         13: [ 14, 15 ]
+       }
+[dump] vector_map => {
+         [ 1, 2 ]: 3,
+         [ 4, 5 ]: 6,
+         [ 7, 8 ]: 9,
+         [ 10, 11 ]: 12,
+         [ 13, 14 ]: 15
+       }
+[dump] set_of_vectors => {
+         [ 1, 2, 3 ],
+         [ 4, 5, 6 ],
+         [ 7, 8, 9 ],
+         [ 10, 11, 12 ],
+         [ 13, 14, 15 ]
+       }
+[dump] map_of_pairs => { 1: ( 2, 3 ), 4: ( 5, 6 ), 7: ( 8, 9 ), 10: ( 11, 12 ), 13: ( 14, 15 ) }
+[dump] pair_map => { ( 1, 2 ): 3, ( 4, 5 ): 6, ( 7, 8 ): 9, ( 10, 11 ): 12, ( 13, 14 ): 15 }
+[dump] set_of_tuples => { ( 1, 2, 3 ), ( 4, 5, 6 ), ( 7, 8, 9 ), ( 10, 11, 12 ), ( 13, 14, 15 ) }
+[dump] vec2 => [
+         [
+           [
+             1
+           ]
+         ],
+         [
+           [
+             2,
+             6
+           ]
+         ],
+         [
+           [
+             5,
+             6,
+             7
+           ],
+           [
+             3,
+             6,
+             8,
+             9
+           ],
+           [
+             5,
+             7,
+             8,
+             10,
+             11
+           ]
+         ]
+       ]
+[dump] vector_of_pairs => [
+         ( 0, 0 ),
+         ( 0, 0 ),
+         ( 0, 0 ),
+         ( 0, 0 ),
+         ( 0, 0 ),
+         ( 0, 0 ),
+         ( 0, 0 ),
+         ( 0, 0 ),
+         ( 0, 0 ),
+         ( 0, 0 )
+       ]
+[dump] map_of_vectors => {
+         1: [
+           2,
+           3
+         ],
+         4: [
+           5,
+           6
+         ],
+         7: [
+           8,
+           9
+         ],
+         10: [
+           11,
+           12
+         ],
+         13: [
+           14,
+           15
+         ]
+       }
+[dump] vector_map => {
+         [
+           1,
+           2
+         ]: 3,
+         [
+           4,
+           5
+         ]: 6,
+         [
+           7,
+           8
+         ]: 9,
+         [
+           10,
+           11
+         ]: 12,
+         [
+           13,
+           14
+         ]: 15
+       }
+[dump] set_of_vectors => {
+         [
+           1,
+           2,
+           3
+         ],
+         [
+           4,
+           5,
+           6
+         ],
+         [
+           7,
+           8,
+           9
+         ],
+         [
+           10,
+           11,
+           12
+         ],
+         [
+           13,
+           14,
+           15
+         ]
+       }
+[dump] map_of_pairs => {
+         1: ( 2, 3 ),
+         4: ( 5, 6 ),
+         7: ( 8, 9 ),
+         10: ( 11, 12 ),
+         13: ( 14, 15 )
+       }
+[dump] pair_map => {
+         ( 1, 2 ): 3,
+         ( 4, 5 ): 6,
+         ( 7, 8 ): 9,
+         ( 10, 11 ): 12,
+         ( 13, 14 ): 15
+       }
+[dump] set_of_tuples => {
+         ( 1, 2, 3 ),
+         ( 4, 5, 6 ),
+         ( 7, 8, 9 ),
+         ( 10, 11, 12 ),
+         ( 13, 14, 15 )
+       }
 [dump] vec4 | cp::cont_index() => [
          0: [ 0: 1, 1: 2, 2: 3, 3: 4, 4: 5, 5: 6, 6: 7, 7: 8 ],
          1: [ 0: 9, 1: 10, 2: 11, 3: 12, 4: 13 ],
