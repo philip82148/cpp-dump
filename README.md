@@ -20,14 +20,14 @@ This library has the following features:
 ## Introduction
 
 You can print variables of a wide variety of types by passing them to the `cpp_dump(expressions...)` macro.  
-[See Full Example Code](./readme/macro-version.cpp)
+[See Full Example Code](./readme/introduction.cpp)
 
 ```cpp
 std::vector<std::vector<int>> my_vector{{3, 5, 8, 9, 7}, {9, 3, 2, 3, 8}};
 cpp_dump(my_vector);
 ```
 
-![macro-version.png](./readme/macro-version.png)
+![introduction.png](./readme/introduction.png)
 
 ## Features
 
