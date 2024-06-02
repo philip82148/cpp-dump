@@ -348,7 +348,7 @@ int main(int argc, char *argv[]) {
   cpp_dump(
       cpp_dump::cont_indent_style_t::minimal,
       cpp_dump::cont_indent_style_t::when_nested,
-      cpp_dump::cont_indent_style_t::except_nested_tuples,
+      cpp_dump::cont_indent_style_t::when_non_tuples_nested,
       cpp_dump::cont_indent_style_t::always,
       cpp_dump::cont_indent_style
   );

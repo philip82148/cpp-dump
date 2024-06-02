@@ -166,7 +166,7 @@ here.)");
   vector<vector<long long>> vector2d2{vec1d_for_2d2};
   cpp_dump(vector2d2);
 
-  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::except_nested_tuples));
+  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_non_tuples_nested));
   vector<long long> vec1d_for_2d3 = {
       10000000000000000,
       20000000000000000,
@@ -194,7 +194,7 @@ here.)");
   };
   vector<vector<long long>> vector2d4{vec1d_for_2d4};
   cpp_dump(vector2d4);
-  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::except_nested_tuples));
+  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_non_tuples_nested));
   vector<tuple<long long, long long>> vec_of_tuple{{1, 2}};
   cpp_dump(vec_of_tuple);
   PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_nested));
@@ -209,7 +209,7 @@ here.)");
   set<string> set_of_string{this_string_contains_new_line_here};
   cpp_dump(set_of_string);
 
-  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::except_nested_tuples));
+  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_non_tuples_nested));
   set<vector<long long>> set_of_vec1{vec1d_for_2d3};
   cpp_dump(set_of_vec1);
   PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::minimal));
@@ -217,7 +217,7 @@ here.)");
 
   set<vector<long long>> set_of_vec2{vec1d_for_2d4};
   cpp_dump(set_of_vec2);
-  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::except_nested_tuples));
+  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_non_tuples_nested));
   set<tuple<long long, long long>> set_of_tuple{{1, 2}};
   cpp_dump(set_of_tuple);
   PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_nested));
@@ -274,7 +274,7 @@ here.)");
   };
   cpp_dump(map_of_string_value);
 
-  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::except_nested_tuples));
+  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_non_tuples_nested));
   vector<long long> vec1d_for_map_of_vec1 = {
       1000000000000000,
       2000000000000000,
@@ -315,7 +315,7 @@ here.)");
       {1, vec1d_for_map_of_vec2},
   };
   cpp_dump(map_of_vec_value2);
-  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::except_nested_tuples));
+  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_non_tuples_nested));
   map<long long, tuple<long long, long long>> map_of_tuple_key{{1, {2, 3}}};
   cpp_dump(map_of_tuple_key);
   map<tuple<long long, long long>, long long> map_of_tuple_value{{{1, 2}, 3}};

@@ -97,7 +97,7 @@ inline auto export_set(
     shift_indent = true;
   } else if (cont_indent_style == cont_indent_style_t::when_nested) {
     shift_indent = is_iterable_like<iterable_elem_type<T>>;
-  } else if (cont_indent_style == cpp_dump::cont_indent_style_t::except_nested_tuples) {
+  } else if (cont_indent_style == cpp_dump::cont_indent_style_t::when_non_tuples_nested) {
     shift_indent = is_iterable_like<iterable_elem_type<T>> && !is_tuple<iterable_elem_type<T>>;
   } else {
     shift_indent = false;

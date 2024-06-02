@@ -183,7 +183,7 @@ here`
              9000000
            ]
          ]
-CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::except_nested_tuples);
+CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_non_tuples_nested);
 [dump] vector2d3
          => [
            [
@@ -224,7 +224,7 @@ CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::minimal);
              80000000
            ]
          ]
-CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::except_nested_tuples);
+CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_non_tuples_nested);
 [dump] vec_of_tuple
          => [
            ( 1, 2 )
@@ -261,7 +261,7 @@ CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_nested);
 `this string contains a newline
 here`
          }
-CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::except_nested_tuples);
+CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_non_tuples_nested);
 [dump] set_of_vec1
          => {
            [
@@ -302,7 +302,7 @@ CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::minimal);
              80000000
            ]
          }
-CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::except_nested_tuples);
+CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_non_tuples_nested);
 [dump] set_of_tuple
          => {
            ( 1, 2 )
@@ -364,7 +364,7 @@ here`: 800000000000000
 `this string contains a newline
 here`
          }
-CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::except_nested_tuples);
+CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_non_tuples_nested);
 [dump] map_of_vec_key1
          => {
            [
@@ -444,7 +444,7 @@ CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::minimal);
              800000000000000
            ]
          }
-CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::except_nested_tuples);
+CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_non_tuples_nested);
 [dump] map_of_tuple_key
          => {
            1: (
