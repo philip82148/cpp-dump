@@ -64,7 +64,7 @@ inline auto export_arithmetic(
     bool is_first = true;
     while (is_first || non_negative_tmp) {
       is_first = false;
-      char next_digit = (non_negative_tmp & 0x01) + '0';
+      char next_digit = static_cast<char>((non_negative_tmp & 0x01) + '0');
       output.append(1, next_digit);
       non_negative_tmp >>= 1;
     }
