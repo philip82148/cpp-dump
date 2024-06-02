@@ -8,6 +8,7 @@
 #pragma once
 
 #include <complex>
+#include <cstring>
 #include <string>
 #include <type_traits>
 #include <variant>
@@ -68,14 +69,21 @@ inline std::string export_other(
 template <std::size_t N>
 inline std::string
 export_other(const std::bitset<N> &bitset, const std::string &, std::size_t, std::size_t, bool, const export_command &) {
-  std::string bitset_str = bitset.to_string();
+  constexpr unsigned int chunk = 4;
 
-  std::string output = "0b";
-  std::size_t begin = bitset_str.length() % 4;
-  if (begin != 0) output += " " + bitset_str.substr(0, begin);
-  for (; begin < bitset_str.length(); begin += 4) {
-    output.append(1, ' ');
-    output.append(bitset_str.substr(begin, 4));
+  std::string bitset_str = bitset.to_string();
+  std::string output(3 + N + (N - 1) / chunk, ' ');
+  std::memcpy(output.data(), "0b", 2);
+  std::size_t out_pos = 3;
+
+  std::size_t pos = bitset_str.length() % chunk;
+  if (pos > 0) {
+    std::memcpy(output.data() + out_pos, bitset_str.c_str(), pos);
+    out_pos += pos + 1;
+  }
+  for (; pos < bitset_str.length(); pos += chunk) {
+    std::memcpy(output.data() + out_pos, bitset_str.c_str() + pos, chunk);
+    out_pos += chunk + 1;
   }
 
   // Make the entire string an identifier
