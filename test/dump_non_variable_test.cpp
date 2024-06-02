@@ -164,13 +164,9 @@ ostream &operator<<(ostream &os, unsupported_non_const_class &) {
 }
 
 int main(int argc, char *argv[]) {
-  if (argc != 4) return 1;
-  int max_line_width_ = stoi(argv[1]);
-  int max_depth_ = stoi(argv[2]);
-  int es_index = stoi(argv[3]);
+  if (argc != 2) return 1;
+  int es_index = stoi(argv[1]);
 
-  CPP_DUMP_SET_OPTION(max_line_width, max_line_width_);
-  CPP_DUMP_SET_OPTION(max_depth, max_depth_);
   CPP_DUMP_SET_OPTION(max_iteration_count, 100);
   CPP_DUMP_SET_OPTION(
       es_style, (array{cpp_dump::es_style_t::no_es, cpp_dump::es_style_t::by_syntax}[es_index])
