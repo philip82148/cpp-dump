@@ -1,4 +1,4 @@
-====================
+====================  --  test of cpp_dump_macro
 [dump] 10 => 10, 
        20 => 20, 
        30 => 30, 
@@ -83,7 +83,7 @@
          => "-----------------------------------------------------------------------------------------------------------------------------------", 
        string(131, '-')
          => "-----------------------------------------------------------------------------------------------------------------------------------"
-====================
+====================  --  test of value contains newline(s)
 [dump] "\n" => 
 `
 `,
@@ -105,5 +105,454 @@
   here.)" => 
 `this string contains a newline
   here.`
-terminate called after throwing an instance of 'std::out_of_range'
-  what():  basic_string::replace: __pos (which is 9223372036854775807) > this->size() (which is 20)
+====================  --  test of 1d vector
+[dump] vec1d1 => [
+         10000000000000000,
+         20000000000000000,
+         30000000000000000,
+         40000000000000000,
+         50000000000000000,
+         60000000000000000,
+         70000000000000000,
+         800000
+       ],
+       vec1d2 => [
+         10000000000000000,
+         20000000000000000,
+         30000000000000000,
+         40000000000000000,
+         50000000000000000,
+         60000000000000000,
+         70000000000000000,
+         80000000000
+       ]
+[dump] vec1d3 => [
+         10000000000000000,
+         20000000000000000,
+         30000000000000000,
+         40000000000000000,
+         50000000000000000,
+         60000000000000000,
+         70000000000000000,
+         800000000000
+       ]
+[dump] vector_of_string
+         => [
+           
+`this string contains a newline
+here`
+         ]
+====================  --  test of 2d vector
+[dump] vector2d1
+         => [
+           [
+             10000000000000000,
+             20000000000000000,
+             30000000000000000,
+             40000000000000000,
+             50000000000000000,
+             60000000000000000,
+             70000000000000000,
+             800000,
+             900000
+           ]
+         ]
+[dump] vector2d2
+         => [
+           [
+             10000000000000000,
+             20000000000000000,
+             30000000000000000,
+             40000000000000000,
+             50000000000000000,
+             60000000000000000,
+             70000000000000000,
+             800000,
+             9000000
+           ]
+         ]
+====================  --  test of set
+[dump] set1d2 => {
+         80000000000,
+         10000000000000000,
+         20000000000000000,
+         30000000000000000,
+         40000000000000000,
+         50000000000000000,
+         60000000000000000,
+         70000000000000000
+       }
+[dump] set1d3 => {
+         800000000000,
+         10000000000000000,
+         20000000000000000,
+         30000000000000000,
+         40000000000000000,
+         50000000000000000,
+         60000000000000000,
+         70000000000000000
+       }
+[dump] set_of_string
+         => {
+           
+`this string contains a newline
+here`
+         }
+====================  --  test of multiset
+[dump] mset2 => {
+         8000000 (1),
+         1000000000000 (1),
+         2000000000000 (1),
+         3000000000000 (1),
+         4000000000000 (1),
+         5000000000000 (1),
+         6000000000000 (1),
+         7000000000000 (1)
+       }
+[dump] mset3 => {
+         80000000 (1),
+         1000000000000 (1),
+         2000000000000 (1),
+         3000000000000 (1),
+         4000000000000 (1),
+         5000000000000 (1),
+         6000000000000 (1),
+         7000000000000 (1)
+       }
+[dump] mset_of_string
+         => {
+           
+`this string contains a newline
+here` (1)
+         }
+====================  --  test of map
+[dump] map1 => {
+         0: 800000000000000,
+         1000000000000000000: 2000000000000000000,
+         3000000000000000000: 4000000000000000000,
+         5000000000000000000: 6000000000000000000
+       }
+[dump] map2 => {
+         0: 8000000000000000,
+         1000000000000000000: 2000000000000000000,
+         3000000000000000000: 4000000000000000000,
+         5000000000000000000: 6000000000000000000
+       }
+[dump] map_of_string_key
+         => {
+           
+`this string contains a newline
+here`: 800000000000000
+         }
+[dump] map_of_string_value
+         => {
+           800000000000000: 
+`this string contains a newline
+here`
+         }
+====================  --  test of multimap
+[dump] mmap1 => {
+         0 (8): [
+           10000000000000000,
+           20000000000000000,
+           30000000000000000,
+           40000000000000000,
+           50000000000000000,
+           60000000000000000,
+           70000000000000000,
+           8000000
+         ]
+       }
+[dump] mmap2 => {
+         0 (8): [
+           10000000000000000,
+           20000000000000000,
+           30000000000000000,
+           40000000000000000,
+           50000000000000000,
+           60000000000000000,
+           70000000000000000,
+           80000000
+         ]
+       }
+[dump] mmap_of_string_key
+         => {
+           
+`this string contains a newline
+here` (1): [
+             800000000000000
+           ]
+         }
+[dump] mmap_of_string_value
+         => {
+           800000000000000 (1): [
+             
+`this string contains a newline
+here`
+           ]
+         }
+====================  --  test of tuple
+[dump] tuple1d2 => (
+         10000000000000000,
+         20000000000000000,
+         30000000000000000,
+         40000000000000000,
+         50000000000000000,
+         60000000000000000,
+         70000000000000000,
+         80000000000
+       )
+[dump] tuple1d3 => (
+         10000000000000000,
+         20000000000000000,
+         30000000000000000,
+         40000000000000000,
+         50000000000000000,
+         60000000000000000,
+         70000000000000000,
+         800000000000
+       )
+====================
+[dump] pair_of_string1
+         => (
+           "--------------------------------------------------------------------",
+           "----------------------------------------------------------------------"
+         )
+[dump] pair_of_string2
+         => (
+           "--------------------------------------------------------------------",
+           "-----------------------------------------------------------------------"
+         )
+[dump] pair_of_string3
+         => (
+           
+`this string contains a newline
+here`,
+           ""
+         )
+====================  --  test of FIFO/LIFO
+[dump] queue1
+         => std::queue{ 
+           front()= "----------------------------------------------------------------------------------------------------------------", 
+           size()= 1
+         }
+[dump] queue2
+         => std::queue{ 
+           front()= "-----------------------------------------------------------------------------------------------------------------", 
+           size()= 1
+         }
+[dump] queue3
+         => std::queue{ 
+           front()= 
+`this string contains a newline
+here`, 
+           size()= 1
+         }
+[dump] queue4
+         => std::queue{ 
+           front()= "--------------------------------------------------", 
+           back()= "--------------------------------------------------", 
+           size()= 2
+         }
+[dump] queue5
+         => std::queue{ 
+           front()= "--------------------------------------------------", 
+           back()= "---------------------------------------------------", 
+           size()= 2
+         }
+====================
+[dump] stack1
+         => std::stack{ 
+           top()= "------------------------------------------------------------------------------------------------------------------", 
+           size()= 1
+         }
+[dump] stack2
+         => std::stack{ 
+           top()= "-------------------------------------------------------------------------------------------------------------------", 
+           size()= 1
+         }
+[dump] stack3
+         => std::stack{ 
+           top()= 
+`this string contains a newline
+here`, 
+           size()= 1
+         }
+====================
+[dump] pq1
+         => std::priority_queue{ 
+           top()= "---------------------------------------------------------------------------------------------------------", 
+           size()= 1
+         }
+[dump] pq2
+         => std::priority_queue{ 
+           top()= "----------------------------------------------------------------------------------------------------------", 
+           size()= 1
+         }
+[dump] pq3
+         => std::priority_queue{ 
+           top()= 
+`this string contains a newline
+here`, 
+           size()= 1
+         }
+====================  --  test of CPP_DUMP_DEFINE_EXPORT_OBJECT()
+[dump] class_a1
+         => class_a{ 
+           int_a= 1000000000000000000, 
+           str= "------------------------------------------------------------------------------------------------------"
+         }
+[dump] class_a2
+         => class_a{ 
+           int_a= 1000000000000000000, 
+           str= "-------------------------------------------------------------------------------------------------------"
+         }
+[dump] class_a3
+         => class_a{ 
+           int_a= 0, 
+           str= 
+`this string contains a newline
+here`
+         }
+[dump] class_b1
+         => class_b{ 
+           int_b= 1000000000000000000, 
+           str= "------------------------------------------------------------------------------------------------------"
+         }
+[dump] class_b2
+         => class_b{ 
+           int_b= 1000000000000000000, 
+           str= "-------------------------------------------------------------------------------------------------------"
+         }
+[dump] class_b3
+         => class_b{ 
+           int_b= 0, 
+           str= 
+`this string contains a newline
+here`
+         }
+====================  --  test of self-reference-class
+[dump] self_reference_class1
+         => self_reference_class{ 
+           str_member= "This has a self-reference.", 
+           pointer= *self_reference_class{ 
+             str_member= "This has a self-reference.", 
+             pointer= *self_reference_class{ 
+               str_member= "This has a self-reference.", 
+               pointer= *self_reference_class{ 
+                 str_member= "This has a self-reference.", 
+                 pointer= *self_reference_class{ ... }, 
+                 ref= self_reference_class{ ... }
+               }, 
+               ref= self_reference_class{ 
+                 str_member= "This has a self-reference.", 
+                 pointer= *self_reference_class{ ... }, 
+                 ref= self_reference_class{ ... }
+               }
+             }, 
+             ref= self_reference_class{ 
+               str_member= "This has a self-reference.", 
+               pointer= *self_reference_class{ 
+                 str_member= "This has a self-reference.", 
+                 pointer= *self_reference_class{ ... }, 
+                 ref= self_reference_class{ ... }
+               }, 
+               ref= self_reference_class{ 
+                 str_member= "This has a self-reference.", 
+                 pointer= *self_reference_class{ ... }, 
+                 ref= self_reference_class{ ... }
+               }
+             }
+           }, 
+           ref= self_reference_class{ 
+             str_member= "This has a self-reference.", 
+             pointer= *self_reference_class{ 
+               str_member= "This has a self-reference.", 
+               pointer= *self_reference_class{ 
+                 str_member= "This has a self-reference.", 
+                 pointer= *self_reference_class{ ... }, 
+                 ref= self_reference_class{ ... }
+               }, 
+               ref= self_reference_class{ 
+                 str_member= "This has a self-reference.", 
+                 pointer= *self_reference_class{ ... }, 
+                 ref= self_reference_class{ ... }
+               }
+             }, 
+             ref= self_reference_class{ 
+               str_member= "This has a self-reference.", 
+               pointer= *self_reference_class{ 
+                 str_member= "This has a self-reference.", 
+                 pointer= *self_reference_class{ ... }, 
+                 ref= self_reference_class{ ... }
+               }, 
+               ref= self_reference_class{ 
+                 str_member= "This has a self-reference.", 
+                 pointer= *self_reference_class{ ... }, 
+                 ref= self_reference_class{ ... }
+               }
+             }
+           }
+         }
+[dump] self_reference_class2
+         => self_reference_class{ 
+           str_member= "This has a self-reference..", 
+           pointer= *self_reference_class{ 
+             str_member= "This has a self-reference..", 
+             pointer= *self_reference_class{ 
+               str_member= "This has a self-reference..", 
+               pointer= *self_reference_class{ 
+                 str_member= "This has a self-reference..", 
+                 pointer= *self_reference_class{ ... }, 
+                 ref= self_reference_class{ ... }
+               }, 
+               ref= self_reference_class{ 
+                 str_member= "This has a self-reference..", 
+                 pointer= *self_reference_class{ ... }, 
+                 ref= self_reference_class{ ... }
+               }
+             }, 
+             ref= self_reference_class{ 
+               str_member= "This has a self-reference..", 
+               pointer= *self_reference_class{ 
+                 str_member= "This has a self-reference..", 
+                 pointer= *self_reference_class{ ... }, 
+                 ref= self_reference_class{ ... }
+               }, 
+               ref= self_reference_class{ 
+                 str_member= "This has a self-reference..", 
+                 pointer= *self_reference_class{ ... }, 
+                 ref= self_reference_class{ ... }
+               }
+             }
+           }, 
+           ref= self_reference_class{ 
+             str_member= "This has a self-reference..", 
+             pointer= *self_reference_class{ 
+               str_member= "This has a self-reference..", 
+               pointer= *self_reference_class{ 
+                 str_member= "This has a self-reference..", 
+                 pointer= *self_reference_class{ ... }, 
+                 ref= self_reference_class{ ... }
+               }, 
+               ref= self_reference_class{ 
+                 str_member= "This has a self-reference..", 
+                 pointer= *self_reference_class{ ... }, 
+                 ref= self_reference_class{ ... }
+               }
+             }, 
+             ref= self_reference_class{ 
+               str_member= "This has a self-reference..", 
+               pointer= *self_reference_class{ 
+                 str_member= "This has a self-reference..", 
+                 pointer= *self_reference_class{ ... }, 
+                 ref= self_reference_class{ ... }
+               }, 
+               ref= self_reference_class{ 
+                 str_member= "This has a self-reference..", 
+                 pointer= *self_reference_class{ ... }, 
+                 ref= self_reference_class{ ... }
+               }
+             }
+           }
+         }

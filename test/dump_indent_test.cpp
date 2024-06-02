@@ -67,9 +67,13 @@ int main(int argc, char *argv[]) {
   auto draw_line = [=](std::string comment = "") {
     string line_with_comment(max_line_width_, '=');
 
-    if (!comment.empty() && max_line_width_ >= comment.size()) {
-      comment = "  " + comment + "  ";
-      line_with_comment.replace((max_line_width_ - comment.size()) / 2, comment.size(), comment);
+    if (!comment.empty()) {
+      if (max_line_width_ >= comment.size() + 10) {
+        comment = "  " + comment + "  ";
+        line_with_comment.replace((max_line_width_ - comment.size()) / 2, comment.size(), comment);
+      } else {
+        line_with_comment += "  --  " + comment;
+      }
     }
 
     clog << line_with_comment << endl;
