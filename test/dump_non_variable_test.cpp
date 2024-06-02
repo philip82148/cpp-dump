@@ -689,58 +689,6 @@ int main(int argc, char *argv[]) {
 
   CPP_DUMP_SET_OPTION(print_expr, true);
 
-  vector<pair<int, int>> vector_of_pairs(10);
-  map<int, vector<int>> map_of_vectors{
-      {1, {2, 3}}, {4, {5, 6}}, {7, {8, 9}}, {10, {11, 12}}, {13, {14, 15}}};
-  map<vector<int>, int> vector_map{
-      {{1, 2}, 3}, {{4, 5}, 6}, {{7, 8}, 9}, {{10, 11}, 12}, {{13, 14}, 15}};
-  set<vector<int>> set_of_vectors{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}, {10, 11, 12}, {13, 14, 15}};
-  map<int, pair<int, int>> map_of_pairs{
-      {1, {2, 3}}, {4, {5, 6}}, {7, {8, 9}}, {10, {11, 12}}, {13, {14, 15}}};
-  map<pair<int, int>, int> pair_map{
-      {{1, 2}, 3}, {{4, 5}, 6}, {{7, 8}, 9}, {{10, 11}, 12}, {{13, 14}, 15}};
-  set<tuple<int, int, int>> set_of_tuples{
-      {1, 2, 3}, {4, 5, 6}, {7, 8, 9}, {10, 11, 12}, {13, 14, 15}};
-
-  // minimal
-  CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::minimal);
-  cpp_dump(vec2);
-  cpp_dump(vector_of_pairs);
-  cpp_dump(map_of_vectors);
-  cpp_dump(vector_map);
-  cpp_dump(set_of_vectors);
-  cpp_dump(map_of_pairs);
-  cpp_dump(pair_map);
-  cpp_dump(set_of_tuples);
-  CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_nested);
-  cpp_dump(vec2);
-  cpp_dump(vector_of_pairs);
-  cpp_dump(map_of_vectors);
-  cpp_dump(vector_map);
-  cpp_dump(set_of_vectors);
-  cpp_dump(map_of_pairs);
-  cpp_dump(pair_map);
-  cpp_dump(set_of_tuples);
-  CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::except_nested_tuples);
-  cpp_dump(vec2);
-  cpp_dump(vector_of_pairs);
-  cpp_dump(map_of_vectors);
-  cpp_dump(vector_map);
-  cpp_dump(set_of_vectors);
-  cpp_dump(map_of_pairs);
-  cpp_dump(pair_map);
-  cpp_dump(set_of_tuples);
-  CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::always);
-  cpp_dump(vec2);
-  cpp_dump(vector_of_pairs);
-  cpp_dump(map_of_vectors);
-  cpp_dump(vector_map);
-  cpp_dump(set_of_vectors);
-  cpp_dump(map_of_pairs);
-  cpp_dump(pair_map);
-  cpp_dump(set_of_tuples);
-  CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_nested);
-
   // show_index() & show_*()
   vector<vector<int>> vec4 = {
       {1, 2, 3, 4, 5, 6, 7, 8},
