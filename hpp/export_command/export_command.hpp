@@ -324,7 +324,7 @@ inline auto int_style(
 }
 
 /*
- * Manipulator for the display style of decimal integers.
+ * Manipulator for the display style of integers.
  * See README for details.
  */
 inline auto int_style10(
@@ -334,7 +334,7 @@ inline auto int_style10(
 }
 
 /*
- * Manipulator for the display style of decimal integers.
+ * Manipulator for the display style of integers.
  * See README for details.
  */
 inline auto dec(unsigned int digits = 10, bool support_negative = false, unsigned int chunk = 0) {
@@ -342,15 +342,15 @@ inline auto dec(unsigned int digits = 10, bool support_negative = false, unsigne
 }
 
 /*
- * Manipulator for the display style of decimal integers.
+ * Manipulator for the display style of integers.
  * See README for details.
  */
-inline auto bi(unsigned int digits = 32, unsigned int chunk = 0, bool support_negative = false) {
+inline auto bin(unsigned int digits = 32, unsigned int chunk = 0, bool support_negative = false) {
   return int_style(2, digits, chunk, false, support_negative);
 }
 
 /*
- * Manipulator for the display style of decimal integers.
+ * Manipulator for the display style of integers.
  * See README for details.
  */
 inline auto oct(unsigned int digits = 11, unsigned int chunk = 0, bool support_negative = false) {
@@ -358,7 +358,7 @@ inline auto oct(unsigned int digits = 11, unsigned int chunk = 0, bool support_n
 }
 
 /*
- * Manipulator for the display style of decimal integers.
+ * Manipulator for the display style of integers.
  * See README for details.
  */
 inline auto hex(unsigned int digits = 8, unsigned int chunk = 0, bool support_negative = false) {

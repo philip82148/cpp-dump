@@ -589,19 +589,19 @@ int main(int argc, char *argv[]) {
 
   clog << "CHAR_MAX, CHAR_MIN, UCHAR_MAX" << endl;
   cpp_dump(
-      CHAR_MAX | cp::bi(32, 0, true),
+      CHAR_MAX | cp::bin(32, 0, true),
       CHAR_MAX | cp::oct(11, 0, true),
       CHAR_MAX | cp::hex(8, 0, true),
       CHAR_MAX | cp::dec(10, true)
   );
   cpp_dump(
-      CHAR_MIN | cp::bi(32, 0, true),
+      CHAR_MIN | cp::bin(32, 0, true),
       CHAR_MIN | cp::oct(11, 0, true),
       CHAR_MIN | cp::hex(8, 0, true),
       CHAR_MIN | cp::dec(10, true)
   );
   cpp_dump(
-      UCHAR_MAX | cp::bi(32, 0, true),
+      UCHAR_MAX | cp::bin(32, 0, true),
       UCHAR_MAX | cp::oct(11, 0, true),
       UCHAR_MAX | cp::hex(8, 0, true),
       UCHAR_MAX | cp::dec(10, true)
@@ -609,19 +609,19 @@ int main(int argc, char *argv[]) {
 
   clog << "SHRT_MAX, SHRT_MIN, USHRT_MAX" << endl;
   cpp_dump(
-      static_cast<short>(SHRT_MAX) | cp::bi(32, 0, true),
+      static_cast<short>(SHRT_MAX) | cp::bin(32, 0, true),
       static_cast<short>(SHRT_MAX) | cp::oct(11, 0, true),
       static_cast<short>(SHRT_MAX) | cp::hex(8, 0, true),
       static_cast<short>(SHRT_MAX) | cp::dec(10, true)
   );
   cpp_dump(
-      static_cast<short>(SHRT_MIN) | cp::bi(32, 0, true),
+      static_cast<short>(SHRT_MIN) | cp::bin(32, 0, true),
       static_cast<short>(SHRT_MIN) | cp::oct(11, 0, true),
       static_cast<short>(SHRT_MIN) | cp::hex(8, 0, true),
       static_cast<short>(SHRT_MIN) | cp::dec(10, true)
   );
   cpp_dump(
-      static_cast<unsigned short>(USHRT_MAX) | cp::bi(32, 0, true),
+      static_cast<unsigned short>(USHRT_MAX) | cp::bin(32, 0, true),
       static_cast<unsigned short>(USHRT_MAX) | cp::oct(11, 0, true),
       static_cast<unsigned short>(USHRT_MAX) | cp::hex(8, 0, true),
       static_cast<unsigned short>(USHRT_MAX) | cp::dec(10, true)
@@ -629,19 +629,19 @@ int main(int argc, char *argv[]) {
 
   clog << "INT_MAX, INT_MIN, UINT_MAX" << endl;
   cpp_dump(
-      INT_MAX | cp::bi(32, 0, true),
+      INT_MAX | cp::bin(32, 0, true),
       INT_MAX | cp::oct(11, 0, true),
       INT_MAX | cp::hex(8, 0, true),
       INT_MAX | cp::dec(10, true)
   );
   cpp_dump(
-      INT_MIN | cp::bi(32, 0, true),
+      INT_MIN | cp::bin(32, 0, true),
       INT_MIN | cp::oct(11, 0, true),
       INT_MIN | cp::hex(8, 0, true),
       INT_MIN | cp::dec(10, true)
   );
   cpp_dump(
-      UINT_MAX | cp::bi(32, 0, true),
+      UINT_MAX | cp::bin(32, 0, true),
       UINT_MAX | cp::oct(11, 0, true),
       UINT_MAX | cp::hex(8, 0, true),
       UINT_MAX | cp::dec(10, true)
@@ -649,19 +649,19 @@ int main(int argc, char *argv[]) {
 
   clog << "LONG_MAX, LONG_MIN, ULONG_MAX" << endl;
   cpp_dump(
-      LONG_MAX | cp::bi(64, 0, true),
+      LONG_MAX | cp::bin(64, 0, true),
       LONG_MAX | cp::oct(22, 0, true),
       LONG_MAX | cp::hex(16, 0, true),
       LONG_MAX | cp::dec(20, true)
   );
   cpp_dump(
-      LONG_MIN | cp::bi(64, 0, true),
+      LONG_MIN | cp::bin(64, 0, true),
       LONG_MIN | cp::oct(22, 0, true),
       LONG_MIN | cp::hex(16, 0, true),
       LONG_MIN | cp::dec(20, true)
   );
   cpp_dump(
-      ULONG_MAX | cp::bi(64, 0, true),
+      ULONG_MAX | cp::bin(64, 0, true),
       ULONG_MAX | cp::oct(22, 0, true),
       ULONG_MAX | cp::hex(16, 0, true),
       ULONG_MAX | cp::dec(20, true)
@@ -669,19 +669,19 @@ int main(int argc, char *argv[]) {
 
   clog << "LLONG_MAX, LLONG_MIN, ULLONG_MAX" << endl;
   cpp_dump(
-      LLONG_MAX | cp::bi(64, 0, true),
+      LLONG_MAX | cp::bin(64, 0, true),
       LLONG_MAX | cp::oct(22, 0, true),
       LLONG_MAX | cp::hex(16, 0, true),
       LLONG_MAX | cp::dec(20, true)
   );
   cpp_dump(
-      LLONG_MIN | cp::bi(64, 0, true),
+      LLONG_MIN | cp::bin(64, 0, true),
       LLONG_MIN | cp::oct(22, 0, true),
       LLONG_MIN | cp::hex(16, 0, true),
       LLONG_MIN | cp::dec(20, true)
   );
   cpp_dump(
-      ULLONG_MAX | cp::bi(64, 0, true),
+      ULLONG_MAX | cp::bin(64, 0, true),
       ULLONG_MAX | cp::oct(22, 0, true),
       ULLONG_MAX | cp::hex(16, 0, true),
       ULLONG_MAX | cp::dec(20, true)
