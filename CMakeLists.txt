@@ -26,7 +26,7 @@ foreach(args ${args_array})
     list(GET args 0 suffix)
 
     add_test(
-        NAME "dump-${suffix}"
+        NAME "dump-indent-${suffix}"
         COMMAND "${CMAKE_COMMAND}"
         -D "test_dir=${CMAKE_CURRENT_LIST_DIR}/test"
         -D "cmd_path=$<TARGET_FILE:dump_indent_test>"
@@ -34,6 +34,16 @@ foreach(args ${args_array})
         -P "${CMAKE_CURRENT_LIST_DIR}/test/dump_indent_test.cmake"
     )
 endforeach()
+
+add_executable(dump_non_variable_test test/dump_non_variable_test.cpp)
+add_test(
+    NAME "dump-non-variable"
+    COMMAND "${CMAKE_COMMAND}"
+    -D "test_dir=${CMAKE_CURRENT_LIST_DIR}/test"
+    -D "cmd_path=$<TARGET_FILE:dump_non_variable_test>"
+    -D "compiler_id=${CMAKE_CXX_COMPILER_ID}"
+    -P "${CMAKE_CURRENT_LIST_DIR}/test/dump_non_variable_test.cmake"
+)
 
 add_executable(dump_variable_test test/dump_variable_test.cpp)
 add_test(
