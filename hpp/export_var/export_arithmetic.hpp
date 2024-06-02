@@ -94,11 +94,11 @@ inline auto export_arithmetic(
     std::string new_output(output.size() + (output.size() - 1) / chunk, ' ');
 
     std::size_t new_pos = 0;
-    for (std::size_t begin = 0; begin < output.size(); begin += chunk) {
+    for (std::size_t pos = 0; pos < output.size(); pos += chunk) {
       std::memcpy(
           new_output.data() + new_pos,
-          output.substr(begin, chunk).c_str(),
-          std::min<std::size_t>(chunk, output.size() - begin)
+          output.c_str() + pos,
+          std::min<std::size_t>(chunk, output.size() - pos)
       );
       new_pos += chunk + 1;
     }
