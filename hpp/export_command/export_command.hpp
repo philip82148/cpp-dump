@@ -61,9 +61,18 @@ struct export_command {
       const std::tuple<unsigned int, unsigned int, unsigned int, bool, bool> &int_style
   ) {
     auto base = std::get<0>(int_style);
-    if (base >= 2 && base <= 16) _int_style = int_style;
+    switch (base) {
+      case 2:
+      case 4:
+      case 8:
+      case 10:
+      case 16:
+        _int_style = int_style;
+    }
   }
 
+  // This is for make_unique<export_command>().
+  // Don't call this outside since this doesn't check if int_style is safe.
   explicit export_command(
       const std::optional<std::tuple<unsigned int, unsigned int, unsigned int, bool, bool>>
           &int_style,

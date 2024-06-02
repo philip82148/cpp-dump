@@ -46,37 +46,34 @@ inline auto export_arithmetic(
 
   std::string output;
 
-  T tmp;
+  std::make_unsigned_t<T> non_negative_tmp;
   if constexpr (std::is_signed_v<T>) {
-    tmp = std::abs(value);
+    non_negative_tmp = std::abs(value);
   } else {
-    tmp = value;
+    non_negative_tmp = value;
   }
 
   // Create a string of an integer with base as the radix
   if (base == 10) {
-    output = std::to_string(tmp);
+    output = std::to_string(non_negative_tmp);
     std::reverse(output.begin(), output.end());
   } else {
     bool is_first = true;
-    while (is_first || tmp) {
+    while (is_first || non_negative_tmp) {
       is_first = false;
       T r;
       switch (base) {
         case 2:
-          r = tmp & 0x01;
+          r = non_negative_tmp & 0x01;
           break;
         case 4:
-          r = tmp & 0x03;
+          r = non_negative_tmp & 0x03;
           break;
         case 8:
-          r = tmp & 0x07;
-          break;
-        case 16:
-          r = tmp & 0x0f;
+          r = non_negative_tmp & 0x07;
           break;
         default:
-          r = tmp % static_cast<T>(base);
+          r = non_negative_tmp & 0x0f;
           break;
       }
 
@@ -88,19 +85,16 @@ inline auto export_arithmetic(
 
       switch (base) {
         case 2:
-          tmp >>= 1;
+          non_negative_tmp >>= 1;
           break;
         case 4:
-          tmp >>= 2;
+          non_negative_tmp >>= 2;
           break;
         case 8:
-          tmp >>= 3;
-          break;
-        case 16:
-          tmp >>= 4;
+          non_negative_tmp >>= 3;
           break;
         default:
-          tmp /= static_cast<T>(base);
+          non_negative_tmp >>= 4;
           break;
       }
     }
