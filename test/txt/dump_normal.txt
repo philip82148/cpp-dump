@@ -858,19 +858,19 @@ here.`,
 [dump] i => 0, cp::int_style(i) << 0x10000 => 65536
 [dump] i => 1, cp::int_style(i) << 0x10000 => 65536
 [dump] i => 2, cp::int_style(i) << 0x10000 => 1 00 00 00 00 00 00 00 00 _2
-[dump] i => 3, cp::int_style(i) << 0x10000 => 1 00 22 22 00 21 _3
+[dump] i => 3, cp::int_style(i) << 0x10000 => 65536
 [dump] i => 4, cp::int_style(i) << 0x10000 => 1 00 00 00 00 _4
-[dump] i => 5, cp::int_style(i) << 0x10000 => 04 04 41 21 _5
-[dump] i => 6, cp::int_style(i) << 0x10000 => 01 22 32 24 _6
-[dump] i => 7, cp::int_style(i) << 0x10000 => 00 36 20 32 _7
+[dump] i => 5, cp::int_style(i) << 0x10000 => 65536
+[dump] i => 6, cp::int_style(i) << 0x10000 => 65536
+[dump] i => 7, cp::int_style(i) << 0x10000 => 65536
 [dump] i => 8, cp::int_style(i) << 0x10000 => 00 20 00 00 _8
-[dump] i => 9, cp::int_style(i) << 0x10000 => 00 10 88 07 _9
+[dump] i => 9, cp::int_style(i) << 0x10000 => 65536
 [dump] i => 10, cp::int_style(i) << 0x10000 => 00 06 55 36
-[dump] i => 11, cp::int_style(i) << 0x10000 => 00 04 52 69 _11
-[dump] i => 12, cp::int_style(i) << 0x10000 => 00 03 1b 14 _12
-[dump] i => 13, cp::int_style(i) << 0x10000 => 00 02 3a a3 _13
-[dump] i => 14, cp::int_style(i) << 0x10000 => 00 01 9c 52 _14
-[dump] i => 15, cp::int_style(i) << 0x10000 => 00 01 46 41 _15
+[dump] i => 11, cp::int_style(i) << 0x10000 => 65536
+[dump] i => 12, cp::int_style(i) << 0x10000 => 65536
+[dump] i => 13, cp::int_style(i) << 0x10000 => 65536
+[dump] i => 14, cp::int_style(i) << 0x10000 => 65536
+[dump] i => 15, cp::int_style(i) << 0x10000 => 65536
 [dump] i => 16, cp::int_style(i) << 0x10000 => 00 01 00 00 _16
 [dump] vec3 => [
          [ 1, 20, 4 ],
