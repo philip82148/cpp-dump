@@ -98,7 +98,8 @@ inline auto export_tuple(
                          )
                          + es::bracket(" )", current_depth);
 
-    if (!has_newline(output) && get_length(output) <= max_line_width) return output;
+    if (!has_newline(output) && last_line_length + get_length(output) <= max_line_width)
+      return output;
 
     if (fail_on_newline) return "\n";
 
