@@ -48,7 +48,7 @@ inline auto export_arithmetic(
 
   std::make_unsigned_t<T> non_negative_tmp;
   if constexpr (std::is_signed_v<T>) {
-    non_negative_tmp = std::abs(value);
+    non_negative_tmp = static_cast<std::make_unsigned_t<T>>(std::abs(value));
   } else {
     non_negative_tmp = value;
   }
