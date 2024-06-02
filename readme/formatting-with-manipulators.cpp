@@ -22,7 +22,7 @@ int main() {
   std::clog << std::endl;
 
   // manipulators.png
-  cpp_dump(some_huge_vector | cp::show_back(10) | cp::show_both_ends(10) | cp::int_style10(2));
+  cpp_dump(some_huge_vector | cp::show_back(10) | cp::show_both_ends(10) | cp::dec(2));
 
   std::clog << std::endl;
 
@@ -32,13 +32,13 @@ int main() {
   std::clog << std::endl;
 
   // int-style.png
-  cpp_dump(some_huge_vector | cp::int_style(2, 8, 2) | cp::show_front(5) | cp::show_front(5));
+  cpp_dump(some_huge_vector | cp::bin(8, 2) | cp::show_front(5) | cp::show_front(5));
 
   std::clog << std::endl;
 
   // cont-index.png
   cp::max_iteration_count = 5;
-  cpp_dump(some_huge_vector | cp::int_style10(2) | cp::cont_index());
+  cpp_dump(some_huge_vector | cp::dec(2) | cp::cont_index());
 
   std::clog << std::endl;
 }
