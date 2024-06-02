@@ -66,9 +66,6 @@ inline auto export_arithmetic(
         case 2:
           r = non_negative_tmp & 0x01;
           break;
-        case 4:
-          r = non_negative_tmp & 0x03;
-          break;
         case 8:
           r = non_negative_tmp & 0x07;
           break;
@@ -86,9 +83,6 @@ inline auto export_arithmetic(
       switch (base) {
         case 2:
           non_negative_tmp >>= 1;
-          break;
-        case 4:
-          non_negative_tmp >>= 2;
           break;
         case 8:
           non_negative_tmp >>= 3;

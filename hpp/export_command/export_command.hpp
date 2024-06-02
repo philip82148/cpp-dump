@@ -63,7 +63,6 @@ struct export_command {
     auto base = std::get<0>(int_style);
     switch (base) {
       case 2:
-      case 4:
       case 8:
       case 10:
       case 16:
