@@ -254,7 +254,7 @@ here.`,
 [dump] i => 1, cp::int_style(i) << 0x10000 => 65536
 [dump] i => 2, cp::int_style(i) << 0x10000 => 1 00 00 00 00 00 00 00 00 _2
 [dump] i => 3, cp::int_style(i) << 0x10000 => 65536
-[dump] i => 4, cp::int_style(i) << 0x10000 => 1 00 00 00 00 _4
+[dump] i => 4, cp::int_style(i) << 0x10000 => 65536
 [dump] i => 5, cp::int_style(i) << 0x10000 => 65536
 [dump] i => 6, cp::int_style(i) << 0x10000 => 65536
 [dump] i => 7, cp::int_style(i) << 0x10000 => 65536
