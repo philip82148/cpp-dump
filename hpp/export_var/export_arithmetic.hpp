@@ -93,8 +93,12 @@ inline auto export_arithmetic(
     std::string new_output(output.size() + (output.size() - 1) / chunk, ' ');
 
     std::size_t new_pos = 0;
-    for (std::size_t begin = 0; begin < output.length(); begin += chunk) {
-      std::memcpy(new_output.data() + new_pos, output.substr(begin, chunk).c_str(), chunk);
+    for (std::size_t begin = 0; begin < output.size(); begin += chunk) {
+      std::memcpy(
+          new_output.data() + new_pos,
+          output.substr(begin, chunk).c_str(),
+          std::min<std::size_t>(chunk, output.size() - begin)
+      );
       new_pos += chunk + 1;
     }
 
