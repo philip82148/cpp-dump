@@ -8,6 +8,7 @@ namespace cp = cpp_dump;
 #else
 #include <array>
 #include <bitset>
+#include <climits>
 #include <complex>
 #include <iomanip>
 #include <map>
