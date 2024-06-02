@@ -312,6 +312,11 @@ inline cpp_dump::es_value_t cpp_dump::es_value = {
     "\e[31m",    // unsupported: red
     {"\e[02m"},  // bracket_by_depth[0]: dark
 };
+
+/**
+ * Style of indents of containers.
+ */
+inline cont_indent_style_t cont_indent_style = cont_indent_style_t::when_nested;
 ```
 
 ### Types
@@ -351,6 +356,12 @@ struct cpp_dump::es_value_t {
     std::vector<std::string> bracket_by_depth,
   );
 }
+
+/**
+ * Type of cpp_dump::cont_indent_style.
+ * cpp_dump::export_var() supports this type.
+ */
+enum class cont_indent_style_t { minimal, when_nested, when_non_tuples_nested, always };
 
 using cpp_dump::log_label::log_label_func_t =
     std::function<std::string(const std::string &, std::size_t, const std::string &)>;
