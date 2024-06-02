@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <algorithm>
 #include <cstring>
 #include <sstream>
 #include <string>
