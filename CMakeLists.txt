@@ -14,23 +14,36 @@ enable_testing()
 
 add_executable(static_test test/static_test.cpp test/odr_test.cpp)
 
-add_executable(dump_test test/dump_test.cpp)
+add_executable(dump_indent_test test/dump_indent_test.cpp)
+
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-    target_compile_definitions(dump_test PRIVATE USE_BITS_STDC)
+    target_compile_definitions(dump_indent_test PRIVATE USE_BITS_STDC)
 endif()
+
 set(args_array "normal\;160\;4" "narrow\;20\;4" "wide\;4000\;4" "shallow\;4000\;0")
+
 foreach(args ${args_array})
     list(GET args 0 suffix)
 
     add_test(
-        NAME "dump-${suffix}"
+        NAME "dump-indent-${suffix}"
         COMMAND "${CMAKE_COMMAND}"
         -D "test_dir=${CMAKE_CURRENT_LIST_DIR}/test"
-        -D "cmd_path=$<TARGET_FILE:dump_test>"
+        -D "cmd_path=$<TARGET_FILE:dump_indent_test>"
         -D "cmd_args=${args}"
-        -P "${CMAKE_CURRENT_LIST_DIR}/test/dump_test.cmake"
+        -P "${CMAKE_CURRENT_LIST_DIR}/test/dump_indent_test.cmake"
     )
 endforeach()
+
+add_executable(dump_non_variable_test test/dump_non_variable_test.cpp)
+add_test(
+    NAME "dump-non-variable"
+    COMMAND "${CMAKE_COMMAND}"
+    -D "test_dir=${CMAKE_CURRENT_LIST_DIR}/test"
+    -D "cmd_path=$<TARGET_FILE:dump_non_variable_test>"
+    -D "compiler_id=${CMAKE_CXX_COMPILER_ID}"
+    -P "${CMAKE_CURRENT_LIST_DIR}/test/dump_non_variable_test.cmake"
+)
 
 add_executable(dump_variable_test test/dump_variable_test.cpp)
 add_test(
@@ -44,6 +57,7 @@ add_test(
 
 add_executable(color_test test/color_test.cpp)
 set(args_array "wide\;4000\;4" "narrow\;20\;4" "shallow\;4000\;0")
+
 foreach(args ${args_array})
     list(GET args 0 suffix)
 
@@ -57,7 +71,7 @@ foreach(args ${args_array})
     )
 endforeach()
 
-if(CMAKE_CXX_STANDARD GREATER 17) 
+if(CMAKE_CXX_STANDARD GREATER 17)
     add_executable(color_std_version_test test/color_std_version_test.cpp)
     add_test(
         NAME "color-std-version"
@@ -90,6 +104,7 @@ add_test(
 )
 
 file(GLOB files readme/*.cpp)
+
 foreach(file ${files})
     get_filename_component(basename "${file}" NAME_WLE)
 
