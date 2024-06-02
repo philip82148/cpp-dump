@@ -30,7 +30,7 @@ here.`,
        ]
 [dump] (vector<int>{3, 1, 4}) => [ 3, 1, 4 ],
        vec => [
-         [ 2, 4, 6, 7, 8, 9, 0, 1, 1, 1, 7, 8, 9, 0, 1, 1, ... ]
+         [ 2, 4, 6, 7, 8, 9, 0, 1, 1, 1, 7, 8, 9, 0, 1, 1, 1, 1, 1, 1, 1 ]
        ],
        (vector<vector<vector<int>>>{{{2, 4, 6, 7, 8, 9, 0, 1, 1, 1, 3, 45}}}) => [
          [
@@ -38,7 +38,7 @@ here.`,
          ]
        ]
 [dump] (vector<int>{2, 3}) => [ 2, 3 ], (vector<int>{3, 4}) => [ 3, 4 ], 
-       (vector<int>{2, 4, 4, 5, 6, 4, 5, 2, 4, 5, 3, 5, 6, 7, 5, 6, 6, 6, 7, 7, 8, 1}) => [ 2, 4, 4, 5, 6, 4, 5, 2, 4, 5, 3, 5, 6, 7, 5, 6, ... ]
+       (vector<int>{2, 4, 4, 5, 6, 4, 5, 2, 4, 5, 3, 5, 6, 7, 5, 6, 6, 6, 7, 7, 8, 1}) => [ 2, 4, 4, 5, 6, 4, 5, 2, 4, 5, 3, 5, 6, 7, 5, 6, 6, 6, 7, 7, 8, 1 ]
 [dump] (vector<int>{2, 3}) => [ 2, 3 ],
        (vector<int>{3, 4}) => [ 3, 4 ],
        (vector<vector<int>>{{2}, {4}, {4}, {5}, {6}}) => [
@@ -53,9 +53,9 @@ here.`,
          ( 3, 4 ),
          ( 5, 7 )
        ]
-[dump] c_style_array => [ 3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 3, 1, 4, 1, 5, 9, ... ]
+[dump] c_style_array => [ 3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 3, 1, 4, 1, 5, 9, 2, 6, 5, 3 ]
 [dump] vec => [
-         [ 2, 4, 6, 7, 8, 9, 0, 1, 1, 1, 7, 8, 9, 0, 1, 1, ... ]
+         [ 2, 4, 6, 7, 8, 9, 0, 1, 1, 1, 7, 8, 9, 0, 1, 1, 1, 1, 1, 1, 1 ]
        ]
 [dump] make_pair(8, 'a') => ( 8, 'a' )
 [dump] make_tuple( 9, "This is another string.", "This is another string.", "This is another string.", "This is another string.", 7.9 )
@@ -160,7 +160,7 @@ here.`,
 [dump] complex2 => 10.000000 + 1.000000i ( abs= 10.049876, arg/pi= 0.031726 )
 [dump] logic_error1 => std::logic_error{ what()= "This is a test error." }
 [dump] vec.begin() => Unsupported Type
-[dump] vec.begin() => *[ 2, 4, 6, 7, 8, 9, 0, 1, 1, 1, 7, 8, 9, 0, 1, 1, ... ]
+[dump] vec.begin() => *[ 2, 4, 6, 7, 8, 9, 0, 1, 1, 1, 7, 8, 9, 0, 1, 1, 1, 1, 1, 1, 1 ]
 [dump] ostream_able_class_a_1 => ostream_able_class_a
 [dump] unsupported_class1 => Unsupported Type
 [dump] main => Unsupported Type, &main => Unsupported Type, &unsupported_class::k => Unsupported Type, &unsupported_class::str => Unsupported Type

@@ -167,6 +167,7 @@ int main(int argc, char *argv[]) {
   if (argc != 2) return 1;
   int es_index = stoi(argv[1]);
 
+  CPP_DUMP_SET_OPTION(max_iteration_count, 100);
   CPP_DUMP_SET_OPTION(
       es_style, (array{cpp_dump::es_style_t::no_es, cpp_dump::es_style_t::by_syntax}[es_index])
   );
