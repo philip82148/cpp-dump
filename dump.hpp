@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <algorithm>
 #include <functional>
 #include <initializer_list>
 #include <iostream>
@@ -48,20 +49,21 @@ template <typename T>
 bool _dump_one(
     std::string &output,
     const std::string &log_label,
-    bool no_newline_in_value_str,
+    bool always_newline_before_expr,
     const std::string &expr,
     const T &value
 ) {
   const std::string initial_indent(get_last_line_length(log_label), ' ');
   const std::string second_indent = initial_indent + "  ";
+  const bool fail_on_newline_in_value = !always_newline_before_expr;
 
   if (output.length() == 0) {
     output = es::log(log_label);
   } else {
-    if (no_newline_in_value_str) {
-      output += es::log(", ");
-    } else {
+    if (always_newline_before_expr) {
       output += es::log(",\n") + initial_indent;
+    } else {
+      output += es::log(", ");
     }
   }
 
@@ -72,13 +74,18 @@ bool _dump_one(
     bool over_max_line_width;
   };
 
-  auto make_prefix_and_value_str = [&, no_newline_in_value_str](
+  auto make_prefix_and_value_str = [&, fail_on_newline_in_value](
                                        const std::string &prefix, const std::string &indent
                                    ) -> prefix_and_value_str {
     auto last_line_length = get_last_line_length(output + prefix);
 
     std::string value_str = export_var(
-        value, indent, last_line_length, 0, no_newline_in_value_str, export_command::default_command
+        value,
+        indent,
+        last_line_length,
+        0,
+        fail_on_newline_in_value,
+        export_command::default_command
     );
 
     bool value_str_has_newline = has_newline(value_str);
@@ -95,12 +102,12 @@ bool _dump_one(
   if (!print_expr) {
     prefix_and_value_str pattern1 = make_prefix_and_value_str("", initial_indent);
 
-    if (!no_newline_in_value_str) {
+    if (!fail_on_newline_in_value) {
       append_output(pattern1);
       return true;
     }
 
-    if (!pattern1.value_str_has_newline && !pattern1.over_max_line_width) {
+    if (!(pattern1.value_str_has_newline || pattern1.over_max_line_width)) {
       append_output(pattern1);
       return true;
     }
@@ -110,7 +117,7 @@ bool _dump_one(
     prefix_and_value_str pattern2 =
         make_prefix_and_value_str("\n" + initial_indent, initial_indent);
 
-    if (!pattern2.value_str_has_newline && !pattern2.over_max_line_width) {
+    if (!(pattern2.value_str_has_newline || pattern2.over_max_line_width)) {
       append_output(pattern2);
       return true;
     }
@@ -120,11 +127,11 @@ bool _dump_one(
 
   auto expr_with_es = es::expression(expr);
 
-  if (no_newline_in_value_str) {
+  if (fail_on_newline_in_value) {
     prefix_and_value_str pattern1a =
         make_prefix_and_value_str(expr_with_es + es::log(" => "), initial_indent);
 
-    if (!pattern1a.value_str_has_newline && !pattern1a.over_max_line_width) {
+    if (!(pattern1a.value_str_has_newline || pattern1a.over_max_line_width)) {
       append_output(pattern1a);
       return true;
     }
@@ -146,7 +153,7 @@ bool _dump_one(
         "\n" + initial_indent + expr_with_es + es::log(" => "), initial_indent
     );
 
-    if (!pattern2a.value_str_has_newline && !pattern2a.over_max_line_width) {
+    if (!(pattern2a.value_str_has_newline || pattern2a.over_max_line_width)) {
       append_output(pattern2a);
       return true;
     }
@@ -197,12 +204,12 @@ template <typename... Args>
 bool _dump(
     std::string &output,
     const std::string &log_label,
-    bool no_newline_in_value_str,
+    bool always_newline_before_expr,
     const std::initializer_list<std::string> &exprs,
     const Args &...args
 ) {
   auto it = exprs.begin();
-  return (... && _dump_one(output, log_label, no_newline_in_value_str, *it++, args));
+  return (... && _dump_one(output, log_label, always_newline_before_expr, *it++, args));
 }
 
 struct _source_location {
@@ -219,10 +226,12 @@ void cpp_dump_macro(
   std::string log_label =
       log_label_func ? log_label_func(loc.file_name, loc.line, loc.function_name) : "";
 
+  bool exprs_have_newline = print_expr && std::any_of(exprs.begin(), exprs.end(), has_newline);
+
   std::string output;
-  if (!_dump(output, log_label, true, exprs, args...)) {
+  if (exprs_have_newline || !_dump(output, log_label, false, exprs, args...)) {
     output = "";
-    _dump(output, log_label, false, exprs, args...);
+    _dump(output, log_label, true, exprs, args...);
   }
 
   std::clog << output << std::endl;
