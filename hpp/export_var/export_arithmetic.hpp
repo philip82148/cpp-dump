@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <cstring>
+#include <sstream>
 #include <string>
 #include <type_traits>
 
@@ -57,49 +59,24 @@ inline auto export_arithmetic(
   if (base == 10) {
     output = std::to_string(non_negative_tmp);
     std::reverse(output.begin(), output.end());
-  } else {
+  } else if (base == 2) {
     bool is_first = true;
     while (is_first || non_negative_tmp) {
       is_first = false;
-      T r;
-      switch (base) {
-        case 2:
-          r = non_negative_tmp & 0x01;
-          break;
-        case 8:
-          r = non_negative_tmp & 0x07;
-          break;
-        default:
-          r = non_negative_tmp & 0x0f;
-          break;
-      }
-
-      if (r <= 9) {
-        output.append(1, static_cast<char>(r + '0'));
-      } else {
-        output.append(1, static_cast<char>(r - 10 + 'a'));
-      }
-
-      switch (base) {
-        case 2:
-          non_negative_tmp >>= 1;
-          break;
-        case 8:
-          non_negative_tmp >>= 3;
-          break;
-        default:
-          non_negative_tmp >>= 4;
-          break;
-      }
+      char next_digit = (non_negative_tmp & 0x01) + '0';
+      output.append(1, next_digit);
+      non_negative_tmp >>= 1;
     }
+  } else {
+    std::stringstream ss;
+    ss << std::setbase(base) << non_negative_tmp;
+    output = ss.str();
+    std::reverse(output.begin(), output.end());
   }
 
-  bool added_minus = false;
-  if (space_fill && value < 0 && (digits == 0 || output.length() < digits)) {
-    // Add a minus when value < 0 (part 1)
-    output.append(1, '-');
-    added_minus = true;
-  }
+  // Add a minus when value < 0 (part 1)
+  bool minus_before_fill = space_fill && (digits == 0 || output.length() < digits);
+  if (minus_before_fill && value < 0) output.append(1, '-');
 
   if (digits > 0 && output.length() < digits) {
     // Fill with spaces/zeros
@@ -110,21 +87,24 @@ inline auto export_arithmetic(
     }
   }
 
-  bool length_was_greater_than_digits = output.length() > digits;
+  bool length_was_below_digits = output.length() <= digits;
   if (chunk > 0) {
     // Add a space between chunks
-    std::string output_tmp;
-    output.swap(output_tmp);
-    for (std::size_t begin = 0; begin < output_tmp.length(); begin += chunk) {
-      if (begin > 0) output.append(1, ' ');
-      output.append(output_tmp.substr(begin, chunk));
+    std::string new_output(output.size() + (output.size() - 1) / chunk, ' ');
+
+    std::size_t new_pos = 0;
+    for (std::size_t begin = 0; begin < output.length(); begin += chunk) {
+      std::memcpy(new_output.data() + new_pos, output.substr(begin, chunk).c_str(), chunk);
+      new_pos += chunk + 1;
     }
+
+    output.swap(new_output);
   }
 
   // Add a minus when value < 0 (part 2) or a space when not and support_negative
-  if (!added_minus && value < 0) {
+  if (!minus_before_fill && value < 0) {
     output.append(1, '-');
-  } else if (support_negative && !length_was_greater_than_digits) {
+  } else if (support_negative && length_was_below_digits) {
     output.append(1, ' ');
   }
 
