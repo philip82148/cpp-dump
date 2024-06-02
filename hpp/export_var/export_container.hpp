@@ -41,7 +41,17 @@ inline auto export_container(
   const auto &next_command = command.next();
   auto skipped_container = command.create_skip_container(container);
 
-  bool shift_indent = is_iterable_like<iterable_elem_type<T>>;
+  bool shift_indent;
+  if (cont_indent_style == cont_indent_style_t::always) {
+    shift_indent = true;
+  } else if (cont_indent_style == cont_indent_style_t::when_nested) {
+    shift_indent = is_iterable_like<iterable_elem_type<T>>;
+  } else if (cont_indent_style == cpp_dump::cont_indent_style_t::when_non_tuples_nested) {
+    shift_indent = is_iterable_like<iterable_elem_type<T>> && !is_tuple<iterable_elem_type<T>>;
+  } else {
+    shift_indent = false;
+  }
+
   if (!shift_indent) {
     std::string output = es::bracket("[ ", current_depth);
     bool is_first_elem = true;

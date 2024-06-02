@@ -124,8 +124,21 @@ inline auto export_map(
   })();
   auto skipped_map = command.create_skip_container(map_wrapper);
 
-  bool shift_indent = is_multimap<T> || is_iterable_like<typename T::key_type>
-                      || is_iterable_like<typename T::mapped_type>;
+  bool shift_indent;
+  if (cont_indent_style == cont_indent_style_t::always) {
+    shift_indent = true;
+  } else if (cont_indent_style == cont_indent_style_t::when_nested) {
+    shift_indent = is_multimap<T> || is_iterable_like<typename T::key_type>
+                   || is_iterable_like<typename T::mapped_type>;
+  } else if (cont_indent_style == cpp_dump::cont_indent_style_t::when_non_tuples_nested) {
+    shift_indent =
+        is_multimap<T>
+        || (is_iterable_like<typename T::key_type> && !is_tuple<typename T::key_type>)
+        || (is_iterable_like<typename T::mapped_type> && !is_tuple<typename T::mapped_type>);
+  } else {
+    shift_indent = false;
+  }
+
   if (!shift_indent) {
     std::string output = es::bracket("{ ", current_depth);
     bool is_first_elem = true;

@@ -178,6 +178,10 @@ here.`,
          unsupported= "\e[31m", 
          bracket_by_depth= [ "\e[02m" ]
        }
+[dump] cpp_dump::cont_indent_style_t::minimal => cpp_dump::cont_indent_style_t::minimal, 
+       cpp_dump::cont_indent_style_t::when_nested => cpp_dump::cont_indent_style_t::when_nested, 
+       cpp_dump::cont_indent_style_t::when_non_tuples_nested => cpp_dump::cont_indent_style_t::when_non_tuples_nested, 
+       cpp_dump::cont_indent_style_t::always => cpp_dump::cont_indent_style_t::always, cpp_dump::cont_indent_style => cpp_dump::cont_indent_style_t::when_nested
 [dump] cp::int_style(16) << 10000u => 00 00 27 10 _16, cp::int_style(16) << 10000l => 00 00 27 10 _16, cp::int_style(16) << 10000ul => 00 00 27 10 _16, 
        cp::int_style(16) << 10000ll => 00 00 27 10 _16, cp::int_style(16) << 10000ull => 00 00 27 10 _16
 [dump] array50 => [ 0, 1, ... ], map50 => { 0: 1, 1: 2, ... }, set50 => { 0, 1, ... }

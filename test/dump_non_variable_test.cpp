@@ -345,6 +345,13 @@ int main(int argc, char *argv[]) {
 
   // extra
   cpp_dump(cpp_dump::es_style_t::no_es, cpp_dump::es_style_t::by_syntax, cpp_dump::es_value);
+  cpp_dump(
+      cpp_dump::cont_indent_style_t::minimal,
+      cpp_dump::cont_indent_style_t::when_nested,
+      cpp_dump::cont_indent_style_t::when_non_tuples_nested,
+      cpp_dump::cont_indent_style_t::always,
+      cpp_dump::cont_indent_style
+  );
 
   // cp::int_style()
   cpp_dump(
@@ -355,7 +362,7 @@ int main(int argc, char *argv[]) {
       cp::int_style(16) << 10000ull
   );
 
-  // mn::show_*()
+  // cp::show_*()
   array<int, 50> array50;
   map<int, int> map50;
   set<int> set50;

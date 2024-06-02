@@ -58,3 +58,10 @@ export_enum(const T &, const std::string &, std::size_t, std::size_t, bool, cons
 CPP_DUMP_DEFINE_EXPORT_ENUM(
     cpp_dump::es_style_t, cpp_dump::es_style_t::no_es, cpp_dump::es_style_t::by_syntax
 );
+CPP_DUMP_DEFINE_EXPORT_ENUM(
+    cpp_dump::cont_indent_style_t,
+    cpp_dump::cont_indent_style_t::minimal,
+    cpp_dump::cont_indent_style_t::when_nested,
+    cpp_dump::cont_indent_style_t::when_non_tuples_nested,
+    cpp_dump::cont_indent_style_t::always
+);

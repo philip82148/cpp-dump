@@ -42,6 +42,8 @@ CPP_DUMP_DEFINE_EXPORT_OBJECT(class_a, int_a, str);
 CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(int_b, str);
 CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(str_member, pointer, ref);
 
+#define PRINT(x) (x), (clog << #x ";" << endl)
+
 int main(int argc, char *argv[]) {
   if (argc != 4) return 1;
   unsigned int max_line_width_ = stoi(argv[1]);
@@ -144,21 +146,59 @@ here.)");
   };
   cpp_dump(vec1d3);
 
+  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::always));
+  cpp_dump(vec1d1);
+  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_nested));
+
   vector<string> vector_of_string{this_string_contains_new_line_here};
   cpp_dump(vector_of_string);
 
   draw_line("test of 2d vector");
-  vector<long long> vector2d1d1 = vec1d1;
-  vector2d1d1.push_back(900000);
+  vector<long long> vec1d_for_2d1 = vec1d1;
+  vec1d_for_2d1.push_back(900000);
 
-  vector<vector<long long>> vector2d1{vector2d1d1};
+  vector<vector<long long>> vector2d1{vec1d_for_2d1};
   cpp_dump(vector2d1);
 
-  vector<long long> vector2d1d2 = vec1d1;
-  vector2d1d2.push_back(9000000);
+  vector<long long> vec1d_for_2d2 = vec1d1;
+  vec1d_for_2d2.push_back(9000000);
 
-  vector<vector<long long>> vector2d2{vector2d1d2};
+  vector<vector<long long>> vector2d2{vec1d_for_2d2};
   cpp_dump(vector2d2);
+
+  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_non_tuples_nested));
+  vector<long long> vec1d_for_2d3 = {
+      10000000000000000,
+      20000000000000000,
+      30000000000000000,
+      40000000000000000,
+      50000000000000000,
+      60000000000000000,
+      70000000000000000,
+      8000000,
+  };
+  vector<vector<long long>> vector2d3{vec1d_for_2d3};
+  cpp_dump(vector2d3);
+  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::minimal));
+  cpp_dump(vector2d3);
+
+  vector<long long> vec1d_for_2d4 = {
+      10000000000000000,
+      20000000000000000,
+      30000000000000000,
+      40000000000000000,
+      50000000000000000,
+      60000000000000000,
+      70000000000000000,
+      80000000,
+  };
+  vector<vector<long long>> vector2d4{vec1d_for_2d4};
+  cpp_dump(vector2d4);
+  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_non_tuples_nested));
+  vector<tuple<long long, long long>> vec_of_tuple{{1, 2}};
+  cpp_dump(vec_of_tuple);
+  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_nested));
+  cpp_dump(vec_of_tuple);
 
   draw_line("test of set");
   set<long long> set1d2(vec1d2.begin(), vec1d2.end());
@@ -168,6 +208,20 @@ here.)");
 
   set<string> set_of_string{this_string_contains_new_line_here};
   cpp_dump(set_of_string);
+
+  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_non_tuples_nested));
+  set<vector<long long>> set_of_vec1{vec1d_for_2d3};
+  cpp_dump(set_of_vec1);
+  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::minimal));
+  cpp_dump(set_of_vec1);
+
+  set<vector<long long>> set_of_vec2{vec1d_for_2d4};
+  cpp_dump(set_of_vec2);
+  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_non_tuples_nested));
+  set<tuple<long long, long long>> set_of_tuple{{1, 2}};
+  cpp_dump(set_of_tuple);
+  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_nested));
+  cpp_dump(set_of_tuple);
 
   draw_line("test of multiset");
   multiset<long long> mset2({
@@ -219,6 +273,56 @@ here.)");
       {800000000000000, this_string_contains_new_line_here},
   };
   cpp_dump(map_of_string_value);
+
+  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_non_tuples_nested));
+  vector<long long> vec1d_for_map_of_vec1 = {
+      1000000000000000,
+      2000000000000000,
+      3000000000000000,
+      400000000000000,
+      500000000000000,
+      600000000000000,
+      700000000000000,
+      800000000000000,
+  };
+  map<vector<long long>, long long> map_of_vec_key1{
+      {vec1d_for_map_of_vec1, 1},
+  };
+  cpp_dump(map_of_vec_key1);
+  map<long long, vector<long long>> map_of_vec_value1{
+      {1, vec1d_for_map_of_vec1},
+  };
+  cpp_dump(map_of_vec_value1);
+  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::minimal));
+  cpp_dump(map_of_vec_key1);
+  cpp_dump(map_of_vec_value1);
+
+  vector<long long> vec1d_for_map_of_vec2 = {
+      1000000000000000,
+      2000000000000000,
+      3000000000000000,
+      4000000000000000,
+      500000000000000,
+      600000000000000,
+      700000000000000,
+      800000000000000,
+  };
+  map<vector<long long>, long long> map_of_vec_key2{
+      {vec1d_for_map_of_vec2, 1},
+  };
+  cpp_dump(map_of_vec_key2);
+  map<long long, vector<long long>> map_of_vec_value2{
+      {1, vec1d_for_map_of_vec2},
+  };
+  cpp_dump(map_of_vec_value2);
+  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_non_tuples_nested));
+  map<long long, tuple<long long, long long>> map_of_tuple_key{{1, {2, 3}}};
+  cpp_dump(map_of_tuple_key);
+  map<tuple<long long, long long>, long long> map_of_tuple_value{{{1, 2}, 3}};
+  cpp_dump(map_of_tuple_value);
+  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_nested));
+  cpp_dump(map_of_tuple_key);
+  cpp_dump(map_of_tuple_value);
 
   draw_line("test of multimap");
   multimap<long long, long long> mmap1{
