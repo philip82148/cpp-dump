@@ -229,7 +229,10 @@ here.`,
          ]
        ]
 [dump] make_pair(8, 'a')
-         => ( 8, 'a' )
+         => (
+           8,
+           'a'
+         )
 [dump] make_tuple( 9, "This is another string.", "This is another string.", "This is another string.", "This is another string.", 7.9 )
          => (
            9,
