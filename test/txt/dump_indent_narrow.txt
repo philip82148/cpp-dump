@@ -99,12 +99,12 @@
 [dump] string(131, '-')
          => "-----------------------------------------------------------------------------------------------------------------------------------",
        R"(this string contains a newline
-  here.)"[0] => 't',
+here.)"[0] => 't',
        2 => 2
 [dump] R"(this string contains a newline
-  here.)" => 
+here.)" => 
 `this string contains a newline
-  here.`
+here.`
 ====================  --  test of 1d vector
 [dump] vec1d1 => [
          10000000000000000,

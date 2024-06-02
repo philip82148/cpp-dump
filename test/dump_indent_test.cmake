@@ -24,6 +24,7 @@ set(txt_file "${test_dir}/txt/dump_indent_${suffix}.txt")
 execute_process(
    COMMAND "${cmd_path}" "${width}" "${depth}" 0 ERROR_FILE "${log_file}" COMMAND_ERROR_IS_FATAL ANY
 )
+string(REGEX REPLACE "\r\n" "\n" error_contents "${error_contents}")
 execute_process(
    COMMAND "${CMAKE_COMMAND}" -E compare_files "${log_file}" "${txt_file}" RESULT_VARIABLE not_successful
 )
@@ -39,6 +40,7 @@ execute_process(
    COMMAND "${cmd_path}" "${width}" "${depth}" 1 ERROR_VARIABLE error_contents COMMAND_ERROR_IS_FATAL ANY
 )
 string(REGEX REPLACE "${esc}\\[[^m]*m" "" error_contents "${error_contents}")
+string(REGEX REPLACE "\r\n" "\n" error_contents "${error_contents}")
 file(WRITE "${log_file}" "${error_contents}")
 execute_process(
    COMMAND "${CMAKE_COMMAND}" -E compare_files "${log_file}" "${txt_file}" RESULT_VARIABLE not_successful

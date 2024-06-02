@@ -6,6 +6,7 @@ namespace cp = cpp_dump;
 #include <bits/stdc++.h>
 #pragma message("<bits/stdc++.h> is used.")
 #else
+#include <array>
 #include <map>
 #include <queue>
 #include <set>
@@ -103,13 +104,11 @@ int main(int argc, char *argv[]) {
   cpp_dump(
       string(131, '-'),
       R"(this string contains a newline
-  here.)"[0],
+here.)"[0],
       2
   );
-  cpp_dump(
-      R"(this string contains a newline
-  here.)"
-  );
+  cpp_dump(R"(this string contains a newline
+here.)");
 
   draw_line("test of 1d vector");
   vector<long long> vec1d1{
