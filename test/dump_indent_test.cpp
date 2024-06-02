@@ -6,23 +6,13 @@ namespace cp = cpp_dump;
 #include <bits/stdc++.h>
 #pragma message("<bits/stdc++.h> is used.")
 #else
-#include <array>
-#include <bitset>
-#include <climits>
-#include <complex>
-#include <iomanip>
 #include <map>
-#include <memory>
-#include <optional>
-#include <ostream>
 #include <queue>
 #include <set>
 #include <stack>
 #include <string>
-#include <string_view>
 #include <tuple>
 #include <utility>
-#include <variant>
 #include <vector>
 #endif
 
