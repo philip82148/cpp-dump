@@ -61,9 +61,17 @@ struct export_command {
       const std::tuple<unsigned int, unsigned int, unsigned int, bool, bool> &int_style
   ) {
     auto base = std::get<0>(int_style);
-    if (base >= 2 && base <= 16) _int_style = int_style;
+    switch (base) {
+      case 2:
+      case 8:
+      case 10:
+      case 16:
+        _int_style = int_style;
+    }
   }
 
+  // This is for make_unique<export_command>().
+  // Don't call this outside since this doesn't check if int_style is safe.
   explicit export_command(
       const std::optional<std::tuple<unsigned int, unsigned int, unsigned int, bool, bool>>
           &int_style,
@@ -316,11 +324,45 @@ inline auto int_style(
 }
 
 /*
- * Manipulator for the display style of decimal integers.
+ * Manipulator for the display style of integers.
  * See README for details.
  */
-inline auto int_style10(unsigned int digits, bool support_negative = false) {
-  return int_style(10, digits, 0, true, support_negative);
+inline auto int_style10(
+    unsigned int digits, bool support_negative = false, unsigned int chunk = 0
+) {
+  return int_style(10, digits, chunk, true, support_negative);
+}
+
+/*
+ * Manipulator for the display style of integers.
+ * See README for details.
+ */
+inline auto dec(unsigned int digits = 10, bool support_negative = false, unsigned int chunk = 0) {
+  return int_style10(digits, support_negative, chunk);
+}
+
+/*
+ * Manipulator for the display style of integers.
+ * See README for details.
+ */
+inline auto bin(unsigned int digits = 32, unsigned int chunk = 0, bool support_negative = false) {
+  return int_style(2, digits, chunk, false, support_negative);
+}
+
+/*
+ * Manipulator for the display style of integers.
+ * See README for details.
+ */
+inline auto oct(unsigned int digits = 11, unsigned int chunk = 0, bool support_negative = false) {
+  return int_style(8, digits, chunk, false, support_negative);
+}
+
+/*
+ * Manipulator for the display style of integers.
+ * See README for details.
+ */
+inline auto hex(unsigned int digits = 8, unsigned int chunk = 0, bool support_negative = false) {
+  return int_style(16, digits, chunk, false, support_negative);
 }
 
 /*

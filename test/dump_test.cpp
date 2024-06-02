@@ -8,6 +8,7 @@ namespace cp = cpp_dump;
 #else
 #include <array>
 #include <bitset>
+#include <climits>
 #include <complex>
 #include <iomanip>
 #include <map>
@@ -581,6 +582,108 @@ int main(int argc, char *argv[]) {
   cpp_dump(cp::int_style(10, 5, 0, true, true /* */) << 0);
   cpp_dump(cp::int_style(16, 5, 0, false, true /* */) << 0);
   cpp_dump(cp::int_style(16, 5, 0, true, true /* */) << 0);
+
+  rep(i, 64) {
+    cpp_dump(((1ULL << i) - 1) | cp::int_style(2, 64, 0));
+    cpp_dump((1ULL << i) | cp::int_style(2, 64, 0));
+  }
+
+  constexpr int char_max = 0x7f;
+  constexpr int char_min = -char_max - 1;
+  constexpr unsigned int uchar_max = char_max * 2u + 1u;
+
+  constexpr short shrt_max = 0x7fff;
+  constexpr short shrt_min = -shrt_max - 1;
+  constexpr unsigned short ushrt_max = shrt_max * 2u + 1u;
+
+  constexpr int int_max = 0x7fffffff;
+  constexpr int int_min = -int_max - 1;
+  constexpr unsigned int uint_max = int_max * 2u + 1u;
+
+  constexpr long long llong_max = 0x7fffffffffffffffLL;
+  constexpr long long llong_min = -llong_max - 1LL;
+  constexpr unsigned long long ullong_max = llong_max * 2ULL + 1ULL;
+
+  clog << "CHAR_MAX, CHAR_MIN, UCHAR_MAX" << endl;
+  cpp_dump(
+      char_max | cp::bin(32, 0, true),
+      char_max | cp::oct(11, 0, true),
+      char_max | cp::hex(8, 0, true),
+      char_max | cp::dec(10, true)
+  );
+  cpp_dump(
+      char_min | cp::bin(32, 0, true),
+      char_min | cp::oct(11, 0, true),
+      char_min | cp::hex(8, 0, true),
+      char_min | cp::dec(10, true)
+  );
+  cpp_dump(
+      uchar_max | cp::bin(32, 0, true),
+      uchar_max | cp::oct(11, 0, true),
+      uchar_max | cp::hex(8, 0, true),
+      uchar_max | cp::dec(10, true)
+  );
+
+  clog << "SHRT_MAX, SHRT_MIN, USHRT_MAX" << endl;
+  cpp_dump(
+      shrt_max | cp::bin(32, 0, true),
+      shrt_max | cp::oct(11, 0, true),
+      shrt_max | cp::hex(8, 0, true),
+      shrt_max | cp::dec(10, true)
+  );
+  cpp_dump(
+      shrt_min | cp::bin(32, 0, true),
+      shrt_min | cp::oct(11, 0, true),
+      shrt_min | cp::hex(8, 0, true),
+      shrt_min | cp::dec(10, true)
+  );
+  cpp_dump(
+      ushrt_max | cp::bin(32, 0, true),
+      ushrt_max | cp::oct(11, 0, true),
+      ushrt_max | cp::hex(8, 0, true),
+      ushrt_max | cp::dec(10, true)
+  );
+
+  clog << "INT_MAX, INT_MIN, UINT_MAX" << endl;
+  cpp_dump(
+      INT_MAX | cp::bin(32, 0, true),
+      INT_MAX | cp::oct(11, 0, true),
+      INT_MAX | cp::hex(8, 0, true),
+      INT_MAX | cp::dec(10, true)
+  );
+  cpp_dump(
+      int_min | cp::bin(32, 0, true),
+      int_min | cp::oct(11, 0, true),
+      int_min | cp::hex(8, 0, true),
+      int_min | cp::dec(10, true)
+  );
+  cpp_dump(
+      uint_max | cp::bin(32, 0, true),
+      uint_max | cp::oct(11, 0, true),
+      uint_max | cp::hex(8, 0, true),
+      uint_max | cp::dec(10, true)
+  );
+
+  clog << "LLONG_MAX, LLONG_MIN, ULLONG_MAX" << endl;
+  cpp_dump(
+      llong_max | cp::bin(64, 0, true),
+      llong_max | cp::oct(22, 0, true),
+      llong_max | cp::hex(16, 0, true),
+      llong_max | cp::dec(20, true)
+  );
+  cpp_dump(
+      llong_min | cp::bin(64, 0, true),
+      llong_min | cp::oct(22, 0, true),
+      llong_min | cp::hex(16, 0, true),
+      llong_min | cp::dec(20, true)
+  );
+  cpp_dump(
+      ullong_max | cp::bin(64, 0, true),
+      ullong_max | cp::oct(22, 0, true),
+      ullong_max | cp::hex(16, 0, true),
+      ullong_max | cp::dec(20, true)
+  );
+
   CPP_DUMP_SET_OPTION(print_expr, true);
 
   // show_index() & show_*()
