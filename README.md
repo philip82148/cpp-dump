@@ -20,14 +20,14 @@ This library has the following features:
 ## Introduction
 
 You can print variables of a wide variety of types by passing them to the `cpp_dump(expressions...)` macro.  
-[See Full Example Code](./readme/macro-version.cpp)
+[See Full Example Code](./readme/introduction.cpp)
 
 ```cpp
 std::vector<std::vector<int>> my_vector{{3, 5, 8, 9, 7}, {9, 3, 2, 3, 8}};
 cpp_dump(my_vector);
 ```
 
-![macro-version.png](./readme/macro-version.png)
+![introduction.png](./readme/introduction.png)
 
 ## Features
 
@@ -514,14 +514,14 @@ See [int_style manipulators](#int_style-manipulators) for details.
 
 ```cpp
 // Show integers in binary, minimum 8 digits, separated by every 2 characters.
-cpp_dump(some_huge_vector | cp::int_style(2, 8, 2) | cp::show_front(5) | cp::show_front(5));
+cpp_dump(some_huge_vector | cp::bin(8, 2) | cp::show_front(5) | cp::show_front(5));
 ```
 
 ![int-style](./readme/int-style.png)
 
 ```cpp
 // Show integers in decimal, minimum 2 digits.
-cpp_dump(some_huge_vector | cp::show_back(10) | cp::show_both_ends(10) | cp::int_style10(2));
+cpp_dump(some_huge_vector | cp::show_back(10) | cp::show_both_ends(10) | cp::dec(2));
 ```
 
 ![manipulators.png](./readme/manipulators.png)
@@ -533,7 +533,7 @@ See [cont_index manipulator](#cont_index-manipulator) for details.
 cp::max_iteration_count = 5;
 
 // Show the indexes of the vector.
-cpp_dump(some_huge_vector | cp::int_style10(2) | cp::cont_index());
+cpp_dump(some_huge_vector | cp::dec(2) | cp::cont_index());
 ```
 
 ![cont-index.png](./readme/cont-index.png)
@@ -583,7 +583,7 @@ cpp_dump(... << cp::int_style() << ... << variable);
 cpp_dump(variable | ... | cp::int_style() | ...);
 ```
 
-`base` supports values of 2, 8, 10, 16. For other values, this manipulator resets the effects of the previous `int_style()` manipulators.  
+Parameter `base` of `int_style()` supports values of 2, 8, 10, 16. For other values, this manipulator resets the effects of the previous `int_style()` manipulators.  
 `chunk/digits` supports values of `chunk/digits` >= 0.  
 Unlike `show_*` manipulators, `int_style()` manipulator acts on all integers in the variable. (The order is irrelevant.)  
 `int_style10()`, `dec()`, `bin()`, `oct()`, `hex()` are aliases of `int_style()`
@@ -609,8 +609,8 @@ cpp_dump::map_v(return_value_of_manipulator);
 cpp_dump::map_kv(return_value_of_manipulator_for_key, return_value_of_manipulator_for_value);
 
 // Example
-cpp_dump(cp::show_front() << cp::map_kv(cp::int_style(16), cp::show_back()) << map);
-cpp_dump(map | cp::show_front() | cp::map_kv(cp::int_style(16), cp::show_back()));
+cpp_dump(cp::show_front() << cp::map_kv(cp::hex(), cp::show_back()) << map);
+cpp_dump(map | cp::show_front() | cp::map_kv(cp::hex(), cp::show_back()));
 ```
 
 These manipulators act on (multi)maps.  
