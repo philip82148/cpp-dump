@@ -55,12 +55,16 @@ inline auto export_arithmetic(
     non_negative_tmp = value;
   }
 
+  const unsigned int reserve_length =
+      digits == 0 ? sizeof(T) * 8 + 1 : digits + (chunk == 0 && support_negative);
+
   // Create a string of an integer with base as the radix
   if (base == 10) {
     output = std::to_string(non_negative_tmp);
+    output.reserve(reserve_length);
     std::reverse(output.begin(), output.end());
   } else if (base == 2) {
-    output.reserve(digits == 0 ? sizeof(T) * 8 + 1 : digits + support_negative);
+    output.reserve(reserve_length);
 
     bool is_first = true;
     while (is_first || non_negative_tmp) {
@@ -73,6 +77,7 @@ inline auto export_arithmetic(
     std::stringstream ss;
     ss << std::setbase(base) << non_negative_tmp;
     output = ss.str();
+    output.reserve(reserve_length);
     std::reverse(output.begin(), output.end());
   }
 
@@ -80,7 +85,7 @@ inline auto export_arithmetic(
   bool minus_before_fill = space_fill && (digits == 0 || output.length() < digits);
   if (minus_before_fill && value < 0) output.append(1, '-');
 
-  if (digits > 0 && output.length() < digits) {
+  if (output.length() < digits) {
     // Fill with spaces/zeros
     if (space_fill) {
       output.append(digits - output.length(), ' ');
