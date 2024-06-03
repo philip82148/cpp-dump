@@ -22,7 +22,7 @@ namespace es {
 
 inline std::string apply(const std::string &es, const std::string &s) {
   if (use_es()) {
-    auto reset = "\x1b[0m";
+    static constexpr char reset[] = "\x1b[0m";
     return reset + es + s + reset;
   } else {
     return s;
