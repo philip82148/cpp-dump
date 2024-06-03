@@ -8,7 +8,6 @@
 #pragma once
 
 #include <algorithm>
-#include <cstring>
 #include <sstream>
 #include <string>
 #include <type_traits>
@@ -61,6 +60,8 @@ inline auto export_arithmetic(
     output = std::to_string(non_negative_tmp);
     std::reverse(output.begin(), output.end());
   } else if (base == 2) {
+    output.reserve(digits == 0 ? sizeof(T) * 8 + 1 : digits + support_negative);
+
     bool is_first = true;
     while (is_first || non_negative_tmp) {
       is_first = false;
@@ -91,16 +92,12 @@ inline auto export_arithmetic(
   bool length_was_below_digits = output.length() <= digits;
   if (chunk > 0) {
     // Add a space between chunks
-    std::string new_output(output.size() + (output.size() - 1) / chunk, ' ');
+    std::string new_output;
+    new_output.reserve(output.size() + (output.size() - 1) / chunk + support_negative);
 
-    std::size_t new_pos = 0;
     for (std::size_t pos = 0; pos < output.size(); pos += chunk) {
-      std::memcpy(
-          new_output.data() + new_pos,
-          output.c_str() + pos,
-          std::min<std::size_t>(chunk, output.size() - pos)
-      );
-      new_pos += chunk + 1;
+      if (pos > 0) new_output.append(1, ' ');
+      new_output.append(output, pos, chunk);
     }
 
     output.swap(new_output);
