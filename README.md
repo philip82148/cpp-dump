@@ -195,7 +195,7 @@ cpp_dump::int_style(unsigned int base = 16, unsigned int digits = 8,
     unsigned int chunk = 2, bool space_fill = false, bool support_negative = false);
 cpp_dump::cont_index();
 cpp_dump::int_style10(unsigned int digits, bool support_negative = false, unsigned int chunk = 0);
-cpp_dump::dec(unsigned int digits = 10, bool support_negative = false, unsigned int chunk = 0);
+cpp_dump::dec(unsigned int digits = 10, unsigned int chunk = 0, bool support_negative = false);
 cpp_dump::bin(unsigned int digits = 32, unsigned int chunk = 0, bool support_negative = false);
 cpp_dump::oct(unsigned int digits = 11, unsigned int chunk = 0, bool support_negative = false);
 cpp_dump::hex(unsigned int digits = 8, unsigned int chunk = 0, bool support_negative = false);
@@ -565,7 +565,7 @@ cpp_dump::int_style(unsigned int base = 16, unsigned int digits = 8,
 cpp_dump::int_style10(unsigned int digits, bool support_negative = false, unsigned int chunk = 0) {
   return int_style(10, digits, chunk, true, support_negative);
 }
-cpp_dump::dec(unsigned int digits = 10, bool support_negative = false, unsigned int chunk = 0) {
+cpp_dump::dec(unsigned int digits = 10, unsigned int chunk = 0, bool support_negative = false) {
   return int_style10(digits, support_negative, chunk);
 }
 cpp_dump::bin(unsigned int digits = 32, unsigned int chunk = 0, bool support_negative = false) {
