@@ -586,6 +586,13 @@ int main(int argc, char *argv[]) {
   cpp_dump(cp::int_style(16, 5, 0, false, true /* */) << 0);
   cpp_dump(cp::int_style(16, 5, 0, true, true /* */) << 0);
 
+  cpp_dump(cp::int_style(10, 0, 2, false, true /**/) << -1);
+  cpp_dump(cp::int_style(10, 0, 2, true, true /**/) << -1);
+  cpp_dump(cp::int_style(10, 0, 2, false, true /**/) << -10);
+  cpp_dump(cp::int_style(10, 0, 2, true, true /**/) << -10);
+  cpp_dump(cp::int_style(10, 0, 2, false, true /**/) << -100);
+  cpp_dump(cp::int_style(10, 0, 2, true, true /**/) << -100);
+
   rep(i, 64) {
     cpp_dump(((1ULL << i) - 1) | cp::int_style(2, 64, 0));
     cpp_dump((1ULL << i) | cp::int_style(2, 64, 0));
