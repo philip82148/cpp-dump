@@ -8,7 +8,6 @@
 #pragma once
 
 #include <complex>
-#include <cstring>
 #include <string>
 #include <type_traits>
 #include <variant>
@@ -72,18 +71,15 @@ export_other(const std::bitset<N> &bitset, const std::string &, std::size_t, std
   constexpr unsigned int chunk = 4;
 
   std::string bitset_str = bitset.to_string();
-  std::string output(3 + N + (N - 1) / chunk, ' ');
-  std::memcpy(output.data(), "0b", 2);
-  std::size_t out_pos = 3;
+  std::string output;
+  output.reserve(3 + N + (N - 1) / chunk);
+  output.append("0b ");
 
   std::size_t pos = bitset_str.length() % chunk;
-  if (pos > 0) {
-    std::memcpy(output.data() + out_pos, bitset_str.c_str(), pos);
-    out_pos += pos + 1;
-  }
+  if (pos > 0) output.append(bitset_str, 0, pos);
   for (; pos < bitset_str.length(); pos += chunk) {
-    std::memcpy(output.data() + out_pos, bitset_str.c_str() + pos, chunk);
-    out_pos += chunk + 1;
+    if (pos > 0) output.append(1, ' ');
+    output.append(bitset_str, pos, chunk);
   }
 
   // Make the entire string an identifier
