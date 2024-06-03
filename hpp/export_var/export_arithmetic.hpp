@@ -60,7 +60,7 @@ inline auto export_arithmetic(
     output = std::to_string(non_negative_tmp);
     std::reverse(output.begin(), output.end());
   } else if (base == 2) {
-    output.reserve(digits == 0 ? sizeof(T) * 8 + 1 : digits + (chunk == 0 && support_negative));
+    output.reserve(digits > 0 ? digits + (chunk == 0 && support_negative) : sizeof(T) * 8 + 1);
 
     bool is_first = true;
     while (is_first || non_negative_tmp) {
