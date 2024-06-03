@@ -337,7 +337,7 @@ inline auto int_style10(
  * Manipulator for the display style of integers.
  * See README for details.
  */
-inline auto dec(unsigned int digits = 10, bool support_negative = false, unsigned int chunk = 0) {
+inline auto dec(unsigned int digits = 10, unsigned int chunk = 0, bool support_negative = false) {
   return int_style10(digits, support_negative, chunk);
 }
 
