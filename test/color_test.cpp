@@ -193,8 +193,8 @@ int main(int argc, char *argv[]) {
   cpp_dump(cpp_dump::es_value);
 
   // manipulators
-  cpp_dump(vec2 | cp::cont_index());
-  cpp_dump(vec2 | cp::front(3) | cp::cont_index());
-  cpp_dump(cpp_dump::es_value | cp::cont_index());
-  cpp_dump(cpp_dump::es_value | cp::cont_index() | cp::front(1));
+  cpp_dump(vec2 | cp::index());
+  cpp_dump(vec2 | cp::front(3) | cp::index());
+  cpp_dump(cpp_dump::es_value | cp::index());
+  cpp_dump(cpp_dump::es_value | cp::index() | cp::front(1));
 }

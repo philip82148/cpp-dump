@@ -362,7 +362,7 @@ int main(int argc, char *argv[]) {
       cp::int_style(16) << 10000ull
   );
 
-  // cp::show_*()
+  // cp::front, back, middle, both_ends
   array<int, 50> array50;
   map<int, int> map50;
   set<int> set50;
@@ -680,7 +680,7 @@ int main(int argc, char *argv[]) {
 
   CPP_DUMP_SET_OPTION(print_expr, true);
 
-  // show_index() & show_*()
+  // index, front, back, middle, both_ends
   vector<vector<int>> vec4 = {
       {1, 2, 3, 4, 5, 6, 7, 8},
       {9, 10, 11, 12, 13},
@@ -690,15 +690,15 @@ int main(int argc, char *argv[]) {
       {19, 20},
   };
 
-  cpp_dump(vec4 | cp::cont_index());
-  cpp_dump(vec4 | cp::front(3) | cp::cont_index());
-  cpp_dump(vec4 | cp::back(3) | cp::cont_index());
-  cpp_dump(vec4 | cp::middle(3) | cp::cont_index());
-  cpp_dump(vec4 | cp::both_ends(3) | cp::cont_index());
-  cpp_dump(vec4 | cp::front() | cp::front(3) | cp::cont_index());
-  cpp_dump(vec4 | cp::front() | cp::back(3) | cp::cont_index());
-  cpp_dump(vec4 | cp::front() | cp::middle(3) | cp::cont_index());
-  cpp_dump(vec4 | cp::front() | cp::both_ends(3) | cp::cont_index());
+  cpp_dump(vec4 | cp::index());
+  cpp_dump(vec4 | cp::front(3) | cp::index());
+  cpp_dump(vec4 | cp::back(3) | cp::index());
+  cpp_dump(vec4 | cp::middle(3) | cp::index());
+  cpp_dump(vec4 | cp::both_ends(3) | cp::index());
+  cpp_dump(vec4 | cp::front() | cp::front(3) | cp::index());
+  cpp_dump(vec4 | cp::front() | cp::back(3) | cp::index());
+  cpp_dump(vec4 | cp::front() | cp::middle(3) | cp::index());
+  cpp_dump(vec4 | cp::front() | cp::both_ends(3) | cp::index());
 
   // non_copyable_and_non_movable_class
   CPP_DUMP_SET_OPTION(max_depth, 2);
