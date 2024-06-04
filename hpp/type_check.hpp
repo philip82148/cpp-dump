@@ -282,9 +282,9 @@ inline std::string _get_typename_aux(std::string func_name) {
 
 #if defined(_MSC_VER)
   if (type_name.find("class ", 0) == 0) {
-    type_name = type_name.substr(std::string_view("class ").size());
+    type_name.erase(0, std::string_view("class ").size());
   } else if (type_name.find("struct ") == 0) {
-    type_name = type_name.substr(std::string_view("struct ").size());
+    type_name.erase(0, std::string_view("struct ").size());
   }
 #endif
 
