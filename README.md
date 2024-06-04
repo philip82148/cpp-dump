@@ -194,7 +194,6 @@ cpp_dump::both_ends(std::size_t iteration_count = cpp_dump::max_iteration_count)
 cpp_dump::int_style(unsigned int base = 16, unsigned int digits = 8,
     unsigned int chunk = 2, bool space_fill = false, bool support_negative = false);
 cpp_dump::index();
-cpp_dump::int_style10(unsigned int digits, bool support_negative = false, unsigned int chunk = 0);
 cpp_dump::dec(unsigned int digits = 10, unsigned int chunk = 0, bool support_negative = false);
 cpp_dump::bin(unsigned int digits = 32, unsigned int chunk = 0, bool support_negative = false);
 cpp_dump::oct(unsigned int digits = 11, unsigned int chunk = 0, bool support_negative = false);
@@ -562,11 +561,8 @@ In particular, passing an infinite sequence to these manipulators will result in
 ```cpp
 cpp_dump::int_style(unsigned int base = 16, unsigned int digits = 8,
     unsigned int chunk = 2, bool space_fill = false, bool support_negative = false);
-cpp_dump::int_style10(unsigned int digits, bool support_negative = false, unsigned int chunk = 0) {
-  return int_style(10, digits, chunk, true, support_negative);
-}
 cpp_dump::dec(unsigned int digits = 10, unsigned int chunk = 0, bool support_negative = false) {
-  return int_style10(digits, support_negative, chunk);
+  return int_style(10, digits, chunk, true, support_negative);
 }
 cpp_dump::bin(unsigned int digits = 32, unsigned int chunk = 0, bool support_negative = false) {
   return int_style(2, digits, chunk, false, support_negative);
@@ -586,7 +582,7 @@ cpp_dump(variable | ... | cp::int_style() | ...);
 Parameter `base` of `int_style()` supports values of 2, 8, 10, 16. For other values, this manipulator resets the effects of the previous `int_style()` manipulators.  
 `chunk/digits` supports values of `chunk/digits` >= 0.  
 Unlike `front` and other manipulators, `int_style()` manipulator acts on all integers in the variable. (The order is irrelevant.)  
-`int_style10()`, `dec()`, `bin()`, `oct()`, `hex()` are aliases of `int_style()`
+`dec()`, `bin()`, `oct()`, `hex()` are aliases of `int_style()`
 
 #### index manipulator
 
