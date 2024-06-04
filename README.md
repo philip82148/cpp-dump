@@ -187,13 +187,13 @@ template <typename T>
 std::string cpp_dump::export_var(const T &value);
 
 // Manipulators (See 'Formatting with manipulators' for details.)
-cpp_dump::show_front(std::size_t iteration_count = cpp_dump::max_iteration_count);
-cpp_dump::show_middle(std::size_t iteration_count = cpp_dump::max_iteration_count);
-cpp_dump::show_back(std::size_t iteration_count = cpp_dump::max_iteration_count);
-cpp_dump::show_both_ends(std::size_t iteration_count = cpp_dump::max_iteration_count);
+cpp_dump::front(std::size_t iteration_count = cpp_dump::max_iteration_count);
+cpp_dump::middle(std::size_t iteration_count = cpp_dump::max_iteration_count);
+cpp_dump::back(std::size_t iteration_count = cpp_dump::max_iteration_count);
+cpp_dump::both_ends(std::size_t iteration_count = cpp_dump::max_iteration_count);
 cpp_dump::int_style(unsigned int base = 16, unsigned int digits = 8,
     unsigned int chunk = 2, bool space_fill = false, bool support_negative = false);
-cpp_dump::cont_index();
+cpp_dump::index();
 cpp_dump::int_style10(unsigned int digits, bool support_negative = false, unsigned int chunk = 0);
 cpp_dump::dec(unsigned int digits = 10, unsigned int chunk = 0, bool support_negative = false);
 cpp_dump::bin(unsigned int digits = 32, unsigned int chunk = 0, bool support_negative = false);
@@ -504,7 +504,7 @@ See [show\_\* manipulators](#show_-manipulators) for details.
 
 ```cpp
 // Show the last 10 elements for the 1st dimension, the first 5 and the last 5 for the 2nd dimension.
-cpp_dump(some_huge_vector | cp::show_back(10) | cp::show_both_ends(10));
+cpp_dump(some_huge_vector | cp::back(10) | cp::both_ends(10));
 ```
 
 ![omitting-a-vector.png](./readme/omitting-a-vector.png)
@@ -514,26 +514,26 @@ See [int_style manipulators](#int_style-manipulators) for details.
 
 ```cpp
 // Show integers in binary, minimum 8 digits, separated by every 2 characters.
-cpp_dump(some_huge_vector | cp::bin(8, 2) | cp::show_front(5) | cp::show_front(5));
+cpp_dump(some_huge_vector | cp::bin(8, 2) | cp::front(5) | cp::front(5));
 ```
 
 ![int-style](./readme/int-style.png)
 
 ```cpp
 // Show integers in decimal, minimum 2 digits.
-cpp_dump(some_huge_vector | cp::show_back(10) | cp::show_both_ends(10) | cp::dec(2));
+cpp_dump(some_huge_vector | cp::back(10) | cp::both_ends(10) | cp::dec(2));
 ```
 
 ![manipulators.png](./readme/manipulators.png)
 
 Furthermore, you can show the indexes of an array by using a manipulator.  
-See [cont_index manipulator](#cont_index-manipulator) for details.
+See [index manipulator](#index-manipulator) for details.
 
 ```cpp
 cp::max_iteration_count = 5;
 
 // Show the indexes of the vector.
-cpp_dump(some_huge_vector | cp::dec(2) | cp::cont_index());
+cpp_dump(some_huge_vector | cp::dec(2) | cp::index());
 ```
 
 ![cont-index.png](./readme/cont-index.png)
@@ -541,19 +541,19 @@ cpp_dump(some_huge_vector | cp::dec(2) | cp::cont_index());
 #### show\_\* manipulators
 
 ```cpp
-cpp_dump::show_front(std::size_t iteration_count = cpp_dump::max_iteration_count);
-cpp_dump::show_middle(std::size_t iteration_count = cpp_dump::max_iteration_count);
-cpp_dump::show_back(std::size_t iteration_count = cpp_dump::max_iteration_count);
-cpp_dump::show_both_ends(std::size_t iteration_count = cpp_dump::max_iteration_count);
+cpp_dump::front(std::size_t iteration_count = cpp_dump::max_iteration_count);
+cpp_dump::middle(std::size_t iteration_count = cpp_dump::max_iteration_count);
+cpp_dump::back(std::size_t iteration_count = cpp_dump::max_iteration_count);
+cpp_dump::both_ends(std::size_t iteration_count = cpp_dump::max_iteration_count);
 
 // Example
-cpp_dump(cp::show_front() << cp::show_back() << variable);
-cpp_dump(variable | cp::show_front() | cp::show_back());
+cpp_dump(cp::front() << cp::back() << variable);
+cpp_dump(variable | cp::front() | cp::back());
 ```
 
 The further left manipulator will act on the more outside dimensions of the array/map/set.  
 **Caution:**  
-These manipulators other than show_front() calculate the container's size.  
+These manipulators other than front() calculate the container's size.  
 Containers whose size cannot be calculated with std::size() will cost O(N) in computation.  
 In particular, passing an infinite sequence to these manipulators will result in an infinite loop.
 
@@ -588,14 +588,14 @@ Parameter `base` of `int_style()` supports values of 2, 8, 10, 16. For other val
 Unlike `show_*` manipulators, `int_style()` manipulator acts on all integers in the variable. (The order is irrelevant.)  
 `int_style10()`, `dec()`, `bin()`, `oct()`, `hex()` are aliases of `int_style()`
 
-#### cont_index manipulator
+#### index manipulator
 
 ```cpp
-cpp_dump::cont_index();
+cpp_dump::index();
 
 // Example
-cpp_dump(... << cp::cont_index() << ... << variable);
-cpp_dump(variable | ... | cp::cont_index() | ...);
+cpp_dump(... << cp::index() << ... << variable);
+cpp_dump(variable | ... | cp::index() | ...);
 ```
 
 Like `int_style` manipulator, this manipulator acts on all sequence containers in the variable. (The order is irrelevant.)  
@@ -609,8 +609,8 @@ cpp_dump::map_v(return_value_of_manipulator);
 cpp_dump::map_kv(return_value_of_manipulator_for_key, return_value_of_manipulator_for_value);
 
 // Example
-cpp_dump(cp::show_front() << cp::map_kv(cp::hex(), cp::show_back()) << map);
-cpp_dump(map | cp::show_front() | cp::map_kv(cp::hex(), cp::show_back()));
+cpp_dump(cp::front() << cp::map_kv(cp::hex(), cp::back()) << map);
+cpp_dump(map | cp::front() | cp::map_kv(cp::hex(), cp::back()));
 ```
 
 These manipulators act on (multi)maps.  
