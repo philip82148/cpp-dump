@@ -369,7 +369,7 @@ inline auto hex(unsigned int digits = 8, unsigned int chunk = 0, bool support_ne
  * Manipulator for the display style of iterables.
  * See README for details.
  */
-inline auto show_front(std::size_t iteration_count = max_iteration_count) {
+inline auto front(std::size_t iteration_count = max_iteration_count) {
   return _detail::export_command(
       [=](std::size_t index, const std::function<std::size_t()> &) -> std::size_t {
         if (index >= iteration_count) return static_cast<std::size_t>(-1);
@@ -382,7 +382,7 @@ inline auto show_front(std::size_t iteration_count = max_iteration_count) {
  * Manipulator for the display style of iterables.
  * See README for details.
  */
-inline auto show_back(std::size_t iteration_count = max_iteration_count) {
+inline auto back(std::size_t iteration_count = max_iteration_count) {
   return _detail::export_command(
       [=](std::size_t index, const std::function<std::size_t()> &cont_size) -> std::size_t {
         std::size_t size = cont_size();
@@ -398,7 +398,7 @@ inline auto show_back(std::size_t iteration_count = max_iteration_count) {
  * Manipulator for the display style of iterables.
  * See README for details.
  */
-inline auto show_both_ends(std::size_t iteration_count = max_iteration_count) {
+inline auto both_ends(std::size_t iteration_count = max_iteration_count) {
   return _detail::export_command(
       [=](std::size_t index, const std::function<std::size_t()> &cont_size) -> std::size_t {
         std::size_t size = cont_size();
@@ -416,7 +416,7 @@ inline auto show_both_ends(std::size_t iteration_count = max_iteration_count) {
  * Manipulator for the display style of iterables.
  * See README for details.
  */
-inline auto show_middle(std::size_t iteration_count = max_iteration_count) {
+inline auto middle(std::size_t iteration_count = max_iteration_count) {
   return _detail::export_command(
       [=](std::size_t index, const std::function<std::size_t()> &cont_size) -> std::size_t {
         std::size_t size = cont_size();
