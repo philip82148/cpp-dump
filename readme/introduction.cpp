@@ -1,7 +1,16 @@
 #include <iostream>
 #include <vector>
 
+#define DEBUGGING
+#ifdef DEBUGGING
+
 #include "../dump.hpp"
+namespace cp = cpp_dump;
+
+#else
+#define cpp_dump(...)
+#define CPP_DUMP_SET_OPTION(...)
+#endif
 
 int main() {
   std::clog << std::endl;

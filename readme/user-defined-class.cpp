@@ -1,6 +1,16 @@
 #include <iostream>
 
+#define DEBUGGING
+#ifdef DEBUGGING
+
 #include "../dump.hpp"
+namespace cp = cpp_dump;
+
+#else
+#define cpp_dump(...)
+#define CPP_DUMP_SET_OPTION(...)
+#define CPP_DUMP_DEFINE_EXPORT_OBJECT(...)
+#endif
 
 struct class_A {
   int i;

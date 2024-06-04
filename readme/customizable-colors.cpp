@@ -12,25 +12,37 @@
 #include <variant>
 #include <vector>
 
+#define DEBUGGING
+#ifdef DEBUGGING
+
 #include "../dump.hpp"
+namespace cp = cpp_dump;
+
+#else
+#define cpp_dump(...)
+#define CPP_DUMP_SET_OPTION(...)
+#endif
 
 int main() {
-  cpp_dump::es_value = {
-      "\x1b[02m",  // log: dark
-      "\x1b[34m",  // expression: blue
-      "\x1b[36m",  // reserved: cyan
-      "\x1b[36m",  // number: cyan
-      "\x1b[36m",  // character: cyan
-      "\x1b[02m",  // op: dark
-      "\x1b[32m",  // identifier:  green
-      "\x1b[36m",  // member: cyan
-      "",          // unsupported: default
-      {
-          "\x1b[33m",  // bracket_by_depth[0]: yellow
-          "\x1b[35m",  // bracket_by_depth[1]: magenta
-          "\x1b[36m",  // bracket_by_depth[2]: cyan
-      },
-  };
+  CPP_DUMP_SET_OPTION(
+      es_value,
+      (cp::es_value_t{
+          "\x1b[02m",  // log: dark
+          "\x1b[34m",  // expression: blue
+          "\x1b[36m",  // reserved: cyan
+          "\x1b[36m",  // number: cyan
+          "\x1b[36m",  // character: cyan
+          "\x1b[02m",  // op: dark
+          "\x1b[32m",  // identifier:  green
+          "\x1b[36m",  // member: cyan
+          "",          // unsupported: default
+          {
+              "\x1b[33m",  // bracket_by_depth[0]: yellow
+              "\x1b[35m",  // bracket_by_depth[1]: magenta
+              "\x1b[36m",  // bracket_by_depth[2]: cyan
+          },
+      })
+  );
 
   int my_int = 15;
   int *ptr = &my_int;
