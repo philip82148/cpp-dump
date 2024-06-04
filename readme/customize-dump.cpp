@@ -3,7 +3,16 @@
 #include <set>
 #include <vector>
 
+#define DEBUGGING
+#ifdef DEBUGGING
+
 #include "../dump.hpp"
+namespace cp = cpp_dump;
+
+#else
+#define cpp_dump(...)
+#define CPP_DUMP_SET_OPTION(...)
+#endif
 
 void my_func() {
   std::map<int, int> my_map{{2, 6}, {4, 6}, {5, 3}};
@@ -18,7 +27,7 @@ int main() {
   std::vector<std::vector<int>> my_vector{{3, 5, 8, 9, 7}, {9, 3, 2, 3, 8}};
 
   std::clog << "// Print the filename and line instead of [dump]" << std::endl;
-  cpp_dump::log_label_func = cpp_dump::log_label::filename();
+  CPP_DUMP_SET_OPTION(log_label_func, cp::log_label::filename());
 
   cpp_dump(my_vector);
   my_func();
@@ -26,7 +35,7 @@ int main() {
   std::clog << std::endl;
 
   std::clog << "// Print along with the function name" << std::endl;
-  cpp_dump::log_label_func = cpp_dump::log_label::filename(true);
+  CPP_DUMP_SET_OPTION(log_label_func, cp::log_label::filename(true));
 
   cpp_dump(my_vector);
   my_func();

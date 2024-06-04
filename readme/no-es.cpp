@@ -12,10 +12,19 @@
 #include <variant>
 #include <vector>
 
+#define DEBUGGING
+#ifdef DEBUGGING
+
 #include "../dump.hpp"
+namespace cp = cpp_dump;
+
+#else
+#define cpp_dump(...)
+#define CPP_DUMP_SET_OPTION(...)
+#endif
 
 int main() {
-  cpp_dump::es_style = cpp_dump::es_style_t::no_es;
+  CPP_DUMP_SET_OPTION(es_style, cp::es_style_t::no_es);
 
   int my_int = 15;
   int *ptr = &my_int;

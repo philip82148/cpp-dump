@@ -251,7 +251,6 @@ log_label_func_t fixed_length(int min_width, int max_width,
 /**
  * Set a value to a variable in cpp_dump namespace.
  * You can also assign values to the variables directly.
- * (See 'For competitive programming use' for details.)
  */
 #define CPP_DUMP_SET_OPTION(variable, value)
 ```
