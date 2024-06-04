@@ -450,7 +450,7 @@ int main(int argc, char *argv[]) {
 
   rep(i, 17) cpp_dump(i, cp::int_style(i) << 0x10000);
   vector<vector<int>> vec3{{1, 20, 4}, {-2, 0, -10}};
-  cpp_dump(vec3, cp::int_style(10, 2, 0, false, true) << vec3, cp::int_style10(2) << vec3);
+  cpp_dump(vec3, cp::int_style(10, 2, 0, false, true) << vec3, cp::dec(2) << vec3);
 
   CPP_DUMP_SET_OPTION(print_expr, false);
   cpp_dump(cp::int_style(10, 8, 4, false, false /**/) << 1);
