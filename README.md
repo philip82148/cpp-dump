@@ -500,7 +500,7 @@ inline cpp_dump::log_label::log_label_func_t cpp_dump::log_label_func = cpp_dump
 [See Full Example Code](./readme/formatting-with-manipulators.cpp)
 
 Using manipulators, you can set which and how many elements of an array/map/set will be displayed.  
-See [show\_\* manipulators](#show_-manipulators) for details.
+See [front, middle, back, both_ends manipulators](#front-middle-back-both_ends-manipulators) for details.
 
 ```cpp
 // Show the last 10 elements for the 1st dimension, the first 5 and the last 5 for the 2nd dimension.
@@ -538,7 +538,7 @@ cpp_dump(some_huge_vector | cp::dec(2) | cp::index());
 
 ![cont-index.png](./readme/cont-index.png)
 
-#### show\_\* manipulators
+#### front, middle, back, both_ends manipulators
 
 ```cpp
 cpp_dump::front(std::size_t iteration_count = cpp_dump::max_iteration_count);
@@ -585,7 +585,7 @@ cpp_dump(variable | ... | cp::int_style() | ...);
 
 Parameter `base` of `int_style()` supports values of 2, 8, 10, 16. For other values, this manipulator resets the effects of the previous `int_style()` manipulators.  
 `chunk/digits` supports values of `chunk/digits` >= 0.  
-Unlike `show_*` manipulators, `int_style()` manipulator acts on all integers in the variable. (The order is irrelevant.)  
+Unlike `front` and other manipulators, `int_style()` manipulator acts on all integers in the variable. (The order is irrelevant.)  
 `int_style10()`, `dec()`, `bin()`, `oct()`, `hex()` are aliases of `int_style()`
 
 #### index manipulator
