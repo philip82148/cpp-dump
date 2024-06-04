@@ -362,7 +362,7 @@ int main(int argc, char *argv[]) {
       cp::int_style(16) << 10000ull
   );
 
-  // cp::show_*()
+  // cp::front, back, middle, both_ends
   array<int, 50> array50;
   map<int, int> map50;
   set<int> set50;
@@ -374,35 +374,21 @@ int main(int argc, char *argv[]) {
 
   CPP_DUMP_SET_OPTION(max_iteration_count, 2);
   cpp_dump(array50, map50, set50);
-  cpp_dump(cp::show_front() << array50, cp::show_front() << map50, cp::show_front() << set50);
-  cpp_dump(cp::show_middle() << array50, cp::show_middle() << map50, cp::show_middle() << set50);
-  cpp_dump(cp::show_back() << array50, cp::show_back() << map50, cp::show_back() << set50);
-  cpp_dump(
-      cp::show_both_ends() << array50, cp::show_both_ends() << map50, cp::show_both_ends() << set50
-  );
+  cpp_dump(cp::front() << array50, cp::front() << map50, cp::front() << set50);
+  cpp_dump(cp::middle() << array50, cp::middle() << map50, cp::middle() << set50);
+  cpp_dump(cp::back() << array50, cp::back() << map50, cp::back() << set50);
+  cpp_dump(cp::both_ends() << array50, cp::both_ends() << map50, cp::both_ends() << set50);
 
   CPP_DUMP_SET_OPTION(max_iteration_count, 100);
-  cpp_dump(cp::show_front(10) << array50, cp::show_front(10) << map50, cp::show_front(10) << set50);
-  cpp_dump(cp::show_back(10) << array50, cp::show_back(10) << map50, cp::show_back(10) << set50);
-  cpp_dump(
-      cp::show_middle(10) << array50, cp::show_middle(10) << map50, cp::show_middle(10) << set50
-  );
-  cpp_dump(
-      cp::show_both_ends(10) << array50,
-      cp::show_both_ends(10) << map50,
-      cp::show_both_ends(10) << set50
-  );
+  cpp_dump(cp::front(10) << array50, cp::front(10) << map50, cp::front(10) << set50);
+  cpp_dump(cp::back(10) << array50, cp::back(10) << map50, cp::back(10) << set50);
+  cpp_dump(cp::middle(10) << array50, cp::middle(10) << map50, cp::middle(10) << set50);
+  cpp_dump(cp::both_ends(10) << array50, cp::both_ends(10) << map50, cp::both_ends(10) << set50);
 
-  cpp_dump(cp::show_front(40) << array50, cp::show_front(40) << map50, cp::show_front(40) << set50);
-  cpp_dump(
-      cp::show_middle(40) << array50, cp::show_middle(40) << map50, cp::show_middle(40) << set50
-  );
-  cpp_dump(cp::show_back(40) << array50, cp::show_back(40) << map50, cp::show_back(40) << set50);
-  cpp_dump(
-      cp::show_both_ends(40) << array50,
-      cp::show_both_ends(40) << map50,
-      cp::show_both_ends(40) << set50
-  );
+  cpp_dump(cp::front(40) << array50, cp::front(40) << map50, cp::front(40) << set50);
+  cpp_dump(cp::middle(40) << array50, cp::middle(40) << map50, cp::middle(40) << set50);
+  cpp_dump(cp::back(40) << array50, cp::back(40) << map50, cp::back(40) << set50);
+  cpp_dump(cp::both_ends(40) << array50, cp::both_ends(40) << map50, cp::both_ends(40) << set50);
 
   auto vec2 = vector<vector<vector<int>>>{
       {{1}},
@@ -413,11 +399,11 @@ int main(int argc, char *argv[]) {
           {5, 7, 8, 10, 11},
       }};
 
-  cpp_dump(vec2, cp::show_back(2) << cp::show_both_ends(1) << cp::show_back(2) << vec2);
-  cpp_dump(vec2, cp::show_both_ends(2) << cp::show_both_ends(2) << cp::show_both_ends(2) << vec2);
+  cpp_dump(vec2, cp::back(2) << cp::both_ends(1) << cp::back(2) << vec2);
+  cpp_dump(vec2, cp::both_ends(2) << cp::both_ends(2) << cp::both_ends(2) << vec2);
 
-  cpp_dump(multimap1, cp::show_both_ends(2) << cp::show_both_ends(2) << multimap1);
-  cpp_dump(multiset1, cp::show_middle(1) << cp::show_back(1) << multiset1);
+  cpp_dump(multimap1, cp::both_ends(2) << cp::both_ends(2) << multimap1);
+  cpp_dump(multiset1, cp::middle(1) << cp::back(1) << multiset1);
 
   auto multimap2 = multimap<vector<int>, vector<int>>{
       {{1, 2, 4, 2}, {11, 22, 11, 22}},
@@ -426,47 +412,45 @@ int main(int argc, char *argv[]) {
       {{5, 6, 7, 8}, {14, -2}},
       {{1, 2, 4, 2}, {0, 5, 25}},
   };
-  cpp_dump(cp::show_front(2) << cp::map_kv(cp::show_back(2), cp::show_front(2)) << multimap2);
+  cpp_dump(cp::front(2) << cp::map_kv(cp::back(2), cp::front(2)) << multimap2);
 
   cpp_dump(
-      cp::int_style(12, 3, 3)
-      << cp::show_front(2) << cp::int_style(2, 0, 0)
-      << cp::map_kv(cp::int_style(16, 3, 3) << cp::show_back(2), cp::show_front(2)) << multimap2
+      cp::int_style(12, 3, 3) << cp::front(2) << cp::int_style(2, 0, 0)
+                              << cp::map_kv(cp::int_style(16, 3, 3) << cp::back(2), cp::front(2))
+                              << multimap2
   );
   cpp_dump(
-      multimap2 | cp::show_front(2)
-      | cp::map_kv(cp::int_style(16, 3, 3) | cp::show_back(2), cp::show_front(2))
+      multimap2 | cp::front(2) | cp::map_kv(cp::int_style(16, 3, 3) | cp::back(2), cp::front(2))
       | cp::int_style(12, 3, 3) | cp::int_style(2, 0, 0)
   );
 
   cpp_dump(
-      cp::int_style(12, 3, 3) << cp::int_style(
-          8, 3, 3
-      ) << cp::map_kv(cp::int_style(16, 3, 3) << cp::show_back(2), cp::show_front(2))
+      cp::int_style(12, 3, 3) << cp::int_style(8, 3, 3)
+                              << cp::map_kv(cp::int_style(16, 3, 3) << cp::back(2), cp::front(2))
                               << multimap2
   );
   cpp_dump(
-      multimap2 | cp::map_kv(cp::int_style(16, 3, 3) | cp::show_back(2), cp::show_front(2))
+      multimap2 | cp::map_kv(cp::int_style(16, 3, 3) | cp::back(2), cp::front(2))
       | cp::int_style(12, 3, 3) | cp::int_style(8, 3, 3)
   );
 
   cpp_dump(
-      cp::show_front(1) << cp::map_v(
-          cp::int_style(8, 3, 3) << cp::show_middle(1) << cp::int_style(16, 3, 3)
-                                 << cp::show_middle(2) << cp::int_style(5, 3, 3)
+      cp::front(1) << cp::map_v(
+          cp::int_style(8, 3, 3) << cp::middle(1) << cp::int_style(16, 3, 3) << cp::middle(2)
+                                 << cp::int_style(5, 3, 3)
       ) << multimap2
   );
   cpp_dump(
-      multimap2 | cp::show_front(1)
+      multimap2 | cp::front(1)
       | cp::map_v(
-          cp::int_style(8, 3, 3) | cp::show_middle(1) | cp::int_style(16, 3, 3) | cp::show_middle(2)
+          cp::int_style(8, 3, 3) | cp::middle(1) | cp::int_style(16, 3, 3) | cp::middle(2)
           | cp::int_style(5, 3, 3)
       )
   );
 
   rep(i, 17) cpp_dump(i, cp::int_style(i) << 0x10000);
   vector<vector<int>> vec3{{1, 20, 4}, {-2, 0, -10}};
-  cpp_dump(vec3, cp::int_style(10, 2, 0, false, true) << vec3, cp::int_style10(2) << vec3);
+  cpp_dump(vec3, cp::int_style(10, 2, 0, false, true) << vec3, cp::dec(2) << vec3);
 
   CPP_DUMP_SET_OPTION(print_expr, false);
   cpp_dump(cp::int_style(10, 8, 4, false, false /**/) << 1);
@@ -696,7 +680,7 @@ int main(int argc, char *argv[]) {
 
   CPP_DUMP_SET_OPTION(print_expr, true);
 
-  // show_index() & show_*()
+  // index, front, back, middle, both_ends
   vector<vector<int>> vec4 = {
       {1, 2, 3, 4, 5, 6, 7, 8},
       {9, 10, 11, 12, 13},
@@ -706,24 +690,24 @@ int main(int argc, char *argv[]) {
       {19, 20},
   };
 
-  cpp_dump(vec4 | cp::cont_index());
-  cpp_dump(vec4 | cp::show_front(3) | cp::cont_index());
-  cpp_dump(vec4 | cp::show_back(3) | cp::cont_index());
-  cpp_dump(vec4 | cp::show_middle(3) | cp::cont_index());
-  cpp_dump(vec4 | cp::show_both_ends(3) | cp::cont_index());
-  cpp_dump(vec4 | cp::show_front() | cp::show_front(3) | cp::cont_index());
-  cpp_dump(vec4 | cp::show_front() | cp::show_back(3) | cp::cont_index());
-  cpp_dump(vec4 | cp::show_front() | cp::show_middle(3) | cp::cont_index());
-  cpp_dump(vec4 | cp::show_front() | cp::show_both_ends(3) | cp::cont_index());
+  cpp_dump(vec4 | cp::index());
+  cpp_dump(vec4 | cp::front(3) | cp::index());
+  cpp_dump(vec4 | cp::back(3) | cp::index());
+  cpp_dump(vec4 | cp::middle(3) | cp::index());
+  cpp_dump(vec4 | cp::both_ends(3) | cp::index());
+  cpp_dump(vec4 | cp::front() | cp::front(3) | cp::index());
+  cpp_dump(vec4 | cp::front() | cp::back(3) | cp::index());
+  cpp_dump(vec4 | cp::front() | cp::middle(3) | cp::index());
+  cpp_dump(vec4 | cp::front() | cp::both_ends(3) | cp::index());
 
   // non_copyable_and_non_movable_class
   CPP_DUMP_SET_OPTION(max_depth, 2);
   cpp_dump(
-      cp::show_front(2) << cp::show_middle(1) << cp::show_back(2) << cp::show_both_ends(1)
-                        << non_copyable_and_non_movable_class1
+      cp::front(2) << cp::middle(1) << cp::back(2) << cp::both_ends(1)
+                   << non_copyable_and_non_movable_class1
   );
   cpp_dump(non_copyable_and_non_movable_class_container1);
-  cpp_dump(cp::show_front(1) << non_copyable_and_non_movable_class_container1);
+  cpp_dump(cp::front(1) << non_copyable_and_non_movable_class_container1);
   cpp_dump(tuple_of_non_copyable_and_non_movable_class1);
   cpp_dump(container_of_non_copyable_non_const_iterator1);
 
