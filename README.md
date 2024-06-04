@@ -87,21 +87,21 @@ If you want to print the filename and line instead of `[dump]`, use the followin
 
 ```cpp
 // Print the filename and line instead of [dump]
-cpp_dump::log_label_func = cpp_dump::log_label::filename();
+CPP_DUMP_SET_OPTION(log_label_func, cp::log_label::filename());
 // Print along with the function name
-cpp_dump::log_label_func = cpp_dump::log_label::filename(true);
+CPP_DUMP_SET_OPTION(log_label_func, cp::log_label::filename(true));
 ```
 
 ![customize-dump.png](./readme/customize-dump.png)
 
 ### Customizable output color
 
-The output color can be changed by assigning an escape sequence to a member of `cpp_dump::es_value`.  
+You can modify the escape sequences to change the colors of the output using the following code.  
 [See Full Example Code](./readme/customizable-colors.cpp)
 
 ```cpp
 // Use more colors
-cpp_dump::es_value = {
+CPP_DUMP_SET_OPTION(es_value, (cp::es_value_t{
   "\e[02m",  // log: dark
   "\e[34m",  // expression: blue
   "\e[36m",  // reserved: cyan
@@ -116,17 +116,17 @@ cpp_dump::es_value = {
     "\e[35m",  // bracket_by_depth[1]: magenta
     "\e[36m",  // bracket_by_depth[2]: cyan
   },
-};
+}));
 ```
 
 ![customizable-colors.png](./readme/customizable-colors.png)
 
-To turn off output coloring, assign `cpp_dump::es_style_t::no_es` to `cpp_dump::es_style`.  
+To turn off output coloring, use the following code.  
 [See Full Example Code](./readme/no-es.cpp)
 
 ```cpp
 // Turn off output coloring
-cpp_dump::es_style = cpp_dump::es_style_t::no_es;
+CPP_DUMP_SET_OPTION(es_style, cpp_dump::es_style_t::no_es);
 ```
 
 ### Can print even user-defined types
@@ -528,7 +528,7 @@ Furthermore, you can show the indexes of an array by using a manipulator.
 See [index manipulator](#index-manipulator) for details.
 
 ```cpp
-cp::max_iteration_count = 5;
+CPP_DUMP_SET_OPTION(max_iteration_count, 5);
 
 // Show the indexes of the vector.
 cpp_dump(some_huge_vector | cp::dec(2) | cp::index());
