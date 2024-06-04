@@ -44,7 +44,7 @@ int main() {
   std::clog << std::endl;
 
   // cont-index.png
-  cp::max_iteration_count = 5;
+  CPP_DUMP_SET_OPTION(max_iteration_count, 5);
   cpp_dump(some_huge_vector | cp::dec(2) | cp::index());
 
   std::clog << std::endl;
