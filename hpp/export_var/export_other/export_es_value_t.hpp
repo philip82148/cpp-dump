@@ -48,7 +48,7 @@ inline std::string _export_es_value_vector(
   std::string output = es::bracket("[ ", current_depth);
   bool is_first_elem = true;
 
-  for (const auto &[skip, it, index] : skipped_es_vec) {
+  for (const auto &[is_ellipsis, it, index] : skipped_es_vec) {
     const std::string &es = *it;
 
     if (is_first_elem) {
@@ -57,7 +57,7 @@ inline std::string _export_es_value_vector(
       output += es::op(", ");
     }
 
-    if (skip) {
+    if (is_ellipsis) {
       output += es::op("...");
 
       if (last_line_length + get_length(output) + std::string_view(" ]").size() > max_line_width) {
@@ -90,7 +90,7 @@ inline std::string _export_es_value_vector(
   output = es::bracket("[", current_depth);
   is_first_elem = true;
 
-  for (const auto &[skip, it, index] : skipped_es_vec) {
+  for (const auto &[is_ellipsis, it, index] : skipped_es_vec) {
     const std::string &es = *it;
 
     if (is_first_elem) {
@@ -99,7 +99,7 @@ inline std::string _export_es_value_vector(
       output += es::op(",");
     }
 
-    if (skip) {
+    if (is_ellipsis) {
       output += "\n" + new_indent + es::op("...");
       continue;
     }

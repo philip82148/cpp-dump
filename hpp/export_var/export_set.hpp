@@ -107,7 +107,7 @@ inline auto export_set(
     std::string output = es::bracket("{ ", current_depth);
     bool is_first_elem = true;
 
-    for (const auto &[skip, it, _] : skipped_set) {
+    for (const auto &[is_ellipsis, it, _] : skipped_set) {
       const auto &elem = *it;
 
       if (is_first_elem) {
@@ -116,7 +116,7 @@ inline auto export_set(
         output += es::op(", ");
       }
 
-      if (skip) {
+      if (is_ellipsis) {
         output += es::op("...");
 
         if (last_line_length + get_length(output) + std::string_view(" }").size()
@@ -162,7 +162,7 @@ inline auto export_set(
   std::string output = es::bracket("{", current_depth);
   bool is_first_elem = true;
 
-  for (const auto &[skip, it, _] : skipped_set) {
+  for (const auto &[is_ellipsis, it, _] : skipped_set) {
     const auto &elem = *it;
 
     if (is_first_elem) {
@@ -171,7 +171,7 @@ inline auto export_set(
       output += es::op(",");
     }
 
-    if (skip) {
+    if (is_ellipsis) {
       output += "\n" + new_indent + es::op("...");
       continue;
     }
