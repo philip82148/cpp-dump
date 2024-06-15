@@ -24,6 +24,8 @@ struct skip_container;
 template <typename It>
 struct skip_iterator {
  public:
+  // It is not a reference when the constructor is given an rvalue.
+  // It is an lvalue reference when the constructor is given an lvalue (reference).
   It it;
 
   skip_iterator(

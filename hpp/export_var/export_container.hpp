@@ -109,6 +109,7 @@ inline auto export_container(
   std::string output = es::bracket("[", current_depth);
   bool is_first_elem = true;
 
+  // universal references; it.operator*() might not be const
   for (auto &&[is_ellipsis, it, index] : skipped_container) {
     const auto &elem = *it;
 
