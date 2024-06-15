@@ -1,6 +1,7 @@
 #include "../dump.hpp"
 namespace cp = cpp_dump;
 
+#include <array>
 #include <map>
 #include <queue>
 #include <set>

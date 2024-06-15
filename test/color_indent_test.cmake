@@ -22,8 +22,10 @@ set(log_file "${test_dir}/log/color_indent_${suffix}.log")
 set(txt_file "${test_dir}/txt/color_indent_${suffix}.txt")
 
 execute_process(
-   COMMAND "${cmd_path}" "${width}" "${depth}" "${es_style}" 1 ERROR_FILE "${log_file}" COMMAND_ERROR_IS_FATAL ANY
+   COMMAND "${cmd_path}" "${width}" "${depth}" "${es_style}" 1 ERROR_VARIABLE error_contents COMMAND_ERROR_IS_FATAL ANY
 )
+string(REGEX REPLACE "\r\n" "\n" error_contents "${error_contents}")
+file(WRITE "${log_file}" "${error_contents}")
 execute_process(
    COMMAND "${CMAKE_COMMAND}" -E compare_files "${log_file}" "${txt_file}" RESULT_VARIABLE not_successful
 )
