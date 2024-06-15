@@ -14,6 +14,7 @@
 
 #include "../escape_sequence.hpp"
 #include "../export_command/export_command.hpp"
+#include "../options.hpp"
 #include "../type_check.hpp"
 #include "./export_unsupported.hpp"
 #include "./export_var_fwd.hpp"
@@ -21,6 +22,18 @@
 namespace cpp_dump {
 
 namespace _detail {
+
+namespace es {
+
+inline std::string _ptr_asterisk(const std::string &s) {
+  return es_style == es_style_t::by_syntax ? es::identifier(s) : es::op(s);
+}
+
+inline std::string _raw_address(const std::string &s) {
+  return es_style == es_style_t::by_syntax ? es::identifier(s) : es::number(s);
+}
+
+}  // namespace es
 
 template <typename... Args>
 inline std::string export_pointer(
@@ -55,10 +68,10 @@ inline auto export_pointer(
       ss << std::hex << pointer;
 
       // Make the entire string an identifier
-      return es::identifier(ss.str());
+      return es::_raw_address(ss.str());
     }
   } else {
-    return es::identifier("*")
+    return es::_ptr_asterisk("*")
            + export_var(
                *pointer, indent, last_line_length + 1, current_depth, fail_on_newline, command
            );

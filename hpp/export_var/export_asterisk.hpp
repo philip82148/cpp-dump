@@ -21,6 +21,14 @@ namespace cpp_dump {
 
 namespace _detail {
 
+namespace es {
+
+inline std::string _asterisk_asterisk(const std::string &s) {
+  return es_style == es_style_t::by_syntax ? es::identifier(s) : es::op(s);
+}
+
+}  // namespace es
+
 template <typename T>
 inline auto export_asterisk(
     const T &value,
@@ -32,11 +40,11 @@ inline auto export_asterisk(
 ) -> std::enable_if_t<is_asterisk<T>, std::string> {
   if (!enable_asterisk) return export_unsupported();
 
-  if (current_depth >= max_depth) return es::identifier("*") + es::op("...");
+  if (current_depth >= max_depth) return es::_asterisk_asterisk("*") + es::op("...");
 
   // If decltype(*value) == decltype(value), then the program enters an infinite loop.
   // So increment depth.
-  return es::identifier("*")
+  return es::_asterisk_asterisk("*")
          + export_var(
              *value, indent, last_line_length + 1, current_depth + 1, fail_on_newline, command
          );

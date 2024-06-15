@@ -14,6 +14,7 @@
 
 #include "../../escape_sequence.hpp"
 #include "../../export_command/export_command.hpp"
+#include "../../options.hpp"
 #include "../../type_check.hpp"
 #include "../export_var_fwd.hpp"
 #include "./export_es_value_t.hpp"
@@ -65,6 +66,14 @@ inline std::string export_other(
   return export_var(ref.get(), indent, last_line_length, current_depth, fail_on_newline, command);
 }
 
+namespace es {
+
+inline std::string _bitset(const std::string &s) {
+  return es_style == es_style_t::by_syntax ? es::identifier(s) : es::number(s);
+}
+
+}  // namespace es
+
 template <std::size_t N>
 inline std::string
 export_other(const std::bitset<N> &bitset, const std::string &, std::size_t, std::size_t, bool, const export_command &) {
@@ -82,9 +91,20 @@ export_other(const std::bitset<N> &bitset, const std::string &, std::size_t, std
     output.append(bitset_str, pos, chunk);
   }
 
-  // Make the entire string an identifier
-  return es::identifier(output);
+  return es::_bitset(output);
 }
+
+namespace es {
+
+inline std::string _complex_component(const std::string &s) {
+  return es_style == es_style_t::by_syntax ? es::identifier(s) : es::number(s);
+}
+
+inline std::string _imag_sign(const std::string &s) {
+  return es_style == es_style_t::by_syntax ? es::identifier(s) : es::op(s);
+}
+
+}  // namespace es
 
 template <typename T>
 inline std::string
@@ -94,16 +114,22 @@ export_other(const std::complex<T> &complex, const std::string &, std::size_t, s
   auto imag = std::imag(complex);
   auto imag_sign = imag >= 0 ? "+" : "-";
 
-  // Treat the entire complex string as an identifier
-  return es::identifier(
-             std::to_string(std::real(complex)) + " " + imag_sign + " "
-             + std::to_string(std::abs(imag)) + "i "
-         )
+  return es::_complex_component(std::to_string(std::real(complex))) + " "
+         + es::_imag_sign(imag_sign) + " "
+         + es::_complex_component(std::to_string(std::abs(imag)) + "i ")
          + es::bracket("( ", current_depth) + es::member("abs") + es::op("= ")
          + es::number(std::to_string(std::abs(complex))) + es::op(", ") + es::member("arg/pi")
          + es::op("= ") + es::number(std::to_string(std::arg(complex) / pi))
          + es::bracket(" )", current_depth);
 }
+
+namespace es {
+
+inline std::string _variant_bar(const std::string &s) {
+  return es_style == es_style_t::by_syntax ? es::identifier(s) : es::op(s);
+}
+
+}  // namespace es
 
 template <typename... Args>
 inline std::string export_other(
@@ -116,7 +142,7 @@ inline std::string export_other(
 ) {
   return std::visit(
       [=, &indent, &command](const auto &value) -> std::string {
-        return es::identifier("|")
+        return es::_variant_bar("|")
                + export_var(
                    value, indent, last_line_length + 1, current_depth, fail_on_newline, command
                );

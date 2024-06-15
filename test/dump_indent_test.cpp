@@ -45,17 +45,40 @@ CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(str_member, pointer, ref);
 #define PRINT(x) (x), (clog << #x ";" << endl)
 
 int main(int argc, char *argv[]) {
-  if (argc != 4) return 1;
+  if (argc != 5) return 1;
   unsigned int max_line_width_ = stoi(argv[1]);
   unsigned int max_depth_ = stoi(argv[2]);
-  unsigned int es_index = stoi(argv[3]);
+  auto es_style_ = (array{
+      cp::es_style_t::no_es,
+      cp::es_style_t::by_syntax,
+      cp::es_style_t::by_syntax2_experimental,
+  }[stoi(argv[3])]);
+  bool color_test = stoi(argv[4]);
 
   CPP_DUMP_SET_OPTION(max_line_width, max_line_width_);
   CPP_DUMP_SET_OPTION(max_depth, max_depth_);
   CPP_DUMP_SET_OPTION(max_iteration_count, 100);
-  CPP_DUMP_SET_OPTION(
-      es_style, (array{cpp_dump::es_style_t::no_es, cpp_dump::es_style_t::by_syntax}[es_index])
-  );
+  CPP_DUMP_SET_OPTION(es_style, es_style_);
+
+  if (color_test)
+    CPP_DUMP_SET_OPTION(
+        es_value,
+        (cp::es_value_t{
+            "\x1b[02m",                // log: dark
+            "\x1b[38;2;86;154;214m",   // expression:
+            "\x1b[36m",                // reserved: cyan
+            "\x1b[38;2;181;206;168m",  // number:
+            "\x1b[38;2;215;152;61m",   // character:
+            "",                        // op: default
+            "\x1b[32m",                // identifier:  green
+            "\x1b[38;2;156;220;254m",  // member:
+            "\x1b[31m",                // unsupported: red
+            {
+                "\x1b[33m",  // bracket_by_depth[0]: yellow
+                "\x1b[35m",  // bracket_by_depth[1]: magenta
+            },
+        })
+    );
 
   auto draw_line = [=](std::string comment = "") {
     string line_with_comment(max_line_width_, '=');

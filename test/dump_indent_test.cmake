@@ -22,7 +22,7 @@ set(txt_file "${test_dir}/txt/dump_indent_${suffix}.txt")
 
 # no color
 execute_process(
-   COMMAND "${cmd_path}" "${width}" "${depth}" 0 ERROR_VARIABLE error_contents COMMAND_ERROR_IS_FATAL ANY
+   COMMAND "${cmd_path}" "${width}" "${depth}" 0 0 ERROR_VARIABLE error_contents COMMAND_ERROR_IS_FATAL ANY
 )
 string(REGEX REPLACE "\r\n" "\n" error_contents "${error_contents}")
 file(WRITE "${log_file}" "${error_contents}")
@@ -36,9 +36,26 @@ if(not_successful)
    message(STATUS "${contents}")
 endif()
 
-# with color
+# by_syntax
 execute_process(
-   COMMAND "${cmd_path}" "${width}" "${depth}" 1 ERROR_VARIABLE error_contents COMMAND_ERROR_IS_FATAL ANY
+   COMMAND "${cmd_path}" "${width}" "${depth}" 1 0 ERROR_VARIABLE error_contents COMMAND_ERROR_IS_FATAL ANY
+)
+string(REGEX REPLACE "${esc}\\[[^m]*m" "" error_contents "${error_contents}")
+string(REGEX REPLACE "\r\n" "\n" error_contents "${error_contents}")
+file(WRITE "${log_file}" "${error_contents}")
+execute_process(
+   COMMAND "${CMAKE_COMMAND}" -E compare_files "${log_file}" "${txt_file}" RESULT_VARIABLE not_successful
+)
+
+if(not_successful)
+   message(SEND_ERROR "${log_file} with color does not match ${txt_file} !")
+   file(READ "${log_file}" contents)
+   message(STATUS "${contents}")
+endif()
+
+# by_syntax2
+execute_process(
+   COMMAND "${cmd_path}" "${width}" "${depth}" 2 0 ERROR_VARIABLE error_contents COMMAND_ERROR_IS_FATAL ANY
 )
 string(REGEX REPLACE "${esc}\\[[^m]*m" "" error_contents "${error_contents}")
 string(REGEX REPLACE "\r\n" "\n" error_contents "${error_contents}")
