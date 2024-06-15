@@ -43,14 +43,13 @@ struct non_copyable_and_non_movable_class {
 } non_copyable_and_non_movable_class1("This object has a pointer and reference_wrapper to itself.");
 
 int main(int argc, char *argv[]) {
-  if (argc != 4) return 1;
-  int max_line_width_ = stoi(argv[1]);
-  int max_depth_ = stoi(argv[2]);
-  auto es_style_ =
-      (array{cpp_dump::es_style_t::by_syntax, cpp_dump::es_style_t::by_syntax2}[stoi(argv[3])]);
+  if (argc != 2) return 1;
+  auto es_style_ = (array{
+      cp::es_style_t::no_es,
+      cp::es_style_t::by_syntax,
+      cp::es_style_t::by_syntax2,
+  }[stoi(argv[1])]);
 
-  CPP_DUMP_SET_OPTION(max_line_width, max_line_width_);
-  CPP_DUMP_SET_OPTION(max_depth, max_depth_);
   CPP_DUMP_SET_OPTION(max_iteration_count, 100);
   CPP_DUMP_SET_OPTION(es_style, es_style_);
 

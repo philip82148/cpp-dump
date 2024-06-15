@@ -15,12 +15,14 @@ file(MAKE_DIRECTORY "${test_dir}/log")
 string(ASCII 27 esc)
 
 list(GET cmd_args 0 suffix)
-list(GET cmd_args 1 es_style)
-set(log_file "${test_dir}/log/color_non_variable_${suffix}.log")
-set(txt_file "${test_dir}/txt/color_non_variable_${suffix}.txt")
+list(GET cmd_args 1 width)
+list(GET cmd_args 2 depth)
+list(GET cmd_args 3 es_style)
+set(log_file "${test_dir}/log/color_indent_${suffix}.log")
+set(txt_file "${test_dir}/txt/color_indent_${suffix}.txt")
 
 execute_process(
-   COMMAND "${cmd_path}" "${es_style}" ERROR_FILE "${log_file}" COMMAND_ERROR_IS_FATAL ANY
+   COMMAND "${cmd_path}" "${width}" "${depth}" "${es_style}" 1 ERROR_FILE "${log_file}" COMMAND_ERROR_IS_FATAL ANY
 )
 execute_process(
    COMMAND "${CMAKE_COMMAND}" -E compare_files "${log_file}" "${txt_file}" RESULT_VARIABLE not_successful

@@ -55,8 +55,23 @@ add_test(
     -P "${CMAKE_CURRENT_LIST_DIR}/test/dump_variable_test.cmake"
 )
 
+set(args_array "by_syntax_normal\;160\;4\;1" "by_syntax_shallow\;4000\;0\;1" "by_syntax2_normal\;160\;4\;2" "by_syntax2_shallow\;4000\;0\;2")
+
+foreach(args ${args_array})
+    list(GET args 0 suffix)
+
+    add_test(
+        NAME "color-indent-${suffix}"
+        COMMAND "${CMAKE_COMMAND}"
+        -D "test_dir=${CMAKE_CURRENT_LIST_DIR}/test"
+        -D "cmd_path=$<TARGET_FILE:dump_indent_test>"
+        -D "cmd_args=${args}"
+        -P "${CMAKE_CURRENT_LIST_DIR}/test/color_indent_test.cmake"
+    )
+endforeach()
+
 add_executable(color_non_variable_test test/color_non_variable_test.cpp)
-set(args_array "by_syntax_wide\;4000\;4\;0" "by_syntax_narrow\;20\;4\;0" "by_syntax_shallow\;4000\;0\;0" "by_syntax2_wide\;4000\;4\;1" "by_syntax2_narrow\;20\;4\;1" "by_syntax2_shallow\;4000\;0\;1")
+set(args_array "by_syntax\;1" "by_syntax2\;2")
 
 foreach(args ${args_array})
     list(GET args 0 suffix)
