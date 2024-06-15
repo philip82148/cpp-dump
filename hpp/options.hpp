@@ -21,7 +21,7 @@ namespace cpp_dump {
  * Type of cpp_dump::es_style.
  * cpp_dump::export_var() supports this type.
  */
-enum class es_style_t { no_es, by_syntax, by_syntax2 };
+enum class es_style_t { no_es, by_syntax, by_syntax2_experimental };
 
 /**
  * Type of cpp_dump::es_value.
