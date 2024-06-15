@@ -8,18 +8,20 @@
 // This is the test for it.
 #define rep(i, n) for (int i = 0; i < (int)(n); i++)
 using namespace std;
-using namespace cpp_dump;
+namespace cp = cpp_dump;
 
 CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(member_var, member_func());
 
 int main(int argc, char *argv[]) {
   if (argc != 3) return 1;
   bool compiler_dependent = static_cast<bool>(stoi(argv[1]));
-  bool es_index = static_cast<bool>(stoi(argv[2]));
+  auto es_style_ = (array{
+      cp::es_style_t::no_es,
+      cp::es_style_t::by_syntax,
+      cp::es_style_t::by_syntax2_experimental,
+  }[stoi(argv[2])]);
 
-  CPP_DUMP_SET_OPTION(
-      es_style, (array{cpp_dump::es_style_t::no_es, cpp_dump::es_style_t::by_syntax}[es_index])
-  );
+  CPP_DUMP_SET_OPTION(es_style, es_style_);
 
   if (compiler_dependent) {
     class original_error : public logic_error {

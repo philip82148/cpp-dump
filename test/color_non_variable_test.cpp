@@ -54,21 +54,24 @@ int main(int argc, char *argv[]) {
   CPP_DUMP_SET_OPTION(max_iteration_count, 100);
   CPP_DUMP_SET_OPTION(es_style, es_style_);
 
-  cpp_dump::es_value = {
-      "\x1b[02m",                // log: dark
-      "\x1b[38;2;86;154;214m",   // expression:
-      "\x1b[36m",                // reserved: cyan
-      "\x1b[38;2;181;206;168m",  // number:
-      "\x1b[38;2;215;152;61m",   // character:
-      "\x1b[38;2;150;150;150m",  // op: dark2
-      "\x1b[32m",                // identifier:  green
-      "\x1b[38;2;156;220;254m",  // member:
-      "\x1b[31m",                // unsupported: red
-      {
-          "\x1b[33m",  // bracket_by_depth[0]: yellow
-          "\x1b[35m",  // bracket_by_depth[1]: magenta
-      },
-  };
+  CPP_DUMP_SET_OPTION(
+      es_value,
+      (cp::es_value_t{
+          "\x1b[02m",                // log: dark
+          "\x1b[38;2;86;154;214m",   // expression:
+          "\x1b[36m",                // reserved: cyan
+          "\x1b[38;2;181;206;168m",  // number:
+          "\x1b[38;2;215;152;61m",   // character:
+          "\x1b[38;2;150;150;150m",  // op: dark2
+          "\x1b[32m",                // identifier:  green
+          "\x1b[38;2;156;220;254m",  // member:
+          "\x1b[31m",                // unsupported: red
+          {
+              "\x1b[33m",  // bracket_by_depth[0]: yellow
+              "\x1b[35m",  // bracket_by_depth[1]: magenta
+          },
+      })
+  );
 
   // basic
   cpp_dump(false, 0, 0.0, '0', (const char *)"0", string{"0"}, string_view{"0"});
@@ -191,13 +194,13 @@ int main(int argc, char *argv[]) {
   cpp_dump(unsupported_class1);
 
   // extra
-  cpp_dump(cpp_dump::es_style_t::no_es);
-  cpp_dump(cpp_dump::es_style_t::by_syntax);
-  cpp_dump(cpp_dump::es_value);
+  cpp_dump(cp::es_style_t::no_es);
+  cpp_dump(cp::es_style_t::by_syntax);
+  cpp_dump(cp::es_value);
 
   // manipulators
   cpp_dump(vec2 | cp::index());
   cpp_dump(vec2 | cp::front(3) | cp::index());
-  cpp_dump(cpp_dump::es_value | cp::index());
-  cpp_dump(cpp_dump::es_value | cp::index() | cp::front(1));
+  cpp_dump(cp::es_value | cp::index());
+  cpp_dump(cp::es_value | cp::index() | cp::front(1));
 }

@@ -165,12 +165,14 @@ ostream &operator<<(ostream &os, unsupported_non_const_class &) {
 
 int main(int argc, char *argv[]) {
   if (argc != 2) return 1;
-  int es_index = stoi(argv[1]);
+  auto es_style_ = (array{
+      cp::es_style_t::no_es,
+      cp::es_style_t::by_syntax,
+      cp::es_style_t::by_syntax2_experimental,
+  }[stoi(argv[1])]);
 
   CPP_DUMP_SET_OPTION(max_iteration_count, 100);
-  CPP_DUMP_SET_OPTION(
-      es_style, (array{cpp_dump::es_style_t::no_es, cpp_dump::es_style_t::by_syntax}[es_index])
-  );
+  CPP_DUMP_SET_OPTION(es_style, es_style_);
 
   // basic
   cpp_dump(false, 0, 0.0, '0', (const char *)"0", string{"0"}, string_view{"0"});
@@ -344,13 +346,13 @@ int main(int argc, char *argv[]) {
   cpp_dump(setw(5), boolalpha);
 
   // extra
-  cpp_dump(cpp_dump::es_style_t::no_es, cpp_dump::es_style_t::by_syntax, cpp_dump::es_value);
+  cpp_dump(cp::es_style_t::no_es, cp::es_style_t::by_syntax, cp::es_value);
   cpp_dump(
-      cpp_dump::cont_indent_style_t::minimal,
-      cpp_dump::cont_indent_style_t::when_nested,
-      cpp_dump::cont_indent_style_t::when_non_tuples_nested,
-      cpp_dump::cont_indent_style_t::always,
-      cpp_dump::cont_indent_style
+      cp::cont_indent_style_t::minimal,
+      cp::cont_indent_style_t::when_nested,
+      cp::cont_indent_style_t::when_non_tuples_nested,
+      cp::cont_indent_style_t::always,
+      cp::cont_indent_style
   );
 
   // cp::int_style()
