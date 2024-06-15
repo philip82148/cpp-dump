@@ -25,6 +25,14 @@ export_optional(const std::nullopt_t &, const std::string &, std::size_t, std::s
   return es::identifier("std::nullopt");
 }
 
+namespace es {
+
+inline std::string _optional_question(const std::string &s) {
+  return es_style == es_style_t::by_syntax ? es::identifier(s) : es::op(s);
+}
+
+}  // namespace es
+
 template <typename T>
 inline auto export_optional(
     const T &optional,
@@ -36,7 +44,7 @@ inline auto export_optional(
 ) -> std::enable_if_t<is_optional<T>, std::string> {
   if (!optional) return es::identifier("std::nullopt");
 
-  return es::identifier("?")
+  return es::_optional_question("?")
          + export_var(
              optional.value(), indent, last_line_length + 1, current_depth, fail_on_newline, command
          );
