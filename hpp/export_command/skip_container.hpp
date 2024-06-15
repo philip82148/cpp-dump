@@ -24,26 +24,17 @@ struct skip_container;
 template <typename It>
 struct skip_iterator {
  public:
+  // It is not a reference when the constructor is given an rvalue.
+  // It is an lvalue reference when the constructor is given an lvalue (reference).
   It it;
 
-  explicit skip_iterator(
-      const It &it_,
-      const std::function<std::size_t(std::size_t, const std::function<std::size_t()> &)>
-          &skip_size_func,
-      const std::function<std::size_t()> &orig_size_func
-  )
-      : it(it_),
-        _skip_size_func(skip_size_func),
-        _orig_size_func(orig_size_func),
-        _index(0),
-        _done(false) {}
-  explicit skip_iterator(
+  skip_iterator(
       It &&it_,
       const std::function<std::size_t(std::size_t, const std::function<std::size_t()> &)>
           &skip_size_func,
       const std::function<std::size_t()> &orig_size_func
   )
-      : it(std::move(it_)),
+      : it(std::forward<It>(it_)),
         _skip_size_func(skip_size_func),
         _orig_size_func(orig_size_func),
         _index(0),
@@ -91,6 +82,10 @@ struct skip_iterator {
 
   std::size_t calc_skip_size() const noexcept { return _skip_size_func(_index, _orig_size_func); }
 };
+
+template <typename It>
+skip_iterator(It &&, const std::function<std::size_t(std::size_t, const std::function<std::size_t()> &)> &, const std::function<std::size_t()> &)
+    -> skip_iterator<It>;
 
 template <typename T>
 struct skip_container {

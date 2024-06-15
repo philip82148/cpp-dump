@@ -138,6 +138,40 @@ struct container_of_non_copyable_non_const_iterator {
   auto end() const { return non_copyable_non_const_iterator(); }
 } container_of_non_copyable_non_const_iterator1;
 
+struct non_copyable_non_movable_non_const_iterator {
+  int index = 0;
+
+  non_copyable_non_movable_non_const_iterator(non_copyable_non_movable_non_const_iterator &&) =
+      delete;
+  non_copyable_non_movable_non_const_iterator &
+  operator=(non_copyable_non_movable_non_const_iterator &&) = delete;
+
+  non_copyable_non_movable_non_const_iterator(const non_copyable_non_movable_non_const_iterator &) =
+      delete;
+  non_copyable_non_movable_non_const_iterator &
+  operator=(const non_copyable_non_movable_non_const_iterator &) = delete;
+
+  non_copyable_non_movable_non_const_iterator() = default;
+
+  auto operator*() {
+    return "This iterator is non-copyable and non-movable and doesn't support const.";
+  }
+  bool operator!=(const non_copyable_non_movable_non_const_iterator &) { return index < 2; }
+  auto &operator++() {
+    ++index;
+    return *this;
+  }
+};
+
+struct container_of_lvalue_iterator {
+  mutable non_copyable_non_movable_non_const_iterator it;
+  non_copyable_non_movable_non_const_iterator &begin() const {
+    it.index = 0;
+    return it;
+  }
+  non_copyable_non_movable_non_const_iterator &end() const { return it; }
+} container_of_lvalue_iterator1;
+
 struct supported_iterator {
   auto operator*() const { return "This must not be printed since the container is unsupported."; }
   bool operator!=(const supported_iterator &) const { return true; }
@@ -712,6 +746,7 @@ int main(int argc, char *argv[]) {
   cpp_dump(cp::front(1) << non_copyable_and_non_movable_class_container1);
   cpp_dump(tuple_of_non_copyable_and_non_movable_class1);
   cpp_dump(container_of_non_copyable_non_const_iterator1);
+  cpp_dump(container_of_lvalue_iterator1);
 
   // unsupported_non_const_class
   cpp_dump(unsupported_container_of_supported_container_a1);
