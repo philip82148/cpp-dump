@@ -56,7 +56,7 @@ add_test(
 )
 
 add_executable(color_test test/color_test.cpp)
-set(args_array "wide\;4000\;4" "narrow\;20\;4" "shallow\;4000\;0")
+set(args_array "by_syntax_wide\;4000\;4\;0" "by_syntax_narrow\;20\;4\;0" "by_syntax_shallow\;4000\;0\;0" "by_syntax2_wide\;4000\;4\;1" "by_syntax2_narrow\;20\;4\;1" "by_syntax2_shallow\;4000\;0\;1")
 
 foreach(args ${args_array})
     list(GET args 0 suffix)
