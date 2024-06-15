@@ -18,8 +18,8 @@ list(GET cmd_args 0 suffix)
 list(GET cmd_args 1 width)
 list(GET cmd_args 2 depth)
 list(GET cmd_args 3 es_style)
-set(log_file "${test_dir}/log/color_${suffix}.log")
-set(txt_file "${test_dir}/txt/color_${suffix}.txt")
+set(log_file "${test_dir}/log/color_non_variable_${suffix}.log")
+set(txt_file "${test_dir}/txt/color_non_variable_${suffix}.txt")
 
 execute_process(
    COMMAND "${cmd_path}" "${width}" "${depth}" "${es_style}" ERROR_FILE "${log_file}" COMMAND_ERROR_IS_FATAL ANY
