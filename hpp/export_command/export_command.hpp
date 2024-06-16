@@ -8,6 +8,7 @@
 #pragma once
 
 #include <functional>
+#include <limits>
 #include <memory>
 #include <optional>
 #include <tuple>
@@ -67,7 +68,7 @@ struct export_command {
       default:
         return;
     }
-    if (digits < 0) digits = 0;
+    if (digits < 0) digits = std::numeric_limits<int>::max();
     if (chunk < 0) chunk = 0;
 
     _int_style = {base, digits, chunk, space_fill, support_negative};
@@ -330,7 +331,7 @@ inline auto int_style(
  * Manipulator for the display style of integers.
  * See README for details.
  */
-inline auto dec(int digits = 10, int chunk = 0, bool support_negative = false) {
+inline auto dec(int digits = -1, int chunk = 0, bool support_negative = false) {
   return int_style(10, digits, chunk, true, support_negative);
 }
 
@@ -338,7 +339,7 @@ inline auto dec(int digits = 10, int chunk = 0, bool support_negative = false) {
  * Manipulator for the display style of integers.
  * See README for details.
  */
-inline auto bin(int digits = 32, int chunk = 0, bool support_negative = false) {
+inline auto bin(int digits = -1, int chunk = 0, bool support_negative = false) {
   return int_style(2, digits, chunk, false, support_negative);
 }
 
@@ -346,7 +347,7 @@ inline auto bin(int digits = 32, int chunk = 0, bool support_negative = false) {
  * Manipulator for the display style of integers.
  * See README for details.
  */
-inline auto oct(int digits = 11, int chunk = 0, bool support_negative = false) {
+inline auto oct(int digits = -1, int chunk = 0, bool support_negative = false) {
   return int_style(8, digits, chunk, false, support_negative);
 }
 
@@ -354,7 +355,7 @@ inline auto oct(int digits = 11, int chunk = 0, bool support_negative = false) {
  * Manipulator for the display style of integers.
  * See README for details.
  */
-inline auto hex(int digits = 8, int chunk = 0, bool support_negative = false) {
+inline auto hex(int digits = -1, int chunk = 0, bool support_negative = false) {
   return int_style(16, digits, chunk, false, support_negative);
 }
 
