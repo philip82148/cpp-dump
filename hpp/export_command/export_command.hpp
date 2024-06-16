@@ -338,6 +338,14 @@ inline auto dec(int digits = -1, int chunk = 0) {
 
 /*
  * Manipulator for the display style of integers.
+ * This is an experimental feature.
+ */
+inline auto udec(int digits = -1, int chunk = 0) {
+  return int_style(10, digits, chunk, true, true);
+}
+
+/*
+ * Manipulator for the display style of integers.
  * See README for details.
  */
 inline auto bin(int digits = -1, int chunk = 0) {

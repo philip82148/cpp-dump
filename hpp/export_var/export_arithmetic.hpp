@@ -95,7 +95,7 @@ inline auto export_arithmetic(
     unsigned_tmp = value;
   } else {
     unsigned_tmp = static_cast<UnsignedTOrInt>(
-        make_unsigned ? static_cast<UnsignedT>(value) : std::abs(value)
+        (base != 10 && make_unsigned) ? static_cast<UnsignedT>(value) : std::abs(value)
     );
   }
 
@@ -123,7 +123,7 @@ inline auto export_arithmetic(
   }
 
   // Add a minus when value < 0 (part 1)
-  bool need_minus = !make_unsigned && value < 0;
+  bool need_minus = (base == 10 || !make_unsigned) && value < 0;
   bool added_minus_before_fill = space_fill && (digits == 0 || output.length() < digits);
   if (need_minus && added_minus_before_fill) output.append(1, '-');
 
