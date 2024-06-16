@@ -86,14 +86,17 @@ inline auto export_arithmetic(
   std::string output;
 
   using UnsignedT = std::make_unsigned_t<T>;
-  using UnsignedTmpType =
+  // Let stringstream recognize the type as an integer.
+  using UnsignedTOrInt =
       std::conditional_t<std::is_same_v<UnsignedT, unsigned char>, unsigned int, UnsignedT>;
 
-  UnsignedTmpType unsigned_tmp;
+  UnsignedTOrInt unsigned_tmp;
   if constexpr (std::is_unsigned_v<T>) {
     unsigned_tmp = value;
   } else {
-    unsigned_tmp = static_cast<UnsignedTmpType>(make_unsigned ? value : std::abs(value));
+    unsigned_tmp = static_cast<UnsignedTOrInt>(
+        make_unsigned ? static_cast<UnsignedT>(value) : std::abs(value)
+    );
   }
 
   bool space_for_minus = !(std::is_unsigned_v<T> || make_unsigned);
