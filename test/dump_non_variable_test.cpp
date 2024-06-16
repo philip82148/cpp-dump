@@ -662,16 +662,16 @@ int main(int argc, char *argv[]) {
       schar_minus1 | cp::ubin(),
       schar_minus1 | cp::uoct(),
       schar_minus1 | cp::uhex(),
-      schar_minus1 | cp::dec()
+      schar_minus1 | cp::udec()
   );
   cpp_dump(
-      schar_max | cp::ubin(), schar_max | cp::uoct(), schar_max | cp::uhex(), schar_max | cp::dec()
+      schar_max | cp::ubin(), schar_max | cp::uoct(), schar_max | cp::uhex(), schar_max | cp::udec()
   );
   cpp_dump(
-      schar_min | cp::ubin(), schar_min | cp::uoct(), schar_min | cp::uhex(), schar_min | cp::dec()
+      schar_min | cp::ubin(), schar_min | cp::uoct(), schar_min | cp::uhex(), schar_min | cp::udec()
   );
   cpp_dump(
-      uchar_max | cp::ubin(), uchar_max | cp::uoct(), uchar_max | cp::uhex(), uchar_max | cp::dec()
+      uchar_max | cp::ubin(), uchar_max | cp::uoct(), uchar_max | cp::uhex(), uchar_max | cp::udec()
   );
 
   clog << "SHRT_MAX, SHRT_MIN, USHRT_MAX" << endl;
@@ -692,16 +692,16 @@ int main(int argc, char *argv[]) {
       short_minus1 | cp::ubin(),
       short_minus1 | cp::uoct(),
       short_minus1 | cp::uhex(),
-      short_minus1 | cp::dec()
+      short_minus1 | cp::udec()
   );
   cpp_dump(
-      shrt_max | cp::ubin(), shrt_max | cp::uoct(), shrt_max | cp::uhex(), shrt_max | cp::dec()
+      shrt_max | cp::ubin(), shrt_max | cp::uoct(), shrt_max | cp::uhex(), shrt_max | cp::udec()
   );
   cpp_dump(
-      shrt_min | cp::ubin(), shrt_min | cp::uoct(), shrt_min | cp::uhex(), shrt_min | cp::dec()
+      shrt_min | cp::ubin(), shrt_min | cp::uoct(), shrt_min | cp::uhex(), shrt_min | cp::udec()
   );
   cpp_dump(
-      ushrt_max | cp::ubin(), ushrt_max | cp::uoct(), ushrt_max | cp::uhex(), ushrt_max | cp::dec()
+      ushrt_max | cp::ubin(), ushrt_max | cp::uoct(), ushrt_max | cp::uhex(), ushrt_max | cp::udec()
   );
 
   clog << "INT_MAX, INT_MIN, UINT_MAX" << endl;
@@ -717,12 +717,12 @@ int main(int argc, char *argv[]) {
       int_minus1 | cp::ubin(),
       int_minus1 | cp::uoct(),
       int_minus1 | cp::uhex(),
-      int_minus1 | cp::dec()
+      int_minus1 | cp::udec()
   );
-  cpp_dump(int_max | cp::ubin(), int_max | cp::uoct(), int_max | cp::uhex(), int_max | cp::dec());
-  cpp_dump(int_min | cp::ubin(), int_min | cp::uoct(), int_min | cp::uhex(), int_min | cp::dec());
+  cpp_dump(int_max | cp::ubin(), int_max | cp::uoct(), int_max | cp::uhex(), int_max | cp::udec());
+  cpp_dump(int_min | cp::ubin(), int_min | cp::uoct(), int_min | cp::uhex(), int_min | cp::udec());
   cpp_dump(
-      uint_max | cp::ubin(), uint_max | cp::uoct(), uint_max | cp::uhex(), uint_max | cp::dec()
+      uint_max | cp::ubin(), uint_max | cp::uoct(), uint_max | cp::uhex(), uint_max | cp::udec()
   );
 
   clog << "LLONG_MAX, LLONG_MIN, ULLONG_MAX" << endl;
@@ -747,19 +747,19 @@ int main(int argc, char *argv[]) {
       llong_minus1 | cp::ubin(),
       llong_minus1 | cp::uoct(),
       llong_minus1 | cp::uhex(),
-      llong_minus1 | cp::dec()
+      llong_minus1 | cp::udec()
   );
   cpp_dump(
-      llong_max | cp::ubin(), llong_max | cp::uoct(), llong_max | cp::uhex(), llong_max | cp::dec()
+      llong_max | cp::ubin(), llong_max | cp::uoct(), llong_max | cp::uhex(), llong_max | cp::udec()
   );
   cpp_dump(
-      llong_min | cp::ubin(), llong_min | cp::uoct(), llong_min | cp::uhex(), llong_min | cp::dec()
+      llong_min | cp::ubin(), llong_min | cp::uoct(), llong_min | cp::uhex(), llong_min | cp::udec()
   );
   cpp_dump(
       ullong_max | cp::ubin(),
       ullong_max | cp::uoct(),
       ullong_max | cp::uhex(),
-      ullong_max | cp::dec()
+      ullong_max | cp::udec()
   );
 
   CPP_DUMP_SET_OPTION(print_expr, true);
