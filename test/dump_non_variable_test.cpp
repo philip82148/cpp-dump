@@ -636,7 +636,7 @@ int main(int argc, char *argv[]) {
   constexpr long long llong_min = -llong_max - 1LL;
   constexpr unsigned long long ullong_max = llong_max * 2ULL + 1ULL;
 
-  clog << "CHAR_MAX, CHAR_MIN, UCHAR_MAX" << endl;
+  clog << "SCHAR_MAX, SCHAR_MIN, UCHAR_MAX" << endl;
   cpp_dump(
       schar_max | cp::bin(), schar_max | cp::oct(), schar_max | cp::hex(), schar_max | cp::dec()
   );
