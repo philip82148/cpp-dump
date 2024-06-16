@@ -191,13 +191,13 @@ cpp_dump::front(std::size_t iteration_count = cpp_dump::max_iteration_count);
 cpp_dump::middle(std::size_t iteration_count = cpp_dump::max_iteration_count);
 cpp_dump::back(std::size_t iteration_count = cpp_dump::max_iteration_count);
 cpp_dump::both_ends(std::size_t iteration_count = cpp_dump::max_iteration_count);
-cpp_dump::int_style(unsigned int base = 16, unsigned int digits = 8,
-    unsigned int chunk = 2, bool space_fill = false, bool support_negative = false);
+cpp_dump::int_style(int base = 16, int digits = -1, int chunk = 2,
+    bool space_fill = false, bool support_negative = false);
 cpp_dump::index();
-cpp_dump::dec(unsigned int digits = 10, unsigned int chunk = 0, bool support_negative = false);
-cpp_dump::bin(unsigned int digits = 32, unsigned int chunk = 0, bool support_negative = false);
-cpp_dump::oct(unsigned int digits = 11, unsigned int chunk = 0, bool support_negative = false);
-cpp_dump::hex(unsigned int digits = 8, unsigned int chunk = 0, bool support_negative = false);
+cpp_dump::dec(int digits = -1, int chunk = 0, bool support_negative = false);
+cpp_dump::bin(int digits = -1, int chunk = 0, bool support_negative = false);
+cpp_dump::oct(int digits = -1, int chunk = 0, bool support_negative = false);
+cpp_dump::hex(int digits = -1, int chunk = 0, bool support_negative = false);
 cpp_dump::map_k(return_value_of_manipulator);
 cpp_dump::map_v(return_value_of_manipulator);
 cpp_dump::map_kv(return_value_of_manipulator_for_key, return_value_of_manipulator_for_value);
@@ -558,18 +558,18 @@ In particular, passing an infinite sequence to these manipulators will result in
 #### int_style manipulators
 
 ```cpp
-cpp_dump::int_style(unsigned int base = 16, unsigned int digits = 8,
-    unsigned int chunk = 2, bool space_fill = false, bool support_negative = false);
-cpp_dump::dec(unsigned int digits = 10, unsigned int chunk = 0, bool support_negative = false) {
+cpp_dump::int_style(int base = 16, int digits = -1, int chunk = 2,
+    bool space_fill = false, bool support_negative = false);
+cpp_dump::dec(int digits = -1, int chunk = 0, bool support_negative = false) {
   return int_style(10, digits, chunk, true, support_negative);
 }
-cpp_dump::bin(unsigned int digits = 32, unsigned int chunk = 0, bool support_negative = false) {
+cpp_dump::bin(int digits = -1, int chunk = 0, bool support_negative = false) {
   return int_style(2, digits, chunk, false, support_negative);
 }
-cpp_dump::oct(unsigned int digits = 11, unsigned int chunk = 0, bool support_negative = false) {
+cpp_dump::oct(int digits = -1, int chunk = 0, bool support_negative = false) {
   return int_style(8, digits, chunk, false, support_negative);
 }
-cpp_dump::hex(unsigned int digits = 8, unsigned int chunk = 0, bool support_negative = false) {
+cpp_dump::hex(int digits = -1, int chunk = 0, bool support_negative = false) {
   return int_style(16, digits, chunk, false, support_negative);
 }
 
@@ -579,7 +579,8 @@ cpp_dump(variable | ... | cp::int_style() | ...);
 ```
 
 Parameter `base` of `int_style()` supports values of 2, 8, 10, 16. For other values, this manipulator resets the effects of the previous `int_style()` manipulators.  
-`chunk/digits` supports values of `chunk/digits` >= 0.  
+`digits` supports values of `digits` >= 0 and `digits` <= 'the maximum digits', where 'the maximum digits' is the maximum number of digits that can be represented by the type for the given `base`. For other values, it is treated as `digits` = 'the maximum digits'.  
+`chunk` supports values of `chunk` >= 0. For other values, it is treated as `chunk` = 0.  
 Unlike `front` and other manipulators, `int_style()` manipulator acts on all integers in the variable. (The order is irrelevant.)  
 `dec()`, `bin()`, `oct()`, `hex()` are aliases of `int_style()`
 
