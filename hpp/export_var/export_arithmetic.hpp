@@ -84,30 +84,34 @@ inline auto export_arithmetic(
 
   std::string output;
 
-  std::make_unsigned_t<T> non_negative_tmp;
+  using UnsignedT = std::make_unsigned_t<T>;
+  using UnsignedTmpType =
+      std::conditional_t<std::is_same_v<UnsignedT, unsigned char>, unsigned int, UnsignedT>;
+
+  UnsignedTmpType unsigned_tmp;
   if constexpr (std::is_signed_v<T>) {
-    non_negative_tmp = static_cast<std::make_unsigned_t<T>>(std::abs(value));
+    unsigned_tmp = static_cast<UnsignedTmpType>(std::abs(value));
   } else {
-    non_negative_tmp = value;
+    unsigned_tmp = value;
   }
 
   // Create a string of an integer with base as the radix
   if (base == 10) {
-    output = std::to_string(non_negative_tmp);
+    output = std::to_string(unsigned_tmp);
     std::reverse(output.begin(), output.end());
   } else if (base == 2) {
     output.reserve(digits > 0 ? digits + (chunk == 0 && support_negative) : sizeof(T) * 8 + 1);
 
     bool is_first = true;
-    while (is_first || non_negative_tmp) {
+    while (is_first || unsigned_tmp) {
       is_first = false;
-      char next_digit = static_cast<char>((non_negative_tmp & 0x01) + '0');
+      char next_digit = static_cast<char>((unsigned_tmp & 0x01) + '0');
       output.append(1, next_digit);
-      non_negative_tmp >>= 1;
+      unsigned_tmp >>= 1;
     }
   } else {
     std::stringstream ss;
-    ss << std::setbase(base) << non_negative_tmp;
+    ss << std::setbase(base) << unsigned_tmp;
     output = ss.str();
     std::reverse(output.begin(), output.end());
   }
