@@ -210,7 +210,9 @@ int main(int argc, char *argv[]) {
 
   // basic
   cpp_dump(false, 0, 0.0, '0', (const char *)"0", string{"0"}, string_view{"0"});
+  cpp_dump((signed char)0, (unsigned char)0, 0u, 0l, 0ul, 0ll, 0ull, 0.0f, 0.0l);
   cpp_dump(true, 3.14, 159265, "This is a test string");
+  cpp_dump((signed char)3, (unsigned char)5, 8u, 9l, 7ul, 9ll, 3ull, 2.38f, 4.6l);
   cpp_dump("This contains newline\nhere.", R"(This contains ".)", R"(This contains `.)");
   cpp_dump("\n\n\n\n");
 
@@ -618,9 +620,9 @@ int main(int argc, char *argv[]) {
     cpp_dump((1ULL << i) | cp::int_style(2, 64, 0));
   }
 
-  constexpr int char_max = 0x7f;
-  constexpr int char_min = -char_max - 1;
-  constexpr unsigned int uchar_max = char_max * 2u + 1u;
+  constexpr signed char schar_max = 0x7f;
+  constexpr signed char schar_min = -schar_max - 1;
+  constexpr unsigned char uchar_max = schar_max * 2u + 1u;
 
   constexpr short shrt_max = 0x7fff;
   constexpr short shrt_min = -shrt_max - 1;
@@ -636,16 +638,16 @@ int main(int argc, char *argv[]) {
 
   clog << "CHAR_MAX, CHAR_MIN, UCHAR_MAX" << endl;
   cpp_dump(
-      char_max | cp::bin(32, 0, true),
-      char_max | cp::oct(11, 0, true),
-      char_max | cp::hex(8, 0, true),
-      char_max | cp::dec(10, 0, true)
+      schar_max | cp::bin(32, 0, true),
+      schar_max | cp::oct(11, 0, true),
+      schar_max | cp::hex(8, 0, true),
+      schar_max | cp::dec(10, 0, true)
   );
   cpp_dump(
-      char_min | cp::bin(32, 0, true),
-      char_min | cp::oct(11, 0, true),
-      char_min | cp::hex(8, 0, true),
-      char_min | cp::dec(10, 0, true)
+      schar_min | cp::bin(32, 0, true),
+      schar_min | cp::oct(11, 0, true),
+      schar_min | cp::hex(8, 0, true),
+      schar_min | cp::dec(10, 0, true)
   );
   cpp_dump(
       uchar_max | cp::bin(32, 0, true),
