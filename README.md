@@ -191,13 +191,12 @@ cpp_dump::front(std::size_t iteration_count = cpp_dump::max_iteration_count);
 cpp_dump::middle(std::size_t iteration_count = cpp_dump::max_iteration_count);
 cpp_dump::back(std::size_t iteration_count = cpp_dump::max_iteration_count);
 cpp_dump::both_ends(std::size_t iteration_count = cpp_dump::max_iteration_count);
-cpp_dump::int_style(int base = 16, int digits = -1, int chunk = 2,
-    bool space_fill = false, bool support_negative = false);
+cpp_dump::int_style(int base = 16, int digits = -1, int chunk = 2, bool space_fill = false);
 cpp_dump::index();
-cpp_dump::dec(int digits = -1, int chunk = 0, bool support_negative = false);
-cpp_dump::bin(int digits = -1, int chunk = 0, bool support_negative = false);
-cpp_dump::oct(int digits = -1, int chunk = 0, bool support_negative = false);
-cpp_dump::hex(int digits = -1, int chunk = 0, bool support_negative = false);
+cpp_dump::dec(int digits = -1, int chunk = 0);
+cpp_dump::bin(int digits = -1, int chunk = 0);
+cpp_dump::oct(int digits = -1, int chunk = 0);
+cpp_dump::hex(int digits = -1, int chunk = 0);
 cpp_dump::map_k(return_value_of_manipulator);
 cpp_dump::map_v(return_value_of_manipulator);
 cpp_dump::map_kv(return_value_of_manipulator_for_key, return_value_of_manipulator_for_value);
@@ -558,19 +557,18 @@ In particular, passing an infinite sequence to these manipulators will result in
 #### int_style manipulators
 
 ```cpp
-cpp_dump::int_style(int base = 16, int digits = -1, int chunk = 2,
-    bool space_fill = false, bool support_negative = false);
-cpp_dump::dec(int digits = -1, int chunk = 0, bool support_negative = false) {
-  return int_style(10, digits, chunk, true, support_negative);
+cpp_dump::int_style(int base = 16, int digits = -1, int chunk = 2, bool space_fill = false);
+cpp_dump::dec(int digits = -1, int chunk = 0) {
+  return int_style(10, digits, chunk, true);
 }
-cpp_dump::bin(int digits = -1, int chunk = 0, bool support_negative = false) {
-  return int_style(2, digits, chunk, false, support_negative);
+cpp_dump::bin(int digits = -1, int chunk = 0) {
+  return int_style(2, digits, chunk, false);
 }
-cpp_dump::oct(int digits = -1, int chunk = 0, bool support_negative = false) {
-  return int_style(8, digits, chunk, false, support_negative);
+cpp_dump::oct(int digits = -1, int chunk = 0) {
+  return int_style(8, digits, chunk, false);
 }
-cpp_dump::hex(int digits = -1, int chunk = 0, bool support_negative = false) {
-  return int_style(16, digits, chunk, false, support_negative);
+cpp_dump::hex(int digits = -1, int chunk = 0) {
+  return int_style(16, digits, chunk, false);
 }
 
 // Example
