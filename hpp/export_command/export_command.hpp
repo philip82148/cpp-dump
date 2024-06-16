@@ -319,7 +319,7 @@ inline constexpr bool is_value_with_command = _is_value_with_command<_remove_cre
  */
 inline auto int_style(
     int base = 16,
-    int digits = 8,
+    int digits = -1,
     int chunk = 2,
     bool space_fill = false,
     bool support_negative = false

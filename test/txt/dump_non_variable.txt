@@ -184,8 +184,8 @@ here.`,
        cp::cont_indent_style_t::when_nested => cpp_dump::cont_indent_style_t::when_nested, 
        cp::cont_indent_style_t::when_non_tuples_nested => cpp_dump::cont_indent_style_t::when_non_tuples_nested, 
        cp::cont_indent_style_t::always => cpp_dump::cont_indent_style_t::always, cp::cont_indent_style => cpp_dump::cont_indent_style_t::when_nested
-[dump] cp::int_style(16) << 10000u => 00 00 27 10 _16, cp::int_style(16) << 10000l => 00 00 27 10 _16, cp::int_style(16) << 10000ul => 00 00 27 10 _16, 
-       cp::int_style(16) << 10000ll => 00 00 27 10 _16, cp::int_style(16) << 10000ull => 00 00 27 10 _16
+[dump] cp::int_style(16, 8) << 10000u => 00 00 27 10 _16, cp::int_style(16, 8) << 10000l => 00 00 27 10 _16, cp::int_style(16, 8) << 10000ul => 00 00 27 10 _16, 
+       cp::int_style(16, 8) << 10000ll => 00 00 27 10 _16, cp::int_style(16, 8) << 10000ull => 00 00 27 10 _16
 [dump] array50 => [ 0, 1, ... ], map50 => { 0: 1, 1: 2, ... }, set50 => { 0, 1, ... }
 [dump] cp::front() << array50 => [ 0, 1, ... ], cp::front() << map50 => { 0: 1, 1: 2, ... }, cp::front() << set50 => { 0, 1, ... }
 [dump] cp::middle() << array50 => [ ..., 24, 25, ... ], cp::middle() << map50 => { ..., 24: 25, 25: 26, ... }, cp::middle() << set50 => { ..., 24, 25, ... }
@@ -858,15 +858,15 @@ here.`,
        }
 [dump] i => 0, cp::int_style(i) << 0x10000 => 65536
 [dump] i => 1, cp::int_style(i) << 0x10000 => 65536
-[dump] i => 2, cp::int_style(i) << 0x10000 => 1 00 00 00 00 00 00 00 00 _2
+[dump] i => 2, cp::int_style(i) << 0x10000 => 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 00 _2
 [dump] i => 3, cp::int_style(i) << 0x10000 => 65536
 [dump] i => 4, cp::int_style(i) << 0x10000 => 65536
 [dump] i => 5, cp::int_style(i) << 0x10000 => 65536
 [dump] i => 6, cp::int_style(i) << 0x10000 => 65536
 [dump] i => 7, cp::int_style(i) << 0x10000 => 65536
-[dump] i => 8, cp::int_style(i) << 0x10000 => 00 20 00 00 _8
+[dump] i => 8, cp::int_style(i) << 0x10000 => 0 00 00 20 00 00 _8
 [dump] i => 9, cp::int_style(i) << 0x10000 => 65536
-[dump] i => 10, cp::int_style(i) << 0x10000 => 00 06 55 36
+[dump] i => 10, cp::int_style(i) << 0x10000 => 00 00 06 55 36
 [dump] i => 11, cp::int_style(i) << 0x10000 => 65536
 [dump] i => 12, cp::int_style(i) << 0x10000 => 65536
 [dump] i => 13, cp::int_style(i) << 0x10000 => 65536

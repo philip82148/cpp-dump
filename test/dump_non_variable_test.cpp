@@ -393,11 +393,11 @@ int main(int argc, char *argv[]) {
 
   // cp::int_style()
   cpp_dump(
-      cp::int_style(16) << 10000u,
-      cp::int_style(16) << 10000l,
-      cp::int_style(16) << 10000ul,
-      cp::int_style(16) << 10000ll,
-      cp::int_style(16) << 10000ull
+      cp::int_style(16, 8) << 10000u,
+      cp::int_style(16, 8) << 10000l,
+      cp::int_style(16, 8) << 10000ul,
+      cp::int_style(16, 8) << 10000ll,
+      cp::int_style(16, 8) << 10000ull
   );
 
   // cp::front, back, middle, both_ends
