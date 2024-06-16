@@ -74,14 +74,16 @@ inline auto export_arithmetic(
   auto int_style = command.get_int_style();
   if (!int_style) return es::number(std::to_string(value));
 
-  // make_unsigned is for future implementation.
-  auto [base, digits, chunk, space_fill, make_unsigned] = int_style.value();
+  auto [base, digits, chunk, space_fill, make_unsigned_or_no_space_for_minus] = int_style.value();
 
   if (base == 10 && digits == 0 && chunk == 0) return es::number(std::to_string(value));
 
   unsigned int max_digits = _get_max_digits<T>(base);
   if (digits > max_digits) digits = max_digits;
   if (chunk > max_digits) chunk = 0;
+
+  bool make_unsigned = base != 10 && make_unsigned_or_no_space_for_minus;
+  bool add_space_for_minus = std::is_signed_v<T> && !make_unsigned_or_no_space_for_minus;
 
   std::string output;
 
@@ -91,22 +93,20 @@ inline auto export_arithmetic(
       std::conditional_t<std::is_same_v<UnsignedT, unsigned char>, unsigned int, UnsignedT>;
 
   UnsignedTOrInt unsigned_tmp;
-  if constexpr (std::is_unsigned_v<T>) {
-    unsigned_tmp = value;
-  } else {
+  if constexpr (std::is_signed_v<T>) {
     unsigned_tmp = static_cast<UnsignedTOrInt>(
-        (base != 10 && make_unsigned) ? static_cast<UnsignedT>(value) : std::abs(value)
+        make_unsigned ? static_cast<UnsignedT>(value) : std::abs(value)
     );
+  } else {
+    unsigned_tmp = value;
   }
-
-  bool space_for_minus = !(std::is_unsigned_v<T> || make_unsigned);
 
   // Create a string of an integer with base as the radix
   if (base == 10) {
     output = std::to_string(unsigned_tmp);
     std::reverse(output.begin(), output.end());
   } else if (base == 2) {
-    output.reserve(digits > 0 ? digits + (chunk == 0 && space_for_minus) : sizeof(T) * 8 + 1);
+    output.reserve(digits > 0 ? digits + (chunk == 0 && add_space_for_minus) : sizeof(T) * 8 + 1);
 
     bool is_first = true;
     while (is_first || unsigned_tmp) {
@@ -123,7 +123,7 @@ inline auto export_arithmetic(
   }
 
   // Add a minus when value < 0 (part 1)
-  bool need_minus = (base == 10 || !make_unsigned) && value < 0;
+  bool need_minus = !make_unsigned && value < 0;
   bool added_minus_before_fill = space_fill && (digits == 0 || output.length() < digits);
   if (need_minus && added_minus_before_fill) output.append(1, '-');
 
@@ -140,7 +140,7 @@ inline auto export_arithmetic(
   if (chunk > 0) {
     // Add a space between chunks
     std::string new_output;
-    new_output.reserve(output.size() + (output.size() - 1) / chunk + space_for_minus);
+    new_output.reserve(output.size() + (output.size() - 1) / chunk + add_space_for_minus);
 
     for (std::size_t pos = 0; pos < output.size(); pos += chunk) {
       if (pos > 0) new_output.append(1, ' ');
@@ -153,7 +153,7 @@ inline auto export_arithmetic(
   // Add a minus when value < 0 (part 2)
   if (need_minus && !added_minus_before_fill) {
     output.append(1, '-');
-  } else if (space_for_minus && length_was_below_digits) {
+  } else if (add_space_for_minus && length_was_below_digits) {
     output.append(1, ' ');
   }
 
@@ -161,7 +161,10 @@ inline auto export_arithmetic(
 
   if (base == 10) return es::number(output);
 
-  return es::number(output) + es::op(" _" + std::to_string(base));
+  std::string suffix = " _" + std::to_string(base);
+  if (make_unsigned) suffix += "u";
+
+  return es::number(output) + es::op(suffix);
 }
 
 template <typename T>

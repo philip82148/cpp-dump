@@ -58,8 +58,9 @@ struct export_command {
 
   explicit export_command(bool show_index) : _show_index(show_index) {}
 
-  // make_unsigned is for future implementation.
-  explicit export_command(int base, int digits, int chunk, bool space_fill, bool make_unsigned) {
+  explicit export_command(
+      int base, int digits, int chunk, bool space_fill, bool make_unsigned_or_no_space_for_minus
+  ) {
     switch (base) {
       case 2:
       case 8:
@@ -72,7 +73,7 @@ struct export_command {
     if (digits < 0) digits = std::numeric_limits<int>::max();
     if (chunk < 0) chunk = 0;
 
-    _int_style = {base, digits, chunk, space_fill, make_unsigned};
+    _int_style = {base, digits, chunk, space_fill, make_unsigned_or_no_space_for_minus};
   }
 
   // This is for make_unique<export_command>().
@@ -323,9 +324,11 @@ inline auto int_style(
     int digits = -1,
     int chunk = 2,
     bool space_fill = false,
-    bool make_unsigned = false
+    bool make_unsigned_or_no_space_for_minus = false
 ) {
-  return _detail::export_command(base, digits, chunk, space_fill, make_unsigned);
+  return _detail::export_command(
+      base, digits, chunk, space_fill, make_unsigned_or_no_space_for_minus
+  );
 }
 
 /*
