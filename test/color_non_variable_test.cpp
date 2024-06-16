@@ -203,4 +203,10 @@ int main(int argc, char *argv[]) {
   cpp_dump(vec2 | cp::front(3) | cp::index());
   cpp_dump(cp::es_value | cp::index());
   cpp_dump(cp::es_value | cp::index() | cp::front(1));
+
+  CPP_DUMP_SET_OPTION(print_expr, false);
+  cpp_dump(-1 | cp::bin(), -1 | cp::oct(), -1 | cp::hex(), -1 | cp::dec());
+  cpp_dump(1 | cp::bin(), 1 | cp::oct(), 1 | cp::hex(), 1 | cp::dec());
+  cpp_dump(-1 | cp::ubin(), -1 | cp::uoct(), -1 | cp::uhex(), -1 | cp::udec());
+  cpp_dump(1 | cp::ubin(), 1 | cp::uoct(), 1 | cp::uhex(), 1 | cp::udec());
 }
