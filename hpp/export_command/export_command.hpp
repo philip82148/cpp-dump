@@ -318,33 +318,71 @@ inline constexpr bool is_value_with_command = _is_value_with_command<_remove_cre
  * Manipulator for the display style of integers.
  * See README for details.
  */
-inline auto int_style(int base = 16, int digits = -1, int chunk = 2, bool space_fill = false) {
-  return _detail::export_command(base, digits, chunk, space_fill, false);
+inline auto int_style(
+    int base = 16,
+    int digits = -1,
+    int chunk = 2,
+    bool space_fill = false,
+    bool make_unsigned = false
+) {
+  return _detail::export_command(base, digits, chunk, space_fill, make_unsigned);
 }
 
 /*
  * Manipulator for the display style of integers.
  * See README for details.
  */
-inline auto dec(int digits = -1, int chunk = 0) { return int_style(10, digits, chunk, true); }
+inline auto dec(int digits = -1, int chunk = 0) {
+  return int_style(10, digits, chunk, true, false);
+}
 
 /*
  * Manipulator for the display style of integers.
  * See README for details.
  */
-inline auto bin(int digits = -1, int chunk = 0) { return int_style(2, digits, chunk, false); }
+inline auto bin(int digits = -1, int chunk = 0) {
+  return int_style(2, digits, chunk, false, false);
+}
+
+/*
+ * Manipulator for the display style of integers.
+ * This is an experimental feature.
+ */
+inline auto ubin(int digits = -1, int chunk = 0) {
+  return int_style(2, digits, chunk, false, true);
+}
 
 /*
  * Manipulator for the display style of integers.
  * See README for details.
  */
-inline auto oct(int digits = -1, int chunk = 0) { return int_style(8, digits, chunk, false); }
+inline auto oct(int digits = -1, int chunk = 0) {
+  return int_style(8, digits, chunk, false, false);
+}
+
+/*
+ * Manipulator for the display style of integers.
+ * This is an experimental feature.
+ */
+inline auto uoct(int digits = -1, int chunk = 0) {
+  return int_style(8, digits, chunk, false, true);
+}
 
 /*
  * Manipulator for the display style of integers.
  * See README for details.
  */
-inline auto hex(int digits = -1, int chunk = 0) { return int_style(16, digits, chunk, false); }
+inline auto hex(int digits = -1, int chunk = 0) {
+  return int_style(16, digits, chunk, false, false);
+}
+
+/*
+ * Manipulator for the display style of integers.
+ * This is an experimental feature.
+ */
+inline auto uhex(int digits = -1, int chunk = 0) {
+  return int_style(16, digits, chunk, false, true);
+}
 
 /*
  * Manipulator for the display style of iterables.
