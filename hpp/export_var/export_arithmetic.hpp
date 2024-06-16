@@ -75,7 +75,7 @@ inline auto export_arithmetic(
   if (!int_style) return es::number(std::to_string(value));
 
   // make_unsigned is for future implementation.
-  auto [base, digits, chunk, space_fill, _make_unsigned] = int_style.value();
+  auto [base, digits, chunk, space_fill, make_unsigned] = int_style.value();
 
   if (base == 10 && digits == 0 && chunk == 0) return es::number(std::to_string(value));
 
@@ -90,13 +90,13 @@ inline auto export_arithmetic(
       std::conditional_t<std::is_same_v<UnsignedT, unsigned char>, unsigned int, UnsignedT>;
 
   UnsignedTmpType unsigned_tmp;
-  if constexpr (std::is_signed_v<T>) {
-    unsigned_tmp = static_cast<UnsignedTmpType>(std::abs(value));
-  } else {
+  if constexpr (std::is_unsigned_v<T>) {
     unsigned_tmp = value;
+  } else {
+    unsigned_tmp = static_cast<UnsignedTmpType>(make_unsigned ? value : std::abs(value));
   }
 
-  constexpr bool space_for_minus = std::is_signed_v<T>;
+  bool space_for_minus = !(std::is_unsigned_v<T> || make_unsigned);
 
   // Create a string of an integer with base as the radix
   if (base == 10) {
@@ -120,8 +120,9 @@ inline auto export_arithmetic(
   }
 
   // Add a minus when value < 0 (part 1)
+  bool need_minus = !make_unsigned && value < 0;
   bool added_minus_before_fill = space_fill && (digits == 0 || output.length() < digits);
-  if (added_minus_before_fill && value < 0) output.append(1, '-');
+  if (need_minus && added_minus_before_fill) output.append(1, '-');
 
   if (output.length() < digits) {
     // Fill with spaces/zeros
@@ -146,8 +147,8 @@ inline auto export_arithmetic(
     output.swap(new_output);
   }
 
-  // Add a minus when value < 0 (part 2) or a space when not and support_negative
-  if (!added_minus_before_fill && value < 0) {
+  // Add a minus when value < 0 (part 2)
+  if (need_minus && !added_minus_before_fill) {
     output.append(1, '-');
   } else if (space_for_minus && length_was_below_digits) {
     output.append(1, ' ');
