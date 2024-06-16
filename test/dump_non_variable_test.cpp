@@ -676,10 +676,10 @@ int main(int argc, char *argv[]) {
 
   clog << "INT_MAX, INT_MIN, UINT_MAX" << endl;
   cpp_dump(
-      INT_MAX | cp::bin(32, 0, true),
-      INT_MAX | cp::oct(11, 0, true),
-      INT_MAX | cp::hex(8, 0, true),
-      INT_MAX | cp::dec(10, 0, true)
+      int_max | cp::bin(32, 0, true),
+      int_max | cp::oct(11, 0, true),
+      int_max | cp::hex(8, 0, true),
+      int_max | cp::dec(10, 0, true)
   );
   cpp_dump(
       int_min | cp::bin(32, 0, true),
