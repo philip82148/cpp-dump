@@ -74,7 +74,8 @@ inline auto export_arithmetic(
   auto int_style = command.get_int_style();
   if (!int_style) return es::number(std::to_string(value));
 
-  auto [base, digits, chunk, space_fill, support_negative] = int_style.value();
+  // make_unsigned is for future implementation.
+  auto [base, digits, chunk, space_fill, _make_unsigned] = int_style.value();
 
   if (base == 10 && digits == 0 && chunk == 0) return es::number(std::to_string(value));
 
@@ -95,12 +96,14 @@ inline auto export_arithmetic(
     unsigned_tmp = value;
   }
 
+  constexpr bool space_for_minus = std::is_signed_v<T>;
+
   // Create a string of an integer with base as the radix
   if (base == 10) {
     output = std::to_string(unsigned_tmp);
     std::reverse(output.begin(), output.end());
   } else if (base == 2) {
-    output.reserve(digits > 0 ? digits + (chunk == 0 && support_negative) : sizeof(T) * 8 + 1);
+    output.reserve(digits > 0 ? digits + (chunk == 0 && space_for_minus) : sizeof(T) * 8 + 1);
 
     bool is_first = true;
     while (is_first || unsigned_tmp) {
@@ -133,7 +136,7 @@ inline auto export_arithmetic(
   if (chunk > 0) {
     // Add a space between chunks
     std::string new_output;
-    new_output.reserve(output.size() + (output.size() - 1) / chunk + support_negative);
+    new_output.reserve(output.size() + (output.size() - 1) / chunk + space_for_minus);
 
     for (std::size_t pos = 0; pos < output.size(); pos += chunk) {
       if (pos > 0) new_output.append(1, ' ');
@@ -146,7 +149,7 @@ inline auto export_arithmetic(
   // Add a minus when value < 0 (part 2) or a space when not and support_negative
   if (!added_minus_before_fill && value < 0) {
     output.append(1, '-');
-  } else if (support_negative && length_was_below_digits) {
+  } else if (space_for_minus && length_was_below_digits) {
     output.append(1, ' ');
   }
 

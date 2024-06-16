@@ -15,7 +15,7 @@ namespace cp = cpp_dump;
 int main() {
   std::clog << std::endl;
 
-  std::vector<std::vector<int>> some_huge_vector(100, std::vector<int>(100));
+  std::vector<std::vector<unsigned int>> some_huge_vector(100, std::vector<unsigned int>(100));
 
   for (int i = 0; i < 100; ++i) {
     for (int j = 0; j < 100; ++j) {
