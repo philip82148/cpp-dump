@@ -57,17 +57,20 @@ struct export_command {
 
   explicit export_command(bool show_index) : _show_index(show_index) {}
 
-  explicit export_command(
-      const std::tuple<unsigned int, unsigned int, unsigned int, bool, bool> &int_style
-  ) {
-    auto base = std::get<0>(int_style);
+  explicit export_command(int base, int digits, int chunk, bool space_fill, bool support_negative) {
     switch (base) {
       case 2:
       case 8:
       case 10:
       case 16:
-        _int_style = int_style;
+        break;
+      default:
+        return;
     }
+    if (digits < 0) digits = 0;
+    if (chunk < 0) chunk = 0;
+
+    _int_style = {base, digits, chunk, space_fill, support_negative};
   }
 
   // This is for make_unique<export_command>().
@@ -314,20 +317,20 @@ inline constexpr bool is_value_with_command = _is_value_with_command<_remove_cre
  * See README for details.
  */
 inline auto int_style(
-    unsigned int base = 16,
-    unsigned int digits = 8,
-    unsigned int chunk = 2,
+    int base = 16,
+    int digits = 8,
+    int chunk = 2,
     bool space_fill = false,
     bool support_negative = false
 ) {
-  return _detail::export_command({base, digits, chunk, space_fill, support_negative});
+  return _detail::export_command(base, digits, chunk, space_fill, support_negative);
 }
 
 /*
  * Manipulator for the display style of integers.
  * See README for details.
  */
-inline auto dec(unsigned int digits = 10, unsigned int chunk = 0, bool support_negative = false) {
+inline auto dec(int digits = 10, int chunk = 0, bool support_negative = false) {
   return int_style(10, digits, chunk, true, support_negative);
 }
 
@@ -335,7 +338,7 @@ inline auto dec(unsigned int digits = 10, unsigned int chunk = 0, bool support_n
  * Manipulator for the display style of integers.
  * See README for details.
  */
-inline auto bin(unsigned int digits = 32, unsigned int chunk = 0, bool support_negative = false) {
+inline auto bin(int digits = 32, int chunk = 0, bool support_negative = false) {
   return int_style(2, digits, chunk, false, support_negative);
 }
 
@@ -343,7 +346,7 @@ inline auto bin(unsigned int digits = 32, unsigned int chunk = 0, bool support_n
  * Manipulator for the display style of integers.
  * See README for details.
  */
-inline auto oct(unsigned int digits = 11, unsigned int chunk = 0, bool support_negative = false) {
+inline auto oct(int digits = 11, int chunk = 0, bool support_negative = false) {
   return int_style(8, digits, chunk, false, support_negative);
 }
 
@@ -351,7 +354,7 @@ inline auto oct(unsigned int digits = 11, unsigned int chunk = 0, bool support_n
  * Manipulator for the display style of integers.
  * See README for details.
  */
-inline auto hex(unsigned int digits = 8, unsigned int chunk = 0, bool support_negative = false) {
+inline auto hex(int digits = 8, int chunk = 0, bool support_negative = false) {
   return int_style(16, digits, chunk, false, support_negative);
 }
 
