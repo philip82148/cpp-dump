@@ -58,7 +58,8 @@ struct export_command {
 
   explicit export_command(bool show_index) : _show_index(show_index) {}
 
-  explicit export_command(int base, int digits, int chunk, bool space_fill, bool support_negative) {
+  // make_unsigned is for future implementation.
+  explicit export_command(int base, int digits, int chunk, bool space_fill, bool make_unsigned) {
     switch (base) {
       case 2:
       case 8:
@@ -71,7 +72,7 @@ struct export_command {
     if (digits < 0) digits = std::numeric_limits<int>::max();
     if (chunk < 0) chunk = 0;
 
-    _int_style = {base, digits, chunk, space_fill, support_negative};
+    _int_style = {base, digits, chunk, space_fill, make_unsigned};
   }
 
   // This is for make_unique<export_command>().
@@ -317,47 +318,33 @@ inline constexpr bool is_value_with_command = _is_value_with_command<_remove_cre
  * Manipulator for the display style of integers.
  * See README for details.
  */
-inline auto int_style(
-    int base = 16,
-    int digits = -1,
-    int chunk = 2,
-    bool space_fill = false,
-    bool support_negative = false
-) {
-  return _detail::export_command(base, digits, chunk, space_fill, support_negative);
+inline auto int_style(int base = 16, int digits = -1, int chunk = 2, bool space_fill = false) {
+  return _detail::export_command(base, digits, chunk, space_fill, false);
 }
 
 /*
  * Manipulator for the display style of integers.
  * See README for details.
  */
-inline auto dec(int digits = -1, int chunk = 0, bool support_negative = false) {
-  return int_style(10, digits, chunk, true, support_negative);
-}
+inline auto dec(int digits = -1, int chunk = 0) { return int_style(10, digits, chunk, true); }
 
 /*
  * Manipulator for the display style of integers.
  * See README for details.
  */
-inline auto bin(int digits = -1, int chunk = 0, bool support_negative = false) {
-  return int_style(2, digits, chunk, false, support_negative);
-}
+inline auto bin(int digits = -1, int chunk = 0) { return int_style(2, digits, chunk, false); }
 
 /*
  * Manipulator for the display style of integers.
  * See README for details.
  */
-inline auto oct(int digits = -1, int chunk = 0, bool support_negative = false) {
-  return int_style(8, digits, chunk, false, support_negative);
-}
+inline auto oct(int digits = -1, int chunk = 0) { return int_style(8, digits, chunk, false); }
 
 /*
  * Manipulator for the display style of integers.
  * See README for details.
  */
-inline auto hex(int digits = -1, int chunk = 0, bool support_negative = false) {
-  return int_style(16, digits, chunk, false, support_negative);
-}
+inline auto hex(int digits = -1, int chunk = 0) { return int_style(16, digits, chunk, false); }
 
 /*
  * Manipulator for the display style of iterables.
