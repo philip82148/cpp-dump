@@ -580,7 +580,7 @@ Parameter `base` of `int_style()` supports values of 2, 8, 10, 16. For other val
 `digits` supports values of `digits` >= 0 and `digits` <= 'the maximum digits', where 'the maximum digits' is the maximum number of digits that can be represented by the type for the given `base`. For other values, it is treated as `digits` = 'the maximum digits'.  
 `chunk` supports values of `chunk` >= 0. For other values, it is treated as `chunk` = 0.  
 Unlike `front` and other manipulators, `int_style()` manipulator acts on all integers in the variable. (The order is irrelevant.)  
-`dec()`, `bin()`, `oct()`, `hex()` are aliases of `int_style()`
+`dec(...)`, `bin(...)`, `oct(...)`, `hex(...)` are aliases of `int_style(...)`
 
 #### index manipulator
 
