@@ -6,13 +6,12 @@
 #include "../dump.hpp"
 namespace cp = cpp_dump;
 
+CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(i, str());
+
 #else
 #define cpp_dump(...)
 #define CPP_DUMP_SET_OPTION(...)
-#define CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(...)
 #endif
-
-CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(i, str());
 
 int main() {
   std::clog << std::endl;
