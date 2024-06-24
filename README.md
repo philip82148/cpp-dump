@@ -174,60 +174,77 @@ Then
 #include "path/to/cpp-dump/dump.hpp"
 ```
 
-## Usage
+## Configuration (if necessary)
 
-### Functions
+You can configure the library by writing like this.
 
 ```cpp
-/**
- * Return a string representation of a variable.
- * cpp_dump() uses this function internally.
- */
-template <typename T>
-std::string cpp_dump::export_var(const T &value);
+#ifdef DEBUGGING
+#include "path/to/cpp-dump/dump.hpp"
+namespace cp = cpp_dump;
+#else
+#define cpp_dump(...)
+#define CPP_DUMP_SET_OPTION(...)
+#endif
 
-// Manipulators (See 'Formatting with manipulators' for details.)
-cpp_dump::front(std::size_t iteration_count = cpp_dump::max_iteration_count);
-cpp_dump::middle(std::size_t iteration_count = cpp_dump::max_iteration_count);
-cpp_dump::back(std::size_t iteration_count = cpp_dump::max_iteration_count);
-cpp_dump::both_ends(std::size_t iteration_count = cpp_dump::max_iteration_count);
-cpp_dump::int_style(int base = 16, int digits = -1, int chunk = 2, bool space_fill = false);
-cpp_dump::index();
-cpp_dump::dec(int digits = -1, int chunk = 0);
-cpp_dump::bin(int digits = -1, int chunk = 0);
-cpp_dump::oct(int digits = -1, int chunk = 0);
-cpp_dump::hex(int digits = -1, int chunk = 0);
-cpp_dump::map_k(return_value_of_manipulator);
-cpp_dump::map_v(return_value_of_manipulator);
-cpp_dump::map_kv(return_value_of_manipulator_for_key, return_value_of_manipulator_for_value);
+int main() {
+  CPP_DUMP_SET_OPTION(max_line_width, 100);
 
-// See 'Customize "[dump]"'.
-namespace cpp_dump::log_label {
-
-std::string default_func(const std::string &fullpath, std::size_t line, const std::string &func_name);
-log_label_func_t line(bool show_func = false, int min_width = 0);
-log_label_func_t basename(bool show_func = false, int min_width = 0);
-log_label_func_t filename(bool show_func = false, int min_width = 0);
-log_label_func_t fullpath(int substr_start, bool show_func = false, int min_width = 0);
-log_label_func_t fixed_length(int min_width, int max_width,
-    int substr_start, bool show_func = false);
-
+  // To be continued...
 }
 ```
+
+If you don't want to include the configuration code inside the main function, you can write it like this.
+
+```cpp
+// You can also write this in a .hpp file -------------------------------------
+#ifdef DEBUGGING
+#include "path/to/cpp-dump/dump.hpp"
+namespace cp = cpp_dump;
+inline cp::execute_before_main set_options([] {
+  CPP_DUMP_SET_OPTION(max_line_width, 100);
+});
+#else
+#define cpp_dump(...)
+#endif
+// You can also write this in a .hpp file -------------------------------------
+
+int main() {
+  // To be continued...
+}
+```
+
+### Quick reference for configuration options
+
+See [Variables](#variables) for details.
+
+| Option              | Type                                       | Default                                      |
+| ------------------- | ------------------------------------------ | -------------------------------------------- |
+| max_line_width      | `std::size_t`                              | 160                                          |
+| max_depth           | `std::size_t`                              | 4                                            |
+| max_iteration_count | `std::size_t`                              | 16                                           |
+| enable_asterisk     | `bool`                                     | false                                        |
+| print_expr          | `bool`                                     | true                                         |
+| log_labe_func       | `cpp_dump::log_label::log_label_func_t`    | `cpp_dump::log_label::default_func`          |
+| es_style            | `enum class cpp_dump::es_style_t`          | `cpp_dump::es_style_t::by_syntax`            |
+| es_value            | `cpp_dump::es_value_t`                     | (Default constructor, see [Types](#types))   |
+| cont_indent_style   | `enum class cpp_dump::cont_indent_style_t` | `cpp_dump::cont_indent_style_t::when_nested` |
+
+## Usage
 
 ### Macros
 
 ```cpp
 /**
  * Output string representations of expression(s) and result(s) to std::clog.
- */
-#define CPP_DUMP(expressions...)
-
-/**
- * Output string representations of expression(s) and result(s) to std::clog.
  * This is an alias of CPP_DUMP(expressions...).
  */
 #define cpp_dump(expressions...)
+
+/**
+ * Output string representations of expression(s) and result(s) to std::clog.
+ */
+#define CPP_DUMP(expressions...)
 
 /**
  * Make export_var() support type T.
@@ -252,6 +269,49 @@ log_label_func_t fixed_length(int min_width, int max_width,
  * You can also assign values to the variables directly.
  */
 #define CPP_DUMP_SET_OPTION(variable, value)
+```
+
+### Types
+
+```cpp
+/**
+ * Type of cpp_dump::es_style.
+ * cpp_dump::export_var() supports this type.
+ */
+enum class cpp_dump::es_style_t { no_es, by_syntax };
+
+/**
+ * Type of cpp_dump::es_value.
+ * cpp_dump::export_var() supports this type.
+ */
+struct cpp_dump::es_value_t {
+  std::string log = "\x1b[02m";                           // dark
+  std::string expression = "\x1b[36m";                    // cyan
+  std::string reserved;                                   // default
+  std::string number;                                     // default
+  std::string character;                                  // default
+  std::string op = "\x1b[02m";                            // dark
+  std::string identifier = "\x1b[32m";                    // green
+  std::string member = "\x1b[36m";                        // cyan
+  std::string unsupported = "\x1b[31m";                   // red
+  std::vector<std::string> bracket_by_depth{"\x1b[02m"};  // dark
+};
+
+/**
+ * Type of cpp_dump::cont_indent_style.
+ * cpp_dump::export_var() supports this type.
+ */
+enum class cont_indent_style_t { minimal, when_nested, when_non_tuples_nested, always };
+
+using cpp_dump::log_label::log_label_func_t =
+    std::function<std::string(const std::string &, std::size_t, const std::string &)>;
+
+/**
+ * You can execute a function before the main by defining a global variable of this class.
+ * Pay attention to the static initialization order fiasco
+ * ( https://isocpp.org/wiki/faq/ctors#static-init-order ).
+ */
+struct cpp_dump::execute_before_main;
 ```
 
 ### Variables
@@ -297,71 +357,51 @@ inline cpp_dump::es_style_t cpp_dump::es_style = cpp_dump::es_style_t::by_syntax
 /**
  * Value of the escape sequences.
  */
-inline cpp_dump::es_value_t cpp_dump::es_value = {
-    "\e[02m",    // log: dark
-    "\e[36m",    // expression: cyan
-    "",          // reserved: default
-    "",          // number: default
-    "",          // character: default
-    "\e[02m",    // op: dark
-    "\e[32m",    // identifier: green
-    "\e[36m",    // member: cyan
-    "\e[31m",    // unsupported: red
-    {"\e[02m"},  // bracket_by_depth[0]: dark
-};
+inline cpp_dump::es_value_t cpp_dump::es_value;
 
 /**
  * Style of indents of containers.
  */
-inline cont_indent_style_t cont_indent_style = cont_indent_style_t::when_nested;
+inline cont_indent_style_t cont_indent_style = cpp_dump::cont_indent_style_t::when_nested;
 ```
 
-### Types
+### Functions
 
 ```cpp
 /**
- * Type of cpp_dump::es_style.
- * cpp_dump::export_var() supports this type.
+ * Return a string representation of a variable.
+ * cpp_dump() uses this function internally.
  */
-enum class cpp_dump::es_style_t { no_es, by_syntax };
+template <typename T>
+std::string cpp_dump::export_var(const T &value);
 
-/**
- * Type of cpp_dump::es_value.
- * cpp_dump::export_var() supports this type.
- */
-struct cpp_dump::es_value_t {
-  std::string log;
-  std::string expression;
-  std::string reserved;
-  std::string number;
-  std::string character;
-  std::string op;
-  std::string identifier;
-  std::string member;
-  std::string unsupported;
-  std::vector<std::string> bracket_by_depth;
-  es_value_t(
-    std::string log,
-    std::string expression,
-    std::string reserved,
-    std::string number,
-    std::string character,
-    std::string op,
-    std::string identifier,
-    std::string member,
-    std::string unsupported
-    std::vector<std::string> bracket_by_depth,
-  );
+// Manipulators (See 'Formatting with manipulators' for details.)
+cpp_dump::front(std::size_t iteration_count = cpp_dump::max_iteration_count);
+cpp_dump::middle(std::size_t iteration_count = cpp_dump::max_iteration_count);
+cpp_dump::back(std::size_t iteration_count = cpp_dump::max_iteration_count);
+cpp_dump::both_ends(std::size_t iteration_count = cpp_dump::max_iteration_count);
+cpp_dump::int_style(int base = 16, int digits = -1, int chunk = 2, bool space_fill = false);
+cpp_dump::index();
+cpp_dump::dec(int digits = -1, int chunk = 0);
+cpp_dump::bin(int digits = -1, int chunk = 0);
+cpp_dump::oct(int digits = -1, int chunk = 0);
+cpp_dump::hex(int digits = -1, int chunk = 0);
+cpp_dump::map_k(return_value_of_manipulator);
+cpp_dump::map_v(return_value_of_manipulator);
+cpp_dump::map_kv(return_value_of_manipulator_for_key, return_value_of_manipulator_for_value);
+
+// See 'Customize "[dump]"'.
+namespace cpp_dump::log_label {
+
+std::string default_func(const std::string &fullpath, std::size_t line, const std::string &func_name);
+log_label_func_t line(bool show_func = false, int min_width = 0);
+log_label_func_t basename(bool show_func = false, int min_width = 0);
+log_label_func_t filename(bool show_func = false, int min_width = 0);
+log_label_func_t fullpath(int substr_start, bool show_func = false, int min_width = 0);
+log_label_func_t fixed_length(int min_width, int max_width,
+    int substr_start, bool show_func = false);
+
 }
-
-/**
- * Type of cpp_dump::cont_indent_style.
- * cpp_dump::export_var() supports this type.
- */
-enum class cont_indent_style_t { minimal, when_nested, when_non_tuples_nested, always };
-
-using cpp_dump::log_label::log_label_func_t =
-    std::function<std::string(const std::string &, std::size_t, const std::string &)>;
 ```
 
 ### How to print a user-defined type with cpp-dump
