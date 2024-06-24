@@ -19,6 +19,8 @@ namespace cpp_dump {
 
 /**
  * You can execute a function before the main by defining a global variable of this class.
+ * Defining the perform static member in this class instead of a global variable won't pollute the
+ * namespace.
  * Pay attention to the static initialization order fiasco
  * ( https://isocpp.org/wiki/faq/ctors#static-init-order ).
  */
@@ -27,6 +29,7 @@ struct execute_before_main {
   execute_before_main(Func func) {
     func();
   }
+  static execute_before_main perform;
 };
 
 /**
