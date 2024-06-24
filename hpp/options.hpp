@@ -40,39 +40,16 @@ enum class es_style_t { no_es, by_syntax, by_syntax2_experimental };
  * cpp_dump::export_var() supports this type.
  */
 struct es_value_t {
- public:
-  std::string log;
-  std::string expression;
-  std::string reserved;
-  std::string number;
-  std::string character;
-  std::string op;
-  std::string identifier;
-  std::string member;
-  std::string unsupported;
-  std::vector<std::string> bracket_by_depth;
-  es_value_t(
-      std::string log_,
-      std::string expression_,
-      std::string reserved_,
-      std::string number_,
-      std::string character_,
-      std::string op_,
-      std::string identifier_,
-      std::string member_,
-      std::string unsupported_,
-      std::vector<std::string> bracket_by_depth_
-  )
-      : log(log_),
-        expression(expression_),
-        reserved(reserved_),
-        number(number_),
-        character(character_),
-        op(op_),
-        identifier(identifier_),
-        member(member_),
-        unsupported(unsupported_),
-        bracket_by_depth(bracket_by_depth_) {}
+  std::string log = "\x1b[02m";                           // dark
+  std::string expression = "\x1b[36m";                    // cyan
+  std::string reserved;                                   // default
+  std::string number;                                     // default
+  std::string character;                                  // default
+  std::string op = "\x1b[02m";                            // dark
+  std::string identifier = "\x1b[32m";                    // green
+  std::string member = "\x1b[36m";                        // cyan
+  std::string unsupported = "\x1b[31m";                   // red
+  std::vector<std::string> bracket_by_depth{"\x1b[02m"};  // dark
 };
 
 /**
@@ -121,18 +98,7 @@ inline es_style_t es_style = es_style_t::by_syntax;
 /**
  * Value of the escape sequences.
  */
-inline es_value_t es_value = {
-    "\x1b[02m",    // log: dark
-    "\x1b[36m",    // expression: cyan
-    "",            // reserved: default
-    "",            // number: default
-    "",            // character: default
-    "\x1b[02m",    // op: dark
-    "\x1b[32m",    // identifier: green
-    "\x1b[36m",    // member: cyan
-    "\x1b[31m",    // unsupported: red
-    {"\x1b[02m"},  // bracket_by_depth[0]: dark
-};
+inline es_value_t es_value;
 
 /**
  * Style of indents of containers.
