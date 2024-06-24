@@ -201,7 +201,7 @@ If you don't want to include the configuration code inside the main function, yo
 #ifdef DEBUGGING
 #include "path/to/cpp-dump/dump.hpp"
 namespace cp = cpp_dump;
-inline cp::execute_before_main set_options([] {
+inline cp::execute_before_main cp::execute_before_main::perform([] {
   CPP_DUMP_SET_OPTION(max_line_width, 100);
 });
 #else
@@ -308,10 +308,18 @@ using cpp_dump::log_label::log_label_func_t =
 
 /**
  * You can execute a function before the main by defining a global variable of this class.
+ * If you define the perform static member in this class instead of a global variable,
+ * it won't pollute the namespace.
  * Pay attention to the static initialization order fiasco
  * ( https://isocpp.org/wiki/faq/ctors#static-init-order ).
  */
-struct cpp_dump::execute_before_main;
+struct cpp_dump::execute_before_main {
+  template <typename Func>
+  execute_before_main(Func func) {
+    func();
+  }
+  static execute_before_main perform;
+};
 ```
 
 ### Variables
