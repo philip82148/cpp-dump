@@ -174,7 +174,253 @@ Then
 #include "path/to/cpp-dump/dump.hpp"
 ```
 
+## Configuration (as needed)
+
+If you want to customize the library, you can write the configuration code as follows.
+
+```cpp
+// You can also write this in a header file -----------------------------------
+#ifdef DEBUGGING
+#include "path/to/cpp-dump/dump.hpp"
+namespace cp = cpp_dump;
+#else
+#define cpp_dump(...)
+#define CPP_DUMP_SET_OPTION(...)
+#endif
+// You can also write this in a header file -----------------------------------
+
+int main() {
+  CPP_DUMP_SET_OPTION(max_line_width, 100);
+
+  // To be continued...
+}
+```
+
+And if you don't want to include the configuration code inside the main function, you can use [this method](https://stackoverflow.com/questions/10897552/call-a-function-before-main).  
+**Caution:**  
+**The function passed to the constructor of** `cpp_dump::execute_before_main` **should only contain the configuration code and nothing else, since this approach may lead to [the static initialization order problem](https://isocpp.org/wiki/faq/ctors#static-init-order).**
+
+```cpp
+// You can also write this in a header file -----------------------------------
+#ifdef DEBUGGING
+#include "path/to/cpp-dump/dump.hpp"
+namespace cp = cpp_dump;
+inline cp::execute_before_main cp::execute_before_main::perform([] {
+  CPP_DUMP_SET_OPTION(max_line_width, 100);
+});
+#else
+#define cpp_dump(...)
+#endif
+// You can also write this in a header file -----------------------------------
+
+int main() {
+  // To be continued...
+}
+```
+
+### Configuration options
+
+#### `max_line_width`
+
+Type: `std::size_t` Default: `160`  
+The maximum line width of the strings returned by `cpp_dump()` and `cpp_dump::export_var()`, which `cpp_dump()` internally uses to convert a variable into a string.
+
+#### `max_depth`
+
+Type: `std::size_t` Default: `4`  
+The maximum number of times `cpp_dump::export_var()` is called recursively.
+
+#### `max_iteration_count`
+
+Type: `std::size_t` Default: `16`  
+The maximum number of iterations of `cpp_dump::export_var()` over an iterator.  
+Note that in a single call, `cpp_dump::export_var()` calls itself at most (`max_iteration_count`^(`max_depth`+1)-1)/(`max_iteration_count`-1)-1 times.
+
+#### `enable_asterisk`
+
+Type: `bool` Default: `false`  
+Whether `cpp_dump::export_var()` prints types of the Asterisk category (See [Supported types](#supported-types)).
+
+#### `print_expr`
+
+Type: `bool` Default: `true`  
+Whether `cpp_dump()` prints the expressions.
+
+#### `log_label_func`
+
+Type: `cpp_dump::log_label::log_label_func_t` Default: `cpp_dump::log_label::default_func`  
+The function that returns the label that `cpp_dump()` prints at the beginning of the output.
+
+#### `es_style`
+
+Type: `enum class cpp_dump::es_style_t` Default `cpp_dump::es_style_t::by_syntax`  
+The style of the escape sequences (the output coloring).
+
+| Name                      | Description                                      |
+| ------------------------- | ------------------------------------------------ |
+| `by_syntax`               | Default (Planning to rename it to `original`...) |
+| `by_syntax2_experimental` | (Planning to rename it to `based_on_syntax`...)  |
+| `no_es`                   | Turn off output coloring                         |
+
+#### `es_value`
+
+Type: `cpp_dump::es_value_t` Default: (Default constructor, see [Types](#types))  
+The values of the escape sequences.
+
+#### `cont_indent_style`
+
+Type: `enum class cpp_dump::cont_indent_style_t` Default: `cpp_dump::cont_indent_style_t::when_nested`  
+The style of indents of the Container, Set and Map categories (See [Supported types](#supported-types)).
+
+| Name                     | Description                                                                                                                               |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `minimal`                | Don't indent unless the `max_line_width` is exceeded                                                                                      |
+| `when_nested`            | Default. Always indent when the element/key/value type also falls into the Container/Set/Map/Tuple category.                              |
+| `when_non_tuples_nested` | Always indent when the element/key/value type falls into the Container/Set/Map category, but don't when it falls into the Tuple category. |
+| `always`                 | Always indent even if the Container/Set/Map is not nested.                                                                                |
+
 ## Usage
+
+### Macros
+
+```cpp
+/**
+ * Output string representations of expression(s) and result(s) to std::clog.
+ * This is an alias of CPP_DUMP(expressions...).
+ */
+#define cpp_dump(expressions...)
+
+/**
+ * Output string representations of expression(s) and result(s) to std::clog.
+ */
+#define CPP_DUMP(expressions...)
+
+/**
+ * Make export_var() support type T.
+ * Member functions to be displayed must be const.
+ */
+#define CPP_DUMP_DEFINE_EXPORT_OBJECT(T, members...)
+
+/**
+ * Make export_var() support every type that has the specified members.
+ * Member functions to be displayed must be const.
+ * Compile errors in this macro, such as ambiguous function calls, are never reported due to SFINAE.
+ */
+#define CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(members...)
+
+/**
+ * Make export_var() support enum T.
+ */
+#define CPP_DUMP_DEFINE_EXPORT_ENUM(T, members...)
+
+/**
+ * Set a value to a variable in cpp_dump namespace.
+ * You can also assign values to the variables directly.
+ */
+#define CPP_DUMP_SET_OPTION(variable, value)
+```
+
+### Types
+
+```cpp
+/**
+ * Type of cpp_dump::es_style.
+ * cpp_dump::export_var() supports this type.
+ */
+enum class cpp_dump::es_style_t { no_es, by_syntax };
+
+/**
+ * Type of cpp_dump::es_value.
+ * cpp_dump::export_var() supports this type.
+ */
+struct cpp_dump::es_value_t {
+  std::string log = "\x1b[02m";                           // dark
+  std::string expression = "\x1b[36m";                    // cyan
+  std::string reserved;                                   // default
+  std::string number;                                     // default
+  std::string character;                                  // default
+  std::string op = "\x1b[02m";                            // dark
+  std::string identifier = "\x1b[32m";                    // green
+  std::string member = "\x1b[36m";                        // cyan
+  std::string unsupported = "\x1b[31m";                   // red
+  std::vector<std::string> bracket_by_depth{"\x1b[02m"};  // dark
+};
+
+/**
+ * Type of cpp_dump::cont_indent_style.
+ * cpp_dump::export_var() supports this type.
+ */
+enum class cont_indent_style_t { minimal, when_nested, when_non_tuples_nested, always };
+
+using cpp_dump::log_label::log_label_func_t =
+    std::function<std::string(const std::string &, std::size_t, const std::string &)>;
+
+/**
+ * You can execute a function before the main by defining a global variable of this class.
+ * If you define the perform static member in this class instead of a global variable,
+ * it won't pollute the namespace.
+ * Pay attention to the static initialization order fiasco
+ * ( https://isocpp.org/wiki/faq/ctors#static-init-order ).
+ */
+struct cpp_dump::execute_before_main {
+  template <typename Func>
+  execute_before_main(Func func) {
+    func();
+  }
+  static execute_before_main perform;
+};
+```
+
+### Variables
+
+```cpp
+/**
+ * Maximum line width of the strings returned by cpp_dump() and cpp_dump::export_var().
+ */
+inline std::size_t cpp_dump::max_line_width = 160;
+
+/**
+ * Maximum number of times cpp_dump::export_var() is called recursively.
+ */
+inline std::size_t cpp_dump::max_depth = 4;
+
+/**
+ * Maximum number of iterations of cpp_dump::export_var() over an iterator.
+ * Note that in a single call, cpp_dump::export_var() calls itself at most
+ * (max_iteration_count^(max_depth+1)-1)/(max_iteration_count-1)-1 times.
+ */
+inline std::size_t cpp_dump::max_iteration_count = 16;
+
+/**
+ * Whether cpp_dump() prints types of the Asterisk category (See 'Supported types').
+ */
+inline bool cpp_dump::enable_asterisk = false;
+
+/**
+ * Whether cpp_dump() prints the expressions.
+ */
+inline bool cpp_dump::print_expr = true;
+
+/**
+ * Function that returns the label that cpp_dump() prints at the beginning of the output.
+ */
+inline cpp_dump::log_label::log_label_func_t cpp_dump::log_label_func = cpp_dump::log_label::default_func;
+
+/**
+ * Style of the escape sequences (output coloring).
+ */
+inline cpp_dump::es_style_t cpp_dump::es_style = cpp_dump::es_style_t::by_syntax;
+
+/**
+ * Values of the escape sequences (output coloring).
+ */
+inline cpp_dump::es_value_t cpp_dump::es_value;
+
+/**
+ * Style of indents of the Container, Set and Map categories (See 'Supported types')
+ */
+inline cont_indent_style_t cont_indent_style = cpp_dump::cont_indent_style_t::when_nested;
+```
 
 ### Functions
 
@@ -213,155 +459,6 @@ log_label_func_t fixed_length(int min_width, int max_width,
     int substr_start, bool show_func = false);
 
 }
-```
-
-### Macros
-
-```cpp
-/**
- * Output string representations of expression(s) and result(s) to std::clog.
- */
-#define CPP_DUMP(expressions...)
-
-/**
- * Output string representations of expression(s) and result(s) to std::clog.
- * This is an alias of CPP_DUMP(expressions...).
- */
-#define cpp_dump(expressions...)
-
-/**
- * Make export_var() support type T.
- * Member functions to be displayed must be const.
- */
-#define CPP_DUMP_DEFINE_EXPORT_OBJECT(T, members...)
-
-/**
- * Make export_var() support every type that has the specified members.
- * Member functions to be displayed must be const.
- * Compile errors in this macro, such as ambiguous function calls, are never reported due to SFINAE.
- */
-#define CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(members...)
-
-/**
- * Make export_var() support enum T.
- */
-#define CPP_DUMP_DEFINE_EXPORT_ENUM(T, members...)
-
-/**
- * Set a value to a variable in cpp_dump namespace.
- * You can also assign values to the variables directly.
- */
-#define CPP_DUMP_SET_OPTION(variable, value)
-```
-
-### Variables
-
-```cpp
-/**
- * Maximum line width of output strings of cpp_dump::export_var().
- */
-inline std::size_t cpp_dump::max_line_width = 160;
-
-/**
- * Maximum number of times cpp_dump::export_var() is applied recursively.
- */
-inline std::size_t cpp_dump::max_depth = 4;
-
-/**
- * Maximum number of times cpp_dump::export_var() iterates over an iterator.
- * Note that in a single call, export_var() calls itself at most
- * (max_iteration_count^(max_depth+1)-1)/(max_iteration_count-1)-1 times.
- */
-inline std::size_t cpp_dump::max_iteration_count = 16;
-
-/**
- * Whether cpp_dump() prints types of the Asterisk category (See 'Supported types').
- */
-inline bool cpp_dump::enable_asterisk = false;
-
-/**
- * Whether cpp_dump() prints the expressions.
- */
-inline bool cpp_dump::print_expr = true;
-
-/**
- * Function that returns the label that cpp_dump() prints at the beginning of the output.
- */
-inline cpp_dump::log_label::log_label_func_t cpp_dump::log_label_func = cpp_dump::log_label::default_func;
-
-/**
- * Style of the escape sequences.
- */
-inline cpp_dump::es_style_t cpp_dump::es_style = cpp_dump::es_style_t::by_syntax;
-
-/**
- * Value of the escape sequences.
- */
-inline cpp_dump::es_value_t cpp_dump::es_value = {
-    "\e[02m",    // log: dark
-    "\e[36m",    // expression: cyan
-    "",          // reserved: default
-    "",          // number: default
-    "",          // character: default
-    "\e[02m",    // op: dark
-    "\e[32m",    // identifier: green
-    "\e[36m",    // member: cyan
-    "\e[31m",    // unsupported: red
-    {"\e[02m"},  // bracket_by_depth[0]: dark
-};
-
-/**
- * Style of indents of containers.
- */
-inline cont_indent_style_t cont_indent_style = cont_indent_style_t::when_nested;
-```
-
-### Types
-
-```cpp
-/**
- * Type of cpp_dump::es_style.
- * cpp_dump::export_var() supports this type.
- */
-enum class cpp_dump::es_style_t { no_es, by_syntax };
-
-/**
- * Type of cpp_dump::es_value.
- * cpp_dump::export_var() supports this type.
- */
-struct cpp_dump::es_value_t {
-  std::string log;
-  std::string expression;
-  std::string reserved;
-  std::string number;
-  std::string character;
-  std::string op;
-  std::string identifier;
-  std::string member;
-  std::string unsupported;
-  std::vector<std::string> bracket_by_depth;
-  es_value_t(
-    std::string log,
-    std::string expression,
-    std::string reserved,
-    std::string number,
-    std::string character,
-    std::string op,
-    std::string identifier,
-    std::string member,
-    std::string unsupported
-    std::vector<std::string> bracket_by_depth,
-  );
-}
-
-/**
- * Type of cpp_dump::cont_indent_style.
- * cpp_dump::export_var() supports this type.
- */
-enum class cont_indent_style_t { minimal, when_nested, when_non_tuples_nested, always };
-
-using cpp_dump::log_label::log_label_func_t =
-    std::function<std::string(const std::string &, std::size_t, const std::string &)>;
 ```
 
 ### How to print a user-defined type with cpp-dump
@@ -550,9 +647,7 @@ cpp_dump(variable | cp::front() | cp::back());
 
 The further left manipulator will act on the more outside dimensions of the array/map/set.  
 **Caution:**  
-These manipulators other than front() calculate the container's size.  
-Containers whose size cannot be calculated with std::size() will cost O(N) in computation.  
-In particular, passing an infinite sequence to these manipulators will result in an infinite loop.
+**These manipulators other than front() calculate the container's size. Containers whose size cannot be calculated with std::size() will cost O(N) in computation. In particular, passing an infinite sequence to these manipulators will result in an infinite loop.**
 
 #### int_style manipulators
 
