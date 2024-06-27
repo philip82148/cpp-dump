@@ -56,7 +56,10 @@ export_enum(const T &, const std::string &, std::size_t, std::size_t, bool, cons
 }  // namespace cpp_dump
 
 CPP_DUMP_DEFINE_EXPORT_ENUM(
-    cpp_dump::es_style_t, cpp_dump::es_style_t::no_es, cpp_dump::es_style_t::original
+    cpp_dump::es_style_t,
+    cpp_dump::es_style_t::no_es,
+    cpp_dump::es_style_t::original,
+    cpp_dump::es_style_t::by_syntax
 );
 CPP_DUMP_DEFINE_EXPORT_ENUM(
     cpp_dump::cont_indent_style_t,
