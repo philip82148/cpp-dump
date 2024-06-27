@@ -174,11 +174,12 @@ Then
 #include "path/to/cpp-dump/dump.hpp"
 ```
 
-## Configuration (if necessary)
+## Optional Configuration
 
 You can configure the library by writing like this.
 
 ```cpp
+// You can also write this in a header file -----------------------------------
 #ifdef DEBUGGING
 #include "path/to/cpp-dump/dump.hpp"
 namespace cp = cpp_dump;
@@ -186,6 +187,7 @@ namespace cp = cpp_dump;
 #define cpp_dump(...)
 #define CPP_DUMP_SET_OPTION(...)
 #endif
+// You can also write this in a header file -----------------------------------
 
 int main() {
   CPP_DUMP_SET_OPTION(max_line_width, 100);
@@ -194,10 +196,11 @@ int main() {
 }
 ```
 
-If you don't want to include the configuration code inside the main function, you can write it like this.
+If you don't want to include the configuration code inside the main function, you can write it like this.  
+**Caution: The function passed to the constructor of `cpp_dump::execute_before_main` should only contain the configuration code and nothing else.**
 
 ```cpp
-// You can also write this in a .hpp file -------------------------------------
+// You can also write this in a header file -----------------------------------
 #ifdef DEBUGGING
 #include "path/to/cpp-dump/dump.hpp"
 namespace cp = cpp_dump;
@@ -207,7 +210,7 @@ inline cp::execute_before_main cp::execute_before_main::perform([] {
 #else
 #define cpp_dump(...)
 #endif
-// You can also write this in a .hpp file -------------------------------------
+// You can also write this in a header file -----------------------------------
 
 int main() {
   // To be continued...
@@ -218,17 +221,17 @@ int main() {
 
 See [Variables](#variables) for details.
 
-| Option              | Type                                       | Default                                      |
-| ------------------- | ------------------------------------------ | -------------------------------------------- |
-| max_line_width      | `std::size_t`                              | 160                                          |
-| max_depth           | `std::size_t`                              | 4                                            |
-| max_iteration_count | `std::size_t`                              | 16                                           |
-| enable_asterisk     | `bool`                                     | false                                        |
-| print_expr          | `bool`                                     | true                                         |
-| log_labe_func       | `cpp_dump::log_label::log_label_func_t`    | `cpp_dump::log_label::default_func`          |
-| es_style            | `enum class cpp_dump::es_style_t`          | `cpp_dump::es_style_t::by_syntax`            |
-| es_value            | `cpp_dump::es_value_t`                     | (Default constructor, see [Types](#types))   |
-| cont_indent_style   | `enum class cpp_dump::cont_indent_style_t` | `cpp_dump::cont_indent_style_t::when_nested` |
+| Option              | Type                                    | Default                                      |
+| ------------------- | --------------------------------------- | -------------------------------------------- |
+| max_line_width      | `std::size_t`                           | `160`                                        |
+| max_depth           | `std::size_t`                           | `4`                                          |
+| max_iteration_count | `std::size_t`                           | `16`                                         |
+| enable_asterisk     | `bool`                                  | `false`                                      |
+| print_expr          | `bool`                                  | `true`                                       |
+| log_labe_func       | `cpp_dump::log_label::log_label_func_t` | `cpp_dump::log_label::default_func`          |
+| es_style            | `enum cpp_dump::es_style_t`             | `cpp_dump::es_style_t::by_syntax`            |
+| es_value            | `cpp_dump::es_value_t`                  | (Default constructor, see [Types](#types))   |
+| cont_indent_style   | `enum cpp_dump::cont_indent_style_t`    | `cpp_dump::cont_indent_style_t::when_nested` |
 
 ## Usage
 
@@ -597,10 +600,7 @@ cpp_dump(variable | cp::front() | cp::back());
 ```
 
 The further left manipulator will act on the more outside dimensions of the array/map/set.  
-**Caution:**  
-These manipulators other than front() calculate the container's size.  
-Containers whose size cannot be calculated with std::size() will cost O(N) in computation.  
-In particular, passing an infinite sequence to these manipulators will result in an infinite loop.
+**Caution: These manipulators other than front() calculate the container's size. Containers whose size cannot be calculated with std::size() will cost O(N) in computation. In particular, passing an infinite sequence to these manipulators will result in an infinite loop.**
 
 #### int_style manipulators
 
