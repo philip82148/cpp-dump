@@ -53,7 +53,7 @@ struct non_copyable_and_non_movable_class {
 
   non_copyable_and_non_movable_class() = delete;
 
-  non_copyable_and_non_movable_class(const string &s) : str_member(s) {}
+  explicit non_copyable_and_non_movable_class(const string &s) : str_member(s) {}
 } non_copyable_and_non_movable_class1("This object has a pointer and reference_wrapper to itself.");
 
 struct non_copyable_and_non_movable_class_iterator_end {};

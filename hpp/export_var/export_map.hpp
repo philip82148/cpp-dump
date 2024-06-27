@@ -25,7 +25,7 @@ namespace _detail {
 template <typename T>
 struct _map_dummy_wrapper {
  public:
-  _map_dummy_wrapper(const T &map) : _map(map) {}
+  explicit _map_dummy_wrapper(const T &map) : _map(map) {}
 
   auto begin() const noexcept { return _map.begin(); }
   auto end() const noexcept { return _map.end(); }
@@ -38,7 +38,7 @@ struct _map_dummy_wrapper {
 template <typename T>
 struct _multimap_wrapper {
  public:
-  _multimap_wrapper(const T &map) : _begin(map, map.begin()), _end(map, map.end()) {}
+  explicit _multimap_wrapper(const T &map) : _begin(map, map.begin()), _end(map, map.end()) {}
 
   auto begin() const noexcept { return _begin; }
   auto end() const noexcept { return _end; }
@@ -78,7 +78,7 @@ struct _multimap_value_wrapper {
  private:
   struct multimap_value_iterator {
    public:
-    multimap_value_iterator(It it) : _it(it) {}
+    explicit multimap_value_iterator(It it) : _it(it) {}
     multimap_value_iterator() = delete;
 
     const auto &operator*() const noexcept { return _it->second; }

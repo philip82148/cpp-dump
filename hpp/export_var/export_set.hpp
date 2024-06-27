@@ -25,7 +25,7 @@ namespace _detail {
 template <typename T>
 struct _set_dummy_wrapper {
  public:
-  _set_dummy_wrapper(const T &set) : _set(set) {}
+  explicit _set_dummy_wrapper(const T &set) : _set(set) {}
 
   auto begin() const noexcept { return _set.begin(); }
   auto end() const noexcept { return _set.end(); }
@@ -38,7 +38,7 @@ struct _set_dummy_wrapper {
 template <typename T>
 struct _multiset_wrapper {
  public:
-  _multiset_wrapper(const T &set) : _begin(set, set.begin()), _end(set, set.end()) {}
+  explicit _multiset_wrapper(const T &set) : _begin(set, set.begin()), _end(set, set.end()) {}
 
   auto begin() const noexcept { return _begin; }
   auto end() const noexcept { return _end; }

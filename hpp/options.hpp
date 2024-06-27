@@ -26,7 +26,7 @@ namespace cpp_dump {
  */
 struct execute_before_main {
   template <typename Func>
-  execute_before_main(Func func) {
+  explicit execute_before_main(Func func) {
     func();
   }
   static execute_before_main perform;
