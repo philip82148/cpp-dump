@@ -3,16 +3,8 @@
 #include <set>
 #include <vector>
 
-#define DEBUGGING
-#ifdef DEBUGGING
-
 #include "../dump.hpp"
 namespace cp = cpp_dump;
-
-#else
-#define cpp_dump(...)
-#define CPP_DUMP_SET_OPTION(...)
-#endif
 
 void my_func() {
   std::map<int, int> my_map{{2, 6}, {4, 6}, {5, 3}};

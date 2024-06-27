@@ -12,16 +12,7 @@
 #include <variant>
 #include <vector>
 
-#define DEBUGGING
-#ifdef DEBUGGING
-
 #include "../dump.hpp"
-namespace cp = cpp_dump;
-
-#else
-#define cpp_dump(...)
-#define CPP_DUMP_SET_OPTION(...)
-#endif
 
 int main() {
   int my_int = 15;

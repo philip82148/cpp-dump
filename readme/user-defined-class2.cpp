@@ -1,17 +1,8 @@
 #include <iostream>
 
-#define DEBUGGING
-#ifdef DEBUGGING
-
 #include "../dump.hpp"
-namespace cp = cpp_dump;
 
 CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(i, str());
-
-#else
-#define cpp_dump(...)
-#define CPP_DUMP_SET_OPTION(...)
-#endif
 
 int main() {
   std::clog << std::endl;
