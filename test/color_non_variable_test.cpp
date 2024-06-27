@@ -48,7 +48,7 @@ int main(int argc, char *argv[]) {
   auto es_style_ = (array{
       cp::es_style_t::no_es,
       cp::es_style_t::original,
-      cp::es_style_t::by_syntax2_experimental,
+      cp::es_style_t::by_syntax,
   }[stoi(argv[1])]);
 
   CPP_DUMP_SET_OPTION(max_iteration_count, 100);
@@ -196,6 +196,7 @@ int main(int argc, char *argv[]) {
   // extra
   cpp_dump(cp::es_style_t::no_es);
   cpp_dump(cp::es_style_t::original);
+  cpp_dump(cp::es_style_t::by_syntax);
   cpp_dump(cp::es_value);
 
   // manipulators

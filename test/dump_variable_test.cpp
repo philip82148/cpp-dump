@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
   auto es_style_ = (array{
       cp::es_style_t::no_es,
       cp::es_style_t::original,
-      cp::es_style_t::by_syntax2_experimental,
+      cp::es_style_t::by_syntax,
   }[stoi(argv[2])]);
 
   CPP_DUMP_SET_OPTION(es_style, es_style_);

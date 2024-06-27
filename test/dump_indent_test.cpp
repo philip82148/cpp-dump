@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
   auto es_style_ = (array{
       cp::es_style_t::no_es,
       cp::es_style_t::original,
-      cp::es_style_t::by_syntax2_experimental,
+      cp::es_style_t::by_syntax,
   }[stoi(argv[3])]);
   bool color_test = stoi(argv[4]);
 
