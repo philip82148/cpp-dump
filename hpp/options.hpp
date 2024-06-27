@@ -36,7 +36,7 @@ struct execute_before_main {
  * Type of cpp_dump::es_style.
  * cpp_dump::export_var() supports this type.
  */
-enum class es_style_t { no_es, original, by_syntax2_experimental };
+enum class es_style_t { no_es, original, by_syntax };
 
 /**
  * Type of cpp_dump::es_value.
