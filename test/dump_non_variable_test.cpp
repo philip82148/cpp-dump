@@ -205,7 +205,7 @@ int main(int argc, char *argv[]) {
   if (argc != 2) return 1;
   auto es_style_ = (array{
       cp::es_style_t::no_es,
-      cp::es_style_t::by_syntax,
+      cp::es_style_t::original,
       cp::es_style_t::by_syntax2_experimental,
   }[stoi(argv[1])]);
 
@@ -388,7 +388,7 @@ int main(int argc, char *argv[]) {
   cpp_dump(setw(5), boolalpha);
 
   // extra
-  cpp_dump(cp::es_style_t::no_es, cp::es_style_t::by_syntax, cp::es_value);
+  cpp_dump(cp::es_style_t::no_es, cp::es_style_t::original, cp::es_value);
   cpp_dump(
       cp::cont_indent_style_t::minimal,
       cp::cont_indent_style_t::when_nested,
