@@ -62,24 +62,24 @@ struct es_value_t {
 enum class cont_indent_style_t { minimal, when_nested, when_non_tuples_nested, always };
 
 /**
- * Maximum line width of output strings of cpp_dump::export_var().
+ * Maximum line width of the strings returned by cpp_dump() and cpp_dump::export_var().
  */
 inline std::size_t max_line_width = 160;
 
 /**
- * Maximum number of times cpp_dump::export_var() is applied recursively.
+ * Maximum number of times cpp_dump::export_var() is called recursively.
  */
 inline std::size_t max_depth = 4;
 
 /**
- * Maximum number of times cpp_dump::export_var() iterates over an iterator.
- * Note that in a single call, export_var() calls itself at most
+ * Maximum number of iterations of cpp_dump::export_var() over an iterator.
+ * Note that in a single call, cpp_dump::export_var() calls itself at most
  * (max_iteration_count^(max_depth+1)-1)/(max_iteration_count-1)-1 times.
  */
 inline std::size_t max_iteration_count = 16;
 
 /**
- * Whether cpp_dump() prints types of the Asterisk category (See README.md).
+ * Whether cpp_dump() prints types of the Asterisk category (See 'Supported types').
  */
 inline bool enable_asterisk = false;
 
@@ -94,17 +94,17 @@ inline bool print_expr = true;
 inline log_label::log_label_func_t log_label_func = log_label::default_func;
 
 /**
- * Style of the escape sequences.
+ * Style of the escape sequences (output coloring).
  */
 inline es_style_t es_style = es_style_t::by_syntax;
 
 /**
- * Value of the escape sequences.
+ * Values of the escape sequences (output coloring).
  */
 inline es_value_t es_value;
 
 /**
- * Style of indents of containers.
+ * Style of indents of the Container, Set and Map categories (See 'Supported types').
  */
 inline cont_indent_style_t cont_indent_style = cont_indent_style_t::when_nested;
 
