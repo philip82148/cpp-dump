@@ -28,7 +28,7 @@ export_optional(const std::nullopt_t &, const std::string &, std::size_t, std::s
 namespace es {
 
 inline std::string _optional_question(const std::string &s) {
-  return es_style == es_style_t::by_syntax ? es::identifier(s) : es::op(s);
+  return es_style == es_style_t::original ? es::identifier(s) : es::op(s);
 }
 
 }  // namespace es

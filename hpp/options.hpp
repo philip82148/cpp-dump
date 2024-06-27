@@ -36,7 +36,7 @@ struct execute_before_main {
  * Type of cpp_dump::es_style.
  * cpp_dump::export_var() supports this type.
  */
-enum class es_style_t { no_es, by_syntax, by_syntax2_experimental };
+enum class es_style_t { no_es, original, by_syntax2_experimental };
 
 /**
  * Type of cpp_dump::es_value.
@@ -96,7 +96,7 @@ inline log_label::log_label_func_t log_label_func = log_label::default_func;
 /**
  * Style of the escape sequences (output coloring).
  */
-inline es_style_t es_style = es_style_t::by_syntax;
+inline es_style_t es_style = es_style_t::original;
 
 /**
  * Values of the escape sequences (output coloring).
