@@ -55,7 +55,7 @@ add_test(
     -P "${CMAKE_CURRENT_LIST_DIR}/test/dump_variable_test.cmake"
 )
 
-set(args_array "by_syntax_normal\;160\;4\;1" "by_syntax_shallow\;4000\;0\;1" "by_syntax2_normal\;160\;4\;2" "by_syntax2_shallow\;4000\;0\;2")
+set(args_array "original_normal\;160\;4\;1" "original_shallow\;4000\;0\;1" "by_syntax2_normal\;160\;4\;2" "by_syntax2_shallow\;4000\;0\;2")
 
 foreach(args ${args_array})
     list(GET args 0 suffix)
@@ -71,7 +71,7 @@ foreach(args ${args_array})
 endforeach()
 
 add_executable(color_non_variable_test test/color_non_variable_test.cpp)
-set(args_array "by_syntax\;1" "by_syntax2\;2")
+set(args_array "original\;1" "by_syntax2\;2")
 
 foreach(args ${args_array})
     list(GET args 0 suffix)
