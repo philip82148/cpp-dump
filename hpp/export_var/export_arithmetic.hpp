@@ -71,10 +71,10 @@ inline auto export_arithmetic(
     bool,
     const export_command &command
 ) -> std::enable_if_t<is_arithmetic<T> && std::is_integral_v<T>, std::string> {
-  auto int_style = command.get_int_style();
-  if (!int_style) return es::number(std::to_string(value));
+  auto int_style_ = command.get_int_style();
+  if (!int_style_) return es::number(std::to_string(value));
 
-  auto [base, digits, chunk, space_fill, make_unsigned_or_no_space_for_minus] = int_style.value();
+  auto [base, digits, chunk, space_fill, make_unsigned_or_no_space_for_minus] = int_style_.value();
 
   if (base == 10 && digits == 0 && chunk == 0) return es::number(std::to_string(value));
 

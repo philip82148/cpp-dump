@@ -56,7 +56,7 @@ inline auto export_container(
     std::string output = es::bracket("[ ", current_depth);
     bool is_first_elem = true;
 
-    for (auto &&[is_ellipsis, it, index] : skipped_container) {
+    for (auto &&[is_ellipsis, it, index_] : skipped_container) {
       const auto &elem = *it;
 
       if (is_first_elem) {
@@ -77,7 +77,7 @@ inline auto export_container(
         continue;
       }
 
-      if (command.show_index()) output += es::member(std::to_string(index)) + es::op(": ");
+      if (command.show_index()) output += es::member(std::to_string(index_)) + es::op(": ");
 
       std::string elem_str = export_var(
           elem, indent, last_line_length + get_length(output), next_depth, true, next_command
@@ -110,7 +110,7 @@ inline auto export_container(
   bool is_first_elem = true;
 
   // universal references; it.operator*() might not be const
-  for (auto &&[is_ellipsis, it, index] : skipped_container) {
+  for (auto &&[is_ellipsis, it, index_] : skipped_container) {
     const auto &elem = *it;
 
     if (is_first_elem) {
@@ -125,7 +125,7 @@ inline auto export_container(
     }
 
     output += "\n" + new_indent;
-    if (command.show_index()) output += es::member(std::to_string(index)) + es::op(": ");
+    if (command.show_index()) output += es::member(std::to_string(index_)) + es::op(": ");
 
     output +=
         export_var(elem, new_indent, get_last_line_length(output), next_depth, false, next_command);

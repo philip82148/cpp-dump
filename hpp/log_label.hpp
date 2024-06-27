@@ -59,11 +59,11 @@ inline log_label_func_t basename(bool show_func = false, int min_width = 0) {
     auto slash_pos = fullpath.find_last_of("/\\");
     if (slash_pos == std::string::npos) slash_pos = 0;
     else ++slash_pos;
-    std::string filename = fullpath.substr(slash_pos);
+    std::string filename_ = fullpath.substr(slash_pos);
 
-    auto dot_pos = filename.rfind('.');
-    if (dot_pos == std::string::npos) dot_pos = filename.length();
-    std::string basename = filename.substr(0, dot_pos);
+    auto dot_pos = filename_.rfind('.');
+    if (dot_pos == std::string::npos) dot_pos = filename_.length();
+    std::string basename = filename_.substr(0, dot_pos);
 
     std::ostringstream ss;
     ss << std::left << std::setw(min_width - 3);
