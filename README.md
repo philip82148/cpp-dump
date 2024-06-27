@@ -646,7 +646,8 @@ cpp_dump(variable | cp::front() | cp::back());
 ```
 
 The further left manipulator will act on the more outside dimensions of the array/map/set.  
-**Caution: These manipulators other than front() calculate the container's size. Containers whose size cannot be calculated with std::size() will cost O(N) in computation. In particular, passing an infinite sequence to these manipulators will result in an infinite loop.**
+**Caution:**  
+**These manipulators other than front() calculate the container's size. Containers whose size cannot be calculated with std::size() will cost O(N) in computation. In particular, passing an infinite sequence to these manipulators will result in an infinite loop.**
 
 #### int_style manipulators
 
