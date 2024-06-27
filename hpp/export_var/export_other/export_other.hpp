@@ -69,7 +69,7 @@ inline std::string export_other(
 namespace es {
 
 inline std::string _bitset(const std::string &s) {
-  return es_style == es_style_t::by_syntax ? es::identifier(s) : es::number(s);
+  return es_style == es_style_t::original ? es::identifier(s) : es::number(s);
 }
 
 }  // namespace es
@@ -97,11 +97,11 @@ export_other(const std::bitset<N> &bitset, const std::string &, std::size_t, std
 namespace es {
 
 inline std::string _complex_component(const std::string &s) {
-  return es_style == es_style_t::by_syntax ? es::identifier(s) : es::number(s);
+  return es_style == es_style_t::original ? es::identifier(s) : es::number(s);
 }
 
 inline std::string _imag_sign(const std::string &s) {
-  return es_style == es_style_t::by_syntax ? es::identifier(s) : es::op(s);
+  return es_style == es_style_t::original ? es::identifier(s) : es::op(s);
 }
 
 }  // namespace es
@@ -126,7 +126,7 @@ export_other(const std::complex<T> &complex, const std::string &, std::size_t, s
 namespace es {
 
 inline std::string _variant_bar(const std::string &s) {
-  return es_style == es_style_t::by_syntax ? es::identifier(s) : es::op(s);
+  return es_style == es_style_t::original ? es::identifier(s) : es::op(s);
 }
 
 }  // namespace es

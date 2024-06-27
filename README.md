@@ -253,14 +253,14 @@ The function that returns the label that `cpp_dump()` prints at the beginning of
 
 #### `es_style`
 
-Type: `enum class cpp_dump::es_style_t` Default `cpp_dump::es_style_t::by_syntax`  
+Type: `enum class cpp_dump::es_style_t` Default `cpp_dump::es_style_t::original`  
 The style of the escape sequences (the output coloring).
 
-| Name                      | Description                                      |
-| ------------------------- | ------------------------------------------------ |
-| `by_syntax`               | Default (Planning to rename it to `original`...) |
-| `by_syntax2_experimental` | (Planning to rename it to `based_on_syntax`...)  |
-| `no_es`                   | Turn off output coloring                         |
+| Name        | Description                                                                              |
+| ----------- | ---------------------------------------------------------------------------------------- |
+| `original`  | Default. Pointers, bitsets, complexes, and etc. are colored differently from `by_syntax` |
+| `by_syntax` | Use a color scheme closer to standard syntax highlighting                                |
+| `no_es`     | Turn off output coloring                                                                 |
 
 #### `es_value`
 
@@ -327,7 +327,7 @@ The style of indents of the Container, Set and Map categories (See [Supported ty
  * Type of cpp_dump::es_style.
  * cpp_dump::export_var() supports this type.
  */
-enum class cpp_dump::es_style_t { no_es, by_syntax };
+enum class cpp_dump::es_style_t { no_es, original, by_syntax };
 
 /**
  * Type of cpp_dump::es_value.
@@ -409,7 +409,7 @@ inline cpp_dump::log_label::log_label_func_t cpp_dump::log_label_func = cpp_dump
 /**
  * Style of the escape sequences (output coloring).
  */
-inline cpp_dump::es_style_t cpp_dump::es_style = cpp_dump::es_style_t::by_syntax;
+inline cpp_dump::es_style_t cpp_dump::es_style = cpp_dump::es_style_t::original;
 
 /**
  * Values of the escape sequences (output coloring).

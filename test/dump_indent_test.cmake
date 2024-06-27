@@ -36,7 +36,7 @@ if(not_successful)
    message(STATUS "${contents}")
 endif()
 
-# by_syntax
+# original
 execute_process(
    COMMAND "${cmd_path}" "${width}" "${depth}" 1 0 ERROR_VARIABLE error_contents COMMAND_ERROR_IS_FATAL ANY
 )
@@ -53,7 +53,7 @@ if(not_successful)
    message(STATUS "${contents}")
 endif()
 
-# by_syntax2
+# by_syntax
 execute_process(
    COMMAND "${cmd_path}" "${width}" "${depth}" 2 0 ERROR_VARIABLE error_contents COMMAND_ERROR_IS_FATAL ANY
 )

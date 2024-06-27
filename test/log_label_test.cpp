@@ -16,8 +16,8 @@ int main(int argc, char *argv[]) {
   bool path_dependent = static_cast<bool>(stoi(argv[1]));
   auto es_style_ = (array{
       cp::es_style_t::no_es,
+      cp::es_style_t::original,
       cp::es_style_t::by_syntax,
-      cp::es_style_t::by_syntax2_experimental,
   }[stoi(argv[2])]);
 
   CPP_DUMP_SET_OPTION(es_style, es_style_);
