@@ -48,4 +48,6 @@ execute_process(
 
 if(not_successful)
    message(SEND_ERROR "${log_file} does not match ${txt_file} !")
+   file(READ "${log_file}" contents)
+   message(STATUS "${contents}")
 endif()

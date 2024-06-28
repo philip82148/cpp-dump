@@ -49,6 +49,8 @@ here.[0m[0m[38;2;215;152;61m`[0m[0m[02m,
 [0m[02m[dump] [0m[0m[38;2;86;154;214mlogic_error1[0m[0m[02m => [0m[0m[32mstd[0m[0m[38;2;150;150;150m::[0m[0m[32mlogic_error[0m[0m[33m{ [0m[0m[38;2;156;220;254mwhat()[0m[0m[38;2;150;150;150m= [0m[0m[38;2;215;152;61m"This is a test error.[0m[0m[38;2;215;152;61m"[0m[0m[33m }[0m
 [0m[02m[dump] [0m[0m[38;2;86;154;214mvec.begin()[0m[0m[02m => [0m[0m[31mUnsupported Type[0m
 [0m[02m[dump] [0m[0m[38;2;86;154;214mvec.begin()[0m[0m[02m => [0m[0m[32m*[0m[0m[35m[ ][0m
+[0m[02m[dump] [0m[0m[38;2;86;154;214mpartially_supported_enum::supported[0m[0m[02m => [0m[0m[38;2;156;220;254msupported[0m
+[0m[02m[dump] [0m[0m[38;2;86;154;214mpartially_supported_enum::unsupported[0m[0m[02m => [0m[0m[32mpartially_supported_enum[0m[0m[38;2;150;150;150m::[0m[0m[32m[0m[0m[31m?[0m
 [0m[02m[dump] [0m[0m[38;2;86;154;214munsupported_class1[0m[0m[02m => [0m[0m[31mUnsupported Type[0m
 [0m[02m[dump] [0m[0m[38;2;86;154;214mcp::es_style_t::no_es[0m[0m[02m => [0m[0m[32mcpp_dump[0m[0m[38;2;150;150;150m::[0m[0m[32mes_style_t[0m[0m[38;2;150;150;150m::[0m[0m[38;2;156;220;254mno_es[0m
 [0m[02m[dump] [0m[0m[38;2;86;154;214mcp::es_style_t::original[0m[0m[02m => [0m[0m[32mcpp_dump[0m[0m[38;2;150;150;150m::[0m[0m[32mes_style_t[0m[0m[38;2;150;150;150m::[0m[0m[38;2;156;220;254moriginal[0m
