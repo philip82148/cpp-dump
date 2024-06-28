@@ -12,6 +12,16 @@ namespace cp = cpp_dump;
 
 CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(member_var, member_func());
 
+namespace ns {
+
+template <typename>
+struct template_class {
+  int member_var = 5;
+  std::string member_func() const { return "This is a member_func."; }
+};
+
+}  // namespace ns
+
 int main(int argc, char *argv[]) {
   if (argc != 4) return 1;
   bool compiler_dependent = static_cast<bool>(stoi(argv[1]));
@@ -60,6 +70,7 @@ int main(int argc, char *argv[]) {
     };
 
     cpp_dump(original_error1);
+    cpp_dump(ns::template_class<ns::template_class<int>>());
     cpp_dump(original_class());
     cpp_dump(unsupported_original_class());
   } else {
