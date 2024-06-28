@@ -23,9 +23,9 @@ inline bool use_es() { return es_style != es_style_t::no_es; }
 
 namespace es {
 
-inline constexpr char _reset_es[] = "\x1b[0m";
+inline constexpr std::string_view _reset_es = "\x1b[0m";
 
-inline std::string reset() { return use_es() ? _reset_es : ""; }
+inline std::string reset() { return use_es() ? std::string(_reset_es) : std::string(); }
 
 inline std::string apply(std::string_view es, std::string_view s) {
   if (use_es()) {
