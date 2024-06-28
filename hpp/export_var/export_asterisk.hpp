@@ -8,6 +8,7 @@
 #pragma once
 
 #include <string>
+#include <string_view>
 #include <type_traits>
 
 #include "../escape_sequence.hpp"
@@ -23,7 +24,7 @@ namespace _detail {
 
 namespace es {
 
-inline std::string _asterisk_asterisk(const std::string &s) {
+inline std::string _asterisk_asterisk(std::string_view s) {
   return es_style == es_style_t::original ? es::identifier(s) : es::op(s);
 }
 

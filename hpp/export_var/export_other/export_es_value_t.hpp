@@ -21,7 +21,7 @@ namespace cpp_dump {
 
 namespace _detail {
 
-inline std::string _export_es_value_str(const std::string &es) {
+inline std::string _export_es_value_str(std::string_view es) {
   std::string escaped_es = replace_string(es, "\x1b", "\\e");
 
   return es::apply(es, R"(")" + escaped_es + R"(")");

@@ -9,6 +9,7 @@
 
 #include <complex>
 #include <string>
+#include <string_view>
 #include <type_traits>
 #include <variant>
 
@@ -68,7 +69,7 @@ inline std::string export_other(
 
 namespace es {
 
-inline std::string _bitset(const std::string &s) {
+inline std::string _bitset(std::string_view s) {
   return es_style == es_style_t::original ? es::identifier(s) : es::number(s);
 }
 
@@ -96,11 +97,11 @@ export_other(const std::bitset<N> &bitset, const std::string &, std::size_t, std
 
 namespace es {
 
-inline std::string _complex_component(const std::string &s) {
+inline std::string _complex_component(std::string_view s) {
   return es_style == es_style_t::original ? es::identifier(s) : es::number(s);
 }
 
-inline std::string _imag_sign(const std::string &s) {
+inline std::string _imag_sign(std::string_view s) {
   return es_style == es_style_t::original ? es::identifier(s) : es::op(s);
 }
 
@@ -125,7 +126,7 @@ export_other(const std::complex<T> &complex, const std::string &, std::size_t, s
 
 namespace es {
 
-inline std::string _variant_bar(const std::string &s) {
+inline std::string _variant_bar(std::string_view s) {
   return es_style == es_style_t::original ? es::identifier(s) : es::op(s);
 }
 

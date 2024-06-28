@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <cctype>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "./options.hpp"
@@ -26,33 +27,33 @@ inline constexpr char _reset_es[] = "\x1b[0m";
 
 inline std::string reset() { return use_es() ? _reset_es : ""; }
 
-inline std::string apply(const std::string &es, const std::string &s) {
+inline std::string apply(std::string_view es, std::string_view s) {
   if (use_es()) {
-    return es + s + _reset_es;
+    return std::string(es).append(s).append(_reset_es);
   } else {
-    return s;
+    return std::string(s);
   }
 }
 
-inline std::string log(const std::string &s) { return es::apply(es_value.log, s); }
-inline std::string expression(const std::string &s) { return es::apply(es_value.expression, s); }
-inline std::string reserved(const std::string &s) { return es::apply(es_value.reserved, s); }
-inline std::string number(const std::string &s) { return es::apply(es_value.number, s); }
-inline std::string character(const std::string &s) { return es::apply(es_value.character, s); }
-inline std::string op(const std::string &s) { return es::apply(es_value.op, s); }
-inline std::string identifier(const std::string &s) { return es::apply(es_value.identifier, s); }
-inline std::string member(const std::string &s) { return es::apply(es_value.member, s); }
-inline std::string unsupported(const std::string &s) { return es::apply(es_value.unsupported, s); }
+inline std::string log(std::string_view s) { return es::apply(es_value.log, s); }
+inline std::string expression(std::string_view s) { return es::apply(es_value.expression, s); }
+inline std::string reserved(std::string_view s) { return es::apply(es_value.reserved, s); }
+inline std::string number(std::string_view s) { return es::apply(es_value.number, s); }
+inline std::string character(std::string_view s) { return es::apply(es_value.character, s); }
+inline std::string op(std::string_view s) { return es::apply(es_value.op, s); }
+inline std::string identifier(std::string_view s) { return es::apply(es_value.identifier, s); }
+inline std::string member(std::string_view s) { return es::apply(es_value.member, s); }
+inline std::string unsupported(std::string_view s) { return es::apply(es_value.unsupported, s); }
 
-inline std::string bracket(const std::string &s, std::size_t d) {
+inline std::string bracket(std::string_view s, std::size_t d) {
   auto sz = es_value.bracket_by_depth.size();
-  if (sz == 0) return s;
+  if (sz == 0) return std::string(s);
 
   return es::apply(es_value.bracket_by_depth[d % sz], s);
 }
 
-inline std::string class_name(const std::string &s, bool is_enumerator = false) {
-  if (!use_es()) return s;
+inline std::string class_name(std::string_view s, bool is_enumerator = false) {
+  if (!use_es()) return std::string(s);
 
   auto is_operator = [](char c) { return !(std::isalnum(c) || c == '_'); };
 

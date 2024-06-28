@@ -9,6 +9,7 @@
 
 #include <optional>
 #include <string>
+#include <string_view>
 #include <type_traits>
 
 #include "../../escape_sequence.hpp"
@@ -27,7 +28,7 @@ export_optional(const std::nullopt_t &, const std::string &, std::size_t, std::s
 
 namespace es {
 
-inline std::string _optional_question(const std::string &s) {
+inline std::string _optional_question(std::string_view s) {
   return es_style == es_style_t::original ? es::identifier(s) : es::op(s);
 }
 
