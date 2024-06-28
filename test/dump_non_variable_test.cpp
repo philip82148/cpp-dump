@@ -197,6 +197,8 @@ ostream &operator<<(ostream &os, unsupported_non_const_class &) {
   return os;
 }
 
+CPP_DUMP_SET_OPTION_IN_GLOBAL(max_iteration_count, 100);
+
 int main(int argc, char *argv[]) {
   if (argc != 2) return 1;
   auto es_style_ = (array{
@@ -205,10 +207,9 @@ int main(int argc, char *argv[]) {
       cp::es_style_t::by_syntax,
   }[stoi(argv[1])]);
 
-  CPP_DUMP_SET_OPTION(max_iteration_count, 100);
   CPP_DUMP_SET_OPTION(es_style, es_style_);
 
-  // Verify if cp::execute_before_main is working correctly.
+  // Verify if CPP_DUMP_SET_OPTION_IN_GLOBAL is working correctly.
   cpp_dump(cpp_dump::max_iteration_count == 100);
 
   // basic
