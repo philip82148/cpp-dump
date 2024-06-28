@@ -80,6 +80,29 @@ inline std::string class_name(std::string_view s, bool is_enumerator = false) {
   return typename_with_es;
 }
 
+inline std::string class_member(std::string_view s) {
+  if (!use_es()) return std::string(s);
+
+  auto is_operator = [](char c) { return !(std::isalnum(c) || c == '_'); };
+
+  std::string typename_with_es;
+  auto begin = s.begin();
+  decltype(begin) end;
+  while ((end = std::find_if(begin, s.end(), is_operator)) != s.end()) {
+    typename_with_es += es::member(std::string(begin, end));
+    begin = end;
+
+    end = std::find_if_not(begin, s.end(), is_operator);
+    typename_with_es += es::op(std::string(begin, end));
+
+    if (end == s.end()) return typename_with_es;
+    begin = end;
+  }
+  typename_with_es += es::member(std::string(begin, s.end()));
+
+  return typename_with_es;
+}
+
 }  // namespace es
 
 }  // namespace _detail
