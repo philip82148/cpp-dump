@@ -17,12 +17,14 @@
 
 #endif
 
+#include "../../escape_sequence.hpp"
 #include "../../expand_va_macro.hpp"
 #include "../../export_command/export_command.hpp"
 #include "../../type_check.hpp"
 #include "../export_object_common.hpp"
 
-#define _p_CPP_DUMP_EXPAND_FOR_EXPORT_OTHER_OBJECT(member) append_output(#member, value.member)
+#define _p_CPP_DUMP_EXPAND_FOR_EXPORT_OTHER_OBJECT(member_)                                        \
+  append_output(es::member(#member_), value.member_)
 
 #define _p_CPP_DUMP_DEFINE_EXPORT_OTHER_OBJECT(TYPE, TYPENAME_STR, ...)                            \
   namespace cpp_dump {                                                                             \

@@ -10,6 +10,7 @@
 #include <string>
 #include <type_traits>
 
+#include "../escape_sequence.hpp"
 #include "../export_command/export_command.hpp"
 #include "../type_check.hpp"
 #include "./export_object_common.hpp"
@@ -31,7 +32,7 @@ inline auto export_exception(
 
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;
 
-  append_output("what()", exception.what());
+  append_output(es::member("what()"), exception.what());
 
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2;
 }

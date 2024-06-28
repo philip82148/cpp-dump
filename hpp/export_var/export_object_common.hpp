@@ -37,12 +37,12 @@
     }                                                                                              \
                                                                                                    \
     if (shift_indent) {                                                                            \
-      output += "\n" + new_indent + es::member(member_name) + es::op("= ");                        \
+      output += "\n" + new_indent + member_name + es::op("= ");                                    \
       output += export_var(                                                                        \
           member, new_indent, get_last_line_length(output), next_depth, false, command             \
       );                                                                                           \
     } else {                                                                                       \
-      output += es::member(member_name) + es::op("= ");                                            \
+      output += member_name + es::op("= ");                                                        \
       output += export_var(                                                                        \
           member, indent, last_line_length + get_length(output), next_depth, true, command         \
       );                                                                                           \

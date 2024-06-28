@@ -9,13 +9,15 @@
 
 #include <string>
 
+#include "../escape_sequence.hpp"
 #include "../expand_va_macro.hpp"
 #include "../export_command/export_command.hpp"
 #include "../type_check.hpp"
 #include "./export_object_common.hpp"
 
-#define _p_CPP_DUMP_EXPAND_FOR_DANGEROUS_EXPORT_OBJECT(member)  value.member
-#define _p_CPP_DUMP_EXPAND_FOR_DANGEROUS_EXPORT_OBJECT2(member) append_output(#member, value.member)
+#define _p_CPP_DUMP_EXPAND_FOR_DANGEROUS_EXPORT_OBJECT(member) value.member
+#define _p_CPP_DUMP_EXPAND_FOR_DANGEROUS_EXPORT_OBJECT2(member_)                                   \
+  append_output(es::member(#member_), value.member_)
 
 /**
  * Make export_var() support every type that has the specified members.
