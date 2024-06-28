@@ -36,16 +36,12 @@ export_type_info(const T &type_info, const std::string &indent, std::size_t last
 #endif
 
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1_1;
+  [[maybe_unused]] auto _dummy_1 = next_depth;
+  [[maybe_unused]] auto _dummy_2 = is_first = false;
 
   std::string member_name = "name()";
 
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1_3;
-
-  if (is_first) {
-    is_first = false;
-  } else {
-    output += es::op(", ");
-  }
 
   if (shift_indent) output += "\n" + new_indent;
 
