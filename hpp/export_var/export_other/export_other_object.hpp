@@ -24,7 +24,7 @@
 
 #define _p_CPP_DUMP_EXPAND_FOR_EXPORT_OTHER_OBJECT(member) append_output(#member, value.member)
 
-#define _p_CPP_DUMP_DEFINE_EXPORT_OTHER_OBJECT(TYPE, ...)                                          \
+#define _p_CPP_DUMP_DEFINE_EXPORT_OTHER_OBJECT(TYPE, TYPENAME_STR, ...)                            \
   namespace cpp_dump {                                                                             \
                                                                                                    \
   namespace _detail {                                                                              \
@@ -41,7 +41,7 @@
       bool fail_on_newline,                                                                        \
       const export_command &command                                                                \
   ) {                                                                                              \
-    std::string type_name = #TYPE;                                                                 \
+    std::string type_name = TYPENAME_STR;                                                          \
                                                                                                    \
     _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;                                                      \
                                                                                                    \
@@ -72,7 +72,12 @@ export_other_object(const T &, const std::string &, std::size_t, std::size_t, bo
 
 #if !defined(__clang__)
 _p_CPP_DUMP_DEFINE_EXPORT_OTHER_OBJECT(
-    std::source_location, file_name(), line(), column(), function_name()
+    std::source_location,
+    es::identifier("std") + es::op("::") + es::identifier("source_location"),
+    file_name(),
+    line(),
+    column(),
+    function_name()
 );
 #endif
 

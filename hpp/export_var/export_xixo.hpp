@@ -27,7 +27,7 @@ inline std::string export_xixo(
     bool fail_on_newline,
     const export_command &command
 ) {
-  std::string type_name = "std::queue";
+  std::string type_name = es::identifier("std") + es::op("::") + es::identifier("queue");
 
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;
 
@@ -49,7 +49,7 @@ inline std::string export_xixo(
     bool fail_on_newline,
     const export_command &command
 ) {
-  std::string type_name = "std::priority_queue";
+  std::string type_name = es::identifier("std") + es::op("::") + es::identifier("priority_queue");
 
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;
 
@@ -68,7 +68,7 @@ inline std::string export_xixo(
     bool fail_on_newline,
     const export_command &command
 ) {
-  std::string type_name = "std::stack";
+  std::string type_name = es::identifier("std") + es::op("::") + es::identifier("stack");
 
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;
 
