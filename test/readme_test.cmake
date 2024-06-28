@@ -37,7 +37,7 @@ if("${basename}" IN_LIST raw_address_file)
       string(REGEX REPLACE "${esc}\\[32m(0x[0-9a-f]+|00[0-9A-F]+)${esc}\\[0m" "${esc}[32m${esc}[0m" error_contents "${error_contents}")
    endif()
 elseif("${basename}" STREQUAL "user-defined-class2")
-   string(REGEX REPLACE "main.*::" "" error_contents "${error_contents}")
+   string(REGEX REPLACE "main.*::.*class_A" "class_A" error_contents "${error_contents}")
 endif()
 
 file(WRITE "${log_file}" "${error_contents}")
