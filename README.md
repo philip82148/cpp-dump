@@ -196,28 +196,6 @@ int main() {
 }
 ```
 
-And if you don't want to include the configuration code inside the main function, you can use [this method](https://stackoverflow.com/questions/10897552/call-a-function-before-main).  
-**Caution:**  
-**The function passed to the constructor of** `cpp_dump::execute_before_main` **should only contain the configuration code and nothing else, since this approach may lead to [the static initialization order problem](https://isocpp.org/wiki/faq/ctors#static-init-order).**
-
-```cpp
-// You can also write this in a header file -----------------------------------
-#ifdef DEBUGGING
-#include "path/to/cpp-dump/dump.hpp"
-namespace cp = cpp_dump;
-inline cp::execute_before_main cp::execute_before_main::perform([] {
-  CPP_DUMP_SET_OPTION(max_line_width, 100);
-});
-#else
-#define cpp_dump(...)
-#endif
-// You can also write this in a header file -----------------------------------
-
-int main() {
-  // To be continued...
-}
-```
-
 ### Configuration options
 
 #### `max_line_width`
@@ -354,21 +332,6 @@ enum class cont_indent_style_t { minimal, when_nested, when_non_tuples_nested, a
 
 using cpp_dump::log_label::log_label_func_t =
     std::function<std::string(const std::string &, std::size_t, const std::string &)>;
-
-/**
- * You can execute a function before the main by defining a global variable of this class.
- * If you define the perform static member in this class instead of a global variable,
- * it won't pollute the namespace.
- * Pay attention to the static initialization order fiasco
- * ( https://isocpp.org/wiki/faq/ctors#static-init-order ).
- */
-struct cpp_dump::execute_before_main {
-  template <typename Func>
-  execute_before_main(Func func) {
-    func();
-  }
-  static execute_before_main perform;
-};
 ```
 
 ### Variables

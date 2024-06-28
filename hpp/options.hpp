@@ -18,21 +18,6 @@ namespace cpp_dump {
 #define CPP_DUMP_SET_OPTION(variable, value) cpp_dump::variable = (value)
 
 /**
- * You can execute a function before the main by defining a global variable of this class.
- * If you define the perform static member in this class instead of a global variable,
- * it won't pollute the namespace.
- * Pay attention to the static initialization order fiasco
- * ( https://isocpp.org/wiki/faq/ctors#static-init-order ).
- */
-struct execute_before_main {
-  template <typename Func>
-  explicit execute_before_main(Func func) {
-    func();
-  }
-  static execute_before_main perform;
-};
-
-/**
  * Type of cpp_dump::es_style.
  * cpp_dump::export_var() supports this type.
  */
