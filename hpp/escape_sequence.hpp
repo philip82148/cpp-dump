@@ -51,15 +51,16 @@ inline std::string bracket(const std::string &s, std::size_t d) {
 inline std::string type_name(const std::string &s, bool is_enumerator = false) {
   if (!use_es()) return s;
 
+  auto is_operator = [](char c) { return !(std::isalnum(c) || c == '_'); };
+
   std::string typename_with_es;
   auto begin = s.begin();
   decltype(begin) end;
-  while ((end = std::find_if(begin, s.end(), [](char c) { return !(std::isalnum(c) || c == '_'); }))
-         != s.end()) {
+  while ((end = std::find_if(begin, s.end(), is_operator)) != s.end()) {
     typename_with_es += es::identifier(std::string(begin, end));
     begin = end;
 
-    end = std::find_if(begin, s.end(), [](char c) { return std::isalnum(c) || c == '_'; });
+    end = std::find_if_not(begin, s.end(), is_operator);
     typename_with_es += es::op(std::string(begin, end));
 
     if (end == s.end()) return typename_with_es;
