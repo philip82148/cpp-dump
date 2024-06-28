@@ -21,7 +21,7 @@
            + es::bracket(" }", current_depth);                                                     \
                                                                                                    \
   std::string new_indent = indent + "  ";                                                          \
-  std::size_t next_depth = current_depth + 1;                                                      \
+  [[maybe_unused]] std::size_t next_depth = current_depth + 1;                                     \
                                                                                                    \
   bool shift_indent = false;                                                                       \
                                                                                                    \

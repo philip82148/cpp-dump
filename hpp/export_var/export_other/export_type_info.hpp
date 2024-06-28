@@ -23,14 +23,9 @@ namespace cpp_dump {
 namespace _detail {
 
 template <typename T>
-inline auto export_type_info(
-    const T &type_info,
-    const std::string &indent,
-    std::size_t last_line_length,
-    std::size_t current_depth,
-    bool fail_on_newline,
-    const export_command &command
-) -> std::enable_if_t<is_type_info<T>, std::string> {
+inline auto
+export_type_info(const T &type_info, const std::string &indent, std::size_t last_line_length, std::size_t current_depth, bool fail_on_newline, const export_command &)
+    -> std::enable_if_t<is_type_info<T>, std::string> {
   std::string type_name = std::is_same_v<T, std::type_info> ? "std::type_info" : "std::type_index";
 
 #if defined(__GNUC__)
@@ -40,9 +35,22 @@ inline auto export_type_info(
   std::string name = type_info.name();
 #endif
 
-  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;
+  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1_1;
 
-  append_output("name()", name);
+  std::string member_name = "name()";
+
+  _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1_3;
+
+  if (is_first) {
+    is_first = false;
+  } else {
+    output += es::op(", ");
+  }
+
+  if (shift_indent) output += "\n" + new_indent;
+
+  output += es::member(member_name) + es::op("= ");
+  output += es::identifier(R"(")") + es::type_name(name) + es::identifier(R"(")");
 
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2;
 }
