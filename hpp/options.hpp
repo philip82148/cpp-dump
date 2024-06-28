@@ -17,6 +17,37 @@ namespace cpp_dump {
  */
 #define CPP_DUMP_SET_OPTION(variable, value) cpp_dump::variable = (value)
 
+namespace _detail {
+
+struct empty_class {};
+
+}  // namespace _detail
+
+#define _p_CPP_DUMP_SET_OPTION_IN_GLOBAL_AUX2(variable, value, line)                               \
+  namespace cpp_dump {                                                                             \
+                                                                                                   \
+  namespace _detail {                                                                              \
+                                                                                                   \
+  namespace _dummy_variables_for_set_option_in_global {                                            \
+                                                                                                   \
+  [[maybe_unused]] inline auto _dummy_##line = (cpp_dump::variable = (value), empty_class{});      \
+                                                                                                   \
+  } /* namespace _dummy_variables_for_set_option_in_global */                                      \
+                                                                                                   \
+  } /* namespace _detail */                                                                        \
+                                                                                                   \
+  }  // namespace cpp_dump
+
+#define _p_CPP_DUMP_SET_OPTION_IN_GLOBAL_AUX(variable, value, line)                                \
+  _p_CPP_DUMP_SET_OPTION_IN_GLOBAL_AUX2(variable, value, line)
+
+/**
+ * Set a value to a variable in cpp_dump namespace.
+ * Use this if you want to run it in the global namespace, meaning before the main starts.
+ */
+#define CPP_DUMP_SET_OPTION_IN_GLOBAL(variable, value)                                             \
+  _p_CPP_DUMP_SET_OPTION_IN_GLOBAL_AUX(variable, value, __LINE__)
+
 /**
  * Type of cpp_dump::es_style.
  * cpp_dump::export_var() supports this type.

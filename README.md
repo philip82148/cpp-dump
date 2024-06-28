@@ -176,7 +176,25 @@ Then
 
 ## Configuration (as needed)
 
-If you want to customize the library, you can write the configuration code as follows.
+If you want to customize the library, you can write the configuration code as follows:
+
+```cpp
+// You can also write this in a header file -----------------------------------
+#ifdef DEBUGGING
+#include "path/to/cpp-dump/dump.hpp"
+namespace cp = cpp_dump;
+CPP_DUMP_SET_OPTION_IN_GLOBAL(max_line_width, 100);
+#else
+#define cpp_dump(...)
+#endif
+// You can also write this in a header file -----------------------------------
+
+int main() {
+  // To be continued...
+}
+```
+
+If you want to configure the library within a function, use `CPP_DUMP_SET_OPTION()` instead.
 
 ```cpp
 // You can also write this in a header file -----------------------------------
@@ -197,6 +215,8 @@ int main() {
 ```
 
 ### Configuration options
+
+See also [Variables](#variables).
 
 #### `max_line_width`
 
@@ -296,6 +316,12 @@ The style of indents of the Container, Set and Map categories (See [Supported ty
  * You can also assign values to the variables directly.
  */
 #define CPP_DUMP_SET_OPTION(variable, value)
+
+/**
+ * Set a value to a variable in cpp_dump namespace.
+ * Use this if you want to run it in the global namespace, meaning before the main starts.
+ */
+#define CPP_DUMP_SET_OPTION_IN_GLOBAL(variable, value)
 ```
 
 ### Types
