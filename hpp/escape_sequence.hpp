@@ -51,7 +51,7 @@ inline std::string bracket(const std::string &s, std::size_t d) {
   return es::apply(es_value.bracket_by_depth[d % sz], s);
 }
 
-inline std::string type_name(const std::string &s, bool is_enumerator = false) {
+inline std::string class_name(const std::string &s, bool is_enumerator = false) {
   if (!use_es()) return s;
 
   auto is_operator = [](char c) { return !(std::isalnum(c) || c == '_'); };
