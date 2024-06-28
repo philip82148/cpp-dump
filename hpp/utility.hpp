@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <algorithm>
+#include <cctype>
 #include <string>
 #include <string_view>
 
@@ -21,14 +23,22 @@ inline bool has_newline(std::string_view s) { return s.find("\n") != std::string
 inline std::size_t get_length(std::string_view s) {
   if (!use_es()) return s.length();
 
-  std::size_t length = 0, s_first = 0, s_last;
-  while ((s_last = s.find("\x1b[", s_first)) != std::string::npos) {
-    length += s_last - s_first;
-    auto es_last = s.find_first_not_of("0123456789;", s_last + 2);
-    if (es_last == std::string::npos) break;
-    s_first = es_last + 1;
+  static constexpr std::string_view es_begin_token = "\x1b[";
+
+  std::size_t length = 0;
+  auto begin = s.begin();
+  decltype(begin) end;
+  while ((end = std::search(begin, s.end(), es_begin_token.begin(), es_begin_token.end()))
+         != s.end()) {
+    length += end - begin;
+
+    begin = end + es_begin_token.size();
+    end = std::find_if(begin, s.end(), [](char c) { return !(std::isdigit(c) || c == ';'); });
+
+    if (end == s.end()) break;
+    begin = end + 1;
   }
-  length += s.length() - s_first;
+  length += end - begin;
 
   return length;
 }
@@ -49,14 +59,21 @@ inline std::size_t get_last_line_length(std::string_view s, int additional_first
   return get_length(s.substr(lf_pos + 1));
 }
 
-inline void replace_string(
-    std::string &subject, std::string_view search, std::string_view replace
+inline std::string replace_string(
+    std::string_view s, std::string_view search, std::string_view replace
 ) {
-  std::string::size_type pos = 0;
-  while ((pos = subject.find(search, pos)) != std::string::npos) {
-    subject.replace(pos, search.length(), replace);
-    pos += replace.length();
+  std::string retval;
+
+  auto begin = s.begin();
+  decltype(begin) end;
+  while ((end = std::search(begin, s.end(), search.begin(), search.end())) != s.end()) {
+    retval.append(begin, end);
+    retval.append(replace);
+    begin = end + search.size();
   }
+  retval.append(begin, s.end());
+
+  return retval;
 }
 
 }  // namespace _detail

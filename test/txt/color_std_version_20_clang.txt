@@ -1,5 +1,5 @@
-[0m[02m[dump] [0m[0m[38;2;86;154;214msource_location::current()[0m[0m[02m => [0m[0m[38;2;215;152;61m"The compiler doesn't support this class.[0m[0m[38;2;215;152;61m"[0m
-[0m[02m[dump] [0m[0m[38;2;86;154;214msource_location::current()[0m
-         [0m[02m=> [0m[0m[38;2;215;152;61m"The compiler doesn't support this class.[0m[0m[38;2;215;152;61m"[0m
-[0m[02m[dump] [0m[0m[38;2;86;154;214msource_location::current()[0m
-         [0m[02m=> [0m[0m[38;2;215;152;61m"The compiler doesn't support this class.[0m[0m[38;2;215;152;61m"[0m
+[0m[02m[dump] [0m[38;2;86;154;214msource_location::current()[0m[02m => [0m[38;2;215;152;61m"The compiler doesn't support this class.[0m[38;2;215;152;61m"[0m
+[0m[02m[dump] [0m[38;2;86;154;214msource_location::current()[0m
+         [02m=> [0m[38;2;215;152;61m"The compiler doesn't support this class.[0m[38;2;215;152;61m"[0m
+[0m[02m[dump] [0m[38;2;86;154;214msource_location::current()[0m
+         [02m=> [0m[38;2;215;152;61m"The compiler doesn't support this class.[0m[38;2;215;152;61m"[0m

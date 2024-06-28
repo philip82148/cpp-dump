@@ -58,7 +58,7 @@ bool _dump_one(
   const bool fail_on_newline_in_value = !always_newline_before_expr;
 
   if (output.length() == 0) {
-    output = es::log(log_label);
+    output = es::reset() + es::log(log_label);
   } else {
     if (always_newline_before_expr) {
       output += es::log(",\n") + initial_indent;

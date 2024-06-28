@@ -282,8 +282,8 @@ inline std::string _get_typename_aux(std::string func_name) {
       func_name.substr(prefix_length, func_name.length() - prefix_length - suffix_length);
 
 #if defined(_MSC_VER)
-  replace_string(type_name, "struct ", "");
-  replace_string(type_name, "class ", "");
+  type_name = replace_string(type_name, "struct ", "");
+  type_name = replace_string(type_name, "class ", "");
 #endif
 
   return type_name;
