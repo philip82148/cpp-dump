@@ -43,7 +43,7 @@ struct empty_class {};
 
 /**
  * Set a value to a variable in cpp_dump namespace.
- * You can also assign values to the variables directly.
+ * Use this if you want to run it in the global namespace, meaning before the main starts.
  */
 #define CPP_DUMP_SET_OPTION_IN_GLOBAL(variable, value)                                             \
   _p_CPP_DUMP_SET_OPTION_IN_GLOBAL_AUX(variable, value, __LINE__)
