@@ -22,10 +22,13 @@ inline bool use_es() { return es_style != es_style_t::no_es; }
 
 namespace es {
 
+inline constexpr char _reset_es[] = "\x1b[0m";
+
+inline std::string reset() { return use_es() ? _reset_es : ""; }
+
 inline std::string apply(const std::string &es, const std::string &s) {
   if (use_es()) {
-    static constexpr char reset[] = "\x1b[0m";
-    return reset + es + s + reset;
+    return es + s + _reset_es;
   } else {
     return s;
   }
