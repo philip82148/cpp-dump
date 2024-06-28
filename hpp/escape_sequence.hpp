@@ -58,13 +58,10 @@ inline std::string type_name(const std::string &s, bool is_enumerator = false) {
     typename_with_es += es::identifier(std::string(begin, end));
     begin = end;
 
-    if ((end = std::find_if(begin, s.end(), [](char c) { return std::isalnum(c) || c == '_'; }))
-        == s.end()) {
-      typename_with_es += es::op(std::string(begin, s.end()));
-      return typename_with_es;
-    }
-
+    end = std::find_if(begin, s.end(), [](char c) { return std::isalnum(c) || c == '_'; });
     typename_with_es += es::op(std::string(begin, end));
+
+    if (end == s.end()) return typename_with_es;
     begin = end;
   }
 
