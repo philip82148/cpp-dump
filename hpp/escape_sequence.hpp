@@ -46,6 +46,21 @@ inline std::string bracket(const std::string &s, std::size_t d) {
   return es::apply(es_value.bracket_by_depth[d % sz], s);
 }
 
+inline std::string type_name(const std::string &s, bool is_enumerator = false) {
+  if (!use_es()) return s;
+
+  std::string typename_with_es;
+  std::size_t begin = 0, end;
+  while ((end = s.find("::", begin)) != std::string::npos) {
+    typename_with_es += es::identifier(s.substr(begin, end - begin));
+    typename_with_es += es::op("::");
+    begin = end + 2;
+  }
+  typename_with_es += is_enumerator ? es::member(s.substr(begin)) : es::identifier(s.substr(begin));
+
+  return typename_with_es;
+}
+
 }  // namespace es
 
 }  // namespace _detail

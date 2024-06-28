@@ -17,7 +17,7 @@
 
 #define _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1_1                                                 \
   if (current_depth >= max_depth)                                                                  \
-    return es::identifier(type_name) + es::bracket("{ ", current_depth) + es::op("...")            \
+    return es::type_name(type_name) + es::bracket("{ ", current_depth) + es::op("...")             \
            + es::bracket(" }", current_depth);                                                     \
                                                                                                    \
   std::string new_indent = indent + "  ";                                                          \
@@ -51,7 +51,7 @@
 
 #define _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1_3                                                 \
   rollback:                                                                                        \
-  output = es::identifier(type_name) + es::bracket("{ ", current_depth);                           \
+  output = es::type_name(type_name) + es::bracket("{ ", current_depth);                            \
   is_first = true;
 
 #define _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1                                                   \
