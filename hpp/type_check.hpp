@@ -28,6 +28,7 @@
 
 #include "./iterable.hpp"
 #include "./options.hpp"
+#include "./utility.hpp"
 
 namespace cpp_dump {
 
@@ -281,11 +282,8 @@ inline std::string _get_typename_aux(std::string func_name) {
       func_name.substr(prefix_length, func_name.length() - prefix_length - suffix_length);
 
 #if defined(_MSC_VER)
-  if (type_name.find("class ", 0) == 0) {
-    type_name.erase(0, std::string_view("class ").size());
-  } else if (type_name.find("struct ") == 0) {
-    type_name.erase(0, std::string_view("struct ").size());
-  }
+  replace_string(type_name, "struct ", "");
+  replace_string(type_name, "class ", "");
 #endif
 
   return type_name;
