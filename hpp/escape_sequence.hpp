@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <algorithm>
+#include <cctype>
 #include <string>
 #include <vector>
 
@@ -44,6 +46,33 @@ inline std::string bracket(const std::string &s, std::size_t d) {
   if (sz == 0) return s;
 
   return es::apply(es_value.bracket_by_depth[d % sz], s);
+}
+
+inline std::string type_name(const std::string &s, bool is_enumerator = false) {
+  if (!use_es()) return s;
+
+  std::string typename_with_es;
+  auto begin = s.begin();
+  decltype(begin) end;
+  while ((end = std::find_if(begin, s.end(), [](char c) { return !(std::isalnum(c) || c == '_'); }))
+         != s.end()) {
+    typename_with_es += es::identifier(std::string(begin, end));
+    begin = end;
+
+    end = std::find_if(begin, s.end(), [](char c) { return std::isalnum(c) || c == '_'; });
+    typename_with_es += es::op(std::string(begin, end));
+
+    if (end == s.end()) return typename_with_es;
+    begin = end;
+  }
+
+  if (is_enumerator) {
+    typename_with_es += es::member(std::string(begin, s.end()));
+  } else {
+    typename_with_es += es::identifier(std::string(begin, s.end()));
+  }
+
+  return typename_with_es;
 }
 
 }  // namespace es

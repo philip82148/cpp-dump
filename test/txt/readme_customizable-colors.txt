@@ -28,14 +28,14 @@
 [0m[02m[dump] [0m[0m[34mmy_pair[0m[0m[02m => [0m[0m[33m( [0m[0m[36m8[0m[0m[02m, [0m[0m[36m'a'[0m[0m[33m )[0m
 
 // FIFO/LIFO
-[0m[02m[dump] [0m[0m[34mmy_queue[0m[0m[02m => [0m[0m[32mstd::queue[0m[0m[33m{ [0m[0m[36mfront()[0m[0m[02m= [0m[0m[36m1[0m[0m[02m, [0m[0m[36mback()[0m[0m[02m= [0m[0m[36m5[0m[0m[02m, [0m[0m[36msize()[0m[0m[02m= [0m[0m[36m5[0m[0m[33m }[0m
-[0m[02m[dump] [0m[0m[34mmy_priority_queue[0m[0m[02m => [0m[0m[32mstd::priority_queue[0m[0m[33m{ [0m[0m[36mtop()[0m[0m[02m= [0m[0m[36m5[0m[0m[02m, [0m[0m[36msize()[0m[0m[02m= [0m[0m[36m5[0m[0m[33m }[0m
-[0m[02m[dump] [0m[0m[34mmy_stack[0m[0m[02m => [0m[0m[32mstd::stack[0m[0m[33m{ [0m[0m[36mtop()[0m[0m[02m= [0m[0m[36m5[0m[0m[02m, [0m[0m[36msize()[0m[0m[02m= [0m[0m[36m5[0m[0m[33m }[0m
+[0m[02m[dump] [0m[0m[34mmy_queue[0m[0m[02m => [0m[0m[32mstd[0m[0m[02m::[0m[0m[32mqueue[0m[0m[33m{ [0m[0m[36mfront()[0m[0m[02m= [0m[0m[36m1[0m[0m[02m, [0m[0m[36mback()[0m[0m[02m= [0m[0m[36m5[0m[0m[02m, [0m[0m[36msize()[0m[0m[02m= [0m[0m[36m5[0m[0m[33m }[0m
+[0m[02m[dump] [0m[0m[34mmy_priority_queue[0m[0m[02m => [0m[0m[32mstd[0m[0m[02m::[0m[0m[32mpriority_queue[0m[0m[33m{ [0m[0m[36mtop()[0m[0m[02m= [0m[0m[36m5[0m[0m[02m, [0m[0m[36msize()[0m[0m[02m= [0m[0m[36m5[0m[0m[33m }[0m
+[0m[02m[dump] [0m[0m[34mmy_stack[0m[0m[02m => [0m[0m[32mstd[0m[0m[02m::[0m[0m[32mstack[0m[0m[33m{ [0m[0m[36mtop()[0m[0m[02m= [0m[0m[36m5[0m[0m[02m, [0m[0m[36msize()[0m[0m[02m= [0m[0m[36m5[0m[0m[33m }[0m
 
 // Other
 [0m[02m[dump] [0m[0m[34mmy_bitset[0m[0m[02m => [0m[0m[32m0b 0011 1010[0m
 [0m[02m[dump] [0m[0m[34mmy_complex[0m[0m[02m => [0m[0m[32m1.000000[0m [0m[32m+[0m [0m[32m1.000000i [0m[0m[33m( [0m[0m[36mabs[0m[0m[02m= [0m[0m[36m1.414214[0m[0m[02m, [0m[0m[36marg/pi[0m[0m[02m= [0m[0m[36m0.250000[0m[0m[33m )[0m
-[0m[02m[dump] [0m[0m[34mmy_optional[0m[0m[02m => [0m[0m[32m?[0m[0m[36m15[0m[0m[02m, [0m[0m[34mstd::nullopt[0m[0m[02m => [0m[0m[32mstd::nullopt[0m
+[0m[02m[dump] [0m[0m[34mmy_optional[0m[0m[02m => [0m[0m[32m?[0m[0m[36m15[0m[0m[02m, [0m[0m[34mstd::nullopt[0m[0m[02m => [0m[0m[32mstd[0m[0m[02m::[0m[0m[32mnullopt[0m
 [0m[02m[dump] [0m[0m[34mmy_variant[0m[0m[02m => [0m[0m[32m|[0m[0m[36m"1[0m[0m[36m"[0m
 
 // Combination

@@ -43,6 +43,9 @@ struct non_copyable_and_non_movable_class {
   non_copyable_and_non_movable_class(const string &s) : str_member(s) {}
 } non_copyable_and_non_movable_class1("This object has a pointer and reference_wrapper to itself.");
 
+enum partially_supported_enum { supported, unsupported };
+CPP_DUMP_DEFINE_EXPORT_ENUM(partially_supported_enum, supported);
+
 int main(int argc, char *argv[]) {
   if (argc != 2) return 1;
   auto es_style_ = (array{
@@ -185,6 +188,10 @@ int main(int argc, char *argv[]) {
   CPP_DUMP_SET_OPTION(enable_asterisk, true);
   cpp_dump(vec.begin());
   CPP_DUMP_SET_OPTION(enable_asterisk, false);
+
+  // user-defined enum
+  cpp_dump(partially_supported_enum::supported);
+  cpp_dump(partially_supported_enum::unsupported);
 
   // unsupported type
   struct unsupported_class {

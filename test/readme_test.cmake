@@ -1,16 +1,19 @@
 cmake_policy(SET CMP0057 NEW)
 
 if(NOT test_dir)
-   message(FATAL_ERROR "Variable test_dir not defined" )
+   message(FATAL_ERROR "Variable test_dir not defined")
 endif()
+
 if(NOT cmd_path)
-   message(FATAL_ERROR "Variable cmd_path not defined" )
+   message(FATAL_ERROR "Variable cmd_path not defined")
 endif()
+
 if(NOT compiler_id)
-   message(FATAL_ERROR "Variable compiler_id not defined" )
+   message(FATAL_ERROR "Variable compiler_id not defined")
 endif()
+
 if(NOT basename)
-   message(FATAL_ERROR "Variable basename not defined" )
+   message(FATAL_ERROR "Variable basename not defined")
 endif()
 
 file(MAKE_DIRECTORY "${test_dir}/log")
@@ -25,7 +28,8 @@ execute_process(
 )
 
 set(raw_address_file supports-various-types;customizable-colors;no-es)
-if ("${basename}" IN_LIST raw_address_file)
+
+if("${basename}" IN_LIST raw_address_file)
    # Do not remove escape sequences but remove raw addresses.
    if("${basename}" STREQUAL no-es)
       string(REGEX REPLACE " (0x[0-9a-f]+|00[0-9A-F]+)," " ," error_contents "${error_contents}")
@@ -33,12 +37,9 @@ if ("${basename}" IN_LIST raw_address_file)
       string(REGEX REPLACE "${esc}\\[32m(0x[0-9a-f]+|00[0-9A-F]+)${esc}\\[0m" "${esc}[32m${esc}[0m" error_contents "${error_contents}")
    endif()
 elseif("${basename}" STREQUAL "user-defined-class2")
-   if(compiler_id MATCHES "GNU")
-      string(REGEX REPLACE "main\\(\\)::" "" error_contents "${error_contents}")
-   elseif(compiler_id MATCHES "MSVC")
-      string(REGEX REPLACE "main::" "" error_contents "${error_contents}")
-   endif()
+   string(REGEX REPLACE "main.*::.*class_A" "class_A" error_contents "${error_contents}")
 endif()
+
 file(WRITE "${log_file}" "${error_contents}")
 
 execute_process(
@@ -46,5 +47,7 @@ execute_process(
 )
 
 if(not_successful)
-   message(SEND_ERROR "${log_file} does not match ${txt_file} !" )
+   message(SEND_ERROR "${log_file} does not match ${txt_file} !")
+   file(READ "${log_file}" contents)
+   message(STATUS "${contents}")
 endif()

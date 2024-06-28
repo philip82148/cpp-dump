@@ -12,16 +12,47 @@ namespace cp = cpp_dump;
 
 CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(member_var, member_func());
 
+namespace ns {
+
+template <typename>
+struct template_class {
+  int member_var = 5;
+  std::string member_func() const { return "This is a member_func."; }
+};
+
+}  // namespace ns
+
 int main(int argc, char *argv[]) {
-  if (argc != 3) return 1;
+  if (argc != 4) return 1;
   bool compiler_dependent = static_cast<bool>(stoi(argv[1]));
   auto es_style_ = (array{
       cp::es_style_t::no_es,
       cp::es_style_t::original,
       cp::es_style_t::by_syntax,
   }[stoi(argv[2])]);
+  bool color_test = stoi(argv[3]);
 
   CPP_DUMP_SET_OPTION(es_style, es_style_);
+
+  if (color_test)
+    CPP_DUMP_SET_OPTION(
+        es_value,
+        (cp::es_value_t{
+            "\x1b[02m",                // log: dark
+            "\x1b[38;2;86;154;214m",   // expression:
+            "\x1b[36m",                // reserved: cyan
+            "\x1b[38;2;181;206;168m",  // number:
+            "\x1b[38;2;215;152;61m",   // character:
+            "",                        // op: default
+            "\x1b[32m",                // identifier:  green
+            "\x1b[38;2;156;220;254m",  // member:
+            "\x1b[31m",                // unsupported: red
+            {
+                "\x1b[33m",  // bracket_by_depth[0]: yellow
+                "\x1b[35m",  // bracket_by_depth[1]: magenta
+            },
+        })
+    );
 
   if (compiler_dependent) {
     class original_error : public logic_error {
@@ -39,6 +70,7 @@ int main(int argc, char *argv[]) {
     };
 
     cpp_dump(original_error1);
+    cpp_dump(ns::template_class<ns::template_class<int>>());
     cpp_dump(original_class());
     cpp_dump(unsupported_original_class());
   } else {

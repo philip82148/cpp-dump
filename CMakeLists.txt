@@ -55,7 +55,7 @@ add_test(
     -P "${CMAKE_CURRENT_LIST_DIR}/test/dump_variable_test.cmake"
 )
 
-set(args_array "original_normal\;160\;4\;1" "original_shallow\;4000\;0\;1" "by_syntax_normal\;160\;4\;2" "by_syntax_shallow\;4000\;0\;2")
+set(args_array "normal_original\;160\;4\;1" "shallow_original\;4000\;0\;1" "normal_by_syntax\;160\;4\;2" "shallow_by_syntax\;4000\;0\;2")
 
 foreach(args ${args_array})
     list(GET args 0 suffix)
@@ -83,6 +83,22 @@ foreach(args ${args_array})
         -D "cmd_path=$<TARGET_FILE:color_non_variable_test>"
         -D "cmd_args=${args}"
         -P "${CMAKE_CURRENT_LIST_DIR}/test/color_non_variable_test.cmake"
+    )
+endforeach()
+
+set(args_array "original\;1" "by_syntax\;2")
+
+foreach(args ${args_array})
+    list(GET args 0 suffix)
+
+    add_test(
+        NAME "color-variable-${suffix}"
+        COMMAND "${CMAKE_COMMAND}"
+        -D "test_dir=${CMAKE_CURRENT_LIST_DIR}/test"
+        -D "cmd_path=$<TARGET_FILE:dump_variable_test>"
+        -D "compiler_id=${CMAKE_CXX_COMPILER_ID}"
+        -D "cmd_args=${args}"
+        -P "${CMAKE_CURRENT_LIST_DIR}/test/color_variable_test.cmake"
     )
 endforeach()
 
