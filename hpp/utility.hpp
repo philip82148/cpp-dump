@@ -28,11 +28,11 @@ inline std::size_t get_length(std::string_view s) {
   std::size_t length = 0;
   auto begin = s.begin();
   decltype(begin) end;
-  while ((end = std::search(begin, s.end(), std::begin(es_begin_token), std::end(es_begin_token)))
+  while ((end = std::search(begin, s.end(), es_begin_token.begin(), es_begin_token.end()))
          != s.end()) {
     length += end - begin;
 
-    begin = end + std::string_view(es_begin_token).size();
+    begin = end + es_begin_token.size();
     end = std::find_if(begin, s.end(), [](char c) { return !(std::isdigit(c) || c == ';'); });
 
     if (end == s.end()) break;
@@ -59,14 +59,21 @@ inline std::size_t get_last_line_length(std::string_view s, int additional_first
   return get_length(s.substr(lf_pos + 1));
 }
 
-inline void replace_string(
-    std::string &subject, std::string_view search, std::string_view replace
+inline std::string replace_string(
+    std::string_view s, std::string_view search, std::string_view replace
 ) {
-  std::string::size_type pos = 0;
-  while ((pos = subject.find(search, pos)) != std::string::npos) {
-    subject.replace(pos, search.length(), replace);
-    pos += replace.length();
+  std::string retval;
+
+  auto begin = s.begin();
+  decltype(begin) end;
+  while ((end = std::search(begin, s.end(), search.begin(), search.end())) != s.end()) {
+    retval.append(begin, end);
+    retval.append(replace);
+    begin = end + search.size();
   }
+  retval.append(begin, s.end());
+
+  return retval;
 }
 
 }  // namespace _detail
