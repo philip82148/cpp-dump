@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <algorithm>
+#include <cctype>
 #include <string>
 #include <vector>
 
@@ -50,13 +52,27 @@ inline std::string type_name(const std::string &s, bool is_enumerator = false) {
   if (!use_es()) return s;
 
   std::string typename_with_es;
-  std::size_t begin = 0, end;
-  while ((end = s.find("::", begin)) != std::string::npos) {
-    typename_with_es += es::identifier(s.substr(begin, end - begin));
-    typename_with_es += es::op("::");
-    begin = end + 2;
+  auto begin = s.begin(), end = s.begin();
+  while ((end = std::find_if(begin, s.end(), [](char c) { return !(std::isalnum(c) || c == '_'); }))
+         != s.end()) {
+    typename_with_es += es::identifier(std::string(begin, end));
+    begin = end;
+
+    if ((end = std::find_if(begin, s.end(), [](char c) { return std::isalnum(c) || c == '_'; }))
+        == s.end()) {
+      typename_with_es += es::op(std::string(begin, s.end()));
+      return typename_with_es;
+    }
+
+    typename_with_es += es::op(std::string(begin, end));
+    begin = end;
   }
-  typename_with_es += is_enumerator ? es::member(s.substr(begin)) : es::identifier(s.substr(begin));
+
+  if (is_enumerator) {
+    typename_with_es += es::member(std::string(begin, s.end()));
+  } else {
+    typename_with_es += es::identifier(std::string(begin, s.end()));
+  }
 
   return typename_with_es;
 }
