@@ -55,7 +55,7 @@ add_test(
     -P "${CMAKE_CURRENT_LIST_DIR}/test/dump_variable_test.cmake"
 )
 
-set(args_array "original_normal\;160\;4\;1" "original_shallow\;4000\;0\;1" "by_syntax_normal\;160\;4\;2" "by_syntax_shallow\;4000\;0\;2")
+set(args_array "normal_original\;160\;4\;1" "shallow_original\;4000\;0\;1" "normal_by_syntax\;160\;4\;2" "shallow_by_syntax\;4000\;0\;2")
 
 foreach(args ${args_array})
     list(GET args 0 suffix)
