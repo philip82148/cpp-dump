@@ -30,7 +30,7 @@ struct empty_class {};
                                                                                                    \
   namespace _dummy_variables_for_set_option_in_global {                                            \
                                                                                                    \
-  [[maybe_unused]] inline auto _dummy##line = (cpp_dump::variable = (value), empty_class{});       \
+  [[maybe_unused]] inline auto _dummy_##line = (cpp_dump::variable = (value), empty_class{});      \
                                                                                                    \
   } /* namespace _dummy_variables_for_set_option_in_global */                                      \
                                                                                                    \
