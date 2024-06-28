@@ -86,6 +86,22 @@ foreach(args ${args_array})
     )
 endforeach()
 
+set(args_array "original\;1" "by_syntax\;2")
+
+foreach(args ${args_array})
+    list(GET args 0 suffix)
+
+    add_test(
+        NAME "color-variable-${suffix}"
+        COMMAND "${CMAKE_COMMAND}"
+        -D "test_dir=${CMAKE_CURRENT_LIST_DIR}/test"
+        -D "cmd_path=$<TARGET_FILE:dump_variable_test>"
+        -D "compiler_id=${CMAKE_CXX_COMPILER_ID}"
+        -D "cmd_args=${args}"
+        -P "${CMAKE_CURRENT_LIST_DIR}/test/color_variable_test.cmake"
+    )
+endforeach()
+
 if(CMAKE_CXX_STANDARD GREATER 17)
     add_executable(color_std_version_test test/color_std_version_test.cpp)
     add_test(
