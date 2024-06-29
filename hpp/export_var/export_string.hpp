@@ -21,20 +21,19 @@ namespace _detail {
 
 inline std::string
 export_string(std::string_view value, const std::string &, std::size_t, std::size_t, bool fail_on_newline, const export_command &) {
-  std::string str{value};
-
   // replace_string(str, R"(\)", R"(\\)");
-
-  if (!has_newline(str) && str.find(R"(")") == std::string::npos)
-    return es::character(R"(")" + str) + es::character(R"(")");
-
   // replace_string(str, R"(`)", R"(\`)");
 
-  if (!has_newline(str)) return es::character(R"(`)" + str) + es::character(R"(`)");
+  if (has_newline(value)) {
+    if (fail_on_newline) return "\n";
 
-  if (fail_on_newline) return "\n";
+    return "\n" + es::character(std::string(1, '`').append(value)) + es::character(R"(`)");
+  }
 
-  return "\n" + es::character(R"(`)" + str) + es::character(R"(`)");
+  if (value.find(R"(")") == std::string::npos)
+    return es::character(std::string(1, '"').append(value)) + es::character(R"(")");
+
+  return es::character(std::string(1, '`').append(value)) + es::character(R"(`)");
 }
 
 }  // namespace _detail

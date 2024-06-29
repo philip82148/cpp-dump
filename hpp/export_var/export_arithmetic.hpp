@@ -11,6 +11,7 @@
 #include <limits>
 #include <sstream>
 #include <string>
+#include <string_view>
 #include <type_traits>
 
 #include "../escape_sequence.hpp"
@@ -28,7 +29,8 @@ export_arithmetic(bool value, const std::string &, std::size_t, std::size_t, boo
 
 inline std::string
 export_arithmetic(char value, const std::string &, std::size_t, std::size_t, bool, const export_command &) {
-  return es::character(std::string({'\'', value, '\''}));
+  char retval[] = {'\'', value, '\''};
+  return es::character({retval, 3});
 }
 
 template <typename UnsignedT>
