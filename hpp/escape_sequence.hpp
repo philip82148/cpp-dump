@@ -61,20 +61,20 @@ inline std::string class_name(std::string_view s, bool is_enumerator = false) {
   auto begin = s.begin();
   decltype(begin) end;
   while ((end = std::find_if(begin, s.end(), is_operator)) != s.end()) {
-    typename_with_es += es::identifier(std::string(begin, end));
+    typename_with_es += es::identifier(std::string_view(&*begin, end - begin));
     begin = end;
 
     end = std::find_if_not(begin, s.end(), is_operator);
-    typename_with_es += es::op(std::string(begin, end));
+    typename_with_es += es::op(std::string_view(&*begin, end - begin));
 
     if (end == s.end()) return typename_with_es;
     begin = end;
   }
 
   if (is_enumerator) {
-    typename_with_es += es::member(std::string(begin, s.end()));
+    typename_with_es += es::member(std::string_view(&*begin, s.end() - begin));
   } else {
-    typename_with_es += es::identifier(std::string(begin, s.end()));
+    typename_with_es += es::identifier(std::string_view(&*begin, s.end() - begin));
   }
 
   return typename_with_es;
@@ -89,16 +89,16 @@ inline std::string class_member(std::string_view s) {
   auto begin = s.begin();
   decltype(begin) end;
   while ((end = std::find_if(begin, s.end(), is_operator)) != s.end()) {
-    typename_with_es += es::member(std::string(begin, end));
+    typename_with_es += es::member(std::string_view(&*begin, end - begin));
     begin = end;
 
     end = std::find_if_not(begin, s.end(), is_operator);
-    typename_with_es += es::op(std::string(begin, end));
+    typename_with_es += es::op(std::string_view(&*begin, end - begin));
 
     if (end == s.end()) return typename_with_es;
     begin = end;
   }
-  typename_with_es += es::member(std::string(begin, s.end()));
+  typename_with_es += es::member(std::string_view(&*begin, s.end() - begin));
 
   return typename_with_es;
 }
