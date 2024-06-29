@@ -33,10 +33,10 @@ inline std::string export_xixo(
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;
 
   if (!queue.empty()) {
-    append_output(es::member("front()"), queue.front());
-    if (queue.size() >= 2) append_output(es::member("back()"), queue.back());
+    append_output(es::member("front") + es::op("()"), queue.front());
+    if (queue.size() >= 2) append_output(es::member("back") + es::op("()"), queue.back());
   }
-  append_output(es::member("size()"), queue.size());
+  append_output(es::member("size") + es::op("()"), queue.size());
 
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2;
 }
@@ -54,8 +54,8 @@ inline std::string export_xixo(
 
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;
 
-  if (!pq.empty()) append_output(es::member("top()"), pq.top());
-  append_output(es::member("size()"), pq.size());
+  if (!pq.empty()) append_output(es::member("top") + es::op("()"), pq.top());
+  append_output(es::member("size") + es::op("()"), pq.size());
 
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2;
 }
@@ -73,8 +73,8 @@ inline std::string export_xixo(
 
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;
 
-  if (!stack.empty()) append_output(es::member("top()"), stack.top());
-  append_output(es::member("size()"), stack.size());
+  if (!stack.empty()) append_output(es::member("top") + es::op("()"), stack.top());
+  append_output(es::member("size") + es::op("()"), stack.size());
 
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2;
 }

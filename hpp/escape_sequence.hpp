@@ -23,9 +23,9 @@ inline bool use_es() { return es_style != es_style_t::no_es; }
 
 namespace es {
 
-inline constexpr char _reset_es[] = "\x1b[0m";
+inline constexpr std::string_view _reset_es = "\x1b[0m";
 
-inline std::string reset() { return use_es() ? _reset_es : ""; }
+inline std::string reset() { return use_es() ? std::string(_reset_es) : std::string(); }
 
 inline std::string apply(std::string_view es, std::string_view s) {
   if (use_es()) {
@@ -61,21 +61,44 @@ inline std::string class_name(std::string_view s, bool is_enumerator = false) {
   auto begin = s.begin();
   decltype(begin) end;
   while ((end = std::find_if(begin, s.end(), is_operator)) != s.end()) {
-    typename_with_es += es::identifier(std::string(begin, end));
+    typename_with_es += es::identifier({&*begin, static_cast<std::size_t>(end - begin)});
     begin = end;
 
     end = std::find_if_not(begin, s.end(), is_operator);
-    typename_with_es += es::op(std::string(begin, end));
+    typename_with_es += es::op({&*begin, static_cast<std::size_t>(end - begin)});
 
     if (end == s.end()) return typename_with_es;
     begin = end;
   }
 
   if (is_enumerator) {
-    typename_with_es += es::member(std::string(begin, s.end()));
+    typename_with_es += es::member({&*begin, static_cast<std::size_t>(s.end() - begin)});
   } else {
-    typename_with_es += es::identifier(std::string(begin, s.end()));
+    typename_with_es += es::identifier({&*begin, static_cast<std::size_t>(s.end() - begin)});
   }
+
+  return typename_with_es;
+}
+
+inline std::string class_member(std::string_view s) {
+  if (!use_es()) return std::string(s);
+
+  auto is_operator = [](char c) { return !(std::isalnum(c) || c == '_'); };
+
+  std::string typename_with_es;
+  auto begin = s.begin();
+  decltype(begin) end;
+  while ((end = std::find_if(begin, s.end(), is_operator)) != s.end()) {
+    typename_with_es += es::member({&*begin, static_cast<std::size_t>(end - begin)});
+    begin = end;
+
+    end = std::find_if_not(begin, s.end(), is_operator);
+    typename_with_es += es::op({&*begin, static_cast<std::size_t>(end - begin)});
+
+    if (end == s.end()) return typename_with_es;
+    begin = end;
+  }
+  typename_with_es += es::member({&*begin, static_cast<std::size_t>(s.end() - begin)});
 
   return typename_with_es;
 }

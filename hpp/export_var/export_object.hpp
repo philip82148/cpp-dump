@@ -15,8 +15,8 @@
 #include "../type_check.hpp"
 #include "./export_object_common.hpp"
 
-#define _p_CPP_DUMP_EXPAND_FOR_EXPORT_OBJECT(member_)                                              \
-  append_output(es::member(#member_), value.member_)
+#define _p_CPP_DUMP_EXPAND_FOR_EXPORT_OBJECT(member)                                               \
+  append_output(es::class_member(#member), value.member)
 
 /**
  * Make export_var() support type TYPE.

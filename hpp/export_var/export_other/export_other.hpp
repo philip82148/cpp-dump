@@ -119,9 +119,9 @@ export_other(const std::complex<T> &complex, const std::string &, std::size_t, s
          + es::_imag_sign(imag_sign) + " "
          + es::_complex_component(std::to_string(std::abs(imag)) + "i ")
          + es::bracket("( ", current_depth) + es::member("abs") + es::op("= ")
-         + es::number(std::to_string(std::abs(complex))) + es::op(", ") + es::member("arg/pi")
-         + es::op("= ") + es::number(std::to_string(std::arg(complex) / pi))
-         + es::bracket(" )", current_depth);
+         + es::number(std::to_string(std::abs(complex))) + es::op(", ") + es::member("arg")
+         + es::op("/") + es::member("pi") + es::op("= ")
+         + es::number(std::to_string(std::arg(complex) / pi)) + es::bracket(" )", current_depth);
 }
 
 namespace es {
