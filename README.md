@@ -338,16 +338,16 @@ enum class cpp_dump::es_style_t { no_es, original, by_syntax };
  * cpp_dump::export_var() supports this type.
  */
 struct cpp_dump::es_value_t {
-  std::string log = "\x1b[02m";                           // dark
-  std::string expression = "\x1b[36m";                    // cyan
-  std::string reserved;                                   // default
-  std::string number;                                     // default
-  std::string character;                                  // default
-  std::string op = "\x1b[02m";                            // dark
-  std::string identifier = "\x1b[32m";                    // green
-  std::string member = "\x1b[36m";                        // cyan
-  std::string unsupported = "\x1b[31m";                   // red
-  std::vector<std::string> bracket_by_depth{"\x1b[02m"};  // dark
+  std::string log = "\e[02m";                           // dark
+  std::string expression = "\e[36m";                    // cyan
+  std::string reserved;                                 // default
+  std::string number;                                   // default
+  std::string character;                                // default
+  std::string op = "\e[02m";                            // dark
+  std::string identifier = "\e[32m";                    // green
+  std::string member = "\e[36m";                        // cyan
+  std::string unsupported = "\e[31m";                   // red
+  std::vector<std::string> bracket_by_depth{"\e[02m"};  // dark
 };
 
 /**
