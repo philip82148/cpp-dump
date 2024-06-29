@@ -35,7 +35,7 @@ namespace cpp_dump {
 namespace _detail {
 
 template <typename T>
-using _remove_cref = std::remove_const_t<std::remove_reference_t<T>>;
+using _remove_cvref = std::remove_cv_t<std::remove_reference_t<T>>;
 
 template <typename T>
 auto _incrementable(T&& t) -> decltype(++t);
@@ -55,17 +55,17 @@ std::false_type _is_iterable(long);
 // inline constexpr:
 // https://stackoverflow.com/questions/48041618/why-does-cppreference-define-type-traits-xxx-v-shortcuts-as-inline-constexpr-and
 template <typename T>
-inline constexpr bool is_iterable = decltype(_is_iterable<const _remove_cref<T>>(0))::value;
+inline constexpr bool is_iterable = decltype(_is_iterable<const _remove_cvref<T>>(0))::value;
 
 template <typename T>
 using iterable_elem_type =
-    _remove_cref<decltype(*iterable_begin(std::declval<const _remove_cref<T>>()))>;
+    _remove_cvref<decltype(*iterable_begin(std::declval<const _remove_cvref<T>>()))>;
 
 template <typename T>
-inline constexpr bool is_arithmetic = std::is_arithmetic_v<_remove_cref<T>>;
+inline constexpr bool is_arithmetic = std::is_arithmetic_v<_remove_cvref<T>>;
 
 template <typename T>
-inline constexpr bool is_null_pointer = std::is_null_pointer_v<_remove_cref<T>>;
+inline constexpr bool is_null_pointer = std::is_null_pointer_v<_remove_cvref<T>>;
 
 template <typename T>
 inline constexpr bool is_string = std::is_convertible_v<T, std::string_view> && !is_null_pointer<T>;
@@ -85,10 +85,10 @@ template <typename... Args>
 inline constexpr bool _is_multimap<std::unordered_multimap<Args...>> = true;
 
 template <typename T>
-inline constexpr bool is_multimap = _is_multimap<_remove_cref<T>>;
+inline constexpr bool is_multimap = _is_multimap<_remove_cvref<T>>;
 
 template <typename T>
-inline constexpr bool is_map = _is_map<_remove_cref<T>> || is_multimap<T>;
+inline constexpr bool is_map = _is_map<_remove_cvref<T>> || is_multimap<T>;
 
 template <typename>
 inline constexpr bool _is_set = false;
@@ -105,10 +105,10 @@ template <typename... Args>
 inline constexpr bool _is_multiset<std::unordered_multiset<Args...>> = true;
 
 template <typename T>
-inline constexpr bool is_multiset = _is_multiset<_remove_cref<T>>;
+inline constexpr bool is_multiset = _is_multiset<_remove_cvref<T>>;
 
 template <typename T>
-inline constexpr bool is_set = _is_set<_remove_cref<T>> || is_multiset<T>;
+inline constexpr bool is_set = _is_set<_remove_cvref<T>> || is_multiset<T>;
 
 template <typename T>
 inline constexpr bool is_container = is_iterable<T> && !is_string<T> && !is_map<T> && !is_set<T>;
@@ -119,7 +119,7 @@ template <typename>
 std::false_type _is_tuple(long);
 
 template <typename T>
-inline constexpr bool is_tuple = decltype(_is_tuple<_remove_cref<T>>(0))::value;
+inline constexpr bool is_tuple = decltype(_is_tuple<_remove_cvref<T>>(0))::value;
 
 template <typename>
 inline constexpr bool _is_xixo = false;
@@ -131,7 +131,7 @@ template <typename... Args>
 inline constexpr bool _is_xixo<std::stack<Args...>> = true;
 
 template <typename T>
-inline constexpr bool is_xixo = _is_xixo<_remove_cref<T>>;
+inline constexpr bool is_xixo = _is_xixo<_remove_cvref<T>>;
 
 template <typename>
 inline constexpr bool _is_smart_pointer = false;
@@ -143,11 +143,11 @@ template <typename... Args>
 inline constexpr bool _is_smart_pointer<std::weak_ptr<Args...>> = true;
 
 template <typename T>
-inline constexpr bool is_smart_pointer = _is_smart_pointer<_remove_cref<T>>;
+inline constexpr bool is_smart_pointer = _is_smart_pointer<_remove_cvref<T>>;
 
 template <typename T>
 inline constexpr bool is_pointer =
-    (std::is_pointer_v<_remove_cref<T>> && !is_string<T>) || is_null_pointer<T>
+    (std::is_pointer_v<_remove_cvref<T>> && !is_string<T>) || is_null_pointer<T>
     || is_smart_pointer<T>;
 
 template <typename T, typename = void>
@@ -160,10 +160,10 @@ struct _remove_pointer<T, std::enable_if_t<is_smart_pointer<T>>> {
 };
 
 template <typename T>
-using remove_pointer = typename _remove_pointer<_remove_cref<T>>::type;
+using remove_pointer = typename _remove_pointer<_remove_cvref<T>>::type;
 
 template <typename T>
-inline constexpr bool is_exception = std::is_convertible_v<_remove_cref<T>, std::exception>;
+inline constexpr bool is_exception = std::is_convertible_v<_remove_cvref<T>, std::exception>;
 
 template <typename>
 inline constexpr bool _is_optional = false;
@@ -173,16 +173,16 @@ template <>
 inline constexpr bool _is_optional<std::nullopt_t> = true;
 
 template <typename T>
-inline constexpr bool is_optional = _is_optional<_remove_cref<T>>;
+inline constexpr bool is_optional = _is_optional<_remove_cvref<T>>;
 
 template <typename T>
-inline constexpr bool is_type_info = std::is_convertible_v<_remove_cref<T>, std::type_index>;
+inline constexpr bool is_type_info = std::is_convertible_v<_remove_cvref<T>, std::type_index>;
 
 template <typename>
 inline constexpr bool _is_other_object = false;
 
 template <typename T>
-inline constexpr bool is_other_object = _is_other_object<_remove_cref<T>>;
+inline constexpr bool is_other_object = _is_other_object<_remove_cvref<T>>;
 
 template <typename>
 inline constexpr bool _is_other_type = false;
@@ -199,19 +199,19 @@ inline constexpr bool _is_other_type<es_value_t> = true;
 
 template <typename T>
 inline constexpr bool is_other_type =
-    is_optional<T> || is_type_info<T> || is_other_object<T> || _is_other_type<_remove_cref<T>>;
+    is_optional<T> || is_type_info<T> || is_other_object<T> || _is_other_type<_remove_cvref<T>>;
 
 template <typename>
 inline constexpr bool _is_exportable_object = false;
 
 template <typename T>
-inline constexpr bool is_exportable_object = _is_exportable_object<_remove_cref<T>>;
+inline constexpr bool is_exportable_object = _is_exportable_object<_remove_cvref<T>>;
 
 template <typename>
 inline constexpr bool _is_exportable_enum = false;
 
 template <typename T>
-inline constexpr bool is_exportable_enum = _is_exportable_enum<_remove_cref<T>>;
+inline constexpr bool is_exportable_enum = _is_exportable_enum<_remove_cvref<T>>;
 
 template <typename T>
 inline constexpr bool _is_exportable_partial =
@@ -227,7 +227,7 @@ template <typename>
 std::false_type _is_ostream(long);
 
 template <typename T>
-inline constexpr bool is_ostream = decltype(_is_ostream<_remove_cref<T>>(0))::value;
+inline constexpr bool is_ostream = decltype(_is_ostream<_remove_cvref<T>>(0))::value;
 
 struct export_command;
 
@@ -240,18 +240,18 @@ std::false_type _is_dangerously_exportable_object(long);
 
 template <typename T>
 inline constexpr bool is_dangerously_exportable_object =
-    decltype(_is_dangerously_exportable_object<_remove_cref<T>>(0))::value;
+    decltype(_is_dangerously_exportable_object<_remove_cvref<T>>(0))::value;
 
 template <typename T>
 auto _is_asterisk(int) -> std::enable_if_t<
     !_is_exportable_partial<T> && !is_ostream<T> && !is_dangerously_exportable_object<T>
-        && !std::is_same_v<_remove_cref<decltype(*std::declval<const T>())>, T>,
+        && !std::is_same_v<_remove_cvref<decltype(*std::declval<const T>())>, T>,
     std::true_type>;
 template <typename>
 std::false_type _is_asterisk(long);
 
 template <typename T>
-inline constexpr bool is_asterisk = decltype(_is_asterisk<_remove_cref<T>>(0))::value;
+inline constexpr bool is_asterisk = decltype(_is_asterisk<_remove_cvref<T>>(0))::value;
 
 template <typename T>
 inline constexpr bool is_exportable = _is_exportable_partial<T> || is_ostream<T>
