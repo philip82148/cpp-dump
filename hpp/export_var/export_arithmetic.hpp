@@ -66,12 +66,7 @@ unsigned int _get_max_digits(unsigned int base) {
 
 template <typename T>
 inline auto export_arithmetic(
-    const T &value,
-    const std::string &,
-    std::size_t,
-    std::size_t,
-    bool,
-    const export_command &command
+    T value, const std::string &, std::size_t, std::size_t, bool, const export_command &command
 ) -> std::enable_if_t<is_arithmetic<T> && std::is_integral_v<T>, std::string> {
   auto int_style_ = command.get_int_style();
   if (!int_style_) return es::number(std::to_string(value));
