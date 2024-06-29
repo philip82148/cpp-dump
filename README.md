@@ -768,7 +768,7 @@ cpp_dump() prints variables recursively, so they can dump nested variables of an
 
 ### Display example
 
-See also the image in the section ["A wide variety of supported types"](#a-wide-variety-of-supported-types).
+See also the image in the section [A wide variety of supported types](#a-wide-variety-of-supported-types).
 
 ```console
 # Arithmetic
@@ -799,7 +799,8 @@ std::queue{ front()= value, back()= value, size()= integer }
 *value
 nullptr
 0x7fff2246c4d8
-# (The address will be displayed when the pointer type is void * or the type the pointer points to is not supported.)
+# (The address will be displayed when the pointer type is void *
+#  or the type the pointer points to is not supported.)
 
 # Reference
 true, 'c', 1, 3.140000
