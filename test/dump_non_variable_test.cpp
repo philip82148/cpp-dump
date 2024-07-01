@@ -427,12 +427,12 @@ int main(int argc, char *argv[]) {
   cpp_dump(cp::front(10) << array50, cp::front(10) << map50, cp::front(10) << set50);
   cpp_dump(cp::back(10) << array50, cp::back(10) << map50, cp::back(10) << set50);
   cpp_dump(cp::middle(10) << array50, cp::middle(10) << map50, cp::middle(10) << set50);
-  cpp_dump(cp::both_ends(10) << array50, cp::both_ends(10) << map50, cp::both_ends(10) << set50);
+  cpp_dump(cp::both_ends(5) << array50, cp::both_ends(5) << map50, cp::both_ends(5) << set50);
 
   cpp_dump(cp::front(40) << array50, cp::front(40) << map50, cp::front(40) << set50);
   cpp_dump(cp::middle(40) << array50, cp::middle(40) << map50, cp::middle(40) << set50);
   cpp_dump(cp::back(40) << array50, cp::back(40) << map50, cp::back(40) << set50);
-  cpp_dump(cp::both_ends(40) << array50, cp::both_ends(40) << map50, cp::both_ends(40) << set50);
+  cpp_dump(cp::both_ends(20) << array50, cp::both_ends(20) << map50, cp::both_ends(20) << set50);
 
   auto vec2 = vector<vector<vector<int>>>{
       {{1}},
@@ -444,9 +444,9 @@ int main(int argc, char *argv[]) {
       }};
 
   cpp_dump(vec2, cp::back(2) << cp::both_ends(1) << cp::back(2) << vec2);
-  cpp_dump(vec2, cp::both_ends(2) << cp::both_ends(2) << cp::both_ends(2) << vec2);
+  cpp_dump(vec2, cp::both_ends(1) << cp::both_ends(1) << cp::both_ends(1) << vec2);
 
-  cpp_dump(multimap1, cp::both_ends(2) << cp::both_ends(2) << multimap1);
+  cpp_dump(multimap1, cp::both_ends(1) << cp::both_ends(1) << multimap1);
   cpp_dump(multiset1, cp::middle(1) << cp::back(1) << multiset1);
 
   auto multimap2 = multimap<vector<int>, vector<int>>{
@@ -784,11 +784,11 @@ int main(int argc, char *argv[]) {
   cpp_dump(vec4 | cp::front(3) | cp::index());
   cpp_dump(vec4 | cp::back(3) | cp::index());
   cpp_dump(vec4 | cp::middle(3) | cp::index());
-  cpp_dump(vec4 | cp::both_ends(3) | cp::index());
+  cpp_dump(vec4 | cp::both_ends(1) | cp::index());
   cpp_dump(vec4 | cp::front() | cp::front(3) | cp::index());
   cpp_dump(vec4 | cp::front() | cp::back(3) | cp::index());
   cpp_dump(vec4 | cp::front() | cp::middle(3) | cp::index());
-  cpp_dump(vec4 | cp::front() | cp::both_ends(3) | cp::index());
+  cpp_dump(vec4 | cp::front() | cp::both_ends(1) | cp::index());
 
   // non_copyable_and_non_movable_class
   CPP_DUMP_SET_OPTION(max_depth, 2);
