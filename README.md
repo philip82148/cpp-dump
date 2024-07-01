@@ -358,7 +358,7 @@ enum class cpp_dump::cont_indent_style_t
     { minimal, when_nested, when_non_tuples_nested, always };
 
 using cpp_dump::log_label::log_label_func_t =
-    std::function<std::string(const std::string &, std::size_t, const std::string &)>;
+    std::function<std::string(std::string_view, std::size_t, std::string_view)>;
 ```
 
 ### Variables
@@ -449,7 +449,7 @@ cpp_dump::map_kv(return_value_of_manipulator_for_key, return_value_of_manipulato
 // See 'Customize "[dump]"'.
 namespace cpp_dump::log_label {
 
-std::string default_func(const std::string &fullpath, std::size_t line, const std::string &func_name);
+std::string std::string default_func(std::string_view, std::size_t, std::string_view);
 log_label_func_t line(bool show_func = false, int min_width = 0);
 log_label_func_t basename(bool show_func = false, int min_width = 0);
 log_label_func_t filename(bool show_func = false, int min_width = 0);
@@ -568,10 +568,10 @@ cpp-dump has some functions that create a function to assign to `cpp_dump::log_l
 namespace cpp_dump::log_label {
 
 using log_label_func_t =
-    std::function<std::string(const std::string &fullpath, std::size_t line, const std::string &func_name)>;
+    std::function<std::string(std::string_view fullpath, std::size_t line, std::string_view func_name)>;
 
 // Default function assigned to cpp_dump::log_label_func.
-std::string default_func(const std::string &, std::size_t, const std::string &) {
+std::string default_func(std::string_view, std::size_t, std::string_view) {
   return "[dump] ";
 }
 

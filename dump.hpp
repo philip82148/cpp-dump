@@ -12,6 +12,7 @@
 #include <initializer_list>
 #include <iostream>
 #include <string>
+#include <string_view>
 
 #include "hpp/escape_sequence.hpp"
 #include "hpp/expand_va_macro.hpp"
@@ -59,7 +60,7 @@ bool _dump_one(
     std::string &output,
     const std::string &log_label,
     bool always_newline_before_expr,
-    const std::string &expr,
+    std::string_view expr,
     const T &value
 ) {
   const std::string initial_indent(get_last_line_length(log_label), ' ');
@@ -214,7 +215,7 @@ bool _dump(
     std::string &output,
     const std::string &log_label,
     bool always_newline_before_expr,
-    const std::initializer_list<std::string> &exprs,
+    const std::initializer_list<std::string_view> &exprs,
     const Args &...args
 ) {
   auto it = exprs.begin();
@@ -222,15 +223,15 @@ bool _dump(
 }
 
 struct _source_location {
-  std::string file_name;
+  std::string_view file_name;
   std::size_t line;
-  std::string function_name;
+  std::string_view function_name;
 };
 
 // function called by cpp_dump() macro
 template <typename... Args>
 void cpp_dump_macro(
-    _source_location loc, std::initializer_list<std::string> exprs, const Args &...args
+    _source_location loc, std::initializer_list<std::string_view> exprs, const Args &...args
 ) {
   std::string log_label =
       log_label_func ? log_label_func(loc.file_name, loc.line, loc.function_name) : "";
