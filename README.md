@@ -9,7 +9,7 @@ cpp-dump is a C++ library for debugging purposes that can print any variable, in
 
 This library has the following features:
 
-- Prints string representations of a wide variety of types to the standard error output (std::clog). This includes multidimensional arrays, (multi)maps, and (multi)sets, and even complex numbers, error objects, etc.
+- Prints string representations of a wide variety of types to the standard error output (or other configurable outputs). This includes multidimensional arrays, (multi)maps, and (multi)sets, and even complex numbers, error objects, etc.
 - Automatically indents so that the output fits into the maximum line width.
 - Customizable output color.
 - The file name, line, and function name can also be attached to the log output.
@@ -354,7 +354,8 @@ struct cpp_dump::es_value_t {
  * Type of cpp_dump::cont_indent_style.
  * cpp_dump::export_var() supports this type.
  */
-enum class cont_indent_style_t { minimal, when_nested, when_non_tuples_nested, always };
+enum class cpp_dump::cont_indent_style_t
+    { minimal, when_nested, when_non_tuples_nested, always };
 
 using cpp_dump::log_label::log_label_func_t =
     std::function<std::string(const std::string &, std::size_t, const std::string &)>;
@@ -408,7 +409,7 @@ inline cpp_dump::es_value_t cpp_dump::es_value;
 /**
  * Style of indents of the Container, Set and Map categories (See 'Supported types')
  */
-inline cont_indent_style_t cont_indent_style = cpp_dump::cont_indent_style_t::when_nested;
+inline cpp_dump::cont_indent_style_t cont_indent_style = cpp_dump::cont_indent_style_t::when_nested;
 ```
 
 ### Functions
@@ -420,6 +421,15 @@ inline cont_indent_style_t cont_indent_style = cpp_dump::cont_indent_style_t::wh
  */
 template <typename T>
 std::string cpp_dump::export_var(const T &value);
+
+/**
+ * cpp_dump() uses this function to print logs.
+ * Define an explicit specialization with 'void' to customize this function.
+ */
+template <typename = void>
+void cpp_dump::write_log(std::string_view output) {
+  std::clog << output << std::endl;
+}
 
 // Manipulators (See 'Formatting with manipulators' for details.)
 cpp_dump::front(std::size_t iteration_count = cpp_dump::max_iteration_count);
@@ -693,6 +703,19 @@ cpp_dump(map | cp::front() | cp::map_kv(cp::hex(), cp::back()));
 
 These manipulators act on (multi)maps.  
 In this example, the keys are displayed in hexadecimal, and if the values are iterable, the front part of the values is omitted.
+
+### Change the output destination from the standard error output
+
+```cpp
+namespace cpp_dump {
+
+template <>
+void write_log(std::string_view output) {
+  elsewhere << output << std::endl;
+}
+
+}  // namespace cpp_dump
+```
 
 ### For competitive programming use
 
