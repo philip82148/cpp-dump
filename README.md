@@ -435,7 +435,7 @@ void cpp_dump::write_log(std::string_view output) {
 cpp_dump::front(std::size_t iteration_count = cpp_dump::max_iteration_count);
 cpp_dump::middle(std::size_t iteration_count = cpp_dump::max_iteration_count);
 cpp_dump::back(std::size_t iteration_count = cpp_dump::max_iteration_count);
-cpp_dump::both_ends(std::size_t iteration_count = cpp_dump::max_iteration_count);
+cpp_dump::both_ends(std::size_t half_iteration_count = cpp_dump::max_iteration_count / 2);
 cpp_dump::int_style(int base = 16, int digits = -1, int chunk = 2, bool space_fill = false);
 cpp_dump::index();
 cpp_dump::dec(int digits = -1, int chunk = 0);
@@ -597,7 +597,7 @@ See [front, middle, back, both_ends manipulators](#front-middle-back-both_ends-m
 
 ```cpp
 // Show the last 10 elements for the 1st dimension, the first 5 and the last 5 for the 2nd dimension.
-cpp_dump(some_huge_vector | cp::back(10) | cp::both_ends(10));
+cpp_dump(some_huge_vector | cp::back(10) | cp::both_ends(5));
 ```
 
 ![omitting-a-vector.png](./readme/omitting-a-vector.png)
@@ -614,7 +614,7 @@ cpp_dump(some_huge_vector | cp::bin(8, 2) | cp::front(5) | cp::front(5));
 
 ```cpp
 // Show integers in decimal, minimum 2 digits.
-cpp_dump(some_huge_vector | cp::back(10) | cp::both_ends(10) | cp::dec(2));
+cpp_dump(some_huge_vector | cp::back(10) | cp::both_ends(5) | cp::dec(2));
 ```
 
 ![manipulators.png](./readme/manipulators.png)
@@ -637,7 +637,7 @@ cpp_dump(some_huge_vector | cp::dec(2) | cp::index());
 cpp_dump::front(std::size_t iteration_count = cpp_dump::max_iteration_count);
 cpp_dump::middle(std::size_t iteration_count = cpp_dump::max_iteration_count);
 cpp_dump::back(std::size_t iteration_count = cpp_dump::max_iteration_count);
-cpp_dump::both_ends(std::size_t iteration_count = cpp_dump::max_iteration_count);
+cpp_dump::both_ends(std::size_t half_iteration_count = cpp_dump::max_iteration_count / 2);
 
 // Example
 cpp_dump(cp::front() << cp::back() << variable);

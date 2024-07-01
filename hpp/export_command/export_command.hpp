@@ -402,8 +402,9 @@ inline auto uhex(int digits = -1, int chunk = 0) {
 inline auto front(std::size_t iteration_count = max_iteration_count) {
   return _detail::export_command(
       [=](std::size_t index, const std::function<std::size_t()> &) -> std::size_t {
-        if (index >= iteration_count) return static_cast<std::size_t>(-1);
-        return 0;
+        if (index >= iteration_count) return static_cast<std::size_t>(-1);  // skip to the end
+
+        return 0;  // increment normally
       }
   );
 }
@@ -418,8 +419,9 @@ inline auto back(std::size_t iteration_count = max_iteration_count) {
         std::size_t size = cont_size();
         std::size_t first = size >= iteration_count ? size - iteration_count : 0;
 
-        if (index < first) return first - index;
-        return 0;
+        if (index < first) return first - index;  // skip to the first
+
+        return 0;  // increment normally
       }
   );
 }
@@ -428,16 +430,17 @@ inline auto back(std::size_t iteration_count = max_iteration_count) {
  * Manipulator for the display style of iterables.
  * See README for details.
  */
-inline auto both_ends(std::size_t iteration_count = max_iteration_count) {
+inline auto both_ends(std::size_t half_iteration_count = max_iteration_count / 2) {
   return _detail::export_command(
       [=](std::size_t index, const std::function<std::size_t()> &cont_size) -> std::size_t {
         std::size_t size = cont_size();
-        std::size_t first_half_last = (iteration_count + 1) / 2;
-        std::size_t rest_count = iteration_count - first_half_last;
-        std::size_t latter_half_first = size >= rest_count ? size - rest_count : 0;
+        std::size_t latter_half_first =
+            size >= half_iteration_count ? size - half_iteration_count : 0;
 
-        if (index >= first_half_last && index < latter_half_first) return latter_half_first - index;
-        return 0;
+        if (index >= half_iteration_count && index < latter_half_first)
+          return latter_half_first - index;  // skip to the latter_half_first
+
+        return 0;  // increment normally
       }
   );
 }
@@ -453,9 +456,10 @@ inline auto middle(std::size_t iteration_count = max_iteration_count) {
         std::size_t first = size >= iteration_count ? (size - iteration_count) / 2 : 0;
         std::size_t last = first + iteration_count;
 
-        if (index < first) return first - index;
-        if (index >= last) return static_cast<std::size_t>(-1);
-        return 0;
+        if (index < first) return first - index;                 // skip to the first
+        if (index >= last) return static_cast<std::size_t>(-1);  // skip to the end
+
+        return 0;  // increment normally
       }
   );
 }
