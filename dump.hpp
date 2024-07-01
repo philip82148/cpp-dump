@@ -21,8 +21,7 @@
 #include "hpp/options.hpp"
 #include "hpp/utility.hpp"
 
-#define _p_CPP_DUMP_EXPAND_FOR_CPP_DUMP(expr)  #expr
-#define _p_CPP_DUMP_EXPAND_FOR_CPP_DUMP2(expr) (expr)
+#define _p_CPP_DUMP_EXPAND_FOR_CPP_DUMP(expr) #expr
 
 /**
  * Print string representations of expression(s) and result(s) to std::clog.
@@ -32,7 +31,7 @@
   cpp_dump::_detail::cpp_dump_macro(                                                               \
       {__FILE__, __LINE__, __func__},                                                              \
       {_p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_CPP_DUMP, __VA_ARGS__)},                       \
-      _p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_CPP_DUMP2, __VA_ARGS__)                         \
+      __VA_ARGS__                                                                                  \
   )
 
 /**
