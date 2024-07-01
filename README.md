@@ -704,7 +704,7 @@ cpp_dump(map | cp::front() | cp::map_kv(cp::hex(), cp::back()));
 These manipulators act on (multi)maps.  
 In this example, the keys are displayed in hexadecimal, and if the values are iterable, the front part of the values is omitted.
 
-### Change the output destination from std::clog
+### Change the output destination from the standard error output
 
 ```cpp
 namespace cpp_dump {
