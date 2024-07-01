@@ -43,6 +43,15 @@
 
 namespace cpp_dump {
 
+/**
+ * cpp_dump() uses this function to print logs.
+ * Define an explicit specialization with 'void' to customize this function.
+ */
+template <typename = void>
+void write_log(std::string_view output) {
+  std::clog << output << std::endl;
+}
+
 namespace _detail {
 
 template <typename T>
@@ -234,7 +243,7 @@ void cpp_dump_macro(
     _dump(output, log_label, true, exprs, args...);
   }
 
-  std::clog << output << std::endl;
+  write_log(output);
 }
 
 }  // namespace _detail
