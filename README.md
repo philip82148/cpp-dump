@@ -254,11 +254,11 @@ The function that returns the label that `cpp_dump()` prints at the beginning of
 Type: `enum class cpp_dump::es_style_t` Default `cpp_dump::es_style_t::original`  
 The style of the escape sequences (the output coloring).
 
-| Name        | Description                                                                              |
-| ----------- | ---------------------------------------------------------------------------------------- |
-| `original`  | Default. Pointers, bitsets, complexes, and etc. are colored differently from `by_syntax` |
-| `by_syntax` | Use a color scheme closer to standard syntax highlighting                                |
-| `no_es`     | Turn off output coloring                                                                 |
+| Name        | Description                                                                                                                                                                |
+| ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `original`  | Default.                                                                                                                                                                   |
+| `by_syntax` | Use a color scheme closer to standard syntax highlighting. Pointers, bitsets, complexes, parentheses of member functions, and etc. are colored differently from `original` |
+| `no_es`     | Turn off output coloring                                                                                                                                                   |
 
 #### `es_value`
 
