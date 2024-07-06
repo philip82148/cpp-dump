@@ -82,6 +82,7 @@ inline std::string class_name(std::string_view s, bool is_enumerator = false) {
 
 inline std::string class_member(std::string_view s) {
   if (!use_es()) return std::string(s);
+  if (es_style == es_style_t::original) return es::member(s);
 
   auto is_operator = [](char c) { return !(std::isalnum(c) || c == '_'); };
 

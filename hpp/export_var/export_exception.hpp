@@ -32,7 +32,7 @@ inline auto export_exception(
 
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;
 
-  append_output(es::member("what") + es::op("()"), exception.what());
+  append_output(es::class_member("what()"), exception.what());
 
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2;
 }
