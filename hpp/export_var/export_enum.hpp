@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include <map>
 #include <string>
+#include <unordered_map>
 
 #include "../escape_sequence.hpp"
 #include "../expand_va_macro.hpp"
@@ -33,7 +33,7 @@
   template <>                                                                                                        \
   inline std::string                                                                                                 \
   export_enum(const TYPE &enum_const, const std::string &, std::size_t, std::size_t, bool, const export_command &) { \
-    static std::map<TYPE, std::string> enum_to_string{                                                               \
+    static std::unordered_map<TYPE, std::string> enum_to_string{                                                     \
         _p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_EXPORT_ENUM, __VA_ARGS__)};                                     \
     return enum_to_string.count(enum_const)                                                                          \
                ? es::class_name(enum_to_string[enum_const], true)                                                    \
