@@ -220,6 +220,11 @@ int main(int argc, char *argv[]) {
   cpp_dump("This contains newline\nhere.", R"(This contains ".)", R"(This contains `.)");
   cpp_dump("\n\n\n\n");
 
+  // volatile
+  volatile int volatile_int = 3589;
+  volatile double volatile_double = 79.323;
+  cpp_dump(volatile_int, volatile_double);
+
   // vector & auto indent
   cpp_dump((vector<int>{3, 1, 4}));
   cpp_dump((vector<vector<int>>{{3}, {1, 4}, {1, 5, 9}}));
