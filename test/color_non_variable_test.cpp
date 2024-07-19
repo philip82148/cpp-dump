@@ -110,15 +110,16 @@ int main(int argc, char *argv[]) {
   cpp_dump(map1);
 
   // multimap
-  multimap<char, int> multimap1;
-  multimap1.emplace('c', 30);
-  multimap1.emplace('a', 10);
-  multimap1.emplace('b', 20);
-  multimap1.emplace('a', 40);
-  multimap1.emplace('c', 31);
-  multimap1.emplace('a', 12);
-  multimap1.emplace('b', 23);
-  multimap1.emplace('a', 44);
+  multimap<char, int> multimap1{
+      {'c', 30},
+      {'a', 10},
+      {'b', 20},
+      {'a', 40},
+      {'c', 31},
+      {'a', 12},
+      {'b', 23},
+      {'a', 44},
+  };
   cpp_dump(multimap1);
 
   // set

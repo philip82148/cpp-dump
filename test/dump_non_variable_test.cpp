@@ -261,26 +261,23 @@ int main(int argc, char *argv[]) {
   cpp_dump((map<double, string>{{3.2, "This is a pen."}, {3.8, "I have an apple."}}));
 
   // multimap
-  multimap<char, int> multimap1;
-  multimap1.emplace('c', 30);
-  multimap1.emplace('a', 10);
-  multimap1.emplace('b', 20);
-  multimap1.emplace('a', 40);
-  multimap1.emplace('c', 31);
-  multimap1.emplace('a', 12);
-  multimap1.emplace('b', 23);
-  multimap1.emplace('a', 44);
+  multimap<char, int> multimap1{
+      {'c', 30},
+      {'a', 10},
+      {'b', 20},
+      {'a', 40},
+      {'c', 31},
+      {'a', 12},
+      {'b', 23},
+      {'a', 44},
+  };
   cpp_dump(multimap1);
 
   // set
   cpp_dump((set<string>{"A", "p", "p", "l", "e", " ", "P", "e", "n"}));
 
   // multiset
-  multiset<int> multiset1;
-  multiset1.insert(3);
-  multiset1.insert(1);
-  multiset1.insert(4);
-  multiset1.insert(1);
+  multiset<int> multiset1{3, 1, 4, 1};
   cpp_dump(multiset1);
 
   // FIFO/LIFO
@@ -413,8 +410,8 @@ int main(int argc, char *argv[]) {
   set<int> set50;
   rep(i, 50) {
     array50[i] = i;
-    map50.emplace(i, i + 1);
-    set50.emplace(i);
+    map50[i] = i + 1;
+    set50.insert(i);
   }
 
   CPP_DUMP_SET_OPTION(max_iteration_count, 2);
@@ -435,7 +432,7 @@ int main(int argc, char *argv[]) {
   cpp_dump(cp::back(40) << array50, cp::back(40) << map50, cp::back(40) << set50);
   cpp_dump(cp::both_ends(20) << array50, cp::both_ends(20) << map50, cp::both_ends(20) << set50);
 
-  auto vec2 = vector<vector<vector<int>>>{
+  vector<vector<vector<int>>> vec2{
       {{1}},
       {{2, 6}},
       {
@@ -450,7 +447,7 @@ int main(int argc, char *argv[]) {
   cpp_dump(multimap1, cp::both_ends(1) << cp::both_ends(1) << multimap1);
   cpp_dump(multiset1, cp::middle(1) << cp::back(1) << multiset1);
 
-  auto multimap2 = multimap<vector<int>, vector<int>>{
+  multimap<vector<int>, vector<int>> multimap2{
       {{1, 2, 4, 2}, {11, 22, 11, 22}},
       {{1, 2, 4, 2}, {14, 21, 11, 22}},
       {{3, 4, 0}, {21, 5, 2, 3 - 8}},

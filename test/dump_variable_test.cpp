@@ -81,11 +81,12 @@ int main(int argc, char *argv[]) {
     // unordered
     cpp_dump((unordered_map<int, int>{{4, 6}, {2, 6}, {4, 3}}));
 
-    unordered_multimap<char, int> unordered_multimap1;
-    unordered_multimap1.emplace('c', 30);
-    unordered_multimap1.emplace('a', 10);
-    unordered_multimap1.emplace('b', 20);
-    unordered_multimap1.emplace('a', 40);
+    unordered_multimap<char, int> unordered_multimap1{
+        {'c', 30},
+        {'a', 10},
+        {'b', 20},
+        {'a', 40},
+    };
     cpp_dump(unordered_multimap1);
 
     cpp_dump((unordered_set{3, 1, 4, 1, 5}));
