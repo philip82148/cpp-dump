@@ -79,8 +79,8 @@ inline std::size_t iterable_size(const T &t) {
   return _iterable_size(t, 0, 0);
 }
 
-template <typename It>
-inline auto _iterator_advance(It &it, std::size_t n, int) -> decltype(std::advance(it, n), void()) {
+template <typename It, typename std::iterator_traits<It>::difference_type>
+inline void _iterator_advance(It &it, std::size_t n, int) {
   std::advance(it, n);
 }
 
