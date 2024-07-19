@@ -224,8 +224,9 @@ int main(int argc, char *argv[]) {
   cpp_dump((vector<int>{3, 1, 4}));
   cpp_dump((vector<vector<int>>{{3}, {1, 4}, {1, 5, 9}}));
   cpp_dump((vector<vector<vector<int>>>{{}, {{2, 6}}, {{5}, {3}, {5}}}));
-  const auto vec =
-      (vector<vector<int>>{{2, 4, 6, 7, 8, 9, 0, 1, 1, 1, 7, 8, 9, 0, 1, 1, 1, 1, 1, 1, 1}});
+
+  const vector<vector<int>> vec{{2, 4, 6, 7, 8, 9, 0, 1, 1, 1, 7, 8, 9, 0, 1, 1, 1, 1, 1, 1, 1}};
+
   cpp_dump(
       (vector<int>{3, 1, 4}),
       vec,
