@@ -167,7 +167,7 @@ inline auto export_arithmetic(
 
 template <typename T>
 inline auto
-export_arithmetic(const T &value, const std::string &, std::size_t, std::size_t, bool, const export_command &)
+export_arithmetic(T value, const std::string &, std::size_t, std::size_t, bool, const export_command &)
     -> std::enable_if_t<is_arithmetic<T> && !std::is_integral_v<T>, std::string> {
   return es::number(std::to_string(value));
 }
