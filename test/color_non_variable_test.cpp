@@ -82,7 +82,7 @@ int main(int argc, char *argv[]) {
   cpp_dump("This contains newline\nhere.", R"(This contains ".)", R"(This contains `.)");
 
   // vector
-  auto vec = vector<vector<vector<int>>>{{}, {{2, 6}}, {{5}, {3}, {5}}};
+  vector<vector<vector<int>>> vec{{}, {{2, 6}}, {{5}, {3}, {5}}};
   vector<int> vec2 = {1, 2, 3, 4, 5, 6, 7, 8};
   vector<int> vec3{3, 1};
   cpp_dump(vec);
@@ -93,36 +93,37 @@ int main(int argc, char *argv[]) {
   }
 
   // pair&tuple
-  auto pair1 = make_pair(8, 'a');
-  auto tuple1 = make_tuple(
+  pair<int, char> pair1(8, 'a');
+  tuple<int, const char *, string_view, std::string, std::string, double> tuple1{
       9,
       "This is another string.",
       "This is another string.",
       "This is another string.",
       "This is another string.",
-      7.9
-  );
+      7.9,
+  };
   cpp_dump(pair1);
   cpp_dump(tuple1);
 
   // map
-  auto map1 = map<double, string>{{3.2, "This is a pen."}, {3.8, "I have an apple."}};
+  map<double, string> map1{{3.2, "This is a pen."}, {3.8, "I have an apple."}};
   cpp_dump(map1);
 
   // multimap
-  multimap<char, int> multimap1;
-  multimap1.emplace('c', 30);
-  multimap1.emplace('a', 10);
-  multimap1.emplace('b', 20);
-  multimap1.emplace('a', 40);
-  multimap1.emplace('c', 31);
-  multimap1.emplace('a', 12);
-  multimap1.emplace('b', 23);
-  multimap1.emplace('a', 44);
+  multimap<char, int> multimap1{
+      {'c', 30},
+      {'a', 10},
+      {'b', 20},
+      {'a', 40},
+      {'c', 31},
+      {'a', 12},
+      {'b', 23},
+      {'a', 44},
+  };
   cpp_dump(multimap1);
 
   // set
-  auto set1 = set<string>{"A", "p", "p", "l", "e", " ", "P", "e", "n"};
+  set<string> set1{"A", "p", "p", "l", "e", " ", "P", "e", "n"};
   cpp_dump(set1);
 
   // multiset
@@ -157,8 +158,7 @@ int main(int argc, char *argv[]) {
 
   // pointer
   int a = 65;
-  int *int_ptr;
-  int_ptr = &a;
+  int *int_ptr = &a;
 
   cpp_dump(int_ptr);
   cpp_dump(nullptr);

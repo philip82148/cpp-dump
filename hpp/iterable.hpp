@@ -67,6 +67,7 @@ inline auto _iterable_size(const T &t, long, long)
 template <typename T>
 inline std::size_t _iterable_size(const T &t, ...) {
   std::size_t size = 0;
+  // allow lvalue iterator
   auto &&begin = iterable_begin(t);
   auto &&end = iterable_end(t);
   for (; begin != end; ++begin) ++size;
@@ -85,7 +86,7 @@ inline void _iterator_advance(It &it, std::size_t n, int) {
 
 template <typename It>
 inline void _iterator_advance(It &it, std::size_t n, long) {
-  for (; 0 < n; --n) ++it;
+  for (; n > 0; --n) ++it;
 }
 
 template <typename It>

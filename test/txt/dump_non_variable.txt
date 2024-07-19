@@ -14,6 +14,7 @@ here.`,
 
 
 `
+[dump] volatile_int => 3589, volatile_double => 79.323000
 [dump] (vector<int>{3, 1, 4}) => [ 3, 1, 4 ]
 [dump] (vector<vector<int>>{{3}, {1, 4}, {1, 5, 9}}) => [
          [ 3 ],
