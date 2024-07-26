@@ -102,21 +102,28 @@ You can modify the escape sequences to change the colors of the output using the
 ```cpp
 // Use more colors
 CPP_DUMP_SET_OPTION(es_value, (cp::es_value_t{
-  "\e[02m",  // log: dark
-  "\e[34m",  // expression: blue
-  "\e[36m",  // reserved: cyan
-  "\e[36m",  // number: cyan
-  "\e[36m",  // character: cyan
-  "\e[02m",  // op: dark
-  "\e[32m",  // identifier:  green
-  "\e[36m",  // member: cyan
-  "",        // unsupported: default
+  "\e[02m",        // log: dark
+  "\e[34m",        // expression: blue
+  "\e[38;5;39m",   // reserved: light blue
+  "\e[38;5;193m",  // number: light green
+  "\e[38;5;172m",  // character: orange
+  "\e[02m",        // op: dark
+  "\e[32m",        // identifier:  green
+  "\e[96m",        // member: light cyan
+  "\e[31m",        // unsupported: red
   {
     "\e[33m",  // bracket_by_depth[0]: yellow
     "\e[35m",  // bracket_by_depth[1]: magenta
     "\e[36m",  // bracket_by_depth[2]: cyan
   },
 }));
+
+// Use the 'op' color for operators in class names and members (::, <>, (), etc...).
+CPP_DUMP_SET_OPTION(detailed_class_es, true);
+CPP_DUMP_SET_OPTION(detailed_member_es, true);
+
+// Use a color scheme closer to standard syntax highlighting.
+// CPP_DUMP_SET_OPTION(es_style, cpp_dump::es_style_t::by_syntax);
 ```
 
 ![customizable-colors.png](./readme/customizable-colors.png)
@@ -254,16 +261,26 @@ The function that returns the label that `cpp_dump()` prints at the beginning of
 Type: `enum class cpp_dump::es_style_t` Default `cpp_dump::es_style_t::original`  
 The style of the escape sequences (the output coloring).
 
-| Name        | Description                                                                                                                                                                |
-| ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `original`  | Default.                                                                                                                                                                   |
-| `by_syntax` | Use a color scheme closer to standard syntax highlighting. Pointers, bitsets, complexes, parentheses of member functions, and etc. are colored differently from `original` |
-| `no_es`     | Turn off output coloring                                                                                                                                                   |
+| Name        | Description                                                                                                                               |
+| ----------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `original`  | Default.                                                                                                                                  |
+| `by_syntax` | Use a color scheme closer to standard syntax highlighting. Pointers, bitsets, complexes, and etc. are colored differently from `original` |
+| `no_es`     | Turn off output coloring                                                                                                                  |
 
 #### `es_value`
 
 Type: `cpp_dump::es_value_t` Default: (Default constructor, see [Types](#types))  
 The values of the escape sequences.
+
+#### `detailed_class_es`
+
+Type: `bool` Default: `false`  
+If true, the 'op' color is used for operators in class names (`::`, `<>`, etc...).
+
+#### `detailed_member_es`
+
+Type: `bool` Default: `false`  
+If true, the 'op' color is used for operators in members (`()`, etc...).
 
 #### `cont_indent_style`
 
@@ -405,6 +422,16 @@ inline cpp_dump::es_style_t cpp_dump::es_style = cpp_dump::es_style_t::original;
  * Values of the escape sequences (output coloring).
  */
 inline cpp_dump::es_value_t cpp_dump::es_value;
+
+/**
+ * If true, the 'op' color is used for operators in class names (::, <>, etc...).
+ */
+inline bool detailed_class_es = false;
+
+/**
+ * If true, the 'op' color is used for operators in members ((), etc...).
+ */
+inline bool detailed_member_es = false;
 
 /**
  * Style of indents of the Container, Set and Map categories (See 'Supported types')

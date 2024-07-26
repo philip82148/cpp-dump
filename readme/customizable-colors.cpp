@@ -16,18 +16,19 @@
 namespace cp = cpp_dump;
 
 int main() {
+  // Use more colors
   CPP_DUMP_SET_OPTION(
       es_value,
       (cp::es_value_t{
-          "\x1b[02m",  // log: dark
-          "\x1b[34m",  // expression: blue
-          "\x1b[36m",  // reserved: cyan
-          "\x1b[36m",  // number: cyan
-          "\x1b[36m",  // character: cyan
-          "\x1b[02m",  // op: dark
-          "\x1b[32m",  // identifier:  green
-          "\x1b[36m",  // member: cyan
-          "",          // unsupported: default
+          "\x1b[02m",        // log: dark
+          "\x1b[34m",        // expression: blue
+          "\x1b[38;5;39m",   // reserved: light blue
+          "\x1b[38;5;193m",  // number: light green
+          "\x1b[38;5;172m",  // character: orange
+          "\x1b[02m",        // op: dark
+          "\x1b[32m",        // identifier:  green
+          "\x1b[96m",        // member: light cyan
+          "\x1b[31m",        // unsupported: red
           {
               "\x1b[33m",  // bracket_by_depth[0]: yellow
               "\x1b[35m",  // bracket_by_depth[1]: magenta
@@ -35,6 +36,13 @@ int main() {
           },
       })
   );
+
+  // Use the 'op' color for operators in class names and members (::, <>, (), etc...).
+  CPP_DUMP_SET_OPTION(detailed_class_es, true);
+  CPP_DUMP_SET_OPTION(detailed_member_es, true);
+
+  // Use a color scheme closer to standard syntax highlighting.
+  // CPP_DUMP_SET_OPTION(es_style, cp::es_style_t::by_syntax);
 
   int my_int = 15;
   int *ptr = &my_int;

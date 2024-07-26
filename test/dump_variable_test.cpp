@@ -30,9 +30,12 @@ int main(int argc, char *argv[]) {
       cp::es_style_t::original,
       cp::es_style_t::by_syntax,
   }[stoi(argv[2])]);
+  bool detailed_es = es_style_ == cp::es_style_t::by_syntax;
   bool color_test = stoi(argv[3]);
 
   CPP_DUMP_SET_OPTION(es_style, es_style_);
+  CPP_DUMP_SET_OPTION(detailed_class_es, detailed_es);
+  CPP_DUMP_SET_OPTION(detailed_member_es, detailed_es);
 
   if (color_test)
     CPP_DUMP_SET_OPTION(
