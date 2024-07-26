@@ -28,7 +28,7 @@ inline auto export_exception(
     bool fail_on_newline,
     const export_command &command
 ) -> std::enable_if_t<is_exception<T>, std::string> {
-  std::string type_name = es::class_name(get_typename<T>());
+  std::string class_name = es::class_name(get_typename<T>());
 
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;
 

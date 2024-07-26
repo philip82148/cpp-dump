@@ -43,7 +43,7 @@
       bool fail_on_newline,                                                                        \
       const export_command &command                                                                \
   ) {                                                                                              \
-    std::string type_name = TYPENAME_STR;                                                          \
+    std::string class_name = TYPENAME_STR;                                                         \
                                                                                                    \
     _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;                                                      \
                                                                                                    \

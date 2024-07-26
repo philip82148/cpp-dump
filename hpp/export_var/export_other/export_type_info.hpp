@@ -26,7 +26,7 @@ template <typename T>
 inline auto
 export_type_info(const T &type_info, const std::string &indent, std::size_t last_line_length, std::size_t current_depth, bool fail_on_newline, const export_command &)
     -> std::enable_if_t<is_type_info<T>, std::string> {
-  std::string type_name =
+  std::string class_name =
       es::class_name(std::is_same_v<T, std::type_info> ? "std::type_info" : "std::type_index");
 
 #if defined(__GNUC__)
