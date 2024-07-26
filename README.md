@@ -123,7 +123,7 @@ CPP_DUMP_SET_OPTION(detailed_class_es, true);
 CPP_DUMP_SET_OPTION(detailed_member_es, true);
 
 // Use a color scheme closer to standard syntax highlighting.
-// CPP_DUMP_SET_OPTION(es_style, cp::es_style_t::by_syntax);
+// CPP_DUMP_SET_OPTION(es_style, cpp_dump::es_style_t::by_syntax);
 ```
 
 ![customizable-colors.png](./readme/customizable-colors.png)
