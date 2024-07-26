@@ -275,12 +275,12 @@ The values of the escape sequences.
 #### `detailed_class_es`
 
 Type: `bool` Default: `false`  
-If true, operators in class names (`::`, `<>`, etc...) will be colored differently.
+If true, the 'op' color is used for operators in class names (`::`, `<>`, etc...).
 
 #### `detailed_member_es`
 
 Type: `bool` Default: `false`  
-If true, operators in members (`()`, etc...) will be colored differently.
+If true, the 'op' color is used for operators in members (`()`, etc...).
 
 #### `cont_indent_style`
 
@@ -424,12 +424,12 @@ inline cpp_dump::es_style_t cpp_dump::es_style = cpp_dump::es_style_t::original;
 inline cpp_dump::es_value_t cpp_dump::es_value;
 
 /**
- * If true, operators in class names (::, <>, etc...) will be colored differently.
+ * If true, the 'op' color is used for operators in class names (::, <>, etc...).
  */
 inline bool detailed_class_es = false;
 
 /**
- * If true, operators in members ((), etc...) will be colored differently.
+ * If true, the 'op' color is used for operators in members ((), etc...).
  */
 inline bool detailed_member_es = false;
 
