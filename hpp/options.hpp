@@ -120,6 +120,16 @@ inline es_style_t es_style = es_style_t::original;
 inline es_value_t es_value;
 
 /**
+ * Whether the escape sequence of class names are detailed.
+ */
+inline bool detailed_class_es = false;
+
+/**
+ * Whether the escape sequence of members are detailed.
+ */
+inline bool detailed_member_es = false;
+
+/**
  * Style of indents of the Container, Set and Map categories (See 'Supported types').
  */
 inline cont_indent_style_t cont_indent_style = cont_indent_style_t::when_nested;
