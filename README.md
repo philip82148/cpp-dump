@@ -265,6 +265,16 @@ The style of the escape sequences (the output coloring).
 Type: `cpp_dump::es_value_t` Default: (Default constructor, see [Types](#types))  
 The values of the escape sequences.
 
+#### `detailed_class_es`
+
+Type: `bool` Default: `false`  
+If true, operators in class names (`::`, `<>`, etc...) will be colored differently.
+
+#### `detailed_member_es`
+
+Type: `bool` Default: `false`  
+If true, operators in members (`()`, etc...) will be colored differently.
+
 #### `cont_indent_style`
 
 Type: `enum class cpp_dump::cont_indent_style_t` Default: `cpp_dump::cont_indent_style_t::when_nested`  
@@ -405,6 +415,16 @@ inline cpp_dump::es_style_t cpp_dump::es_style = cpp_dump::es_style_t::original;
  * Values of the escape sequences (output coloring).
  */
 inline cpp_dump::es_value_t cpp_dump::es_value;
+
+/**
+ * If true, operators in class names (::, <>, etc...) will be colored differently.
+ */
+inline bool detailed_class_es = false;
+
+/**
+ * If true, operators in members ((), etc...) will be colored differently.
+ */
+inline bool detailed_member_es = false;
 
 /**
  * Style of indents of the Container, Set and Map categories (See 'Supported types')

@@ -120,12 +120,12 @@ inline es_style_t es_style = es_style_t::original;
 inline es_value_t es_value;
 
 /**
- * Whether the escape sequence of class names are detailed.
+ * If true, operators in class names (::, <>, etc...) will be colored differently.
  */
 inline bool detailed_class_es = false;
 
 /**
- * Whether the escape sequence of members are detailed.
+ * If true, operators in members ((), etc...) will be colored differently.
  */
 inline bool detailed_member_es = false;
 
