@@ -16,6 +16,7 @@
 namespace cp = cpp_dump;
 
 int main() {
+  // Use more colors
   CPP_DUMP_SET_OPTION(
       es_value,
       (cp::es_value_t{
@@ -35,6 +36,10 @@ int main() {
           },
       })
   );
+
+  // Different colors for operators in class names and members (::, <>, (), etc...).
+  CPP_DUMP_SET_OPTION(detailed_class_es, true);
+  CPP_DUMP_SET_OPTION(detailed_member_es, true);
 
   int my_int = 15;
   int *ptr = &my_int;

@@ -117,6 +117,10 @@ CPP_DUMP_SET_OPTION(es_value, (cp::es_value_t{
     "\e[36m",  // bracket_by_depth[2]: cyan
   },
 }));
+
+// Different colors for operators in class names and members (::, <>, (), etc...).
+CPP_DUMP_SET_OPTION(detailed_class_es, true);
+CPP_DUMP_SET_OPTION(detailed_member_es, true);
 ```
 
 ![customizable-colors.png](./readme/customizable-colors.png)
