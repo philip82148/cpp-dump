@@ -77,6 +77,8 @@ inline std::string type_name(std::string_view s) {
 
 inline std::string class_name(std::string_view s) {
   if (!use_es()) return std::string(s);
+  if (!detailed_class_es) return es::identifier(s);
+
   return type_name(s);
 }
 
@@ -103,7 +105,7 @@ inline std::string enumerator(std::string_view s) {
 
 inline std::string class_member(std::string_view s) {
   if (!use_es()) return std::string(s);
-  if (es_style == es_style_t::original) return es::member(s);
+  if (!detailed_member_es) return es::member(s);
 
   auto is_operator = [](char c) { return !(std::isalnum(c) || c == '_'); };
 
