@@ -121,7 +121,7 @@ inline std::string export_es_value_t(
     bool fail_on_newline,
     const export_command &command
 ) {
-  std::string type_name = es::identifier("cpp_dump") + es::op("::") + es::identifier("es_value_t");
+  std::string type_name = es::class_name("cpp_dump::es_value_t");
 
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1_1;
 

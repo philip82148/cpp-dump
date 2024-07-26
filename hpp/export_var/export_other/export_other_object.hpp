@@ -75,7 +75,7 @@ export_other_object(const T &, const std::string &, std::size_t, std::size_t, bo
 #if !defined(__clang__)
 _p_CPP_DUMP_DEFINE_EXPORT_OTHER_OBJECT(
     std::source_location,
-    es::identifier("std") + es::op("::") + es::identifier("source_location"),
+    es::class_name("std::source_location"),
     file_name(),
     line(),
     column(),
