@@ -52,7 +52,7 @@ inline std::string bracket(std::string_view s, std::size_t d) {
   return es::apply(es_value.bracket_by_depth[d % sz], s);
 }
 
-inline std::string class_name(std::string_view s, bool is_enumerator = false) {
+inline std::string type_name(std::string_view s) {
   if (!use_es()) return std::string(s);
 
   auto is_operator = [](char c) { return !(std::isalnum(c) || c == '_'); };
@@ -70,14 +70,35 @@ inline std::string class_name(std::string_view s, bool is_enumerator = false) {
     if (end == s.end()) return typename_with_es;
     begin = end;
   }
-
-  if (is_enumerator) {
-    typename_with_es += es::member({&*begin, static_cast<std::size_t>(s.end() - begin)});
-  } else {
-    typename_with_es += es::identifier({&*begin, static_cast<std::size_t>(s.end() - begin)});
-  }
+  typename_with_es += es::identifier({&*begin, static_cast<std::size_t>(s.end() - begin)});
 
   return typename_with_es;
+}
+
+inline std::string class_name(std::string_view s) {
+  if (!use_es()) return std::string(s);
+  return type_name(s);
+}
+
+inline std::string enumerator(std::string_view s) {
+  if (!use_es()) return std::string(s);
+
+  auto is_operator = [](char c) { return !(std::isalnum(c) || c == '_'); };
+
+  auto op_rbegin = std::find_if(s.rbegin(), s.rend(), is_operator);
+  if (op_rbegin == s.rend()) return es::member(s);
+  auto op_end = op_rbegin.base();
+
+  auto op_rend = std::find_if_not(op_rbegin, s.rend(), is_operator);
+  if (op_rend == s.rend()) {
+    return es::op({&*s.begin(), static_cast<std::size_t>(op_end - s.begin())})
+           + es::member({&*op_end, static_cast<std::size_t>(s.end() - op_end)});
+  }
+  auto op_begin = op_rend.base();
+
+  return es::class_name({&*s.begin(), static_cast<std::size_t>(op_begin - s.begin())})
+         + es::op({&*op_begin, static_cast<std::size_t>(op_end - op_begin)})
+         + es::member({&*op_end, static_cast<std::size_t>(s.end() - op_end)});
 }
 
 inline std::string class_member(std::string_view s) {

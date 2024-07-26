@@ -36,7 +36,7 @@
     static std::unordered_map<TYPE, std::string> enum_to_string{                                                     \
         _p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_EXPORT_ENUM, __VA_ARGS__)};                                     \
     return enum_to_string.count(enum_const)                                                                          \
-               ? es::class_name(enum_to_string[enum_const], true)                                                    \
+               ? es::enumerator(enum_to_string[enum_const])                                                          \
                : es::class_name(#TYPE) + es::op("::") + es::unsupported("?");                                        \
   }                                                                                                                  \
                                                                                                                      \
