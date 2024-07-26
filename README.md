@@ -108,7 +108,7 @@ CPP_DUMP_SET_OPTION(es_value, (cp::es_value_t{
   "\e[38;5;193m",  // number: light green
   "\e[38;5;172m",  // character: orange
   "\e[02m",        // op: dark
-  "\e[38;5;36m",   // identifier:  green
+  "\e[32m",        // identifier:  green
   "\e[96m",        // member: light cyan
   "\e[31m",        // unsupported: red
   {
@@ -118,7 +118,7 @@ CPP_DUMP_SET_OPTION(es_value, (cp::es_value_t{
   },
 }));
 
-// Different colors for operators in class names and members (::, <>, (), etc...).
+// Use the 'op' color for operators in class names and members (::, <>, (), etc...).
 CPP_DUMP_SET_OPTION(detailed_class_es, true);
 CPP_DUMP_SET_OPTION(detailed_member_es, true);
 

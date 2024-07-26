@@ -26,7 +26,7 @@ int main() {
           "\x1b[38;5;193m",  // number: light green
           "\x1b[38;5;172m",  // character: orange
           "\x1b[02m",        // op: dark
-          "\x1b[38;5;36m",   // identifier:  green
+          "\x1b[32m",        // identifier:  green
           "\x1b[96m",        // member: light cyan
           "\x1b[31m",        // unsupported: red
           {
@@ -37,7 +37,7 @@ int main() {
       })
   );
 
-  // Different colors for operators in class names and members (::, <>, (), etc...).
+  // Use the 'op' color for operators in class names and members (::, <>, (), etc...).
   CPP_DUMP_SET_OPTION(detailed_class_es, true);
   CPP_DUMP_SET_OPTION(detailed_member_es, true);
 
