@@ -102,15 +102,15 @@ You can modify the escape sequences to change the colors of the output using the
 ```cpp
 // Use more colors
 CPP_DUMP_SET_OPTION(es_value, (cp::es_value_t{
-  "\e[02m",  // log: dark
-  "\e[34m",  // expression: blue
-  "\e[36m",  // reserved: cyan
-  "\e[36m",  // number: cyan
-  "\e[36m",  // character: cyan
-  "\e[02m",  // op: dark
-  "\e[32m",  // identifier:  green
-  "\e[36m",  // member: cyan
-  "",        // unsupported: default
+  "\e[02m",        // log: dark
+  "\e[34m",        // expression: blue
+  "\e[38;5;39m",   // reserved: light blue
+  "\e[38;5;193m",  // number: light green
+  "\e[38;5;172m",  // character: orange
+  "\e[02m",        // op: dark
+  "\e[38;5;36m",   // identifier:  green
+  "\e[96m",        // member: light cyan
+  "\e[31m",        // unsupported: red
   {
     "\e[33m",  // bracket_by_depth[0]: yellow
     "\e[35m",  // bracket_by_depth[1]: magenta
@@ -121,6 +121,9 @@ CPP_DUMP_SET_OPTION(es_value, (cp::es_value_t{
 // Different colors for operators in class names and members (::, <>, (), etc...).
 CPP_DUMP_SET_OPTION(detailed_class_es, true);
 CPP_DUMP_SET_OPTION(detailed_member_es, true);
+
+// Use a color scheme closer to standard syntax highlighting.
+// CPP_DUMP_SET_OPTION(es_style, cp::es_style_t::by_syntax);
 ```
 
 ![customizable-colors.png](./readme/customizable-colors.png)
@@ -258,11 +261,11 @@ The function that returns the label that `cpp_dump()` prints at the beginning of
 Type: `enum class cpp_dump::es_style_t` Default `cpp_dump::es_style_t::original`  
 The style of the escape sequences (the output coloring).
 
-| Name        | Description                                                                                                                                                                |
-| ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `original`  | Default.                                                                                                                                                                   |
-| `by_syntax` | Use a color scheme closer to standard syntax highlighting. Pointers, bitsets, complexes, parentheses of member functions, and etc. are colored differently from `original` |
-| `no_es`     | Turn off output coloring                                                                                                                                                   |
+| Name        | Description                                                                                                                               |
+| ----------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `original`  | Default.                                                                                                                                  |
+| `by_syntax` | Use a color scheme closer to standard syntax highlighting. Pointers, bitsets, complexes, and etc. are colored differently from `original` |
+| `no_es`     | Turn off output coloring                                                                                                                  |
 
 #### `es_value`
 
