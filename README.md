@@ -123,7 +123,7 @@ CPP_DUMP_SET_OPTION(detailed_class_es, true);
 CPP_DUMP_SET_OPTION(detailed_member_es, true);
 
 // Use a color scheme closer to standard syntax highlighting.
-// CPP_DUMP_SET_OPTION(es_style, cpp_dump::es_style_t::by_syntax);
+// CPP_DUMP_SET_OPTION(es_style, cp::es_style_t::by_syntax);
 ```
 
 ![customizable-colors.png](./readme/customizable-colors.png)
@@ -167,12 +167,6 @@ See [Formatting with manipulators](#formatting-with-manipulators) for details.
 
 ```shell
 git clone https://github.com/philip82148/cpp-dump
-```
-
-or
-
-```shell
-git submodule add https://github.com/philip82148/cpp-dump
 ```
 
 Then
@@ -426,12 +420,12 @@ inline cpp_dump::es_value_t cpp_dump::es_value;
 /**
  * If true, the 'op' color is used for operators in class names (::, <>, etc...).
  */
-inline bool detailed_class_es = false;
+inline bool cpp_dump::detailed_class_es = false;
 
 /**
  * If true, the 'op' color is used for operators in members ((), etc...).
  */
-inline bool detailed_member_es = false;
+inline bool cpp_dump::detailed_member_es = false;
 
 /**
  * Style of indents of the Container, Set and Map categories (See 'Supported types')
