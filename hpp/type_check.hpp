@@ -260,7 +260,7 @@ inline constexpr bool is_exportable = _is_exportable_partial<T> || is_ostream<T>
 template <typename T>
 inline constexpr bool is_iterable_like = is_container<T> || is_map<T> || is_set<T> || is_tuple<T>;
 
-inline std::string _get_typename_aux(std::string func_name) {
+inline std::string _get_typename_aux(std::string_view func_name) {
 #if defined(__GNUC__) && !defined(__clang__)
   constexpr std::size_t prefix_length =
       std::string_view("const char* cpp_dump::_detail::_get_typename() [with T = ").size();
@@ -278,8 +278,7 @@ inline std::string _get_typename_aux(std::string func_name) {
   constexpr std::size_t suffix_length = 0;
 #endif
 
-  std::string type_name =
-      func_name.substr(prefix_length, func_name.length() - prefix_length - suffix_length);
+  std::string type_name(func_name, prefix_length, func_name.size() - prefix_length - suffix_length);
 
 #if defined(_MSC_VER)
   type_name = replace_string(type_name, "struct ", "");
