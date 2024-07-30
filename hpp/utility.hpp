@@ -18,7 +18,7 @@ namespace cpp_dump {
 
 namespace _detail {
 
-inline bool has_newline(std::string_view s) { return s.find("\n") != std::string::npos; }
+inline bool has_newline(std::string_view s) { return s.find('\n') != std::string::npos; }
 
 inline std::size_t get_length(std::string_view s) {
   if (!use_es()) return s.length();
@@ -44,7 +44,7 @@ inline std::size_t get_length(std::string_view s) {
 }
 
 inline std::size_t get_first_line_length(std::string_view s) {
-  auto lf_pos = s.find("\n");
+  auto lf_pos = s.find('\n');
 
   if (lf_pos == std::string::npos) return get_length(s);
 
@@ -54,7 +54,7 @@ inline std::size_t get_first_line_length(std::string_view s) {
 inline std::size_t get_last_line_length(
     std::string_view s, std::size_t additional_first_line_length = 0
 ) {
-  auto lf_pos = s.rfind("\n");
+  auto lf_pos = s.rfind('\n');
 
   if (lf_pos == std::string::npos) return additional_first_line_length + get_length(s);
 
