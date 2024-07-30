@@ -51,7 +51,9 @@ inline std::size_t get_first_line_length(std::string_view s) {
   return get_length(s.substr(0, lf_pos));
 }
 
-inline std::size_t get_last_line_length(std::string_view s, int additional_first_line_length = 0) {
+inline std::size_t get_last_line_length(
+    std::string_view s, std::size_t additional_first_line_length = 0
+) {
   auto lf_pos = s.rfind("\n");
 
   if (lf_pos == std::string::npos) return additional_first_line_length + get_length(s);
