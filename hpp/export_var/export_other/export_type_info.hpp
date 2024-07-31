@@ -38,7 +38,7 @@ export_type_info(const T &type_info, const std::string &indent, std::size_t last
 
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1_1;
   [[maybe_unused]] auto _dummy_1 = next_depth;
-  [[maybe_unused]] auto _dummy_2 = is_first = false;
+  [[maybe_unused]] auto _dummy_2 = is_first = true;
 
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1_3;
 
