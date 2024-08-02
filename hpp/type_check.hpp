@@ -263,15 +263,15 @@ inline constexpr bool is_iterable_like = is_container<T> || is_map<T> || is_set<
 inline std::string _get_typename_aux(std::string_view func_name) {
 #if defined(__GNUC__) && !defined(__clang__)
   constexpr std::size_t prefix_length =
-      std::string_view("const char* cpp_dump::_detail::_get_typename() [with T = ").size();
+      std::string_view("const char* cpp_dump::_detail::get_typename() [with T = ").size();
   constexpr std::size_t suffix_length = std::string_view("]").size();
 #elif defined(__clang__)
   constexpr std::size_t prefix_length =
-      std::string_view("const char *cpp_dump::_detail::_get_typename() [T = ").size();
+      std::string_view("const char *cpp_dump::_detail::get_typename() [T = ").size();
   constexpr std::size_t suffix_length = std::string_view("]").size();
 #elif defined(_MSC_VER)
   constexpr std::size_t prefix_length =
-      std::string_view("const char *__cdecl cpp_dump::_detail::_get_typename<").size();
+      std::string_view("const char *__cdecl cpp_dump::_detail::get_typename<").size();
   constexpr std::size_t suffix_length = std::string_view(">(void)").size();
 #else
   constexpr std::size_t prefix_length = 0;
@@ -289,8 +289,9 @@ inline std::string _get_typename_aux(std::string_view func_name) {
 }
 
 // The return type must be a built-in type, otherwise we don't know how it will be stringified.
+// Currently, used only by export_exception() and CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT()
 template <typename T>
-const char* _get_typename() {
+const char* get_typename() {
   static std::string type_name = _get_typename_aux(
 #if defined(__GNUC__) && !defined(__clang__)
       __PRETTY_FUNCTION__
@@ -304,12 +305,6 @@ const char* _get_typename() {
   );
 
   return type_name.c_str();
-}
-
-// Currently, used only by export_exception() and CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT()
-template <typename T>
-std::string get_typename() {
-  return _get_typename<T>();
 }
 
 }  // namespace _detail
