@@ -434,7 +434,7 @@ inline bool cpp_dump::detailed_member_es = false;
 /**
  * Style of indents of the Container, Set and Map categories (See 'Supported types')
  */
-inline cpp_dump::cont_indent_style_t cont_indent_style = cpp_dump::cont_indent_style_t::when_nested;
+inline cpp_dump::cont_indent_style_t cpp_dump::cont_indent_style = cpp_dump::cont_indent_style_t::when_nested;
 ```
 
 ### Functions
