@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
 
   CPP_DUMP_SET_OPTION(es_style, es_style_);
 
-  auto vec = vector<vector<int>>{{3, 1, 4}, {1, 5, 9}};
+  vector<vector<int>> vec{{3, 1, 4}, {1, 5, 9}};
 
   clog << "// default" << endl;
   cpp_dump(vec);
