@@ -69,7 +69,7 @@ template <typename T>
 inline auto export_arithmetic(
     T value, const std::string &, std::size_t, std::size_t, bool, const export_command &command
 ) -> std::enable_if_t<is_arithmetic<T> && std::is_integral_v<T>, std::string> {
-  auto int_style_ = command.get_int_style();
+  auto int_style_ = command.int_style();
   if (!int_style_) return es::number(std::to_string(value));
 
   auto [base, digits, chunk, space_fill, make_unsigned_or_no_space_for_minus] = int_style_.value();

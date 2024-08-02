@@ -11,6 +11,8 @@
 #include <limits>
 #include <memory>
 #include <optional>
+#include <string>
+#include <string_view>
 #include <tuple>
 #include <utility>
 
@@ -35,55 +37,76 @@ struct value_with_command;
 
 struct export_command {
   friend export_command _map_key(export_command &&command) {
-    export_command new_command(nullptr);
+    export_command new_command;
     new_command._map_key_child = std::make_unique<export_command>(std::move(command));
     return new_command;
   }
 
   friend export_command _map_value(export_command &&command) {
-    export_command new_command(nullptr);
+    export_command new_command;
     new_command._map_value_child = std::make_unique<export_command>(std::move(command));
     return new_command;
   }
 
   friend export_command _map_key_and_value(export_command &&key, export_command &&value) {
-    export_command new_command(nullptr);
+    export_command new_command;
     new_command._map_key_child = std::make_unique<export_command>(std::move(key));
     new_command._map_value_child = std::make_unique<export_command>(std::move(value));
     return new_command;
   }
 
  public:
+  struct global_props_t {
+    std::optional<std::tuple<unsigned int, unsigned int, unsigned int, bool, bool>> int_style;
+    std::string format;
+    bool show_index{false};
+
+    explicit global_props_t(
+        int base, int digits, int chunk, bool space_fill, bool make_unsigned_or_no_space_for_minus
+    ) {
+      switch (base) {
+        case 2:
+        case 8:
+        case 10:
+        case 16:
+          break;
+        default:
+          return;
+      }
+      if (digits < 0) digits = std::numeric_limits<int>::max();
+      if (chunk < 0) chunk = 0;
+
+      int_style = {base, digits, chunk, space_fill, make_unsigned_or_no_space_for_minus};
+    }
+    explicit global_props_t(std::string_view _format) : format(_format) {}
+    explicit global_props_t(bool _show_index) : show_index(_show_index) {}
+
+    void update(const global_props_t &g) {
+      if (g.int_style) int_style = g.int_style;
+      if (!g.format.empty()) format = g.format;
+      if (g.show_index) show_index = g.show_index;
+    }
+  };
+
   static const export_command default_command;
 
-  explicit export_command(bool show_index) : _show_index(show_index) {}
+  export_command() = default;
+
+  explicit export_command(bool show_index)
+      : _global_props(std::make_shared<global_props_t>(show_index)) {}
 
   explicit export_command(
       int base, int digits, int chunk, bool space_fill, bool make_unsigned_or_no_space_for_minus
-  ) {
-    switch (base) {
-      case 2:
-      case 8:
-      case 10:
-      case 16:
-        break;
-      default:
-        return;
-    }
-    if (digits < 0) digits = std::numeric_limits<int>::max();
-    if (chunk < 0) chunk = 0;
+  )
+      : _global_props(std::make_shared<global_props_t>(
+          base, digits, chunk, space_fill, make_unsigned_or_no_space_for_minus
+      )) {}
 
-    _int_style = {base, digits, chunk, space_fill, make_unsigned_or_no_space_for_minus};
-  }
+  explicit export_command(std::string_view format)
+      : _global_props(std::make_shared<global_props_t>(format)) {}
 
   // This is for make_unique<export_command>().
-  // Don't call this outside since this doesn't check if int_style is safe.
-  explicit export_command(
-      const std::optional<std::tuple<unsigned int, unsigned int, unsigned int, bool, bool>>
-          &int_style,
-      bool show_index
-  )
-      : _int_style(int_style), _show_index(show_index) {}
+  explicit export_command(const std::shared_ptr<global_props_t> &g) : _global_props(g) {}
 
   explicit export_command(
       std::function<std::size_t(std::size_t, const std::function<std::size_t()> &)> &&skip_size_func
@@ -100,91 +123,25 @@ struct export_command {
   export_command &operator=(export_command &&) = default;
 
   export_command(const export_command &c)
-      : _int_style(c._int_style), _show_index(c._show_index), _skip_size_func(c._skip_size_func) {
+      : _global_props(c._global_props), _skip_size_func(c._skip_size_func) {
     if (c._child) _child = std::make_unique<export_command>(*c._child);
     if (c._map_key_child) _map_key_child = std::make_unique<export_command>(*c._map_key_child);
     if (c._map_value_child)
       _map_value_child = std::make_unique<export_command>(*c._map_value_child);
   }
 
-  export_command &operator=(const export_command &c) {
-    _int_style = c._int_style;
-    _show_index = c._show_index;
-    _skip_size_func = c._skip_size_func;
-    if (c._child) _child = std::make_unique<export_command>(*c._child);
-    if (c._map_key_child) _child = std::make_unique<export_command>(*c._map_key_child);
-    if (c._map_value_child) _child = std::make_unique<export_command>(*c._map_value_child);
-
-    return *this;
-  }
-
-  export_command() = delete;
-
-  export_command operator<<(export_command &&command) && {
-    *this << std::move(command);
+  export_command &&operator<<(export_command &&command) && {
+    *this <<= std::move(command);
     return std::move(*this);
-  }
-
-  export_command &operator<<(export_command &&command) & {
-    // export_command has int_style || show_index ||
-    //     (either skip_size_func or {map_key_child || map_value_child}).
-    // in the case of int_style
-    if (command._int_style) _int_style = command._int_style;
-
-    // in the case of show_index
-    if (command._show_index) _show_index = command._show_index;
-
-    // in the case of skip_size_func
-    if (command._skip_size_func) {
-      // jump to the node that has no skip_size_func
-      if (_skip_size_func && _child) {
-        *_child << std::move(command);
-        return *this;
-      }
-
-      // assign
-      if (!_skip_size_func) {
-        _skip_size_func = command._skip_size_func;
-      } else {
-        _child = std::make_unique<export_command>(std::move(command));
-        _child->_int_style = _int_style;
-      }
-
-      return *this;
-    }
-
-    if (!command._map_key_child && !command._map_value_child) return *this;
-
-    // in the case of {map_key_child || map_value_child}
-    // jump to the node whose child has no skip_size_func.
-    if (_child && _child->_skip_size_func) {
-      *_child << std::move(command);
-      return *this;
-    }
-
-    if (command._map_key_child) _map_key_child = std::move(command._map_key_child);
-    if (command._map_value_child) _map_value_child = std::move(command._map_value_child);
-
-    return *this;
-  }
-
-  export_command operator<<(const export_command &command) && {
-    *this << export_command(command);
-    return std::move(*this);
-  }
-
-  export_command operator<<(const export_command &command) const & {
-    return export_command(*this) << export_command(command);
   }
 
   const export_command &next() const {
     if (_child) {
-      if (_int_style && !_child->_int_style) _child->_int_style = _int_style;
-      if (_show_index) _child->_show_index = _show_index;
+      if (_global_props && !_child->_global_props) _child->_global_props = _global_props;
     } else {
-      if (!_int_style && !_show_index) return default_command;
+      if (!_global_props) return default_command;
 
-      _child = std::make_unique<export_command>(_int_style, _show_index);
+      _child = std::make_unique<export_command>(_global_props);
     }
 
     return *_child;
@@ -192,8 +149,8 @@ struct export_command {
 
   const export_command &next_for_map_key() const {
     if (_skip_size_func && _map_key_child) {
-      if (_int_style && !_map_key_child->_int_style) _map_key_child->_int_style = _int_style;
-      if (_show_index) _map_key_child->_show_index = _show_index;
+      if (_global_props && !_map_key_child->_global_props)
+        _map_key_child->_global_props = _global_props;
 
       return *_map_key_child;
     }
@@ -203,8 +160,8 @@ struct export_command {
 
   const export_command &next_for_map_value() const {
     if (_skip_size_func && _map_value_child) {
-      if (_int_style && !_map_value_child->_int_style) _map_value_child->_int_style = _int_style;
-      if (_show_index) _map_value_child->_show_index = _show_index;
+      if (_global_props && !_map_value_child->_global_props)
+        _map_value_child->_global_props = _global_props;
 
       return *_map_value_child;
     }
@@ -218,30 +175,99 @@ struct export_command {
   }
 
   template <typename T>
-  value_with_command<T> operator<<(const T &value) const & {
-    return value_with_command<T>(value, *this);
-  }
-
-  template <typename T>
   skip_container<T> create_skip_container(const T &container) const {
     if (_skip_size_func) return skip_container<T>(container, _skip_size_func);
     return skip_container<T>(container, _default_skip_size_func);
   }
 
-  std::optional<std::tuple<unsigned int, unsigned int, unsigned int, bool, bool>> get_int_style(
+  std::optional<std::tuple<unsigned int, unsigned int, unsigned int, bool, bool>> int_style(
   ) const {
-    return _int_style;
+    return _global_props ? _global_props->int_style : std::nullopt;
   }
 
-  bool show_index() const { return _show_index; }
+  bool show_index() const { return _global_props && _global_props->show_index; }
+
+  // not expected to be used normally
+  export_command &operator=(const export_command &c) {
+    _global_props = c._global_props;
+    _skip_size_func = c._skip_size_func;
+    if (c._child) _child = std::make_unique<export_command>(*c._child);
+    if (c._map_key_child) _child = std::make_unique<export_command>(*c._map_key_child);
+    if (c._map_value_child) _child = std::make_unique<export_command>(*c._map_value_child);
+
+    return *this;
+  }
+
+  // not expected to be used normally
+  export_command &&operator<<(const export_command &command) && {
+    *this <<= export_command(command);
+    return std::move(*this);
+  }
+
+  // not expected to be used normally
+  export_command operator<<(const export_command &command) const & {
+    return export_command(*this) <<= export_command(command);
+  }
+
+  // not expected to be used normally
+  template <typename T>
+  value_with_command<T> operator<<(const T &value) const & {
+    return value_with_command<T>(value, *this);
+  }
 
  private:
-  std::optional<std::tuple<unsigned int, unsigned int, unsigned int, bool, bool>> _int_style;
-  bool _show_index{false};
+  std::shared_ptr<global_props_t> _global_props;
   std::function<std::size_t(std::size_t, const std::function<std::size_t()> &)> _skip_size_func;
   mutable std::unique_ptr<export_command> _child;
   std::unique_ptr<export_command> _map_key_child;
   std::unique_ptr<export_command> _map_value_child;
+
+  export_command &operator<<=(export_command &&command) {
+    // export_command has g || (either skip_size_func or {map_key_child || map_value_child}).
+
+    // in the case of g
+    if (command._global_props) {
+      if (_global_props) {
+        _global_props->update(*command._global_props);
+        command._global_props.reset();
+      } else {
+        _global_props.swap(command._global_props);
+      }
+
+      // Here, command._g == nullptr
+    }
+
+    // in the case of skip_size_func
+    if (command._skip_size_func) {
+      if (_skip_size_func) {
+        if (_child) {
+          *_child <<= std::move(command);
+        } else {
+          _child = std::make_unique<export_command>(std::move(command));
+        }
+
+        return *this;
+      }
+
+      // _skip_size_func = std::move(command._skip_size_func);
+      _skip_size_func = command._skip_size_func;
+      return *this;
+    }
+
+    if (!command._map_key_child && !command._map_value_child) return *this;
+
+    // in the case of {map_key_child || map_value_child}
+    // jump to the node whose child has no skip_size_func.
+    if (_child && _child->_skip_size_func) {
+      *_child <<= std::move(command);
+      return *this;
+    }
+
+    if (command._map_key_child) _map_key_child = std::move(command._map_key_child);
+    if (command._map_value_child) _map_value_child = std::move(command._map_value_child);
+
+    return *this;
+  }
 };
 
 inline const export_command export_command::default_command(_default_skip_size_func);
@@ -394,6 +420,12 @@ inline auto hex(int digits = -1, int chunk = 0) {
 inline auto uhex(int digits = -1, int chunk = 0) {
   return int_style(16, digits, chunk, false, true);
 }
+
+/*
+ * Manipulator for the display style of integers.
+ * This is an experimental feature.
+ */
+inline auto format(std::string_view f) { return _detail::export_command(f); }
 
 /*
  * Manipulator for the display style of iterables.
