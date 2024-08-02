@@ -34,6 +34,8 @@ int main() {
               "\x1b[35m",  // bracket_by_depth[1]: magenta
               "\x1b[36m",  // bracket_by_depth[2]: cyan
           },
+          "\x1b[02m",  // class_op: dark
+          "\x1b[02m",  // member_op: dark
       })
   );
 

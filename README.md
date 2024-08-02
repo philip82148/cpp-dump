@@ -116,9 +116,11 @@ CPP_DUMP_SET_OPTION(es_value, (cp::es_value_t{
     "\e[35m",  // bracket_by_depth[1]: magenta
     "\e[36m",  // bracket_by_depth[2]: cyan
   },
+  "\e[02m",  // class_op: dark
+  "\e[02m",  // member_op: dark
 }));
 
-// Use the 'op' color for operators in class names and members (::, <>, (), etc...).
+// Use the 'class_op'/'member_op' color for operators in class names and members (::, <>, (), etc...).
 CPP_DUMP_SET_OPTION(detailed_class_es, true);
 CPP_DUMP_SET_OPTION(detailed_member_es, true);
 
@@ -269,12 +271,12 @@ The values of the escape sequences.
 #### `detailed_class_es`
 
 Type: `bool` Default: `false`  
-If true, the 'op' color is used for operators in class names (`::`, `<>`, etc...).
+If true, the 'class_op' color is used for operators in class names (`::`, `<>`, etc...).
 
 #### `detailed_member_es`
 
 Type: `bool` Default: `false`  
-If true, the 'op' color is used for operators in members (`()`, etc...).
+If true, the 'member_op' color is used for operators in members (`()`, etc...).
 
 #### `cont_indent_style`
 
@@ -351,14 +353,16 @@ enum class cpp_dump::es_style_t { no_es, original, by_syntax };
 struct cpp_dump::es_value_t {
   std::string log = "\e[02m";                           // dark
   std::string expression = "\e[36m";                    // cyan
-  std::string reserved;                                 // default
-  std::string number;                                   // default
-  std::string character;                                // default
+  std::string reserved{};                               // default
+  std::string number{};                                 // default
+  std::string character{};                              // default
   std::string op = "\e[02m";                            // dark
   std::string identifier = "\e[32m";                    // green
   std::string member = "\e[36m";                        // cyan
   std::string unsupported = "\e[31m";                   // red
   std::vector<std::string> bracket_by_depth{"\e[02m"};  // dark
+  std::string class_op = "\e[02m";                      // dark
+  std::string member_op = "\e[02m";                     // dark
 };
 
 /**

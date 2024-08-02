@@ -61,14 +61,16 @@ enum class es_style_t { no_es, original, by_syntax };
 struct es_value_t {
   std::string log = "\x1b[02m";                           // dark
   std::string expression = "\x1b[36m";                    // cyan
-  std::string reserved;                                   // default
-  std::string number;                                     // default
-  std::string character;                                  // default
+  std::string reserved{};                                 // default
+  std::string number{};                                   // default
+  std::string character{};                                // default
   std::string op = "\x1b[02m";                            // dark
   std::string identifier = "\x1b[32m";                    // green
   std::string member = "\x1b[36m";                        // cyan
   std::string unsupported = "\x1b[31m";                   // red
   std::vector<std::string> bracket_by_depth{"\x1b[02m"};  // dark
+  std::string class_op = "\x1b[02m";                      // dark
+  std::string member_op = "\x1b[02m";                     // dark
 };
 
 /**
@@ -120,12 +122,12 @@ inline es_style_t es_style = es_style_t::original;
 inline es_value_t es_value;
 
 /**
- * If true, the 'op' color is used for operators in class names (::, <>, etc...).
+ * If true, the 'class_op' color is used for operators in class names (::, <>, etc...).
  */
 inline bool detailed_class_es = false;
 
 /**
- * If true, the 'op' color is used for operators in members ((), etc...).
+ * If true, the 'member_op' color is used for operators in members ((), etc...).
  */
 inline bool detailed_member_es = false;
 
