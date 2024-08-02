@@ -16,7 +16,7 @@ set(txt_file "${test_dir}/txt/color_rtti.txt")
 execute_process(
    COMMAND "${cmd_path}" ERROR_VARIABLE error_contents COMMAND_ERROR_IS_FATAL ANY
 )
-string(REGEX REPLACE "struct " "" error_contents "${error_contents}")
+string(REGEX REPLACE "struct${esc}\\[0m${esc}\\[38;2;139;191;139m ${esc}\\[0m${esc}\\[32m" "" error_contents "${error_contents}")
 string(REGEX REPLACE "${esc}\\[38;2;181;206;168m[^${esc}]*${esc}" "${esc}[38;2;181;206;168m314159265358979${esc}" error_contents "${error_contents}")
 file(WRITE "${log_file}" "${error_contents}")
 execute_process(
