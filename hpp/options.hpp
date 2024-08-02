@@ -122,12 +122,12 @@ inline es_style_t es_style = es_style_t::original;
 inline es_value_t es_value;
 
 /**
- * If true, the 'op' color is used for operators in class names (::, <>, etc...).
+ * If true, the 'class_op' color is used for operators in class names (::, <>, etc...).
  */
 inline bool detailed_class_es = false;
 
 /**
- * If true, the 'op' color is used for operators in members ((), etc...).
+ * If true, the 'member_op' color is used for operators in members ((), etc...).
  */
 inline bool detailed_member_es = false;
 
