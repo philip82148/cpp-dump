@@ -69,6 +69,8 @@ struct es_value_t {
   std::string member = "\x1b[36m";                        // cyan
   std::string unsupported = "\x1b[31m";                   // red
   std::vector<std::string> bracket_by_depth{"\x1b[02m"};  // dark
+  std::string class_op;
+  std::string member_op;
 };
 
 /**
