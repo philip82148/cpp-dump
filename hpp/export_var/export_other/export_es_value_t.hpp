@@ -156,6 +156,8 @@ inline std::string export_es_value_t(
   append_output("member", esv.member);
   append_output("unsupported", esv.unsupported);
   append_output("bracket_by_depth", esv.bracket_by_depth);
+  append_output("class_op", esv.class_op);
+  append_output("member_op", esv.member_op);
 
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2;
 }
