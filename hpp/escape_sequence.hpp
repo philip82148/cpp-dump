@@ -44,6 +44,8 @@ inline std::string op(std::string_view s) { return es::apply(es_value.op, s); }
 inline std::string identifier(std::string_view s) { return es::apply(es_value.identifier, s); }
 inline std::string member(std::string_view s) { return es::apply(es_value.member, s); }
 inline std::string unsupported(std::string_view s) { return es::apply(es_value.unsupported, s); }
+inline std::string class_op(std::string_view s) { return es::apply(es_value.class_op, s); }
+inline std::string member_op(std::string_view s) { return es::apply(es_value.member_op, s); }
 
 inline std::string bracket(std::string_view s, std::size_t d) {
   auto sz = es_value.bracket_by_depth.size();
@@ -65,7 +67,7 @@ inline std::string type_name(std::string_view s) {
     begin = end;
 
     end = std::find_if_not(begin, s.end(), is_operator);
-    typename_with_es += es::op({&*begin, static_cast<std::size_t>(end - begin)});
+    typename_with_es += es::class_op({&*begin, static_cast<std::size_t>(end - begin)});
 
     if (end == s.end()) return typename_with_es;
     begin = end;
@@ -79,7 +81,7 @@ inline std::string class_name(std::string_view s) {
   if (!use_es()) return std::string(s);
   if (!detailed_class_es) return es::identifier(s);
 
-  return type_name(s);
+  return es::type_name(s);
 }
 
 inline std::string enumerator(std::string_view s) {
@@ -117,7 +119,7 @@ inline std::string class_member(std::string_view s) {
     begin = end;
 
     end = std::find_if_not(begin, s.end(), is_operator);
-    typename_with_es += es::op({&*begin, static_cast<std::size_t>(end - begin)});
+    typename_with_es += es::member_op({&*begin, static_cast<std::size_t>(end - begin)});
 
     if (end == s.end()) return typename_with_es;
     begin = end;
