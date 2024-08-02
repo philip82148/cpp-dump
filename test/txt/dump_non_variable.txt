@@ -181,7 +181,9 @@ here.`,
          identifier= "\e[32m", 
          member= "\e[36m", 
          unsupported= "\e[31m", 
-         bracket_by_depth= [ "\e[02m" ]
+         bracket_by_depth= [ "\e[02m" ], 
+         class_op= "", 
+         member_op= ""
        }
 [dump] cp::cont_indent_style_t::minimal => cpp_dump::cont_indent_style_t::minimal, 
        cp::cont_indent_style_t::when_nested => cpp_dump::cont_indent_style_t::when_nested, 

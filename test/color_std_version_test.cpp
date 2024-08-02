@@ -29,12 +29,14 @@ int main() {
           "\x1b[38;2;215;152;61m",   // character:
           "\x1b[38;2;150;150;150m",  // op: dark2
           "\x1b[32m",                // identifier:  green
-          "\x1b[38;2;156;220;254m",  // member:
+          "\x1b[38;2;156;220;254m",  // member: light blue
           "\x1b[31m",                // unsupported: red
           {
               "\x1b[33m",  // bracket_by_depth[0]: yellow
               "\x1b[35m",  // bracket_by_depth[1]: magenta
           },
+          "\x1b[38;2;139;191;139m",  // class_op: white closer to green
+          "\x1b[38;2;217;242;255m",  // member_op: white closer to light blue
       })
   );
 
