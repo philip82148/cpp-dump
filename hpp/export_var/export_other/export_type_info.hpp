@@ -45,7 +45,7 @@ export_type_info(const T &type_info, const std::string &indent, std::size_t last
   if (shift_indent) output += "\n" + new_indent;
 
   output += es::class_member("name()") + es::op("= ");
-  output += es::identifier(R"(")") + es::type_name(name) + es::identifier(R"(")");
+  output += es::class_op(R"(")") + es::type_name(name) + es::class_op(R"(")");
 
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2;
 }
