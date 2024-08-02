@@ -31,6 +31,8 @@ int main() {
           "\x1b[38;2;217;242;255m",  // member_op: white closer to light blue
       })
   );
+  CPP_DUMP_SET_OPTION(detailed_class_es, true);
+  CPP_DUMP_SET_OPTION(detailed_member_es, true);
 
   cpp_dump(typeid(void));
 
