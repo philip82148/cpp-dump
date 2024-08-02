@@ -15,9 +15,8 @@
 #include "../type_check.hpp"
 #include "./export_object_common.hpp"
 
-#define _p_CPP_DUMP_EXPAND_FOR_DANGEROUS_EXPORT_OBJECT(member) value.member
-#define _p_CPP_DUMP_EXPAND_FOR_DANGEROUS_EXPORT_OBJECT2(member)                                    \
-  append_output(es::class_member(#member), value.member)
+#define _p_CPP_DUMP_EXPAND_FOR_DANGEROUS_EXPORT_OBJECT(member)  value.member
+#define _p_CPP_DUMP_EXPAND_FOR_DANGEROUS_EXPORT_OBJECT2(member) append_output(#member, value.member)
 
 /**
  * Make export_var() support every type that has the specified members.
