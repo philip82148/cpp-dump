@@ -23,8 +23,7 @@
 #include "../../type_check.hpp"
 #include "../export_object_common.hpp"
 
-#define _p_CPP_DUMP_EXPAND_FOR_EXPORT_OTHER_OBJECT(member)                                         \
-  append_output(es::class_member(#member), value.member)
+#define _p_CPP_DUMP_EXPAND_FOR_EXPORT_OTHER_OBJECT(member) append_output(#member, value.member)
 
 #define _p_CPP_DUMP_DEFINE_EXPORT_OTHER_OBJECT(TYPE, ...)                                          \
   namespace cpp_dump {                                                                             \
