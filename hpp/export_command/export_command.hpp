@@ -86,6 +86,12 @@ struct export_command {
       if (!g.format.empty()) format = g.format;
       if (g.show_index) show_index = g.show_index;
     }
+
+    void merge(const global_props_t &g) {
+      if (!int_style) int_style = g.int_style;
+      if (format.empty()) format = g.format;
+      if (!show_index) show_index = g.show_index;
+    }
   };
 
   static const export_command default_command;
@@ -148,25 +154,33 @@ struct export_command {
   }
 
   const export_command &next_for_map_key() const {
-    if (_skip_size_func && _map_key_child) {
-      if (_global_props && !_map_key_child->_global_props)
-        _map_key_child->_global_props = _global_props;
+    if (!_skip_size_func) return next();  // this is 0th dim.
+    if (!_map_key_child) return next();
 
-      return *_map_key_child;
+    if (_global_props) {
+      if (_map_key_child->_global_props) {
+        _map_key_child->_global_props->merge(*_global_props);
+      } else {
+        _map_key_child->_global_props = _global_props;
+      }
     }
 
-    return next();
+    return *_map_key_child;
   }
 
   const export_command &next_for_map_value() const {
-    if (_skip_size_func && _map_value_child) {
-      if (_global_props && !_map_value_child->_global_props)
-        _map_value_child->_global_props = _global_props;
+    if (!_skip_size_func) return next();  // this is 0th dim.
+    if (!_map_value_child) return next();
 
-      return *_map_value_child;
+    if (_global_props) {
+      if (_map_value_child->_global_props) {
+        _map_value_child->_global_props->merge(*_global_props);
+      } else {
+        _map_value_child->_global_props = _global_props;
+      }
     }
 
-    return next();
+    return *_map_value_child;
   }
 
   template <typename T>
