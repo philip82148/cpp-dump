@@ -4,6 +4,12 @@
 
 namespace cp = cpp_dump;
 
+namespace ns {
+
+struct class_a {};
+
+}  // namespace ns
+
 int main() {
   CPP_DUMP_SET_OPTION(
       es_value,
@@ -26,16 +32,18 @@ int main() {
       })
   );
 
+  cpp_dump(typeid(void));
+
   CPP_DUMP_SET_OPTION(max_line_width, 2000);
 
-  std::type_index type_index1 = typeid(void);
-  cpp_dump(typeid(void), type_index1);
+  std::type_index type_index1 = typeid(ns::class_a);
+  cpp_dump(typeid(ns::class_a), type_index1);
 
   CPP_DUMP_SET_OPTION(max_line_width, 20);
 
-  cpp_dump(typeid(void), type_index1);
+  cpp_dump(typeid(ns::class_a), type_index1);
 
   CPP_DUMP_SET_OPTION(max_depth, 0);
 
-  cpp_dump(typeid(void), type_index1);
+  cpp_dump(typeid(ns::class_a), type_index1);
 }
