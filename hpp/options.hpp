@@ -61,16 +61,16 @@ enum class es_style_t { no_es, original, by_syntax };
 struct es_value_t {
   std::string log = "\x1b[02m";                           // dark
   std::string expression = "\x1b[36m";                    // cyan
-  std::string reserved;                                   // default
-  std::string number;                                     // default
-  std::string character;                                  // default
+  std::string reserved = "";                              // default
+  std::string number = "";                                // default
+  std::string character = "";                             // default
   std::string op = "\x1b[02m";                            // dark
   std::string identifier = "\x1b[32m";                    // green
   std::string member = "\x1b[36m";                        // cyan
   std::string unsupported = "\x1b[31m";                   // red
   std::vector<std::string> bracket_by_depth{"\x1b[02m"};  // dark
-  std::string class_op;
-  std::string member_op;
+  std::string class_op = "";                              // default
+  std::string member_op = "";                             // default
 };
 
 /**
