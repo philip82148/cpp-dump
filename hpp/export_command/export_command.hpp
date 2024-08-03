@@ -276,7 +276,7 @@ inline export_command operator<<(export_command &&lhs, export_command &&rhs) {
 }
 
 template <typename T>
-value_with_command<T> operator<<(export_command &&lhs, const T &rhs) {
+inline value_with_command<T> operator<<(export_command &&lhs, const T &rhs) {
   return value_with_command<T>(rhs, std::move(lhs));
 }
 
@@ -292,7 +292,7 @@ inline export_command operator<<(const export_command &lhs, const export_command
 }
 
 template <typename T>
-value_with_command<T> operator<<(const export_command &lhs, const T &value) {
+inline value_with_command<T> operator<<(const export_command &lhs, const T &value) {
   return value_with_command<T>(value, lhs);
 }
 
@@ -310,34 +310,36 @@ struct value_with_command {
 };
 
 template <typename T>
-value_with_command<T> operator|(const T &value, export_command &&command) {
+inline value_with_command<T> operator|(const T &value, export_command &&command) {
   return value_with_command<T>(value, std::move(command));
 }
 
 template <typename T>
-value_with_command<T> operator|(const T &value, const export_command &command) {
+inline value_with_command<T> operator|(const T &value, const export_command &command) {
   return value_with_command<T>(value, command);
 }
 
 template <typename T>
-value_with_command<T> operator|(value_with_command<T> &&vc, export_command &&command) {
+inline value_with_command<T> operator|(value_with_command<T> &&vc, export_command &&command) {
   return value_with_command<T>(
       vc.value, const_cast<export_command &&>(vc.command) << std::move(command)
   );
 }
 
 template <typename T>
-value_with_command<T> operator|(value_with_command<T> &&vc, const export_command &command) {
+inline value_with_command<T> operator|(value_with_command<T> &&vc, const export_command &command) {
   return value_with_command<T>(vc.value, const_cast<export_command &&>(vc.command) << command);
 }
 
 template <typename T>
-value_with_command<T> operator|(const value_with_command<T> &vc, export_command &&command) {
+inline value_with_command<T> operator|(const value_with_command<T> &vc, export_command &&command) {
   return value_with_command<T>(vc.value, vc.command << std::move(command));
 }
 
 template <typename T>
-value_with_command<T> operator|(const value_with_command<T> &vc, const export_command &command) {
+inline value_with_command<T> operator|(
+    const value_with_command<T> &vc, const export_command &command
+) {
   return value_with_command<T>(vc.value, vc.command << command);
 }
 
