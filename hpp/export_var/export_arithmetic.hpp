@@ -69,6 +69,9 @@ template <typename T>
 inline auto export_arithmetic(
     T value, const std::string &, std::size_t, std::size_t, bool, const export_command &command
 ) -> std::enable_if_t<is_arithmetic<T> && std::is_integral_v<T>, std::string> {
+  std::string output = command.format(value);
+  if (!output.empty()) return es::number(output);
+
   auto int_style_ = command.int_style();
   if (!int_style_) return es::number(std::to_string(value));
 
@@ -82,8 +85,6 @@ inline auto export_arithmetic(
 
   bool make_unsigned = base != 10 && make_unsigned_or_no_space_for_minus;
   bool add_space_for_minus = std::is_signed_v<T> && !make_unsigned_or_no_space_for_minus;
-
-  std::string output;
 
   using UnsignedT = std::make_unsigned_t<T>;
   // Let stringstream recognize the type as an integer.
@@ -166,9 +167,12 @@ inline auto export_arithmetic(
 }
 
 template <typename T>
-inline auto
-export_arithmetic(T value, const std::string &, std::size_t, std::size_t, bool, const export_command &)
-    -> std::enable_if_t<is_arithmetic<T> && !std::is_integral_v<T>, std::string> {
+inline auto export_arithmetic(
+    T value, const std::string &, std::size_t, std::size_t, bool, const export_command &command
+) -> std::enable_if_t<is_arithmetic<T> && !std::is_integral_v<T>, std::string> {
+  std::string output = command.format(value);
+  if (!output.empty()) return es::number(output);
+
   return es::number(std::to_string(value));
 }
 

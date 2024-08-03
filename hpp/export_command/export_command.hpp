@@ -7,12 +7,14 @@
 
 #pragma once
 
+#include <cstdio>
 #include <functional>
 #include <limits>
 #include <memory>
 #include <optional>
 #include <tuple>
 #include <utility>
+#include <vector>
 
 #include "../options.hpp"
 #include "../type_check.hpp"
@@ -162,7 +164,17 @@ struct export_command {
     return _global_props ? _global_props->int_style : std::nullopt;
   }
 
-  const char *format() const { return _global_props ? _global_props->format : nullptr; }
+  template <typename T>
+  auto format(T value) const -> std::enable_if_t<is_arithmetic<T>, std::string> {
+    if (!_global_props || _global_props->format == nullptr) return "";
+
+    int sz = std::snprintf(nullptr, 0, _global_props->format, value);
+    if (sz < 0) return "";
+
+    std::vector<char> buffer(sz + 1);
+    std::sprintf(buffer.data(), _global_props->format, value);
+    return {buffer.data(), static_cast<std::size_t>(sz)};
+  }
 
   bool show_index() const { return _global_props && _global_props->show_index; }
 
