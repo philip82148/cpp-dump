@@ -11,8 +11,6 @@
 #include <limits>
 #include <memory>
 #include <optional>
-#include <string>
-#include <string_view>
 #include <tuple>
 #include <utility>
 
@@ -39,7 +37,7 @@ struct export_command {
  public:
   struct global_props_t {
     std::optional<std::tuple<unsigned int, unsigned int, unsigned int, bool, bool>> int_style;
-    std::string format;
+    const char *format{nullptr};
     bool show_index{false};
 
     explicit global_props_t(
@@ -59,7 +57,7 @@ struct export_command {
 
       int_style = {base, digits, chunk, space_fill, make_unsigned_or_no_space_for_minus};
     }
-    explicit global_props_t(std::string_view _format) : format(_format) {}
+    explicit global_props_t(const char *_format) : format(_format) {}
     explicit global_props_t(bool _show_index) : show_index(_show_index) {}
 
     global_props_t(global_props_t &&) = default;
@@ -67,13 +65,13 @@ struct export_command {
 
     void update(const global_props_t &g) {
       if (g.int_style) int_style = g.int_style;
-      if (!g.format.empty()) format = g.format;
+      if (g.format != nullptr) format = g.format;
       if (g.show_index) show_index = g.show_index;
     }
 
     void merge(const global_props_t &g) {
       if (!int_style) int_style = g.int_style;
-      if (format.empty()) format = g.format;
+      if (format == nullptr) format = g.format;
       if (!show_index) show_index = g.show_index;
     }
   };
@@ -92,7 +90,7 @@ struct export_command {
           base, digits, chunk, space_fill, make_unsigned_or_no_space_for_minus
       )) {}
 
-  explicit export_command(std::string_view format)
+  explicit export_command(const char *format)
       : _global_props(std::make_shared<global_props_t>(format)) {}
 
   explicit export_command(const std::shared_ptr<global_props_t> &g) : _global_props(g) {}
@@ -163,6 +161,8 @@ struct export_command {
   ) const {
     return _global_props ? _global_props->int_style : std::nullopt;
   }
+
+  const char *format() const { return _global_props ? _global_props->format : nullptr; }
 
   bool show_index() const { return _global_props && _global_props->show_index; }
 
@@ -476,7 +476,7 @@ inline auto uhex(int digits = -1, int chunk = 0) {
  * Manipulator for the display style of integers.
  * This is an experimental feature.
  */
-inline auto format(std::string_view f) { return _detail::export_command(f); }
+inline auto format(const char *f) { return _detail::export_command(f); }
 
 /*
  * Manipulator for the display style of iterables.
