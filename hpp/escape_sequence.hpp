@@ -29,7 +29,7 @@ inline std::string reset() { return use_es() ? std::string(_reset_es) : std::str
 
 inline std::string apply(std::string_view es, std::string_view s) {
   if (use_es()) {
-    return std::string(es).append(s).append(_reset_es);
+    return std::move(std::string(es).append(s).append(_reset_es));
   } else {
     return std::string(s);
   }
