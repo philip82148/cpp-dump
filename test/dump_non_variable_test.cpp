@@ -793,6 +793,16 @@ int main(int argc, char *argv[]) {
   cpp_dump(vec4 | cp::front() | cp::middle(3) | cp::index());
   cpp_dump(vec4 | cp::front() | cp::both_ends(1) | cp::index());
 
+  // lvalue export_command
+  auto index = cp::index();
+  auto back = cp::back(3);
+  auto vec4back = vec4 | cp::back(3);
+  cpp_dump(vec4 | (back | cp::index()));
+  cpp_dump(vec4 | (cp::index() | back));
+  cpp_dump(vec4 | (back | index));
+  cpp_dump(vec4 | back | index);
+  cpp_dump(vec4back | index);
+
   // non_copyable_and_non_movable_class
   CPP_DUMP_SET_OPTION(max_depth, 2);
   cpp_dump(

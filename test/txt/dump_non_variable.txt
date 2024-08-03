@@ -1231,6 +1231,36 @@ LLONG_MAX, LLONG_MIN, ULLONG_MAX
          4: [ 0: 17, 1: 18 ],
          5: [ 0: 19, 1: 20 ]
        ]
+[dump] vec4 | (back | cp::index()) => [
+         ...,
+         3: [ 0: 15, 1: 16 ],
+         4: [ 0: 17, 1: 18 ],
+         5: [ 0: 19, 1: 20 ]
+       ]
+[dump] vec4 | (cp::index() | back) => [
+         ...,
+         3: [ 0: 15, 1: 16 ],
+         4: [ 0: 17, 1: 18 ],
+         5: [ 0: 19, 1: 20 ]
+       ]
+[dump] vec4 | (back | index) => [
+         ...,
+         3: [ 0: 15, 1: 16 ],
+         4: [ 0: 17, 1: 18 ],
+         5: [ 0: 19, 1: 20 ]
+       ]
+[dump] vec4 | back | index => [
+         ...,
+         3: [ 0: 15, 1: 16 ],
+         4: [ 0: 17, 1: 18 ],
+         5: [ 0: 19, 1: 20 ]
+       ]
+[dump] vec4back | index => [
+         ...,
+         3: [ 0: 15, 1: 16 ],
+         4: [ 0: 17, 1: 18 ],
+         5: [ 0: 19, 1: 20 ]
+       ]
 [dump] cp::front(2) << cp::middle(1) << cp::back(2) << cp::both_ends(1) << non_copyable_and_non_movable_class1 => non_copyable_and_non_movable_class{ 
          str_member= "This object has a pointer and reference_wrapper to itself.", 
          pointer= *non_copyable_and_non_movable_class{ 
