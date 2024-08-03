@@ -36,25 +36,6 @@ template <typename T>
 struct value_with_command;
 
 struct export_command {
-  friend export_command _map_key(export_command &&command) {
-    export_command new_command;
-    new_command._map_key_child = std::make_unique<export_command>(std::move(command));
-    return new_command;
-  }
-
-  friend export_command _map_value(export_command &&command) {
-    export_command new_command;
-    new_command._map_value_child = std::make_unique<export_command>(std::move(command));
-    return new_command;
-  }
-
-  friend export_command _map_key_and_value(export_command &&key, export_command &&value) {
-    export_command new_command;
-    new_command._map_key_child = std::make_unique<export_command>(std::move(key));
-    new_command._map_value_child = std::make_unique<export_command>(std::move(value));
-    return new_command;
-  }
-
  public:
   struct global_props_t {
     std::optional<std::tuple<unsigned int, unsigned int, unsigned int, bool, bool>> int_style;
@@ -129,11 +110,6 @@ struct export_command {
 
   export_command(export_command &&) = default;
   export_command &operator=(export_command &&) = default;
-
-  void update_and_append(export_command &&command) {
-    update_global_props(std::move(command._global_props));
-    append_child(std::move(command));
-  }
 
   const export_command &next() const {
     if (_child) {
@@ -210,6 +186,14 @@ struct export_command {
     return *this;
   }
 
+  friend export_command operator<<(export_command &&, export_command &&);
+  friend export_command operator<<(export_command &&, const export_command &);
+  friend export_command operator<<(const export_command &, export_command &&);
+  friend export_command operator<<(const export_command &, const export_command &);
+  friend export_command _map_k(export_command &&command);
+  friend export_command _map_v(export_command &&command);
+  friend export_command _map_kv(export_command &&key, export_command &&value);
+
  private:
   std::shared_ptr<global_props_t> _global_props;
   std::function<std::size_t(std::size_t, const std::function<std::size_t()> &)> _skip_size_func;
@@ -219,6 +203,11 @@ struct export_command {
   mutable std::unique_ptr<export_command> _child;
   std::unique_ptr<export_command> _map_key_child;
   std::unique_ptr<export_command> _map_value_child;
+
+  void update_and_append(export_command &&command) {
+    update_global_props(std::move(command._global_props));
+    append_child(std::move(command));
+  }
 
   void update_global_props(std::shared_ptr<global_props_t> &&g) {
     if (g) {
@@ -270,32 +259,6 @@ struct export_command {
   }
 };
 
-inline export_command operator<<(export_command &&lhs, export_command &&rhs) {
-  lhs.update_and_append(std::move(rhs));
-  return std::move(lhs);
-}
-
-template <typename T>
-inline value_with_command<T> operator<<(export_command &&lhs, const T &rhs) {
-  return value_with_command<T>(rhs, std::move(lhs));
-}
-
-inline export_command operator<<(export_command &&lhs, const export_command &rhs) {
-  lhs.update_and_append(export_command(rhs));
-  return std::move(lhs);
-}
-
-inline export_command operator<<(const export_command &lhs, const export_command &rhs) {
-  export_command retval(lhs);
-  retval.update_and_append(export_command(rhs));
-  return retval;
-}
-
-template <typename T>
-inline value_with_command<T> operator<<(const export_command &lhs, const T &value) {
-  return value_with_command<T>(value, lhs);
-}
-
 inline const export_command export_command::default_command(_default_skip_size_func);
 
 template <typename T>
@@ -305,9 +268,48 @@ struct value_with_command {
   const export_command command;
 
   explicit value_with_command(const T &v, export_command &&c) : value(v), command(std::move(c)) {}
-  explicit value_with_command(const T &v, const export_command &c) : value(v), command(c) {}
   value_with_command() = delete;
 };
+
+inline export_command operator<<(export_command &&lhs, export_command &&rhs) {
+  lhs.update_and_append(std::move(rhs));
+  return std::move(lhs);
+}
+
+template <typename T>
+inline value_with_command<T> operator<<(export_command &&command, const T &value) {
+  return value_with_command<T>(value, std::move(command));
+}
+
+// For supporting lvalue of export_command ----------------------------------------------
+
+inline export_command operator<<(export_command &&lhs, const export_command &rhs) {
+  lhs.update_and_append(export_command(rhs));
+  return std::move(lhs);
+}
+
+inline export_command operator<<(const export_command &lhs, export_command &&rhs) {
+  export_command retval(lhs);
+  retval.update_and_append(std::move(rhs));
+  return retval;
+}
+
+inline export_command operator<<(const export_command &lhs, const export_command &rhs) {
+  export_command retval(lhs);
+  retval.update_and_append(export_command(rhs));
+  return retval;
+}
+
+template <typename T>
+inline value_with_command<T> operator<<(const export_command &command, const T &value) {
+  return value_with_command<T>(value, export_command(command));
+}
+
+// Above for supporting lvalue of export_command ----------------------------------------------
+
+inline export_command operator|(export_command &&lhs, export_command &&rhs) {
+  return std::move(lhs) << std::move(rhs);
+}
 
 template <typename T>
 inline value_with_command<T> operator|(const T &value, export_command &&command) {
@@ -315,15 +317,29 @@ inline value_with_command<T> operator|(const T &value, export_command &&command)
 }
 
 template <typename T>
-inline value_with_command<T> operator|(const T &value, const export_command &command) {
-  return value_with_command<T>(value, command);
-}
-
-template <typename T>
 inline value_with_command<T> operator|(value_with_command<T> &&vc, export_command &&command) {
   return value_with_command<T>(
       vc.value, const_cast<export_command &&>(vc.command) << std::move(command)
   );
+}
+
+// For supporting lvalue of export_command ----------------------------------------------
+
+inline export_command operator|(const export_command &lhs, export_command &&rhs) {
+  return lhs << std::move(rhs);
+}
+
+inline export_command operator|(export_command &&lhs, const export_command &rhs) {
+  return std::move(lhs) << rhs;
+}
+
+inline export_command operator|(const export_command &lhs, const export_command &rhs) {
+  return lhs << rhs;
+}
+
+template <typename T>
+inline value_with_command<T> operator|(const T &value, const export_command &command) {
+  return value_with_command<T>(value, export_command(command));
 }
 
 template <typename T>
@@ -343,20 +359,25 @@ inline value_with_command<T> operator|(
   return value_with_command<T>(vc.value, vc.command << command);
 }
 
-inline export_command operator|(export_command &&lhs, export_command &&rhs) {
-  return std::move(lhs) << std::move(rhs);
+// Above for supporting lvalue of export_command ----------------------------------------------
+
+inline export_command _map_k(export_command &&c) {
+  export_command new_command;
+  new_command._map_key_child = std::make_unique<export_command>(std::move(c));
+  return new_command;
 }
 
-inline export_command operator|(const export_command &lhs, export_command &&rhs) {
-  return lhs << std::move(rhs);
+inline export_command _map_v(export_command &&c) {
+  export_command new_command;
+  new_command._map_value_child = std::make_unique<export_command>(std::move(c));
+  return new_command;
 }
 
-inline export_command operator|(export_command &&lhs, const export_command &rhs) {
-  return std::move(lhs) << rhs;
-}
-
-inline export_command operator|(const export_command &lhs, const export_command &rhs) {
-  return lhs << rhs;
+inline export_command _map_kv(export_command &&key, export_command &&value) {
+  export_command new_command;
+  new_command._map_key_child = std::make_unique<export_command>(std::move(key));
+  new_command._map_value_child = std::make_unique<export_command>(std::move(value));
+  return new_command;
 }
 
 template <typename>
@@ -528,20 +549,20 @@ inline auto middle(std::size_t iteration_count = max_iteration_count) {
  * Manipulator for applying manipulators to map keys.
  * See README for details.
  */
-inline auto map_k(_detail::export_command &&c) { return _map_key(std::move(c)); }
+inline auto map_k(_detail::export_command &&c) { return _detail::_map_k(std::move(c)); }
 
 /*
  * Manipulator for applying manipulators to map values.
  * See README for details.
  */
-inline auto map_v(_detail::export_command &&c) { return _map_value(std::move(c)); }
+inline auto map_v(_detail::export_command &&c) { return _detail::_map_v(std::move(c)); }
 
 /*
  * Manipulator for applying manipulators to map keys and values.
  * See README for details.
  */
 inline auto map_kv(_detail::export_command &&k, _detail::export_command &&v) {
-  return _map_key_and_value(std::move(k), std::move(v));
+  return _detail::_map_kv(std::move(k), std::move(v));
 }
 
 /*
