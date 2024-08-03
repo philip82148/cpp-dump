@@ -166,7 +166,7 @@ struct export_command {
 
   bool show_index() const { return _global_props && _global_props->show_index; }
 
-  // The below is for supporting lvalue of export_command.
+  // The below is for supporting lvalue of export_command -----------------------------------------
 
   export_command(const export_command &c)
       : _global_props(c._global_props), _skip_size_func(c._skip_size_func) {
@@ -185,6 +185,8 @@ struct export_command {
 
     return *this;
   }
+
+  // The above is for supporting lvalue of export_command -----------------------------------------
 
   friend export_command operator<<(export_command &&, export_command &&);
   friend export_command operator<<(export_command &&, const export_command &);
@@ -281,7 +283,7 @@ inline value_with_command<T> operator<<(export_command &&command, const T &value
   return value_with_command<T>(value, std::move(command));
 }
 
-// For supporting lvalue of export_command ----------------------------------------------
+// The below is for supporting lvalue of export_command -------------------------------------------
 
 inline export_command operator<<(export_command &&lhs, const export_command &rhs) {
   lhs.update_and_append(export_command(rhs));
@@ -305,7 +307,7 @@ inline value_with_command<T> operator<<(const export_command &command, const T &
   return value_with_command<T>(value, export_command(command));
 }
 
-// Above for supporting lvalue of export_command ----------------------------------------------
+// The above is for supporting lvalue of export_command -------------------------------------------
 
 inline export_command operator|(export_command &&lhs, export_command &&rhs) {
   return std::move(lhs) << std::move(rhs);
@@ -323,7 +325,7 @@ inline value_with_command<T> operator|(value_with_command<T> &&vc, export_comman
   );
 }
 
-// For supporting lvalue of export_command ----------------------------------------------
+// The below is for supporting lvalue of export_command -------------------------------------------
 
 inline export_command operator|(const export_command &lhs, export_command &&rhs) {
   return lhs << std::move(rhs);
@@ -359,7 +361,7 @@ inline value_with_command<T> operator|(
   return value_with_command<T>(vc.value, vc.command << command);
 }
 
-// Above for supporting lvalue of export_command ----------------------------------------------
+// The above is for supporting lvalue of export_command -------------------------------------------
 
 inline export_command _map_k(export_command &&c) {
   export_command new_command;
