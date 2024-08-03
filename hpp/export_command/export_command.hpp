@@ -81,6 +81,9 @@ struct export_command {
     explicit global_props_t(std::string_view _format) : format(_format) {}
     explicit global_props_t(bool _show_index) : show_index(_show_index) {}
 
+    global_props_t(global_props_t &&) = default;
+    global_props_t &operator=(global_props_t &&) = default;
+
     void update(const global_props_t &g) {
       if (g.int_style) int_style = g.int_style;
       if (!g.format.empty()) format = g.format;
@@ -111,7 +114,6 @@ struct export_command {
   explicit export_command(std::string_view format)
       : _global_props(std::make_shared<global_props_t>(format)) {}
 
-  // This is for make_unique<export_command>().
   explicit export_command(const std::shared_ptr<global_props_t> &g) : _global_props(g) {}
 
   explicit export_command(
@@ -128,16 +130,8 @@ struct export_command {
   export_command(export_command &&) = default;
   export_command &operator=(export_command &&) = default;
 
-  export_command(const export_command &c)
-      : _global_props(c._global_props), _skip_size_func(c._skip_size_func) {
-    if (c._child) _child = std::make_unique<export_command>(*c._child);
-    if (c._map_key_child) _map_key_child = std::make_unique<export_command>(*c._map_key_child);
-    if (c._map_value_child)
-      _map_value_child = std::make_unique<export_command>(*c._map_value_child);
-  }
-
-  export_command &&operator<<(export_command &&command) && {
-    *this <<= std::move(command);
+  export_command operator<<(export_command &&command) && {
+    append(std::move(command));
     return std::move(*this);
   }
 
@@ -201,7 +195,16 @@ struct export_command {
 
   bool show_index() const { return _global_props && _global_props->show_index; }
 
-  // not expected to be used normally
+  // The below is for supporting lvalue of export_command.
+
+  export_command(const export_command &c)
+      : _global_props(c._global_props), _skip_size_func(c._skip_size_func) {
+    if (c._child) _child = std::make_unique<export_command>(*c._child);
+    if (c._map_key_child) _map_key_child = std::make_unique<export_command>(*c._map_key_child);
+    if (c._map_value_child)
+      _map_value_child = std::make_unique<export_command>(*c._map_value_child);
+  }
+
   export_command &operator=(const export_command &c) {
     _global_props = c._global_props;
     _skip_size_func = c._skip_size_func;
@@ -212,18 +215,17 @@ struct export_command {
     return *this;
   }
 
-  // not expected to be used normally
-  export_command &&operator<<(const export_command &command) && {
-    *this <<= export_command(command);
+  export_command operator<<(const export_command &command) && {
+    append(export_command(command));
     return std::move(*this);
   }
 
-  // not expected to be used normally
   export_command operator<<(const export_command &command) const & {
-    return export_command(*this) <<= export_command(command);
+    export_command retval(*this);
+    retval.append(export_command(command));
+    return retval;
   }
 
-  // not expected to be used normally
   template <typename T>
   value_with_command<T> operator<<(const T &value) const & {
     return value_with_command<T>(value, *this);
@@ -232,11 +234,14 @@ struct export_command {
  private:
   std::shared_ptr<global_props_t> _global_props;
   std::function<std::size_t(std::size_t, const std::function<std::size_t()> &)> _skip_size_func;
+
+  // if export_command is used as rvalue, unique_ptr is enough.
+  // Also, using shared_ptr might cause circular reference.
   mutable std::unique_ptr<export_command> _child;
   std::unique_ptr<export_command> _map_key_child;
   std::unique_ptr<export_command> _map_value_child;
 
-  export_command &operator<<=(export_command &&command) {
+  void append(export_command &&command) {
     // export_command has g || (either skip_size_func or {map_key_child || map_value_child}).
 
     // in the case of g
@@ -255,32 +260,30 @@ struct export_command {
     if (command._skip_size_func) {
       if (_skip_size_func) {
         if (_child) {
-          *_child <<= std::move(command);
+          _child->append(std::move(command));
         } else {
           _child = std::make_unique<export_command>(std::move(command));
         }
 
-        return *this;
+        return;
       }
 
       // _skip_size_func = std::move(command._skip_size_func);
       _skip_size_func = command._skip_size_func;
-      return *this;
+      return;
     }
 
-    if (!command._map_key_child && !command._map_value_child) return *this;
+    if (!command._map_key_child && !command._map_value_child) return;
 
     // in the case of {map_key_child || map_value_child}
     // jump to the node whose child has no skip_size_func.
     if (_child && _child->_skip_size_func) {
-      *_child <<= std::move(command);
-      return *this;
+      _child->append(std::move(command));
+      return;
     }
 
     if (command._map_key_child) _map_key_child = std::move(command._map_key_child);
     if (command._map_value_child) _map_value_child = std::move(command._map_value_child);
-
-    return *this;
   }
 };
 
