@@ -130,9 +130,9 @@ struct export_command {
   export_command(export_command &&) = default;
   export_command &operator=(export_command &&) = default;
 
-  export_command operator<<(export_command &&command) && {
-    append(std::move(command));
-    return std::move(*this);
+  void update_and_append(export_command &&command) {
+    update_global_props(std::move(command._global_props));
+    append_child(std::move(command));
   }
 
   const export_command &next() const {
@@ -178,11 +178,6 @@ struct export_command {
   }
 
   template <typename T>
-  value_with_command<T> operator<<(const T &value) && {
-    return value_with_command<T>(value, std::move(*this));
-  }
-
-  template <typename T>
   skip_container<T> create_skip_container(const T &container) const {
     if (_skip_size_func) return skip_container<T>(container, _skip_size_func);
     return skip_container<T>(container, _default_skip_size_func);
@@ -215,22 +210,6 @@ struct export_command {
     return *this;
   }
 
-  export_command operator<<(const export_command &command) && {
-    append(export_command(command));
-    return std::move(*this);
-  }
-
-  export_command operator<<(const export_command &command) const & {
-    export_command retval(*this);
-    retval.append(export_command(command));
-    return retval;
-  }
-
-  template <typename T>
-  value_with_command<T> operator<<(const T &value) const & {
-    return value_with_command<T>(value, *this);
-  }
-
  private:
   std::shared_ptr<global_props_t> _global_props;
   std::function<std::size_t(std::size_t, const std::function<std::size_t()> &)> _skip_size_func;
@@ -241,26 +220,28 @@ struct export_command {
   std::unique_ptr<export_command> _map_key_child;
   std::unique_ptr<export_command> _map_value_child;
 
-  void append(export_command &&command) {
-    // export_command has g || (either skip_size_func or {map_key_child || map_value_child}).
-
-    // in the case of g
-    if (command._global_props) {
+  void update_global_props(std::shared_ptr<global_props_t> &&g) {
+    if (g) {
       if (_global_props) {
-        _global_props->update(*command._global_props);
-        command._global_props.reset();
+        _global_props->update(*g);
+        g.reset();
       } else {
-        _global_props.swap(command._global_props);
+        _global_props.swap(g);
       }
-
-      // Here, command._g == nullptr
     }
+
+    // Here, g == nullptr
+  }
+
+  void append_child(export_command &&command) {
+    // export_command has (either skip_size_func or {map_key_child || map_value_child})( || g).
 
     // in the case of skip_size_func
     if (command._skip_size_func) {
       if (_skip_size_func) {
+        // append
         if (_child) {
-          _child->append(std::move(command));
+          _child->append_child(std::move(command));
         } else {
           _child = std::make_unique<export_command>(std::move(command));
         }
@@ -268,17 +249,19 @@ struct export_command {
         return;
       }
 
-      // _skip_size_func = std::move(command._skip_size_func);
-      _skip_size_func = command._skip_size_func;
+      // update this node
+      _skip_size_func = std::move(command._skip_size_func);
+      if (command._map_key_child) _map_key_child = std::move(command._map_key_child);
+      if (command._map_value_child) _map_value_child = std::move(command._map_value_child);
       return;
     }
 
-    if (!command._map_key_child && !command._map_value_child) return;
+    if (!(command._map_key_child || command._map_value_child)) return;
 
     // in the case of {map_key_child || map_value_child}
     // jump to the node whose child has no skip_size_func.
     if (_child && _child->_skip_size_func) {
-      _child->append(std::move(command));
+      _child->append_child(std::move(command));
       return;
     }
 
@@ -286,6 +269,32 @@ struct export_command {
     if (command._map_value_child) _map_value_child = std::move(command._map_value_child);
   }
 };
+
+inline export_command operator<<(export_command &&lhs, export_command &&rhs) {
+  lhs.update_and_append(std::move(rhs));
+  return std::move(lhs);
+}
+
+template <typename T>
+value_with_command<T> operator<<(export_command &&lhs, const T &rhs) {
+  return value_with_command<T>(rhs, std::move(lhs));
+}
+
+inline export_command operator<<(export_command &&lhs, const export_command &rhs) {
+  lhs.update_and_append(export_command(rhs));
+  return std::move(lhs);
+}
+
+inline export_command operator<<(const export_command &lhs, const export_command &rhs) {
+  export_command retval(lhs);
+  retval.update_and_append(export_command(rhs));
+  return retval;
+}
+
+template <typename T>
+value_with_command<T> operator<<(const export_command &lhs, const T &value) {
+  return value_with_command<T>(value, lhs);
+}
 
 inline const export_command export_command::default_command(_default_skip_size_func);
 
