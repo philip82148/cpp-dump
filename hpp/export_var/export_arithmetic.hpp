@@ -39,6 +39,20 @@ inline std::string export_arithmetic(
   }
 }
 
+template <typename T>
+inline auto export_arithmetic(
+    const T &value,
+    const std::string &indent,
+    std::size_t last_line_length,
+    std::size_t current_depth,
+    bool fail_on_newline,
+    const export_command &command
+) -> std::enable_if_t<is_vector_bool_reference<T>, std::string> {
+  return export_arithmetic(
+      static_cast<bool>(value), indent, last_line_length, current_depth, fail_on_newline, command
+  );
+}
+
 inline std::string
 export_arithmetic(char value, const std::string &, std::size_t, std::size_t, bool, const export_command &) {
   char retval[] = {'\'', value, '\''};
@@ -79,7 +93,7 @@ unsigned int _get_max_digits(unsigned int base) {
 template <typename T>
 inline auto export_arithmetic(
     T value, const std::string &, std::size_t, std::size_t, bool, const export_command &command
-) -> std::enable_if_t<is_arithmetic<T> && std::is_integral_v<T>, std::string> {
+) -> std::enable_if_t<std::is_integral_v<T>, std::string> {
   std::string output = command.format(value);
   if (!output.empty()) return es::number(output);
 
@@ -180,7 +194,7 @@ inline auto export_arithmetic(
 template <typename T>
 inline auto export_arithmetic(
     T value, const std::string &, std::size_t, std::size_t, bool, const export_command &command
-) -> std::enable_if_t<is_arithmetic<T> && !std::is_integral_v<T>, std::string> {
+) -> std::enable_if_t<std::is_floating_point_v<T>, std::string> {
   std::string output = command.format(value);
   if (!output.empty()) return es::number(output);
 
