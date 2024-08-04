@@ -812,6 +812,13 @@ int main(int argc, char *argv[]) {
   cpp_dump(vec5 | cp::bw(true));
   cpp_dump(vec5 | cp::boolnum());
 
+  // charnum
+  std::string_view sv1 = "pi is 3.1415...";
+  vector<char> vec6(sv1.begin(), sv1.end());
+  cpp_dump(vec6);
+  cpp_dump(vec6 | cp::charnum());
+  cpp_dump(vec6 | cp::charnum() | cp::hex());
+
   // lvalue export_command
   auto index = cp::index();
   auto back = cp::back(3);

@@ -223,6 +223,7 @@ int main(int argc, char *argv[]) {
   cpp_dump(-1 | cp::ubin(), -1 | cp::uoct(), -1 | cp::uhex(), -1 | cp::udec());
   cpp_dump(1 | cp::ubin(), 1 | cp::uoct(), 1 | cp::uhex(), 1 | cp::udec());
 
+  // format
   CPP_DUMP_SET_OPTION(print_expr, true);
   cpp_dump(3.14159265f | cp::format("%.3f"));
   cpp_dump(3.141592653589793L | cp::format("%.15Lf"));
@@ -236,8 +237,16 @@ int main(int argc, char *argv[]) {
       {true, true, true, true},
   };
 
+  // bw, boolnum
   cpp_dump(vec4);
   cpp_dump(vec4 | cp::bw());
   cpp_dump(vec4 | cp::bw(true));
   cpp_dump(vec4 | cp::boolnum());
+
+  // charnum
+  std::string_view sv1 = "pi is 3.1415...";
+  vector<char> vec5(sv1.begin(), sv1.end());
+  cpp_dump(vec5);
+  cpp_dump(vec5 | cp::charnum());
+  cpp_dump(vec5 | cp::charnum() | cp::hex());
 }
