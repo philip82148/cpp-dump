@@ -58,7 +58,7 @@ inline std::string export_arithmetic(
 ) {
   char quoted_char[] = {'\'', value, '\''};
 
-  if (!command.char_as_hex()) return es::character({quoted_char, 3});
+  if (!command.char_as_hex()) return es::character({quoted_char, sizeof(quoted_char)});
 
   auto to_hex_char = [](unsigned char c) -> char {
     return static_cast<char>(c < 10 ? '0' + c : 'A' + (c - 10));
@@ -68,7 +68,8 @@ inline std::string export_arithmetic(
   char lower = to_hex_char(value & 0x0f);
 
   char number[] = {'0', 'x', upper, lower};
-  return es::number({number, 4}) + es::op(" (") + es::character({quoted_char, 3}) + es::op(")");
+  return es::character({quoted_char, sizeof(quoted_char)}) + es::op(" (")
+         + es::number({number, sizeof(number)}) + es::op(")");
 }
 
 template <typename UnsignedT>
