@@ -1256,6 +1256,25 @@ LLONG_MAX, LLONG_MIN, ULLONG_MAX
          [ 0, 0, 0, 0 ],
          [ 1, 1, 1, 1 ]
        ]
+[dump] vec5 | cp::hex() | cp::bw() => [
+         [ true , false, true , false ],
+         [ false, false, false, false ],
+         [ true , true , true , true  ]
+       ]
+[dump] vec5 | cp::hex() | cp::bw(true) => [
+         [  true, false,  true, false ],
+         [ false, false, false, false ],
+         [  true,  true,  true,  true ]
+       ]
+[dump] vec5 | cp::hex() | cp::boolnum() => [
+         [ 1, 0, 1, 0 ],
+         [ 0, 0, 0, 0 ],
+         [ 1, 1, 1, 1 ]
+       ]
+[dump] vec6 => [ 'P', 'i', '=', '3', '.', '1', '4', '.', '.', '.' ]
+[dump] vec6 | cp::charhex() => [ 'P' (0x50), 'i' (0x69), '=' (0x3D), '3' (0x33), '.' (0x2E), '1' (0x31), '4' (0x34), '.' (0x2E), '.' (0x2E), '.' (0x2E) ]
+[dump] vec6 | cp::bin() | cp::charhex()
+         => [ 'P' (0x50), 'i' (0x69), '=' (0x3D), '3' (0x33), '.' (0x2E), '1' (0x31), '4' (0x34), '.' (0x2E), '.' (0x2E), '.' (0x2E) ]
 [dump] vec4 | (back | cp::index()) => [
          ...,
          3: [ 0: 15, 1: 16 ],

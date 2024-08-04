@@ -44,12 +44,14 @@ struct export_command {
     bool make_unsigned_or_no_space_for_minus;
   };
   enum class bool_style_t { normal, true_left, true_right, number };
+  struct charhex {};
   struct index {};
 
   struct global_props_t {
     std::optional<int_style_t> int_style;
     bool_style_t bool_style{bool_style_t::normal};
     const char *format{nullptr};
+    bool char_as_hex{false};
     bool show_index{false};
 
     explicit global_props_t(
@@ -77,6 +79,7 @@ struct export_command {
     }
     explicit global_props_t(bool_style_t bool_style_) : bool_style(bool_style_) {}
     explicit global_props_t(const char *format_) : format(format_) {}
+    explicit global_props_t(charhex) : char_as_hex(true) {}
     explicit global_props_t(index) : show_index(true) {}
 
     global_props_t(global_props_t &&) = default;
@@ -84,16 +87,18 @@ struct export_command {
 
     void update(const global_props_t &g) {
       if (g.int_style) int_style = g.int_style;
-      if (g.format != nullptr) format = g.format;
-      if (g.show_index) show_index = g.show_index;
       if (g.bool_style != bool_style_t::normal) bool_style = g.bool_style;
+      if (g.format != nullptr) format = g.format;
+      if (g.char_as_hex) char_as_hex = g.char_as_hex;
+      if (g.show_index) show_index = g.show_index;
     }
 
     void merge(const global_props_t &g) {
       if (!int_style) int_style = g.int_style;
-      if (format == nullptr) format = g.format;
-      if (!show_index) show_index = g.show_index;
       if (bool_style == bool_style_t::normal) bool_style = g.bool_style;
+      if (format == nullptr) format = g.format;
+      if (!char_as_hex) char_as_hex = g.char_as_hex;
+      if (!show_index) show_index = g.show_index;
     }
   };
 
@@ -111,10 +116,12 @@ struct export_command {
   explicit export_command(const char *format)
       : _global_props(std::make_shared<global_props_t>(format)) {}
 
-  explicit export_command(index) : _global_props(std::make_shared<global_props_t>(index{})) {}
-
   explicit export_command(bool_style_t bool_style)
       : _global_props(std::make_shared<global_props_t>(bool_style)) {}
+
+  explicit export_command(charhex) : _global_props(std::make_shared<global_props_t>(charhex{})) {}
+
+  explicit export_command(index) : _global_props(std::make_shared<global_props_t>(index{})) {}
 
   explicit export_command(const std::shared_ptr<global_props_t> &g) : _global_props(g) {}
 
@@ -199,6 +206,8 @@ struct export_command {
     std::snprintf(buffer.data(), buffer.size(), _global_props->format, value);
     return {buffer.data(), static_cast<std::size_t>(sz)};
   }
+
+  bool char_as_hex() const { return _global_props && _global_props->char_as_hex; }
 
   bool show_index() const { return _global_props && _global_props->show_index; }
 
@@ -515,12 +524,6 @@ inline auto uhex(int digits = -1, int chunk = 0) {
 inline auto format(const char *f) { return _detail::export_command(f); }
 
 /*
- * Manipulator for the display style of containers.
- * See README for details.
- */
-inline auto index() { return _detail::export_command(_detail::export_command::index{}); }
-
-/*
  * Manipulator for the display style of bool.
  * This is an experimental feature.
  */
@@ -537,6 +540,18 @@ inline auto boolnum() {
   using bool_style_t = _detail::export_command::bool_style_t;
   return _detail::export_command(bool_style_t::number);
 }
+
+/*
+ * Manipulator for the display style of char.
+ * This is an experimental feature.
+ */
+inline auto charhex() { return _detail::export_command(_detail::export_command::charhex{}); }
+
+/*
+ * Manipulator for the display style of containers.
+ * See README for details.
+ */
+inline auto index() { return _detail::export_command(_detail::export_command::index{}); }
 
 /*
  * Manipulator for the display style of iterables.

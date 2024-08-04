@@ -53,10 +53,23 @@ inline auto export_arithmetic(
   );
 }
 
-inline std::string
-export_arithmetic(char value, const std::string &, std::size_t, std::size_t, bool, const export_command &) {
-  char retval[] = {'\'', value, '\''};
-  return es::character({retval, 3});
+inline std::string export_arithmetic(
+    char value, const std::string &, std::size_t, std::size_t, bool, const export_command &command
+) {
+  char quoted_char[] = {'\'', value, '\''};
+
+  if (!command.char_as_hex()) return es::character({quoted_char, sizeof(quoted_char)});
+
+  auto to_hex_char = [](unsigned char c) -> char {
+    return static_cast<char>(c < 10 ? '0' + c : 'A' + (c - 10));
+  };
+
+  char upper = to_hex_char((value >> 4) & 0x0f);
+  char lower = to_hex_char(value & 0x0f);
+
+  char number[] = {'0', 'x', upper, lower};
+  return es::character({quoted_char, sizeof(quoted_char)}) + es::op(" (")
+         + es::number({number, sizeof(number)}) + es::op(")");
 }
 
 template <typename UnsignedT>
