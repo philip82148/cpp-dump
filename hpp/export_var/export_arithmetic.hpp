@@ -53,12 +53,6 @@ inline auto export_arithmetic(
   );
 }
 
-inline std::string
-export_arithmetic(char value, const std::string &, std::size_t, std::size_t, bool, const export_command &) {
-  char retval[] = {'\'', value, '\''};
-  return es::character({retval, 3});
-}
-
 template <typename UnsignedT>
 constexpr unsigned int _get_max_digits_aux(UnsignedT num, unsigned int base) {
   return num == 0 ? 0 : 1 + _get_max_digits_aux(num / base, base);
@@ -199,6 +193,29 @@ inline auto export_arithmetic(
   if (!output.empty()) return es::number(output);
 
   return es::number(std::to_string(value));
+}
+
+inline std::string export_arithmetic(
+    char value,
+    const std::string &indent,
+    std::size_t last_line_length,
+    std::size_t current_depth,
+    bool fail_on_newline,
+    const export_command &command
+) {
+  if (command.char_as_num()) {
+    return export_arithmetic(
+        static_cast<unsigned char>(value),
+        indent,
+        last_line_length,
+        current_depth,
+        fail_on_newline,
+        command
+    );
+  }
+
+  char retval[] = {'\'', value, '\''};
+  return es::character({retval, 3});
 }
 
 }  // namespace _detail
