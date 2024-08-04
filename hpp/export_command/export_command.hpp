@@ -12,7 +12,6 @@
 #include <limits>
 #include <memory>
 #include <optional>
-#include <tuple>
 #include <utility>
 #include <vector>
 
@@ -37,8 +36,19 @@ struct value_with_command;
 
 struct export_command {
  public:
+  struct int_style_t {
+    unsigned int base;
+    unsigned int digits;
+    unsigned int chunk;
+    bool space_fill;
+    bool make_unsigned_or_no_space_for_minus;
+  };
+  enum class bool_style_t { normal, true_left, true_right, number };
+  struct index {};
+
   struct global_props_t {
-    std::optional<std::tuple<unsigned int, unsigned int, unsigned int, bool, bool>> int_style;
+    std::optional<int_style_t> int_style;
+    bool_style_t bool_style{bool_style_t::normal};
     const char *format{nullptr};
     bool show_index{false};
 
@@ -57,10 +67,17 @@ struct export_command {
       if (digits < 0) digits = std::numeric_limits<int>::max();
       if (chunk < 0) chunk = 0;
 
-      int_style = {base, digits, chunk, space_fill, make_unsigned_or_no_space_for_minus};
+      int_style = {
+          static_cast<unsigned int>(base),
+          static_cast<unsigned int>(digits),
+          static_cast<unsigned int>(chunk),
+          space_fill,
+          make_unsigned_or_no_space_for_minus,
+      };
     }
-    explicit global_props_t(const char *_format) : format(_format) {}
-    explicit global_props_t(bool _show_index) : show_index(_show_index) {}
+    explicit global_props_t(bool_style_t bool_style_) : bool_style(bool_style_) {}
+    explicit global_props_t(const char *format_) : format(format_) {}
+    explicit global_props_t(index) : show_index(true) {}
 
     global_props_t(global_props_t &&) = default;
     global_props_t &operator=(global_props_t &&) = default;
@@ -69,21 +86,20 @@ struct export_command {
       if (g.int_style) int_style = g.int_style;
       if (g.format != nullptr) format = g.format;
       if (g.show_index) show_index = g.show_index;
+      if (g.bool_style != bool_style_t::normal) bool_style = g.bool_style;
     }
 
     void merge(const global_props_t &g) {
       if (!int_style) int_style = g.int_style;
       if (format == nullptr) format = g.format;
       if (!show_index) show_index = g.show_index;
+      if (bool_style == bool_style_t::normal) bool_style = g.bool_style;
     }
   };
 
   static const export_command default_command;
 
   export_command() = default;
-
-  explicit export_command(bool show_index)
-      : _global_props(std::make_shared<global_props_t>(show_index)) {}
 
   explicit export_command(
       int base, int digits, int chunk, bool space_fill, bool make_unsigned_or_no_space_for_minus
@@ -94,6 +110,11 @@ struct export_command {
 
   explicit export_command(const char *format)
       : _global_props(std::make_shared<global_props_t>(format)) {}
+
+  explicit export_command(index) : _global_props(std::make_shared<global_props_t>(index{})) {}
+
+  explicit export_command(bool_style_t bool_style)
+      : _global_props(std::make_shared<global_props_t>(bool_style)) {}
 
   explicit export_command(const std::shared_ptr<global_props_t> &g) : _global_props(g) {}
 
@@ -159,9 +180,12 @@ struct export_command {
     return skip_container<T>(container, _default_skip_size_func);
   }
 
-  std::optional<std::tuple<unsigned int, unsigned int, unsigned int, bool, bool>> int_style(
-  ) const {
+  std::optional<int_style_t> int_style() const {
     return _global_props ? _global_props->int_style : std::nullopt;
+  }
+
+  bool_style_t bool_style() const {
+    return _global_props ? _global_props->bool_style : bool_style_t::normal;
   }
 
   template <typename T>
@@ -485,10 +509,34 @@ inline auto uhex(int digits = -1, int chunk = 0) {
 }
 
 /*
- * Manipulator for the display style of integers.
+ * Manipulator for the display style of numbers.
  * This is an experimental feature.
  */
 inline auto format(const char *f) { return _detail::export_command(f); }
+
+/*
+ * Manipulator for the display style of containers.
+ * See README for details.
+ */
+inline auto index() { return _detail::export_command(_detail::export_command::index{}); }
+
+/*
+ * Manipulator for the display style of bool.
+ * This is an experimental feature.
+ */
+inline auto bw(bool right = false) {
+  using bool_style_t = _detail::export_command::bool_style_t;
+  return _detail::export_command(right ? bool_style_t::true_right : bool_style_t::true_left);
+}
+
+/*
+ * Manipulator for the display style of bool.
+ * This is an experimental feature.
+ */
+inline auto boolnum() {
+  using bool_style_t = _detail::export_command::bool_style_t;
+  return _detail::export_command(bool_style_t::number);
+}
 
 /*
  * Manipulator for the display style of iterables.
@@ -578,11 +626,5 @@ inline auto map_v(_detail::export_command &&c) { return _detail::_map_v(std::mov
 inline auto map_kv(_detail::export_command &&k, _detail::export_command &&v) {
   return _detail::_map_kv(std::move(k), std::move(v));
 }
-
-/*
- * Manipulator for the display style of containers.
- * See README for details.
- */
-inline auto index() { return _detail::export_command(true); }
 
 }  // namespace cpp_dump

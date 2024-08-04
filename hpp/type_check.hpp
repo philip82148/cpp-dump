@@ -25,6 +25,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <variant>
+#include <vector>
 
 #include "./iterable.hpp"
 #include "./options.hpp"
@@ -61,8 +62,23 @@ template <typename T>
 using iterable_elem_type =
     _remove_cvref<decltype(*iterable_begin(std::declval<const _remove_cvref<T>>()))>;
 
+template <typename T, typename... Args>
+auto _is_vector_bool_reference(int) -> std::enable_if_t<
+    std::is_same_v<T, typename std::vector<bool, Args...>::const_reference>,
+    std::true_type
+    //
+    >;
+
 template <typename T>
-inline constexpr bool is_arithmetic = std::is_arithmetic_v<_remove_cvref<T>>;
+std::false_type _is_vector_bool_reference(long);
+
+template <typename T>
+inline constexpr bool is_vector_bool_reference =
+    decltype(_is_vector_bool_reference<_remove_cvref<T>>(0))::value;
+
+template <typename T>
+inline constexpr bool is_arithmetic =
+    std::is_arithmetic_v<_remove_cvref<T>> || is_vector_bool_reference<_remove_cvref<T>>;
 
 template <typename T>
 inline constexpr bool is_null_pointer = std::is_null_pointer_v<_remove_cvref<T>>;
