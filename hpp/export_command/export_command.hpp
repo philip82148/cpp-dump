@@ -12,7 +12,6 @@
 #include <limits>
 #include <memory>
 #include <optional>
-#include <tuple>
 #include <utility>
 #include <vector>
 
@@ -37,11 +36,18 @@ struct value_with_command;
 
 struct export_command {
  public:
+  struct int_style_t {
+    unsigned int base;
+    unsigned int digits;
+    unsigned int chunk;
+    bool space_fill;
+    bool make_unsigned_or_no_space_for_minus;
+  };
   enum class bool_style_t { normal, true_left, true_right, number };
   struct index {};
 
   struct global_props_t {
-    std::optional<std::tuple<unsigned int, unsigned int, unsigned int, bool, bool>> int_style;
+    std::optional<int_style_t> int_style;
     bool_style_t bool_style{bool_style_t::normal};
     const char *format{nullptr};
     bool show_index{false};
@@ -61,7 +67,13 @@ struct export_command {
       if (digits < 0) digits = std::numeric_limits<int>::max();
       if (chunk < 0) chunk = 0;
 
-      int_style = {base, digits, chunk, space_fill, make_unsigned_or_no_space_for_minus};
+      int_style = {
+          static_cast<unsigned int>(base),
+          static_cast<unsigned int>(digits),
+          static_cast<unsigned int>(chunk),
+          space_fill,
+          make_unsigned_or_no_space_for_minus,
+      };
     }
     explicit global_props_t(bool_style_t bool_style_) : bool_style(bool_style_) {}
     explicit global_props_t(const char *format_) : format(format_) {}
@@ -168,9 +180,12 @@ struct export_command {
     return skip_container<T>(container, _default_skip_size_func);
   }
 
-  std::optional<std::tuple<unsigned int, unsigned int, unsigned int, bool, bool>> int_style(
-  ) const {
+  std::optional<int_style_t> int_style() const {
     return _global_props ? _global_props->int_style : std::nullopt;
+  }
+
+  bool_style_t bool_style() const {
+    return _global_props ? _global_props->bool_style : bool_style_t::normal;
   }
 
   template <typename T>
@@ -186,10 +201,6 @@ struct export_command {
   }
 
   bool show_index() const { return _global_props && _global_props->show_index; }
-
-  bool_style_t bool_style() const {
-    return _global_props ? _global_props->bool_style : bool_style_t::normal;
-  }
 
   // The below is for supporting lvalue of export_command -----------------------------------------
 
