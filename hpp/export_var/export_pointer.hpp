@@ -35,20 +35,6 @@ inline std::string _raw_address(std::string_view s) {
 
 }  // namespace es
 
-template <typename... Args>
-inline std::string export_pointer(
-    const std::weak_ptr<Args...> &pointer,
-    const std::string &indent,
-    std::size_t last_line_length,
-    std::size_t current_depth,
-    bool fail_on_newline,
-    const export_command &command
-) {
-  return export_var(
-      pointer.lock(), indent, last_line_length, current_depth, fail_on_newline, command
-  );
-}
-
 template <typename T>
 inline auto export_pointer(
     const T &pointer,
@@ -84,11 +70,27 @@ inline auto export_pointer(
       return es::_raw_address(ss.str());
     }
 
+    if (current_depth >= max_depth) return es::_ptr_asterisk("*") + es::op("...");
+
     return es::_ptr_asterisk("*")
            + export_var(
-               *pointer, indent, last_line_length + 1, current_depth, fail_on_newline, command
+               *pointer, indent, last_line_length + 1, current_depth + 1, fail_on_newline, command
            );
   }
+}
+
+template <typename... Args>
+inline std::string export_pointer(
+    const std::weak_ptr<Args...> &pointer,
+    const std::string &indent,
+    std::size_t last_line_length,
+    std::size_t current_depth,
+    bool fail_on_newline,
+    const export_command &command
+) {
+  return export_pointer(
+      pointer.lock(), indent, last_line_length, current_depth, fail_on_newline, command
+  );
 }
 
 }  // namespace _detail
