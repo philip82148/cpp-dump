@@ -42,6 +42,38 @@
   func(arg1), _p_CPP_DUMP_BUFFER(_p_CPP_DUMP_EXPAND_VA14(func, __VA_ARGS__))
 #define _p_CPP_DUMP_EXPAND_VA16(func, arg1, ...)                                                   \
   func(arg1), _p_CPP_DUMP_BUFFER(_p_CPP_DUMP_EXPAND_VA15(func, __VA_ARGS__))
+#define _p_CPP_DUMP_EXPAND_VA17(func, arg1, ...)                                                   \
+  func(arg1), _p_CPP_DUMP_BUFFER(_p_CPP_DUMP_EXPAND_VA16(func, __VA_ARGS__))
+#define _p_CPP_DUMP_EXPAND_VA18(func, arg1, ...)                                                   \
+  func(arg1), _p_CPP_DUMP_BUFFER(_p_CPP_DUMP_EXPAND_VA17(func, __VA_ARGS__))
+#define _p_CPP_DUMP_EXPAND_VA19(func, arg1, ...)                                                   \
+  func(arg1), _p_CPP_DUMP_BUFFER(_p_CPP_DUMP_EXPAND_VA18(func, __VA_ARGS__))
+#define _p_CPP_DUMP_EXPAND_VA20(func, arg1, ...)                                                   \
+  func(arg1), _p_CPP_DUMP_BUFFER(_p_CPP_DUMP_EXPAND_VA19(func, __VA_ARGS__))
+#define _p_CPP_DUMP_EXPAND_VA21(func, arg1, ...)                                                   \
+  func(arg1), _p_CPP_DUMP_BUFFER(_p_CPP_DUMP_EXPAND_VA20(func, __VA_ARGS__))
+#define _p_CPP_DUMP_EXPAND_VA22(func, arg1, ...)                                                   \
+  func(arg1), _p_CPP_DUMP_BUFFER(_p_CPP_DUMP_EXPAND_VA21(func, __VA_ARGS__))
+#define _p_CPP_DUMP_EXPAND_VA23(func, arg1, ...)                                                   \
+  func(arg1), _p_CPP_DUMP_BUFFER(_p_CPP_DUMP_EXPAND_VA22(func, __VA_ARGS__))
+#define _p_CPP_DUMP_EXPAND_VA24(func, arg1, ...)                                                   \
+  func(arg1), _p_CPP_DUMP_BUFFER(_p_CPP_DUMP_EXPAND_VA23(func, __VA_ARGS__))
+#define _p_CPP_DUMP_EXPAND_VA25(func, arg1, ...)                                                   \
+  func(arg1), _p_CPP_DUMP_BUFFER(_p_CPP_DUMP_EXPAND_VA24(func, __VA_ARGS__))
+#define _p_CPP_DUMP_EXPAND_VA26(func, arg1, ...)                                                   \
+  func(arg1), _p_CPP_DUMP_BUFFER(_p_CPP_DUMP_EXPAND_VA25(func, __VA_ARGS__))
+#define _p_CPP_DUMP_EXPAND_VA27(func, arg1, ...)                                                   \
+  func(arg1), _p_CPP_DUMP_BUFFER(_p_CPP_DUMP_EXPAND_VA26(func, __VA_ARGS__))
+#define _p_CPP_DUMP_EXPAND_VA28(func, arg1, ...)                                                   \
+  func(arg1), _p_CPP_DUMP_BUFFER(_p_CPP_DUMP_EXPAND_VA27(func, __VA_ARGS__))
+#define _p_CPP_DUMP_EXPAND_VA29(func, arg1, ...)                                                   \
+  func(arg1), _p_CPP_DUMP_BUFFER(_p_CPP_DUMP_EXPAND_VA28(func, __VA_ARGS__))
+#define _p_CPP_DUMP_EXPAND_VA30(func, arg1, ...)                                                   \
+  func(arg1), _p_CPP_DUMP_BUFFER(_p_CPP_DUMP_EXPAND_VA29(func, __VA_ARGS__))
+#define _p_CPP_DUMP_EXPAND_VA31(func, arg1, ...)                                                   \
+  func(arg1), _p_CPP_DUMP_BUFFER(_p_CPP_DUMP_EXPAND_VA30(func, __VA_ARGS__))
+#define _p_CPP_DUMP_EXPAND_VA32(func, arg1, ...)                                                   \
+  func(arg1), _p_CPP_DUMP_BUFFER(_p_CPP_DUMP_EXPAND_VA31(func, __VA_ARGS__))
 
 #define _p_CPP_DUMP_VA_SIZE_AUX(                                                                   \
     arg1,                                                                                          \
@@ -60,14 +92,62 @@
     arg14,                                                                                         \
     arg15,                                                                                         \
     arg16,                                                                                         \
+    arg17,                                                                                         \
+    arg18,                                                                                         \
+    arg19,                                                                                         \
+    arg20,                                                                                         \
+    arg21,                                                                                         \
+    arg22,                                                                                         \
+    arg23,                                                                                         \
+    arg24,                                                                                         \
+    arg25,                                                                                         \
+    arg26,                                                                                         \
+    arg27,                                                                                         \
+    arg28,                                                                                         \
+    arg29,                                                                                         \
+    arg30,                                                                                         \
+    arg31,                                                                                         \
+    arg32,                                                                                         \
     size,                                                                                          \
     ...                                                                                            \
 )                                                                                                  \
   size
 #define _p_CPP_DUMP_VA_SIZE(...)                                                                   \
-  _p_CPP_DUMP_BUFFER(                                                                              \
-      _p_CPP_DUMP_VA_SIZE_AUX(__VA_ARGS__, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1)  \
-  )
+  _p_CPP_DUMP_BUFFER(_p_CPP_DUMP_VA_SIZE_AUX(                                                      \
+      __VA_ARGS__,                                                                                 \
+      32,                                                                                          \
+      31,                                                                                          \
+      30,                                                                                          \
+      29,                                                                                          \
+      28,                                                                                          \
+      27,                                                                                          \
+      26,                                                                                          \
+      25,                                                                                          \
+      24,                                                                                          \
+      23,                                                                                          \
+      22,                                                                                          \
+      21,                                                                                          \
+      20,                                                                                          \
+      19,                                                                                          \
+      18,                                                                                          \
+      17,                                                                                          \
+      16,                                                                                          \
+      15,                                                                                          \
+      14,                                                                                          \
+      13,                                                                                          \
+      12,                                                                                          \
+      11,                                                                                          \
+      10,                                                                                          \
+      9,                                                                                           \
+      8,                                                                                           \
+      7,                                                                                           \
+      6,                                                                                           \
+      5,                                                                                           \
+      4,                                                                                           \
+      3,                                                                                           \
+      2,                                                                                           \
+      1                                                                                            \
+  ))
 
 #define _p_CPP_DUMP_GET_EXPAND_VA_MACRO(size) _p_CPP_DUMP_EXPAND_VA##size
 #define _p_CPP_DUMP_EXPAND_VA_AUX(func, size, ...)                                                 \

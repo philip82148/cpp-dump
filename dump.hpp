@@ -28,7 +28,7 @@
  * This macro uses cpp_dump::export_var() internally.
  */
 #define CPP_DUMP(...)                                                                              \
-  cpp_dump::_detail::cpp_dump_macro(                                                               \
+  cpp_dump::_detail::cpp_dump_macro<_p_CPP_DUMP_VA_SIZE(__VA_ARGS__)>(                             \
       {__FILE__, __LINE__, __func__},                                                              \
       {_p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_CPP_DUMP, __VA_ARGS__)},                       \
       __VA_ARGS__                                                                                  \
@@ -214,7 +214,7 @@ bool _dump(
     std::string &output,
     const std::string &log_label,
     bool always_newline_before_expr,
-    const std::initializer_list<std::string_view> &exprs,
+    std::initializer_list<std::string_view> exprs,
     const Args &...args
 ) {
   auto it = exprs.begin();
@@ -228,10 +228,16 @@ struct _source_location {
 };
 
 // function called by cpp_dump() macro
-template <typename... Args>
+template <std::size_t macro_va_size, typename... Args>
 void cpp_dump_macro(
     _source_location loc, std::initializer_list<std::string_view> exprs, const Args &...args
 ) {
+  static_assert(
+      macro_va_size == sizeof...(args),
+      "The number of expressions passed to cpp_dump(...) does not match the number of actual "
+      "arguments. Please enclose the expressions that contains commas in parentheses."
+  );
+
   std::string log_label =
       log_label_func ? log_label_func(loc.file_name, loc.line, loc.function_name) : "";
 
