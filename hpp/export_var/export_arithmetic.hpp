@@ -53,6 +53,24 @@ inline auto export_arithmetic(
   );
 }
 
+inline std::string export_arithmetic(
+    char value, const std::string &, std::size_t, std::size_t, bool, const export_command &command
+) {
+  char quoted_char[] = {'\'', value, '\''};
+
+  if (!command.char_as_hex()) return es::character({quoted_char, 3});
+
+  auto to_hex_char = [](unsigned char c) -> char {
+    return static_cast<char>(c < 10 ? '0' + c : 'A' + (c - 10));
+  };
+
+  char upper = to_hex_char((value >> 4) & 0x0f);
+  char lower = to_hex_char(value & 0x0f);
+
+  char number[] = {'0', 'x', upper, lower};
+  return es::number({number, 4}) + es::op(" (") + es::character({quoted_char, 3}) + es::op(")");
+}
+
 template <typename UnsignedT>
 constexpr unsigned int _get_max_digits_aux(UnsignedT num, unsigned int base) {
   return num == 0 ? 0 : 1 + _get_max_digits_aux(num / base, base);
@@ -193,29 +211,6 @@ inline auto export_arithmetic(
   if (!output.empty()) return es::number(output);
 
   return es::number(std::to_string(value));
-}
-
-inline std::string export_arithmetic(
-    char value,
-    const std::string &indent,
-    std::size_t last_line_length,
-    std::size_t current_depth,
-    bool fail_on_newline,
-    const export_command &command
-) {
-  if (command.char_as_num()) {
-    return export_arithmetic(
-        static_cast<unsigned char>(value),
-        indent,
-        last_line_length,
-        current_depth,
-        fail_on_newline,
-        command
-    );
-  }
-
-  char retval[] = {'\'', value, '\''};
-  return es::character({retval, 3});
 }
 
 }  // namespace _detail
