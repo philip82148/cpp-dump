@@ -1256,10 +1256,25 @@ LLONG_MAX, LLONG_MIN, ULLONG_MAX
          [ 0, 0, 0, 0 ],
          [ 1, 1, 1, 1 ]
        ]
-[dump] vec6 => [ 'p', 'i', ' ', 'i', 's', ' ', '3', '.', '1', '4', '1', '5', '.', '.', '.' ]
-[dump] vec6 | cp::charnum() => [ 112, 105, 32, 105, 115, 32, 51, 46, 49, 52, 49, 53, 46, 46, 46 ]
-[dump] vec6 | cp::charnum() | cp::hex()
-         => [ 70 _16, 69 _16, 20 _16, 69 _16, 73 _16, 20 _16, 33 _16, 2e _16, 31 _16, 34 _16, 31 _16, 35 _16, 2e _16, 2e _16, 2e _16 ]
+[dump] vec5 | cp::hex() | cp::bw() => [
+         [ true , false, true , false ],
+         [ false, false, false, false ],
+         [ true , true , true , true  ]
+       ]
+[dump] vec5 | cp::hex() | cp::bw(true) => [
+         [  true, false,  true, false ],
+         [ false, false, false, false ],
+         [  true,  true,  true,  true ]
+       ]
+[dump] vec5 | cp::hex() | cp::boolnum() => [
+         [ 1, 0, 1, 0 ],
+         [ 0, 0, 0, 0 ],
+         [ 1, 1, 1, 1 ]
+       ]
+[dump] vec6 => [ 'P', 'i', '=', '3', '.', '1', '4', '.', '.', '.' ]
+[dump] vec6 | cp::charhex() => [ 'P' (0x50), 'i' (0x69), '=' (0x3D), '3' (0x33), '.' (0x2E), '1' (0x31), '4' (0x34), '.' (0x2E), '.' (0x2E), '.' (0x2E) ]
+[dump] vec6 | cp::bin() | cp::charhex()
+         => [ 'P' (0x50), 'i' (0x69), '=' (0x3D), '3' (0x33), '.' (0x2E), '1' (0x31), '4' (0x34), '.' (0x2E), '.' (0x2E), '.' (0x2E) ]
 [dump] vec4 | (back | cp::index()) => [
          ...,
          3: [ 0: 15, 1: 16 ],

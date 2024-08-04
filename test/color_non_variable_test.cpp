@@ -243,10 +243,9 @@ int main(int argc, char *argv[]) {
   cpp_dump(vec4 | cp::bw(true));
   cpp_dump(vec4 | cp::boolnum());
 
-  // charnum
-  std::string_view sv1 = "pi is 3.1415...";
+  // charhex
+  std::string_view sv1 = "Pi=3.14...";
   vector<char> vec5(sv1.begin(), sv1.end());
   cpp_dump(vec5);
-  cpp_dump(vec5 | cp::charnum());
-  cpp_dump(vec5 | cp::charnum() | cp::hex());
+  cpp_dump(vec5 | cp::charhex());
 }
