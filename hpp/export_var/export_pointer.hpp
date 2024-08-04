@@ -71,6 +71,19 @@ inline auto export_pointer(
       return es::_raw_address(ss.str());
     }
   } else {
+    if (current_depth >= command.addr_depth()) {
+      std::ostringstream ss;
+
+      if constexpr (is_smart_pointer<T>) {
+        ss << std::hex << pointer.get();
+      } else {
+        ss << std::hex << pointer;
+      }
+
+      // Make the entire string an identifier
+      return es::_raw_address(ss.str());
+    }
+
     return es::_ptr_asterisk("*")
            + export_var(
                *pointer, indent, last_line_length + 1, current_depth, fail_on_newline, command
