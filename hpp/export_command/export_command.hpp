@@ -7,12 +7,14 @@
 
 #pragma once
 
+#include <cstdio>
 #include <functional>
 #include <limits>
 #include <memory>
 #include <optional>
 #include <tuple>
 #include <utility>
+#include <vector>
 
 #include "../options.hpp"
 #include "../type_check.hpp"
@@ -34,56 +36,66 @@ template <typename T>
 struct value_with_command;
 
 struct export_command {
-  friend export_command _map_key(export_command &&command) {
-    export_command new_command(nullptr);
-    new_command._map_key_child = std::make_unique<export_command>(std::move(command));
-    return new_command;
-  }
-
-  friend export_command _map_value(export_command &&command) {
-    export_command new_command(nullptr);
-    new_command._map_value_child = std::make_unique<export_command>(std::move(command));
-    return new_command;
-  }
-
-  friend export_command _map_key_and_value(export_command &&key, export_command &&value) {
-    export_command new_command(nullptr);
-    new_command._map_key_child = std::make_unique<export_command>(std::move(key));
-    new_command._map_value_child = std::make_unique<export_command>(std::move(value));
-    return new_command;
-  }
-
  public:
+  struct global_props_t {
+    std::optional<std::tuple<unsigned int, unsigned int, unsigned int, bool, bool>> int_style;
+    const char *format{nullptr};
+    bool show_index{false};
+
+    explicit global_props_t(
+        int base, int digits, int chunk, bool space_fill, bool make_unsigned_or_no_space_for_minus
+    ) {
+      switch (base) {
+        case 2:
+        case 8:
+        case 10:
+        case 16:
+          break;
+        default:
+          return;
+      }
+      if (digits < 0) digits = std::numeric_limits<int>::max();
+      if (chunk < 0) chunk = 0;
+
+      int_style = {base, digits, chunk, space_fill, make_unsigned_or_no_space_for_minus};
+    }
+    explicit global_props_t(const char *_format) : format(_format) {}
+    explicit global_props_t(bool _show_index) : show_index(_show_index) {}
+
+    global_props_t(global_props_t &&) = default;
+    global_props_t &operator=(global_props_t &&) = default;
+
+    void update(const global_props_t &g) {
+      if (g.int_style) int_style = g.int_style;
+      if (g.format != nullptr) format = g.format;
+      if (g.show_index) show_index = g.show_index;
+    }
+
+    void merge(const global_props_t &g) {
+      if (!int_style) int_style = g.int_style;
+      if (format == nullptr) format = g.format;
+      if (!show_index) show_index = g.show_index;
+    }
+  };
+
   static const export_command default_command;
 
-  explicit export_command(bool show_index) : _show_index(show_index) {}
+  export_command() = default;
+
+  explicit export_command(bool show_index)
+      : _global_props(std::make_shared<global_props_t>(show_index)) {}
 
   explicit export_command(
       int base, int digits, int chunk, bool space_fill, bool make_unsigned_or_no_space_for_minus
-  ) {
-    switch (base) {
-      case 2:
-      case 8:
-      case 10:
-      case 16:
-        break;
-      default:
-        return;
-    }
-    if (digits < 0) digits = std::numeric_limits<int>::max();
-    if (chunk < 0) chunk = 0;
-
-    _int_style = {base, digits, chunk, space_fill, make_unsigned_or_no_space_for_minus};
-  }
-
-  // This is for make_unique<export_command>().
-  // Don't call this outside since this doesn't check if int_style is safe.
-  explicit export_command(
-      const std::optional<std::tuple<unsigned int, unsigned int, unsigned int, bool, bool>>
-          &int_style,
-      bool show_index
   )
-      : _int_style(int_style), _show_index(show_index) {}
+      : _global_props(std::make_shared<global_props_t>(
+          base, digits, chunk, space_fill, make_unsigned_or_no_space_for_minus
+      )) {}
+
+  explicit export_command(const char *format)
+      : _global_props(std::make_shared<global_props_t>(format)) {}
+
+  explicit export_command(const std::shared_ptr<global_props_t> &g) : _global_props(g) {}
 
   explicit export_command(
       std::function<std::size_t(std::size_t, const std::function<std::size_t()> &)> &&skip_size_func
@@ -99,127 +111,46 @@ struct export_command {
   export_command(export_command &&) = default;
   export_command &operator=(export_command &&) = default;
 
-  export_command(const export_command &c)
-      : _int_style(c._int_style), _show_index(c._show_index), _skip_size_func(c._skip_size_func) {
-    if (c._child) _child = std::make_unique<export_command>(*c._child);
-    if (c._map_key_child) _map_key_child = std::make_unique<export_command>(*c._map_key_child);
-    if (c._map_value_child)
-      _map_value_child = std::make_unique<export_command>(*c._map_value_child);
-  }
-
-  export_command &operator=(const export_command &c) {
-    _int_style = c._int_style;
-    _show_index = c._show_index;
-    _skip_size_func = c._skip_size_func;
-    if (c._child) _child = std::make_unique<export_command>(*c._child);
-    if (c._map_key_child) _child = std::make_unique<export_command>(*c._map_key_child);
-    if (c._map_value_child) _child = std::make_unique<export_command>(*c._map_value_child);
-
-    return *this;
-  }
-
-  export_command() = delete;
-
-  export_command operator<<(export_command &&command) && {
-    *this << std::move(command);
-    return std::move(*this);
-  }
-
-  export_command &operator<<(export_command &&command) & {
-    // export_command has int_style || show_index ||
-    //     (either skip_size_func or {map_key_child || map_value_child}).
-    // in the case of int_style
-    if (command._int_style) _int_style = command._int_style;
-
-    // in the case of show_index
-    if (command._show_index) _show_index = command._show_index;
-
-    // in the case of skip_size_func
-    if (command._skip_size_func) {
-      // jump to the node that has no skip_size_func
-      if (_skip_size_func && _child) {
-        *_child << std::move(command);
-        return *this;
-      }
-
-      // assign
-      if (!_skip_size_func) {
-        _skip_size_func = command._skip_size_func;
-      } else {
-        _child = std::make_unique<export_command>(std::move(command));
-        _child->_int_style = _int_style;
-      }
-
-      return *this;
-    }
-
-    if (!command._map_key_child && !command._map_value_child) return *this;
-
-    // in the case of {map_key_child || map_value_child}
-    // jump to the node whose child has no skip_size_func.
-    if (_child && _child->_skip_size_func) {
-      *_child << std::move(command);
-      return *this;
-    }
-
-    if (command._map_key_child) _map_key_child = std::move(command._map_key_child);
-    if (command._map_value_child) _map_value_child = std::move(command._map_value_child);
-
-    return *this;
-  }
-
-  export_command operator<<(const export_command &command) && {
-    *this << export_command(command);
-    return std::move(*this);
-  }
-
-  export_command operator<<(const export_command &command) const & {
-    return export_command(*this) << export_command(command);
-  }
-
   const export_command &next() const {
     if (_child) {
-      if (_int_style && !_child->_int_style) _child->_int_style = _int_style;
-      if (_show_index) _child->_show_index = _show_index;
+      if (_global_props && !_child->_global_props) _child->_global_props = _global_props;
     } else {
-      if (!_int_style && !_show_index) return default_command;
+      if (!_global_props) return default_command;
 
-      _child = std::make_unique<export_command>(_int_style, _show_index);
+      _child = std::make_unique<export_command>(_global_props);
     }
 
     return *_child;
   }
 
   const export_command &next_for_map_key() const {
-    if (_skip_size_func && _map_key_child) {
-      if (_int_style && !_map_key_child->_int_style) _map_key_child->_int_style = _int_style;
-      if (_show_index) _map_key_child->_show_index = _show_index;
+    if (!_skip_size_func) return next();  // this is 0th dim.
+    if (!_map_key_child) return next();
 
-      return *_map_key_child;
+    if (_global_props) {
+      if (_map_key_child->_global_props) {
+        _map_key_child->_global_props->merge(*_global_props);
+      } else {
+        _map_key_child->_global_props = _global_props;
+      }
     }
 
-    return next();
+    return *_map_key_child;
   }
 
   const export_command &next_for_map_value() const {
-    if (_skip_size_func && _map_value_child) {
-      if (_int_style && !_map_value_child->_int_style) _map_value_child->_int_style = _int_style;
-      if (_show_index) _map_value_child->_show_index = _show_index;
+    if (!_skip_size_func) return next();  // this is 0th dim.
+    if (!_map_value_child) return next();
 
-      return *_map_value_child;
+    if (_global_props) {
+      if (_map_value_child->_global_props) {
+        _map_value_child->_global_props->merge(*_global_props);
+      } else {
+        _map_value_child->_global_props = _global_props;
+      }
     }
 
-    return next();
-  }
-
-  template <typename T>
-  value_with_command<T> operator<<(const T &value) && {
-    return value_with_command<T>(value, std::move(*this));
-  }
-
-  template <typename T>
-  value_with_command<T> operator<<(const T &value) const & {
-    return value_with_command<T>(value, *this);
+    return *_map_value_child;
   }
 
   template <typename T>
@@ -228,20 +159,118 @@ struct export_command {
     return skip_container<T>(container, _default_skip_size_func);
   }
 
-  std::optional<std::tuple<unsigned int, unsigned int, unsigned int, bool, bool>> get_int_style(
+  std::optional<std::tuple<unsigned int, unsigned int, unsigned int, bool, bool>> int_style(
   ) const {
-    return _int_style;
+    return _global_props ? _global_props->int_style : std::nullopt;
   }
 
-  bool show_index() const { return _show_index; }
+  template <typename T>
+  auto format(T value) const -> std::enable_if_t<is_arithmetic<T>, std::string> {
+    if (!_global_props || _global_props->format == nullptr) return "";
+
+    int sz = std::snprintf(nullptr, 0, _global_props->format, value);
+    if (sz < 0) return "";
+
+    std::vector<char> buffer(sz + 1);
+    std::snprintf(buffer.data(), buffer.size(), _global_props->format, value);
+    return {buffer.data(), static_cast<std::size_t>(sz)};
+  }
+
+  bool show_index() const { return _global_props && _global_props->show_index; }
+
+  // The below is for supporting lvalue of export_command -----------------------------------------
+
+  export_command(const export_command &c)
+      : _global_props(c._global_props), _skip_size_func(c._skip_size_func) {
+    if (c._child) _child = std::make_unique<export_command>(*c._child);
+    if (c._map_key_child) _map_key_child = std::make_unique<export_command>(*c._map_key_child);
+    if (c._map_value_child)
+      _map_value_child = std::make_unique<export_command>(*c._map_value_child);
+  }
+
+  export_command &operator=(const export_command &c) {
+    _global_props = c._global_props;
+    _skip_size_func = c._skip_size_func;
+    if (c._child) _child = std::make_unique<export_command>(*c._child);
+    if (c._map_key_child) _child = std::make_unique<export_command>(*c._map_key_child);
+    if (c._map_value_child) _child = std::make_unique<export_command>(*c._map_value_child);
+
+    return *this;
+  }
+
+  // The above is for supporting lvalue of export_command -----------------------------------------
+
+  friend export_command operator<<(export_command &&, export_command &&);
+  friend export_command operator<<(export_command &&, const export_command &);
+  friend export_command operator<<(const export_command &, export_command &&);
+  friend export_command operator<<(const export_command &, const export_command &);
+  friend export_command _map_k(export_command &&command);
+  friend export_command _map_v(export_command &&command);
+  friend export_command _map_kv(export_command &&key, export_command &&value);
 
  private:
-  std::optional<std::tuple<unsigned int, unsigned int, unsigned int, bool, bool>> _int_style;
-  bool _show_index{false};
+  std::shared_ptr<global_props_t> _global_props;
   std::function<std::size_t(std::size_t, const std::function<std::size_t()> &)> _skip_size_func;
+
+  // if export_command is used as rvalue, unique_ptr is enough.
+  // Also, using shared_ptr might cause circular reference.
   mutable std::unique_ptr<export_command> _child;
   std::unique_ptr<export_command> _map_key_child;
   std::unique_ptr<export_command> _map_value_child;
+
+  void update_and_append(export_command &&command) {
+    update_global_props(std::move(command._global_props));
+    append_child(std::move(command));
+  }
+
+  void update_global_props(std::shared_ptr<global_props_t> &&g) {
+    if (g) {
+      if (_global_props) {
+        _global_props->update(*g);
+        g.reset();
+      } else {
+        _global_props.swap(g);
+      }
+    }
+
+    // Here, g == nullptr
+  }
+
+  void append_child(export_command &&command) {
+    // export_command has (either skip_size_func or {map_key_child || map_value_child})( || g).
+
+    // in the case of skip_size_func
+    if (command._skip_size_func) {
+      if (_skip_size_func) {
+        // append
+        if (_child) {
+          _child->append_child(std::move(command));
+        } else {
+          _child = std::make_unique<export_command>(std::move(command));
+        }
+
+        return;
+      }
+
+      // update this node
+      _skip_size_func = std::move(command._skip_size_func);
+      if (command._map_key_child) _map_key_child = std::move(command._map_key_child);
+      if (command._map_value_child) _map_value_child = std::move(command._map_value_child);
+      return;
+    }
+
+    if (!(command._map_key_child || command._map_value_child)) return;
+
+    // in the case of {map_key_child || map_value_child}
+    // jump to the node whose child has no skip_size_func.
+    if (_child && _child->_skip_size_func) {
+      _child->append_child(std::move(command));
+      return;
+    }
+
+    if (command._map_key_child) _map_key_child = std::move(command._map_key_child);
+    if (command._map_value_child) _map_value_child = std::move(command._map_value_child);
+  }
 };
 
 inline const export_command export_command::default_command(_default_skip_size_func);
@@ -253,45 +282,62 @@ struct value_with_command {
   const export_command command;
 
   explicit value_with_command(const T &v, export_command &&c) : value(v), command(std::move(c)) {}
-  explicit value_with_command(const T &v, const export_command &c) : value(v), command(c) {}
   value_with_command() = delete;
 };
 
+inline export_command operator<<(export_command &&lhs, export_command &&rhs) {
+  lhs.update_and_append(std::move(rhs));
+  return std::move(lhs);
+}
+
 template <typename T>
-value_with_command<T> operator|(const T &value, export_command &&command) {
+inline value_with_command<T> operator<<(export_command &&command, const T &value) {
+  return value_with_command<T>(value, std::move(command));
+}
+
+// The below is for supporting lvalue of export_command -------------------------------------------
+
+inline export_command operator<<(export_command &&lhs, const export_command &rhs) {
+  lhs.update_and_append(export_command(rhs));
+  return std::move(lhs);
+}
+
+inline export_command operator<<(const export_command &lhs, export_command &&rhs) {
+  export_command retval(lhs);
+  retval.update_and_append(std::move(rhs));
+  return retval;
+}
+
+inline export_command operator<<(const export_command &lhs, const export_command &rhs) {
+  export_command retval(lhs);
+  retval.update_and_append(export_command(rhs));
+  return retval;
+}
+
+template <typename T>
+inline value_with_command<T> operator<<(const export_command &command, const T &value) {
+  return value_with_command<T>(value, export_command(command));
+}
+
+// The above is for supporting lvalue of export_command -------------------------------------------
+
+inline export_command operator|(export_command &&lhs, export_command &&rhs) {
+  return std::move(lhs) << std::move(rhs);
+}
+
+template <typename T>
+inline value_with_command<T> operator|(const T &value, export_command &&command) {
   return value_with_command<T>(value, std::move(command));
 }
 
 template <typename T>
-value_with_command<T> operator|(const T &value, const export_command &command) {
-  return value_with_command<T>(value, command);
-}
-
-template <typename T>
-value_with_command<T> operator|(value_with_command<T> &&vc, export_command &&command) {
+inline value_with_command<T> operator|(value_with_command<T> &&vc, export_command &&command) {
   return value_with_command<T>(
       vc.value, const_cast<export_command &&>(vc.command) << std::move(command)
   );
 }
 
-template <typename T>
-value_with_command<T> operator|(value_with_command<T> &&vc, const export_command &command) {
-  return value_with_command<T>(vc.value, const_cast<export_command &&>(vc.command) << command);
-}
-
-template <typename T>
-value_with_command<T> operator|(const value_with_command<T> &vc, export_command &&command) {
-  return value_with_command<T>(vc.value, vc.command << std::move(command));
-}
-
-template <typename T>
-value_with_command<T> operator|(const value_with_command<T> &vc, const export_command &command) {
-  return value_with_command<T>(vc.value, vc.command << command);
-}
-
-inline export_command operator|(export_command &&lhs, export_command &&rhs) {
-  return std::move(lhs) << std::move(rhs);
-}
+// The below is for supporting lvalue of export_command -------------------------------------------
 
 inline export_command operator|(const export_command &lhs, export_command &&rhs) {
   return lhs << std::move(rhs);
@@ -303,6 +349,49 @@ inline export_command operator|(export_command &&lhs, const export_command &rhs)
 
 inline export_command operator|(const export_command &lhs, const export_command &rhs) {
   return lhs << rhs;
+}
+
+template <typename T>
+inline value_with_command<T> operator|(const T &value, const export_command &command) {
+  return value_with_command<T>(value, export_command(command));
+}
+
+template <typename T>
+inline value_with_command<T> operator|(value_with_command<T> &&vc, const export_command &command) {
+  return value_with_command<T>(vc.value, const_cast<export_command &&>(vc.command) << command);
+}
+
+template <typename T>
+inline value_with_command<T> operator|(const value_with_command<T> &vc, export_command &&command) {
+  return value_with_command<T>(vc.value, vc.command << std::move(command));
+}
+
+template <typename T>
+inline value_with_command<T> operator|(
+    const value_with_command<T> &vc, const export_command &command
+) {
+  return value_with_command<T>(vc.value, vc.command << command);
+}
+
+// The above is for supporting lvalue of export_command -------------------------------------------
+
+inline export_command _map_k(export_command &&c) {
+  export_command new_command;
+  new_command._map_key_child = std::make_unique<export_command>(std::move(c));
+  return new_command;
+}
+
+inline export_command _map_v(export_command &&c) {
+  export_command new_command;
+  new_command._map_value_child = std::make_unique<export_command>(std::move(c));
+  return new_command;
+}
+
+inline export_command _map_kv(export_command &&key, export_command &&value) {
+  export_command new_command;
+  new_command._map_key_child = std::make_unique<export_command>(std::move(key));
+  new_command._map_value_child = std::make_unique<export_command>(std::move(value));
+  return new_command;
 }
 
 template <typename>
@@ -396,6 +485,12 @@ inline auto uhex(int digits = -1, int chunk = 0) {
 }
 
 /*
+ * Manipulator for the display style of integers.
+ * This is an experimental feature.
+ */
+inline auto format(const char *f) { return _detail::export_command(f); }
+
+/*
  * Manipulator for the display style of iterables.
  * See README for details.
  */
@@ -468,20 +563,20 @@ inline auto middle(std::size_t iteration_count = max_iteration_count) {
  * Manipulator for applying manipulators to map keys.
  * See README for details.
  */
-inline auto map_k(_detail::export_command &&c) { return _map_key(std::move(c)); }
+inline auto map_k(_detail::export_command &&c) { return _detail::_map_k(std::move(c)); }
 
 /*
  * Manipulator for applying manipulators to map values.
  * See README for details.
  */
-inline auto map_v(_detail::export_command &&c) { return _map_value(std::move(c)); }
+inline auto map_v(_detail::export_command &&c) { return _detail::_map_v(std::move(c)); }
 
 /*
  * Manipulator for applying manipulators to map keys and values.
  * See README for details.
  */
 inline auto map_kv(_detail::export_command &&k, _detail::export_command &&v) {
-  return _map_key_and_value(std::move(k), std::move(v));
+  return _detail::_map_kv(std::move(k), std::move(v));
 }
 
 /*

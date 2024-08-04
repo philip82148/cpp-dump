@@ -108,19 +108,30 @@ inline std::string _imag_sign(std::string_view s) {
 }  // namespace es
 
 template <typename T>
-inline std::string
-export_other(const std::complex<T> &complex, const std::string &, std::size_t, std::size_t current_depth, bool, const export_command &) {
+inline std::string export_other(
+    const std::complex<T> &complex,
+    const std::string &,
+    std::size_t,
+    std::size_t current_depth,
+    bool,
+    const export_command &command
+) {
   constexpr T pi = static_cast<T>(3.141592653589793238462643383279502884L);
+
+  auto to_str = [&](T value) -> std::string {
+    std::string output = command.format(value);
+    if (!output.empty()) return output;
+
+    return std::to_string(value);
+  };
 
   auto imag = std::imag(complex);
   auto imag_sign = imag >= 0 ? "+" : "-";
 
-  return es::_complex_component(std::to_string(std::real(complex))) + " "
-         + es::_imag_sign(imag_sign) + " "
-         + es::_complex_component(std::to_string(std::abs(imag)) + "i ")
-         + es::bracket("( ", current_depth) + es::member("abs") + es::op("= ")
-         + es::number(std::to_string(std::abs(complex))) + es::op(", ") + es::class_member("arg/pi")
-         + es::op("= ") + es::number(std::to_string(std::arg(complex) / pi))
+  return es::_complex_component(to_str(std::real(complex))) + " " + es::_imag_sign(imag_sign) + " "
+         + es::_complex_component(to_str(std::abs(imag)) + "i ") + es::bracket("( ", current_depth)
+         + es::member("abs") + es::op("= ") + es::number(to_str(std::abs(complex))) + es::op(", ")
+         + es::class_member("arg/pi") + es::op("= ") + es::number(to_str(std::arg(complex) / pi))
          + es::bracket(" )", current_depth);
 }
 
