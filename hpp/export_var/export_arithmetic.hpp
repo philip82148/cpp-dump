@@ -9,6 +9,7 @@
 
 #include <algorithm>
 #include <iomanip>
+#include <ios>
 #include <limits>
 #include <sstream>
 #include <string>
@@ -158,7 +159,7 @@ inline auto export_arithmetic(
     reversed_prefix = "b0";
   } else {
     std::stringstream ss;
-    ss << std::setbase(base) << unsigned_tmp;
+    ss << std::setbase(base) << std::uppercase << unsigned_tmp;
     output = ss.str();
     std::reverse(output.begin(), output.end());
 
