@@ -138,6 +138,8 @@ inline auto export_arithmetic(
     unsigned_tmp = value;
   }
 
+  std::string_view reversed_prefix;
+
   // Create a string of an integer with base as the radix
   if (base == 10) {
     output = std::to_string(unsigned_tmp);
@@ -152,17 +154,26 @@ inline auto export_arithmetic(
       output.append(1, next_digit);
       unsigned_tmp >>= 1;
     }
+
+    reversed_prefix = "b0";
   } else {
     std::stringstream ss;
     ss << std::setbase(base) << unsigned_tmp;
     output = ss.str();
     std::reverse(output.begin(), output.end());
+
+    reversed_prefix = base == 16 ? "x0" : "o0";
   }
 
   // Add a minus when value < 0 (part 1)
   bool need_minus = !make_unsigned && value < 0;
   bool added_minus_before_fill = space_fill && (digits == 0 || output.length() < digits);
-  if (need_minus && added_minus_before_fill) output.append(1, '-');
+  bool added_prefix = false;
+  if (need_minus && added_minus_before_fill) {
+    output.append(reversed_prefix);
+    output.append(1, '-');
+    added_prefix = true;
+  }
 
   if (output.length() < digits) {
     // Fill with spaces/zeros
@@ -187,6 +198,8 @@ inline auto export_arithmetic(
     output.swap(new_output);
   }
 
+  if (!added_prefix) output.append(reversed_prefix);
+
   // Add a minus when value < 0 (part 2)
   if (need_minus && !added_minus_before_fill) {
     output.append(1, '-');
@@ -196,12 +209,9 @@ inline auto export_arithmetic(
 
   std::reverse(output.begin(), output.end());
 
-  if (base == 10) return es::number(output);
+  if (base != 10 && (std::is_unsigned_v<T> || make_unsigned)) output.append(1, 'u');
 
-  std::string suffix = " _" + std::to_string(base);
-  if (make_unsigned) suffix += "u";
-
-  return es::number(output) + es::op(suffix);
+  return es::number(output);
 }
 
 template <typename T>
