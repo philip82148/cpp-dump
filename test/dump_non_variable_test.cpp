@@ -800,6 +800,15 @@ int main(int argc, char *argv[]) {
   cpp_dump(vec4 | cp::front() | cp::middle(3) | cp::index());
   cpp_dump(vec4 | cp::front() | cp::both_ends(1) | cp::index());
 
+  vector<vector<bool>> vec5 = {
+      {true, false, true, false},
+      {false, false, false, false},
+      {true, true, true, true},
+  };
+
+  cpp_dump(vec5);
+  cpp_dump(vec5 | cp::bw());
+
   // lvalue export_command
   auto index = cp::index();
   auto back = cp::back(3);

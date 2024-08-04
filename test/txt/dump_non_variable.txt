@@ -1236,6 +1236,16 @@ LLONG_MAX, LLONG_MIN, ULLONG_MAX
          4: [ 0: 17, 1: 18 ],
          5: [ 0: 19, 1: 20 ]
        ]
+[dump] vec5 => [
+         [ true, false, true, false ],
+         [ false, false, false, false ],
+         [ true, true, true, true ]
+       ]
+[dump] vec5 | cp::bw() => [
+         [  true, false,  true, false ],
+         [ false, false, false, false ],
+         [  true,  true,  true,  true ]
+       ]
 [dump] vec4 | (back | cp::index()) => [
          ...,
          3: [ 0: 15, 1: 16 ],
