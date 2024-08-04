@@ -95,58 +95,26 @@ here.`,
          str_member= "This object has a pointer and reference_wrapper to itself.", 
          pointer= *non_copyable_and_non_movable_class{ 
            str_member= "This object has a pointer and reference_wrapper to itself.", 
-           pointer= *non_copyable_and_non_movable_class{ 
-             str_member= "This object has a pointer and reference_wrapper to itself.", 
-             pointer= *non_copyable_and_non_movable_class{ 
-               str_member= "This object has a pointer and reference_wrapper to itself.", 
-               pointer= *non_copyable_and_non_movable_class{ ... }, 
-               ref= non_copyable_and_non_movable_class{ ... }
-             }, 
-             ref= non_copyable_and_non_movable_class{ 
-               str_member= "This object has a pointer and reference_wrapper to itself.", 
-               pointer= *non_copyable_and_non_movable_class{ ... }, 
-               ref= non_copyable_and_non_movable_class{ ... }
-             }
-           }, 
+           pointer= *non_copyable_and_non_movable_class{ ... }, 
            ref= non_copyable_and_non_movable_class{ 
              str_member= "This object has a pointer and reference_wrapper to itself.", 
-             pointer= *non_copyable_and_non_movable_class{ 
-               str_member= "This object has a pointer and reference_wrapper to itself.", 
-               pointer= *non_copyable_and_non_movable_class{ ... }, 
-               ref= non_copyable_and_non_movable_class{ ... }
-             }, 
-             ref= non_copyable_and_non_movable_class{ 
-               str_member= "This object has a pointer and reference_wrapper to itself.", 
-               pointer= *non_copyable_and_non_movable_class{ ... }, 
-               ref= non_copyable_and_non_movable_class{ ... }
-             }
+             pointer= *..., 
+             ref= non_copyable_and_non_movable_class{ ... }
            }
          }, 
          ref= non_copyable_and_non_movable_class{ 
            str_member= "This object has a pointer and reference_wrapper to itself.", 
            pointer= *non_copyable_and_non_movable_class{ 
              str_member= "This object has a pointer and reference_wrapper to itself.", 
-             pointer= *non_copyable_and_non_movable_class{ 
-               str_member= "This object has a pointer and reference_wrapper to itself.", 
-               pointer= *non_copyable_and_non_movable_class{ ... }, 
-               ref= non_copyable_and_non_movable_class{ ... }
-             }, 
-             ref= non_copyable_and_non_movable_class{ 
-               str_member= "This object has a pointer and reference_wrapper to itself.", 
-               pointer= *non_copyable_and_non_movable_class{ ... }, 
-               ref= non_copyable_and_non_movable_class{ ... }
-             }
+             pointer= *..., 
+             ref= non_copyable_and_non_movable_class{ ... }
            }, 
            ref= non_copyable_and_non_movable_class{ 
              str_member= "This object has a pointer and reference_wrapper to itself.", 
-             pointer= *non_copyable_and_non_movable_class{ 
-               str_member= "This object has a pointer and reference_wrapper to itself.", 
-               pointer= *non_copyable_and_non_movable_class{ ... }, 
-               ref= non_copyable_and_non_movable_class{ ... }
-             }, 
+             pointer= *non_copyable_and_non_movable_class{ ... }, 
              ref= non_copyable_and_non_movable_class{ 
                str_member= "This object has a pointer and reference_wrapper to itself.", 
-               pointer= *non_copyable_and_non_movable_class{ ... }, 
+               pointer= *..., 
                ref= non_copyable_and_non_movable_class{ ... }
              }
            }
@@ -1307,33 +1275,29 @@ LLONG_MAX, LLONG_MIN, ULLONG_MAX
        ]
 [dump] cp::front(2) << cp::middle(1) << cp::back(2) << cp::both_ends(1) << non_copyable_and_non_movable_class1 => non_copyable_and_non_movable_class{ 
          str_member= "This object has a pointer and reference_wrapper to itself.", 
-         pointer= *non_copyable_and_non_movable_class{ 
-           str_member= "This object has a pointer and reference_wrapper to itself.", 
-           pointer= *non_copyable_and_non_movable_class{ ... }, 
-           ref= non_copyable_and_non_movable_class{ ... }
-         }, 
+         pointer= *non_copyable_and_non_movable_class{ ... }, 
          ref= non_copyable_and_non_movable_class{ 
            str_member= "This object has a pointer and reference_wrapper to itself.", 
-           pointer= *non_copyable_and_non_movable_class{ ... }, 
+           pointer= *..., 
            ref= non_copyable_and_non_movable_class{ ... }
          }
        }
 [dump] non_copyable_and_non_movable_class_container1 => [
          non_copyable_and_non_movable_class{ 
            str_member= "This is non_copyable_and_non_movable_class.", 
-           pointer= *non_copyable_and_non_movable_class{ ... }, 
+           pointer= *..., 
            ref= non_copyable_and_non_movable_class{ ... }
          },
          non_copyable_and_non_movable_class{ 
            str_member= "This is non_copyable_and_non_movable_class.", 
-           pointer= *non_copyable_and_non_movable_class{ ... }, 
+           pointer= *..., 
            ref= non_copyable_and_non_movable_class{ ... }
          }
        ]
 [dump] cp::front(1) << non_copyable_and_non_movable_class_container1 => [
          non_copyable_and_non_movable_class{ 
            str_member= "This is non_copyable_and_non_movable_class.", 
-           pointer= *non_copyable_and_non_movable_class{ ... }, 
+           pointer= *..., 
            ref= non_copyable_and_non_movable_class{ ... }
          },
          ...
@@ -1341,12 +1305,12 @@ LLONG_MAX, LLONG_MIN, ULLONG_MAX
 [dump] tuple_of_non_copyable_and_non_movable_class1 => (
          non_copyable_and_non_movable_class{ 
            str_member= "This object has a pointer and reference_wrapper to itself.", 
-           pointer= *non_copyable_and_non_movable_class{ ... }, 
+           pointer= *..., 
            ref= non_copyable_and_non_movable_class{ ... }
          },
          non_copyable_and_non_movable_class{ 
            str_member= "This object has a pointer and reference_wrapper to itself.", 
-           pointer= *non_copyable_and_non_movable_class{ ... }, 
+           pointer= *..., 
            ref= non_copyable_and_non_movable_class{ ... }
          }
        )

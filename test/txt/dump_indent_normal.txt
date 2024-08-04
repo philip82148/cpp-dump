@@ -323,76 +323,56 @@ here`
        }
 ================================================================  test of self-reference-class  ================================================================
 [dump] self_reference_class1 => self_reference_class{ 
-         str_member= "This has a self-reference.", 
+         str_member= "This is self_reference_class, which has a self-reference.", 
          pointer= *self_reference_class{ 
-           str_member= "This has a self-reference.", 
-           pointer= *self_reference_class{ 
-             str_member= "This has a self-reference.", 
-             pointer= *self_reference_class{ str_member= "This has a self-reference.", pointer= *self_reference_class{ ... }, ref= self_reference_class{ ... } }, 
-             ref= self_reference_class{ str_member= "This has a self-reference.", pointer= *self_reference_class{ ... }, ref= self_reference_class{ ... } }
-           }, 
-           ref= self_reference_class{ 
-             str_member= "This has a self-reference.", 
-             pointer= *self_reference_class{ str_member= "This has a self-reference.", pointer= *self_reference_class{ ... }, ref= self_reference_class{ ... } }, 
-             ref= self_reference_class{ str_member= "This has a self-reference.", pointer= *self_reference_class{ ... }, ref= self_reference_class{ ... } }
-           }
+           str_member= "This is self_reference_class, which has a self-reference.", 
+           pointer= *self_reference_class{ ... }, 
+           ref= self_reference_class{ str_member= "This is self_reference_class, which has a self-reference.", pointer= *..., ref= self_reference_class{ ... } }
          }, 
          ref= self_reference_class{ 
-           str_member= "This has a self-reference.", 
+           str_member= "This is self_reference_class, which has a self-reference.", 
            pointer= *self_reference_class{ 
-             str_member= "This has a self-reference.", 
-             pointer= *self_reference_class{ str_member= "This has a self-reference.", pointer= *self_reference_class{ ... }, ref= self_reference_class{ ... } }, 
-             ref= self_reference_class{ str_member= "This has a self-reference.", pointer= *self_reference_class{ ... }, ref= self_reference_class{ ... } }
+             str_member= "This is self_reference_class, which has a self-reference.", 
+             pointer= *..., 
+             ref= self_reference_class{ ... }
            }, 
            ref= self_reference_class{ 
-             str_member= "This has a self-reference.", 
-             pointer= *self_reference_class{ str_member= "This has a self-reference.", pointer= *self_reference_class{ ... }, ref= self_reference_class{ ... } }, 
-             ref= self_reference_class{ str_member= "This has a self-reference.", pointer= *self_reference_class{ ... }, ref= self_reference_class{ ... } }
+             str_member= "This is self_reference_class, which has a self-reference.", 
+             pointer= *self_reference_class{ ... }, 
+             ref= self_reference_class{ 
+               str_member= "This is self_reference_class, which has a self-reference.", 
+               pointer= *..., 
+               ref= self_reference_class{ ... }
+             }
            }
          }
        }
 [dump] self_reference_class2 => self_reference_class{ 
-         str_member= "This has a self-reference..", 
+         str_member= "This is self_reference_class, which has a self-reference..", 
          pointer= *self_reference_class{ 
-           str_member= "This has a self-reference..", 
-           pointer= *self_reference_class{ 
-             str_member= "This has a self-reference..", 
-             pointer= *self_reference_class{ 
-               str_member= "This has a self-reference..", 
-               pointer= *self_reference_class{ ... }, 
-               ref= self_reference_class{ ... }
-             }, 
-             ref= self_reference_class{ str_member= "This has a self-reference..", pointer= *self_reference_class{ ... }, ref= self_reference_class{ ... } }
-           }, 
+           str_member= "This is self_reference_class, which has a self-reference..", 
+           pointer= *self_reference_class{ ... }, 
            ref= self_reference_class{ 
-             str_member= "This has a self-reference..", 
-             pointer= *self_reference_class{ 
-               str_member= "This has a self-reference..", 
-               pointer= *self_reference_class{ ... }, 
-               ref= self_reference_class{ ... }
-             }, 
-             ref= self_reference_class{ str_member= "This has a self-reference..", pointer= *self_reference_class{ ... }, ref= self_reference_class{ ... } }
+             str_member= "This is self_reference_class, which has a self-reference..", 
+             pointer= *..., 
+             ref= self_reference_class{ ... }
            }
          }, 
          ref= self_reference_class{ 
-           str_member= "This has a self-reference..", 
+           str_member= "This is self_reference_class, which has a self-reference..", 
            pointer= *self_reference_class{ 
-             str_member= "This has a self-reference..", 
-             pointer= *self_reference_class{ 
-               str_member= "This has a self-reference..", 
-               pointer= *self_reference_class{ ... }, 
-               ref= self_reference_class{ ... }
-             }, 
-             ref= self_reference_class{ str_member= "This has a self-reference..", pointer= *self_reference_class{ ... }, ref= self_reference_class{ ... } }
+             str_member= "This is self_reference_class, which has a self-reference..", 
+             pointer= *..., 
+             ref= self_reference_class{ ... }
            }, 
            ref= self_reference_class{ 
-             str_member= "This has a self-reference..", 
-             pointer= *self_reference_class{ 
-               str_member= "This has a self-reference..", 
-               pointer= *self_reference_class{ ... }, 
+             str_member= "This is self_reference_class, which has a self-reference..", 
+             pointer= *self_reference_class{ ... }, 
+             ref= self_reference_class{ 
+               str_member= "This is self_reference_class, which has a self-reference..", 
+               pointer= *..., 
                ref= self_reference_class{ ... }
-             }, 
-             ref= self_reference_class{ str_member= "This has a self-reference..", pointer= *self_reference_class{ ... }, ref= self_reference_class{ ... } }
+             }
            }
          }
        }

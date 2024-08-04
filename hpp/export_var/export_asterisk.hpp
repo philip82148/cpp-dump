@@ -43,8 +43,6 @@ inline auto export_asterisk(
 
   if (current_depth >= max_depth) return es::_asterisk_asterisk("*") + es::op("...");
 
-  // If decltype(*value) == decltype(value), then the program enters an infinite loop.
-  // So increment depth.
   return es::_asterisk_asterisk("*")
          + export_var(
              *value, indent, last_line_length + 1, current_depth + 1, fail_on_newline, command
