@@ -37,10 +37,14 @@ struct value_with_command;
 
 struct export_command {
  public:
+  struct index {};
+  struct bw {};
+
   struct global_props_t {
     std::optional<std::tuple<unsigned int, unsigned int, unsigned int, bool, bool>> int_style;
     const char *format{nullptr};
     bool show_index{false};
+    bool bool_width{false};
 
     explicit global_props_t(
         int base, int digits, int chunk, bool space_fill, bool make_unsigned_or_no_space_for_minus
@@ -60,7 +64,8 @@ struct export_command {
       int_style = {base, digits, chunk, space_fill, make_unsigned_or_no_space_for_minus};
     }
     explicit global_props_t(const char *_format) : format(_format) {}
-    explicit global_props_t(bool _show_index) : show_index(_show_index) {}
+    explicit global_props_t(index) : show_index(true) {}
+    explicit global_props_t(bw) : bool_width(true) {}
 
     global_props_t(global_props_t &&) = default;
     global_props_t &operator=(global_props_t &&) = default;
@@ -69,21 +74,20 @@ struct export_command {
       if (g.int_style) int_style = g.int_style;
       if (g.format != nullptr) format = g.format;
       if (g.show_index) show_index = g.show_index;
+      if (g.bool_width) bool_width = g.bool_width;
     }
 
     void merge(const global_props_t &g) {
       if (!int_style) int_style = g.int_style;
       if (format == nullptr) format = g.format;
       if (!show_index) show_index = g.show_index;
+      if (!bool_width) bool_width = g.bool_width;
     }
   };
 
   static const export_command default_command;
 
   export_command() = default;
-
-  explicit export_command(bool show_index)
-      : _global_props(std::make_shared<global_props_t>(show_index)) {}
 
   explicit export_command(
       int base, int digits, int chunk, bool space_fill, bool make_unsigned_or_no_space_for_minus
@@ -94,6 +98,10 @@ struct export_command {
 
   explicit export_command(const char *format)
       : _global_props(std::make_shared<global_props_t>(format)) {}
+
+  explicit export_command(index) : _global_props(std::make_shared<global_props_t>(index{})) {}
+
+  explicit export_command(bw) : _global_props(std::make_shared<global_props_t>(bw{})) {}
 
   explicit export_command(const std::shared_ptr<global_props_t> &g) : _global_props(g) {}
 
@@ -177,6 +185,8 @@ struct export_command {
   }
 
   bool show_index() const { return _global_props && _global_props->show_index; }
+
+  bool bool_width() const { return _global_props && _global_props->bool_width; }
 
   // The below is for supporting lvalue of export_command -----------------------------------------
 
@@ -491,6 +501,18 @@ inline auto uhex(int digits = -1, int chunk = 0) {
 inline auto format(const char *f) { return _detail::export_command(f); }
 
 /*
+ * Manipulator for the display style of containers.
+ * See README for details.
+ */
+inline auto index() { return _detail::export_command(_detail::export_command::index{}); }
+
+/*
+ * Manipulator for the display style of containers.
+ * See README for details.
+ */
+inline auto bw() { return _detail::export_command(_detail::export_command::bw{}); }
+
+/*
  * Manipulator for the display style of iterables.
  * See README for details.
  */
@@ -578,11 +600,5 @@ inline auto map_v(_detail::export_command &&c) { return _detail::_map_v(std::mov
 inline auto map_kv(_detail::export_command &&k, _detail::export_command &&v) {
   return _detail::_map_kv(std::move(k), std::move(v));
 }
-
-/*
- * Manipulator for the display style of containers.
- * See README for details.
- */
-inline auto index() { return _detail::export_command(true); }
 
 }  // namespace cpp_dump
