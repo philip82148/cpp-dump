@@ -1,5 +1,7 @@
 [dump] void_ptr => 00007FFD06586204
 [dump] int_ptr | cp::addr() => 00007FFD06586204
+[dump] int_ptr_ptr | cp::addr(1) => *00007FFD06586204
+[dump] int_ptr_ptr_ptr | cp::addr(2) => **00007FFD06586204
 [dump] (unordered_map<int, int>{{4, 6}, {2, 6}, {4, 3}}) => { 4: 6, 2: 6 }
 [dump] unordered_multimap1 => {
          'c' (1): [ 30 ],

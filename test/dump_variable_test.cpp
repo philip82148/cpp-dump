@@ -1,4 +1,5 @@
 #include <array>
+#include <memory>
 #include <unordered_map>
 #include <unordered_set>
 //
@@ -85,7 +86,11 @@ int main(int argc, char *argv[]) {
 
     // addr
     const int *int_ptr = reinterpret_cast<const int *>(void_ptr);
+    const int **int_ptr_ptr = &int_ptr;
+    unique_ptr<const int **> int_ptr_ptr_ptr(new const int **(int_ptr_ptr));
     cpp_dump(int_ptr | cp::addr());
+    cpp_dump(int_ptr_ptr | cp::addr(1));
+    cpp_dump(int_ptr_ptr_ptr | cp::addr(2));
 
     // unordered
     cpp_dump((unordered_map<int, int>{{4, 6}, {2, 6}, {4, 3}}));
