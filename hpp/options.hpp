@@ -71,6 +71,7 @@ struct es_value_t {
   std::vector<std::string> bracket_by_depth{"\x1b[02m"};  // dark
   std::string class_op = "\x1b[02m";                      // dark
   std::string member_op = "\x1b[02m";                     // dark
+  std::string number_op{};                                // default
 };
 
 /**
@@ -130,6 +131,11 @@ inline bool detailed_class_es = false;
  * If true, the 'member_op' color is used for operators in members ((), etc...).
  */
 inline bool detailed_member_es = false;
+
+/**
+ * If true, the 'number_op' color is used for operators in numbers (+, -, etc...).
+ */
+inline bool detailed_number_es = false;
 
 /**
  * Style of indents of the Container, Set and Map categories (See 'Supported types').

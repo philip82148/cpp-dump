@@ -48,6 +48,7 @@ inline std::string member(std::string_view s) { return es::apply(es_value.member
 inline std::string unsupported(std::string_view s) { return es::apply(es_value.unsupported, s); }
 inline std::string class_op(std::string_view s) { return es::apply(es_value.class_op, s); }
 inline std::string member_op(std::string_view s) { return es::apply(es_value.member_op, s); }
+inline std::string number_op(std::string_view s) { return es::apply(es_value.number_op, s); }
 
 inline std::string bracket(std::string_view s, std::size_t d) {
   auto sz = es_value.bracket_by_depth.size();
