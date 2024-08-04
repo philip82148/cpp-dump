@@ -800,6 +800,7 @@ int main(int argc, char *argv[]) {
   cpp_dump(vec4 | cp::front() | cp::middle(3) | cp::index());
   cpp_dump(vec4 | cp::front() | cp::both_ends(1) | cp::index());
 
+  // bw, boolnum
   vector<vector<bool>> vec5 = {
       {true, false, true, false},
       {false, false, false, false},
@@ -808,6 +809,8 @@ int main(int argc, char *argv[]) {
 
   cpp_dump(vec5);
   cpp_dump(vec5 | cp::bw());
+  cpp_dump(vec5 | cp::bw(true));
+  cpp_dump(vec5 | cp::boolnum());
 
   // lvalue export_command
   auto index = cp::index();
