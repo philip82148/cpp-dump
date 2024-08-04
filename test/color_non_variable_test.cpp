@@ -229,4 +229,15 @@ int main(int argc, char *argv[]) {
   cpp_dump(314159265 | cp::format("%020d"));
   cpp_dump(31415926535ll | cp::format("%020lld"));
   cpp_dump(complex1 | cp::format("%.10f"));
+
+  vector<vector<bool>> vec4 = {
+      {true, false, true, false},
+      {false, false, false, false},
+      {true, true, true, true},
+  };
+
+  cpp_dump(vec4);
+  cpp_dump(vec4 | cp::bw());
+  cpp_dump(vec4 | cp::bw(true));
+  cpp_dump(vec4 | cp::boolnum());
 }
