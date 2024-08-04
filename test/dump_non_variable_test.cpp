@@ -358,9 +358,9 @@ int main(int argc, char *argv[]) {
   variant1 = 0;
   cpp_dump(variant1);
 
-  complex complex1{0.0, -1.0};
+  complex<double> complex1{0.0, -1.0};
   cpp_dump(complex1);
-  complex complex2{10.0, 1.0};
+  complex<double> complex2{10.0, 1.0};
   cpp_dump(complex2);
 
   logic_error logic_error1("This is a test error.");
@@ -772,6 +772,13 @@ int main(int argc, char *argv[]) {
   );
 
   CPP_DUMP_SET_OPTION(print_expr, true);
+
+  // format
+  cpp_dump(3.14159265f | cp::format("%.3f"));
+  cpp_dump(3.141592653589793238462643383279502884L | cp::format("%.36Lf"));
+  cpp_dump(314159265 | cp::format("%020d"));
+  cpp_dump(31415926535ll | cp::format("%020lld"));
+  cpp_dump(complex1 | cp::format("%.10f"));
 
   // index, front, back, middle, both_ends
   vector<vector<int>> vec4 = {
