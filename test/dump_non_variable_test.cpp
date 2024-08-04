@@ -822,10 +822,6 @@ int main(int argc, char *argv[]) {
   cpp_dump(vec6 | cp::charhex());
   cpp_dump(vec6 | cp::bin() | cp::charhex());
 
-  // addr
-  int *int_ptr2 = reinterpret_cast<int *>(0x7ffd69482a60);
-  cpp_dump(int_ptr2 | cp::addr());
-
   // lvalue export_command
   auto index = cp::index();
   auto back = cp::back(3);

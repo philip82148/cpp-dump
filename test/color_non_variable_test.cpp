@@ -248,7 +248,4 @@ int main(int argc, char *argv[]) {
   vector<char> vec5(sv1.begin(), sv1.end());
   cpp_dump(vec5);
   cpp_dump(vec5 | cp::charhex());
-
-  int *int_ptr2 = reinterpret_cast<int *>(0x7ffd69482a60);
-  cpp_dump(int_ptr2 | cp::addr());
 }

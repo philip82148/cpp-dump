@@ -83,6 +83,10 @@ int main(int argc, char *argv[]) {
     const void *void_ptr = (void *)0x7ffd06586204;
     cpp_dump(void_ptr);
 
+    // addr
+    const int *int_ptr = reinterpret_cast<const int *>(void_ptr);
+    cpp_dump(int_ptr | cp::addr());
+
     // unordered
     cpp_dump((unordered_map<int, int>{{4, 6}, {2, 6}, {4, 3}}));
 
