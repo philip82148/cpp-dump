@@ -172,7 +172,7 @@ struct export_command {
     if (sz < 0) return "";
 
     std::vector<char> buffer(sz + 1);
-    std::sprintf(buffer.data(), _global_props->format, value);
+    std::snprintf(buffer.data(), buffer.size(), _global_props->format, value);
     return {buffer.data(), static_cast<std::size_t>(sz)};
   }
 
