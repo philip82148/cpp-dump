@@ -475,8 +475,10 @@ here.)");
   cpp_dump(class_b3);
 
   draw_line("test of self-reference-class");
-  self_reference_class self_reference_class1{"This has a self-reference."};
+  self_reference_class self_reference_class1{
+      "This is self_reference_class, which has a self-reference."};
   cpp_dump(self_reference_class1);
-  self_reference_class self_reference_class2{"This has a self-reference.."};
+  self_reference_class self_reference_class2{
+      "This is self_reference_class, which has a self-reference.."};
   cpp_dump(self_reference_class2);
 }
