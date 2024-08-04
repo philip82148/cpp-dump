@@ -23,9 +23,12 @@ namespace cpp_dump {
 
 namespace _detail {
 
-inline std::string
-export_arithmetic(bool value, const std::string &, std::size_t, std::size_t, bool, const export_command &) {
-  return es::reserved(value ? "true" : "false");
+inline std::string export_arithmetic(
+    bool value, const std::string &, std::size_t, std::size_t, bool, const export_command &command
+) {
+  if (!value) return es::reserved("false");
+
+  return es::reserved(command.bool_width() ? " true" : "true");
 }
 
 inline std::string
