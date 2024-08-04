@@ -44,12 +44,14 @@ struct export_command {
     bool make_unsigned_or_no_space_for_minus;
   };
   enum class bool_style_t { normal, true_left, true_right, number };
+  struct charnum {};
   struct index {};
 
   struct global_props_t {
     std::optional<int_style_t> int_style;
     bool_style_t bool_style{bool_style_t::normal};
     const char *format{nullptr};
+    bool char_as_num{false};
     bool show_index{false};
 
     explicit global_props_t(
@@ -77,6 +79,7 @@ struct export_command {
     }
     explicit global_props_t(bool_style_t bool_style_) : bool_style(bool_style_) {}
     explicit global_props_t(const char *format_) : format(format_) {}
+    explicit global_props_t(charnum) : char_as_num(true) {}
     explicit global_props_t(index) : show_index(true) {}
 
     global_props_t(global_props_t &&) = default;
@@ -111,10 +114,12 @@ struct export_command {
   explicit export_command(const char *format)
       : _global_props(std::make_shared<global_props_t>(format)) {}
 
-  explicit export_command(index) : _global_props(std::make_shared<global_props_t>(index{})) {}
-
   explicit export_command(bool_style_t bool_style)
       : _global_props(std::make_shared<global_props_t>(bool_style)) {}
+
+  explicit export_command(charnum) : _global_props(std::make_shared<global_props_t>(charnum{})) {}
+
+  explicit export_command(index) : _global_props(std::make_shared<global_props_t>(index{})) {}
 
   explicit export_command(const std::shared_ptr<global_props_t> &g) : _global_props(g) {}
 
@@ -199,6 +204,8 @@ struct export_command {
     std::snprintf(buffer.data(), buffer.size(), _global_props->format, value);
     return {buffer.data(), static_cast<std::size_t>(sz)};
   }
+
+  bool char_as_num() const { return _global_props && _global_props->char_as_num; }
 
   bool show_index() const { return _global_props && _global_props->show_index; }
 
@@ -515,12 +522,6 @@ inline auto uhex(int digits = -1, int chunk = 0) {
 inline auto format(const char *f) { return _detail::export_command(f); }
 
 /*
- * Manipulator for the display style of containers.
- * See README for details.
- */
-inline auto index() { return _detail::export_command(_detail::export_command::index{}); }
-
-/*
  * Manipulator for the display style of bool.
  * This is an experimental feature.
  */
@@ -537,6 +538,18 @@ inline auto boolnum() {
   using bool_style_t = _detail::export_command::bool_style_t;
   return _detail::export_command(bool_style_t::number);
 }
+
+/*
+ * Manipulator for the display style of char.
+ * This is an experimental feature.
+ */
+inline auto charnum() { return _detail::export_command(_detail::export_command::charnum{}); }
+
+/*
+ * Manipulator for the display style of containers.
+ * See README for details.
+ */
+inline auto index() { return _detail::export_command(_detail::export_command::index{}); }
 
 /*
  * Manipulator for the display style of iterables.
