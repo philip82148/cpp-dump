@@ -26,9 +26,17 @@ namespace _detail {
 inline std::string export_arithmetic(
     bool value, const std::string &, std::size_t, std::size_t, bool, const export_command &command
 ) {
-  if (!value) return es::reserved("false");
-
-  return es::reserved(command.bool_width() ? " true" : "true");
+  using bool_style_t = export_command::bool_style_t;
+  switch (command.bool_style()) {
+    case bool_style_t::normal:
+      return es::reserved(value ? "true" : "false");
+    case bool_style_t::true_left:
+      return es::reserved(value ? "true " : "false");
+    case bool_style_t::true_right:
+      return es::reserved(value ? " true" : "false");
+    default:
+      return es::number(value ? "1" : "0");
+  }
 }
 
 inline std::string
