@@ -1275,6 +1275,7 @@ LLONG_MAX, LLONG_MIN, ULLONG_MAX
 [dump] vec6 | cp::charhex() => [ 'P' (0x50), 'i' (0x69), '=' (0x3D), '3' (0x33), '.' (0x2E), '1' (0x31), '4' (0x34), '.' (0x2E), '.' (0x2E), '.' (0x2E) ]
 [dump] vec6 | cp::bin() | cp::charhex()
          => [ 'P' (0x50), 'i' (0x69), '=' (0x3D), '3' (0x33), '.' (0x2E), '1' (0x31), '4' (0x34), '.' (0x2E), '.' (0x2E), '.' (0x2E) ]
+[dump] int_ptr2 | cp::addr() => 0x7ffd69482a60
 [dump] vec4 | (back | cp::index()) => [
          ...,
          3: [ 0: 15, 1: 16 ],
