@@ -222,4 +222,11 @@ int main(int argc, char *argv[]) {
   cpp_dump(1 | cp::bin(), 1 | cp::oct(), 1 | cp::hex(), 1 | cp::dec());
   cpp_dump(-1 | cp::ubin(), -1 | cp::uoct(), -1 | cp::uhex(), -1 | cp::udec());
   cpp_dump(1 | cp::ubin(), 1 | cp::uoct(), 1 | cp::uhex(), 1 | cp::udec());
+
+  CPP_DUMP_SET_OPTION(print_expr, true);
+  cpp_dump(3.14159265f | cp::format("%.3f"));
+  cpp_dump(3.141592653589793238462643383279502884L | cp::format("%.36Lf"));
+  cpp_dump(314159265 | cp::format("%020d"));
+  cpp_dump(31415926535ll | cp::format("%020lld"));
+  cpp_dump(complex1 | cp::format("%.10f"));
 }
