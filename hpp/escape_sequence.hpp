@@ -62,22 +62,22 @@ inline std::string type_name(std::string_view s) {
 
   auto is_operator = [](char c) { return !(std::isalnum(c) || c == '_'); };
 
-  std::string typename_with_es;
+  std::string output;
   auto begin = s.begin();
   decltype(begin) end;
   while ((end = std::find_if(begin, s.end(), is_operator)) != s.end()) {
-    typename_with_es += es::identifier({&*begin, static_cast<std::size_t>(end - begin)});
+    output += es::identifier({&*begin, static_cast<std::size_t>(end - begin)});
     begin = end;
 
     end = std::find_if_not(begin, s.end(), is_operator);
-    typename_with_es += es::class_op({&*begin, static_cast<std::size_t>(end - begin)});
+    output += es::class_op({&*begin, static_cast<std::size_t>(end - begin)});
 
-    if (end == s.end()) return typename_with_es;
+    if (end == s.end()) return output;
     begin = end;
   }
-  typename_with_es += es::identifier({&*begin, static_cast<std::size_t>(s.end() - begin)});
+  output += es::identifier({&*begin, static_cast<std::size_t>(s.end() - begin)});
 
-  return typename_with_es;
+  return output;
 }
 
 inline std::string class_name(std::string_view s) {
@@ -114,22 +114,46 @@ inline std::string class_member(std::string_view s) {
 
   auto is_operator = [](char c) { return !(std::isalnum(c) || c == '_'); };
 
-  std::string typename_with_es;
+  std::string output;
   auto begin = s.begin();
   decltype(begin) end;
   while ((end = std::find_if(begin, s.end(), is_operator)) != s.end()) {
-    typename_with_es += es::member({&*begin, static_cast<std::size_t>(end - begin)});
+    output += es::member({&*begin, static_cast<std::size_t>(end - begin)});
     begin = end;
 
     end = std::find_if_not(begin, s.end(), is_operator);
-    typename_with_es += es::member_op({&*begin, static_cast<std::size_t>(end - begin)});
+    output += es::member_op({&*begin, static_cast<std::size_t>(end - begin)});
 
-    if (end == s.end()) return typename_with_es;
+    if (end == s.end()) return output;
     begin = end;
   }
-  typename_with_es += es::member({&*begin, static_cast<std::size_t>(s.end() - begin)});
+  output += es::member({&*begin, static_cast<std::size_t>(s.end() - begin)});
 
-  return typename_with_es;
+  return output;
+}
+
+inline std::string signed_number(std::string_view s) {
+  if (!use_es()) return std::string(s);
+  if (!detailed_number_es) return es::number(s);
+
+  auto is_operator = [](char c) { return !(std::isalnum(c) || c == '.'); };
+
+  std::string output;
+  auto begin = s.begin();
+  decltype(begin) end;
+  while ((end = std::find_if(begin, s.end(), is_operator)) != s.end()) {
+    if (begin != end) output += es::number({&*begin, static_cast<std::size_t>(end - begin)});
+    begin = end;
+
+    end = std::find_if_not(begin, s.end(), is_operator);
+    output += es::number_op({&*begin, static_cast<std::size_t>(end - begin)});
+
+    if (end == s.end()) return output;
+    begin = end;
+  }
+  output += es::number({&*begin, static_cast<std::size_t>(s.end() - begin)});
+
+  return output;
 }
 
 }  // namespace es
