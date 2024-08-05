@@ -622,7 +622,7 @@ inline cpp_dump::log_label::log_label_func_t cpp_dump::log_label_func = cpp_dump
 
 Using manipulators, you can set which and how many elements of an array/map/set will be displayed.  
 See [front, middle, back, both_ends manipulators](#front-middle-back-both_ends-manipulators) for details.  
-[See Full Example Code](./readme/manipulators.cpp)
+[See Full Example Code](./readme/formatting-with-manipulators.cpp)
 
 ```cpp
 // Show the last 10 elements for the 1st dimension, the first 5 and the last 5 for the 2nd dimension.
@@ -633,7 +633,7 @@ cpp_dump(some_huge_vector | cp::back(10) | cp::both_ends(5) | cp::dec(2));
 
 And you can show the indexes of an array by using a manipulator.  
 See [index manipulator](#index-manipulator) for details.  
-[See Full Example Code](./readme/manipulators.cpp)
+[See Full Example Code](./readme/formatting-with-manipulators.cpp)
 
 ```cpp
 CPP_DUMP_SET_OPTION(max_iteration_count, 5);
@@ -646,7 +646,7 @@ cpp_dump(some_huge_vector | cp::dec(2) | cp::index());
 
 Furthermore, you can set how integers are displayed with manipulators.  
 See [int_style manipulators](#int_style-manipulators) for details.  
-[See Full Example Code](./readme/manipulators.cpp)
+[See Full Example Code](./readme/formatting-with-manipulators.cpp)
 
 ```cpp
 // Show integers in binary, minimum 16 digits, separated by every 4 characters.
@@ -736,7 +736,7 @@ The `bin(...)`, `oct(...)`, `hex(...)`, `ubin(...)`, `uoct(...)`, `uhex(...)`, `
 
 For signed integer types, the `bin(...)`, `oct(...)`, `hex(...)`, and `dec(...)` manipulators will add an extra space for positive integers and a minus sign for negative integers.  
 For unsigned integer types, the `bin(...)`, `oct(...)`, `hex(...)`, and `dec(...)` manipulators will not add an extra space or minus sign.  
-[See Full Example Code](./readme/manipulators.cpp)
+[See Full Example Code](./readme/formatting-with-manipulators.cpp)
 
 ```cpp
 cpp_dump(signed_int_vector | cp::front(2) | cp::hex(2));
@@ -752,7 +752,7 @@ If the original type is not unsigned, the suffix 'u' is shown.
 However, `udec(...)` manipulator acts differently from these.  
 `udec(...)` interprets signed types as signed type, but it does not add an extra space for positive integers.  
 This is suitable for showing a container of a signed integers when all values are positive.  
-[See Full Example Code](./readme/manipulators.cpp)
+[See Full Example Code](./readme/formatting-with-manipulators.cpp)
 
 ```cpp
 cpp_dump(signed_int_vector | cp::front(2) | cp::uhex());
