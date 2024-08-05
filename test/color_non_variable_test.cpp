@@ -59,6 +59,7 @@ int main(int argc, char *argv[]) {
   CPP_DUMP_SET_OPTION(es_style, es_style_);
   CPP_DUMP_SET_OPTION(detailed_class_es, detailed_es);
   CPP_DUMP_SET_OPTION(detailed_member_es, detailed_es);
+  CPP_DUMP_SET_OPTION(detailed_number_es, detailed_es);
 
   CPP_DUMP_SET_OPTION(
       es_value,
@@ -78,6 +79,7 @@ int main(int argc, char *argv[]) {
           },
           "\x1b[38;2;139;191;139m",  // class_op: white closer to green
           "\x1b[38;2;217;242;255m",  // member_op: white closer to light blue
+          ""                         // number_op: default
       })
   );
 
