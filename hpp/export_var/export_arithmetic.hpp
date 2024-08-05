@@ -195,7 +195,7 @@ inline auto export_arithmetic(
       new_output.append(output, pos, chunk);
       new_output.push_back(' ');
     }
-    if (base == 10) new_output.erase(new_output.size() - 1);
+    if (base == 10) new_output.pop_back();
 
     output.swap(new_output);
   }
