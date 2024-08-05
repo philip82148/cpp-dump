@@ -152,7 +152,7 @@ inline auto export_arithmetic(
     while (is_first || unsigned_tmp) {
       is_first = false;
       char next_digit = static_cast<char>((unsigned_tmp & 0x01) + '0');
-      output.append(1, next_digit);
+      output.push_back(next_digit);
       unsigned_tmp >>= 1;
     }
 
@@ -172,7 +172,7 @@ inline auto export_arithmetic(
   bool added_prefix = false;
   if (need_minus && added_minus_before_fill) {
     output.append(reversed_prefix);
-    output.append(1, '-');
+    output.push_back('-');
     added_prefix = true;
   }
 
@@ -193,7 +193,7 @@ inline auto export_arithmetic(
 
     for (std::size_t pos = 0; pos < output.size(); pos += chunk) {
       new_output.append(output, pos, chunk);
-      new_output.append(1, ' ');
+      new_output.push_back(' ');
     }
     if (base == 10) new_output.erase(new_output.size() - 1);
 
@@ -204,9 +204,9 @@ inline auto export_arithmetic(
 
   // Add a minus when value < 0 (part 2)
   if (need_minus && !added_minus_before_fill) {
-    output.append(1, '-');
+    output.push_back('-');
   } else if (add_space_for_minus && length_was_below_digits) {
-    output.append(1, ' ');
+    output.push_back(' ');
   }
 
   std::reverse(output.begin(), output.end());
