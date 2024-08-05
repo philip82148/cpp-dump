@@ -102,8 +102,7 @@ inline std::string _complex_component(std::string_view s) {
 }
 
 inline std::string _imag_sign(std::string_view s) {
-  if (es_style == es_style_t::original) return es::identifier(s);
-  return detailed_number_es ? es::number_op(s) : es::op(s);
+  return es_style == es_style_t::original ? es::identifier(s) : es::signed_number(s);
 }
 
 }  // namespace es
