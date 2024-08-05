@@ -146,7 +146,7 @@ inline auto export_arithmetic(
     output = std::to_string(unsigned_tmp);
     std::reverse(output.begin(), output.end());
   } else if (base == 2) {
-    output.reserve(digits > 0 ? digits + (chunk == 0 && add_space_for_minus) : sizeof(T) * 8 + 1);
+    output.reserve(sizeof(T) * 8 + 3);
 
     bool is_first = true;
     while (is_first || unsigned_tmp) {
@@ -171,20 +171,20 @@ inline auto export_arithmetic(
   bool minus_before_fill = base == 10 && space_fill;
   if (need_minus && minus_before_fill) output.push_back('-');
 
-  if (output.length() < digits) {
+  if (output.size() < digits) {
     // Fill with spaces/zeros
     if (space_fill) {
-      output.append(digits - output.length(), ' ');
+      output.append(digits - output.size(), ' ');
     } else {
-      output.append(digits - output.length(), '0');
+      output.append(digits - output.size(), '0');
     }
   }
 
-  bool length_was_below_digits = output.length() <= digits;
+  bool length_was_below_digits = output.size() <= digits;
   if (chunk > 0) {
     // Add a space between chunks
     std::string new_output;
-    new_output.reserve(output.size() + (output.size() - 1) / chunk + add_space_for_minus);
+    new_output.reserve(output.size() * 2);
 
     for (std::size_t pos = 0; pos < output.size(); pos += chunk) {
       new_output.append(output, pos, chunk);
