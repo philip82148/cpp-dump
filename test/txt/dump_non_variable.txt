@@ -140,7 +140,7 @@ here.`,
 [dump] cp::types::es_style_t::no_es => cpp_dump::types::es_style_t::no_es,
        cp::types::es_style_t::original => cpp_dump::types::es_style_t::original,
        cp::types::es_style_t::by_syntax => cpp_dump::types::es_style_t::by_syntax,
-       cp::options::es_value => cpp_dump::es_value_t{ 
+       cp::options::es_value => cpp_dump::types::es_value_t{ 
          log= "\e[02m", 
          expression= "\e[36m", 
          reserved= "", 
@@ -157,7 +157,8 @@ here.`,
 [dump] cp::types::cont_indent_style_t::minimal => cpp_dump::types::cont_indent_style_t::minimal, 
        cp::types::cont_indent_style_t::when_nested => cpp_dump::types::cont_indent_style_t::when_nested, 
        cp::types::cont_indent_style_t::when_non_tuples_nested => cpp_dump::types::cont_indent_style_t::when_non_tuples_nested, 
-       cp::types::cont_indent_style_t::always => cpp_dump::types::cont_indent_style_t::always, cp::options::cont_indent_style => cpp_dump::types::cont_indent_style_t::when_nested
+       cp::types::cont_indent_style_t::always => cpp_dump::types::cont_indent_style_t::always, 
+       cp::options::cont_indent_style => cpp_dump::types::cont_indent_style_t::when_nested
 [dump] array50 => [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, ... ], 
        map50
          => { 0: 1, 1: 2, 2: 3, 3: 4, 4: 5, 5: 6, 6: 7, 7: 8, 8: 9, 9: 10, 10: 11, 11: 12, 12: 13, 13: 14, 14: 15, 15: 16, 16: 17, 17: 18, 18: 19, 19: 20, ... }, 
