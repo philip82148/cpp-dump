@@ -149,7 +149,7 @@ inline auto export_arithmetic(
     while (is_first || unsigned_tmp) {
       is_first = false;
       char next_digit = static_cast<char>((unsigned_tmp & 0x01) + '0');
-      output.append(1, next_digit);
+      output.push_back(next_digit);
       unsigned_tmp >>= 1;
     }
   } else {
@@ -162,7 +162,7 @@ inline auto export_arithmetic(
   // Add a minus when value < 0 (part 1)
   bool need_minus = !make_unsigned && value < 0;
   bool added_minus_before_fill = space_fill && (digits == 0 || output.length() < digits);
-  if (need_minus && added_minus_before_fill) output.append(1, '-');
+  if (need_minus && added_minus_before_fill) output.push_back('-');
 
   if (output.length() < digits) {
     // Fill with spaces/zeros
@@ -180,7 +180,7 @@ inline auto export_arithmetic(
     new_output.reserve(output.size() + (output.size() - 1) / chunk + add_space_for_minus);
 
     for (std::size_t pos = 0; pos < output.size(); pos += chunk) {
-      if (pos > 0) new_output.append(1, ' ');
+      if (pos > 0) new_output.push_back(' ');
       new_output.append(output, pos, chunk);
     }
 
@@ -189,9 +189,9 @@ inline auto export_arithmetic(
 
   // Add a minus when value < 0 (part 2)
   if (need_minus && !added_minus_before_fill) {
-    output.append(1, '-');
+    output.push_back('-');
   } else if (add_space_for_minus && length_was_below_digits) {
-    output.append(1, ' ');
+    output.push_back(' ');
   }
 
   std::reverse(output.begin(), output.end());

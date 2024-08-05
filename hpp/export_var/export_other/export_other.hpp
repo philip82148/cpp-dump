@@ -88,7 +88,7 @@ export_other(const std::bitset<N> &bitset, const std::string &, std::size_t, std
   std::size_t pos = bitset_str.length() % chunk;
   if (pos > 0) output.append(bitset_str, 0, pos);
   for (; pos < bitset_str.length(); pos += chunk) {
-    if (pos > 0) output.append(1, ' ');
+    if (pos > 0) output.push_back(' ');
     output.append(bitset_str, pos, chunk);
   }
 
