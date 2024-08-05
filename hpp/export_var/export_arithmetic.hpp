@@ -122,8 +122,9 @@ inline auto export_arithmetic(
   if (digits > max_digits) digits = max_digits;
   if (chunk > max_digits) chunk = 0;
 
-  bool make_unsigned = base != 10 && make_unsigned_or_no_space_for_minus;
-  bool add_space_for_minus = std::is_signed_v<T> && !make_unsigned_or_no_space_for_minus;
+  const bool make_unsigned =
+      std::is_signed_v<T> && base != 10 && make_unsigned_or_no_space_for_minus;
+  const bool add_extra_space = !(std::is_unsigned_v<T> || make_unsigned_or_no_space_for_minus);
 
   using UnsignedT = std::make_unsigned_t<T>;
   // Let stringstream recognize the type as an integer.
@@ -167,8 +168,8 @@ inline auto export_arithmetic(
   }
 
   // Add a minus when value < 0 (part 1)
-  bool need_minus = !make_unsigned && value < 0;
-  bool minus_before_fill = base == 10 && space_fill;
+  const bool need_minus = !make_unsigned && value < 0;
+  const bool minus_before_fill = base == 10 && space_fill;
   if (need_minus && minus_before_fill) output.push_back('-');
 
   if (output.size() < digits) {
@@ -180,7 +181,7 @@ inline auto export_arithmetic(
     }
   }
 
-  bool length_was_below_digits = output.size() <= digits;
+  const bool length_was_below_digits = output.size() <= digits;
   if (chunk > 0) {
     // Add a space between chunks
     std::string new_output;
@@ -200,15 +201,15 @@ inline auto export_arithmetic(
   // Add a minus when value < 0 (part 2)
   if (need_minus && !minus_before_fill) {
     output.push_back('-');
-  } else if (add_space_for_minus && length_was_below_digits) {
+  } else if (length_was_below_digits && add_extra_space) {
     output.push_back(' ');
   }
 
   std::reverse(output.begin(), output.end());
 
-  if (base == 10 || !(std::is_unsigned_v<T> || make_unsigned)) return es::number(output);
+  if (make_unsigned) return es::number(output) + es::op(" u");
 
-  return es::number(output) + es::op(" u");
+  return es::number(output);
 }
 
 template <typename T>
