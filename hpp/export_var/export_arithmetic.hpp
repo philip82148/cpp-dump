@@ -211,9 +211,9 @@ inline auto export_arithmetic(
 
   std::reverse(output.begin(), output.end());
 
-  if (base != 10 && (std::is_unsigned_v<T> || make_unsigned)) output.append(1, 'u');
+  if (base == 10 || !(std::is_unsigned_v<T> || make_unsigned)) return es::number(output);
 
-  return es::number(output);
+  return es::number(output) + es::op(" u");
 }
 
 template <typename T>
