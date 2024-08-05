@@ -99,7 +99,8 @@ bool _dump_one(
 
     bool value_str_has_newline = has_newline(value_str);
 
-    bool over_max_line_width = last_line_length + get_first_line_length(value_str) > max_line_width;
+    bool over_max_line_width =
+        last_line_length + get_first_line_length(value_str) > options::max_line_width;
 
     return {prefix, value_str, value_str_has_newline, over_max_line_width};
   };
@@ -108,7 +109,7 @@ bool _dump_one(
     output += pattern.prefix + pattern.value_str;
   };
 
-  if (!print_expr) {
+  if (!options::print_expr) {
     prefix_and_value_str pattern1 = make_prefix_and_value_str("", initial_indent);
 
     if (!fail_on_newline_in_value) {
@@ -238,10 +239,12 @@ void cpp_dump_macro(
       "arguments. Please enclose the expressions that contains commas in parentheses."
   );
 
-  std::string log_label =
-      log_label_func ? log_label_func(loc.file_name, loc.line, loc.function_name) : "";
+  std::string log_label = options::log_label_func
+                              ? options::log_label_func(loc.file_name, loc.line, loc.function_name)
+                              : "";
 
-  bool exprs_have_newline = print_expr && std::any_of(exprs.begin(), exprs.end(), has_newline);
+  bool exprs_have_newline =
+      options::print_expr && std::any_of(exprs.begin(), exprs.end(), has_newline);
 
   std::string output;
   if (exprs_have_newline || !_dump(output, log_label, false, exprs, args...)) {

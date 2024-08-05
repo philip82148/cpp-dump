@@ -26,11 +26,11 @@ namespace _detail {
 namespace es {
 
 inline std::string _ptr_asterisk(std::string_view s) {
-  return es_style == es_style_t::original ? es::identifier(s) : es::op(s);
+  return options::es_style == es_style_t::original ? es::identifier(s) : es::op(s);
 }
 
 inline std::string _raw_address(std::string_view s) {
-  return es_style == es_style_t::original ? es::identifier(s) : es::number(s);
+  return options::es_style == es_style_t::original ? es::identifier(s) : es::number(s);
 }
 
 }  // namespace es
@@ -70,7 +70,7 @@ inline auto export_pointer(
       return es::_raw_address(ss.str());
     }
 
-    if (current_depth >= max_depth) return es::_ptr_asterisk("*") + es::op("...");
+    if (current_depth >= options::max_depth) return es::_ptr_asterisk("*") + es::op("...");
 
     return es::_ptr_asterisk("*")
            + export_var(

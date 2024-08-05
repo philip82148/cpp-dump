@@ -15,7 +15,7 @@ namespace cpp_dump {
  * Set a value to a variable in cpp_dump namespace.
  * You can also assign values to the variables directly.
  */
-#define CPP_DUMP_SET_OPTION(variable, value) cpp_dump::variable = (value)
+#define CPP_DUMP_SET_OPTION(variable, value) cpp_dump::options::variable = (value)
 
 namespace _detail {
 
@@ -30,7 +30,8 @@ struct empty_class {};
                                                                                                    \
   namespace _dummy_variables_for_set_option_in_global {                                            \
                                                                                                    \
-  [[maybe_unused]] inline auto _dummy_##line = (cpp_dump::variable = (value), empty_class{});      \
+  [[maybe_unused]] inline auto _dummy_##line =                                                     \
+      (cpp_dump::options::variable = (value), empty_class{});                                      \
                                                                                                    \
   } /* namespace _dummy_variables_for_set_option_in_global */                                      \
                                                                                                    \
@@ -49,13 +50,13 @@ struct empty_class {};
   _p_CPP_DUMP_SET_OPTION_IN_GLOBAL_AUX(variable, value, __LINE__)
 
 /**
- * Type of cpp_dump::es_style.
+ * Type of cpp_dump::options::es_style.
  * cpp_dump::export_var() supports this type.
  */
 enum class es_style_t { no_es, original, by_syntax };
 
 /**
- * Type of cpp_dump::es_value.
+ * Type of cpp_dump::options::es_value.
  * cpp_dump::export_var() supports this type.
  */
 struct es_value_t {
@@ -75,10 +76,12 @@ struct es_value_t {
 };
 
 /**
- * Type of cpp_dump::cont_indent_style.
+ * Type of cpp_dump::options::cont_indent_style.
  * cpp_dump::export_var() supports this type.
  */
 enum class cont_indent_style_t { minimal, when_nested, when_non_tuples_nested, always };
+
+namespace options {
 
 /**
  * Maximum line width of the strings returned by cpp_dump() and cpp_dump::export_var().
@@ -141,5 +144,7 @@ inline bool detailed_number_es = false;
  * Style of indents of the Container, Set and Map categories (See 'Supported types').
  */
 inline cont_indent_style_t cont_indent_style = cont_indent_style_t::when_nested;
+
+}  // namespace options
 
 }  // namespace cpp_dump

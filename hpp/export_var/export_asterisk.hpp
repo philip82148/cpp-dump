@@ -25,7 +25,7 @@ namespace _detail {
 namespace es {
 
 inline std::string _asterisk_asterisk(std::string_view s) {
-  return es_style == es_style_t::original ? es::identifier(s) : es::op(s);
+  return options::es_style == es_style_t::original ? es::identifier(s) : es::op(s);
 }
 
 }  // namespace es
@@ -39,9 +39,9 @@ inline auto export_asterisk(
     bool fail_on_newline,
     const export_command &command
 ) -> std::enable_if_t<is_asterisk<T>, std::string> {
-  if (!enable_asterisk) return export_unsupported();
+  if (!options::enable_asterisk) return export_unsupported();
 
-  if (current_depth >= max_depth) return es::_asterisk_asterisk("*") + es::op("...");
+  if (current_depth >= options::max_depth) return es::_asterisk_asterisk("*") + es::op("...");
 
   return es::_asterisk_asterisk("*")
          + export_var(
