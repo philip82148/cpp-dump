@@ -98,11 +98,12 @@ export_other(const std::bitset<N> &bitset, const std::string &, std::size_t, std
 namespace es {
 
 inline std::string _complex_component(std::string_view s) {
-  return es_style == es_style_t::original ? es::identifier(s) : es::number(s);
+  return es_style == es_style_t::original ? es::identifier(s) : es::signed_number(s);
 }
 
 inline std::string _imag_sign(std::string_view s) {
-  return es_style == es_style_t::original ? es::identifier(s) : es::op(s);
+  if (es_style == es_style_t::original) return es::identifier(s);
+  return detailed_number_es ? es::number_op(s) : es::op(s);
 }
 
 }  // namespace es
@@ -130,9 +131,9 @@ inline std::string export_other(
 
   return es::_complex_component(to_str(std::real(complex))) + " " + es::_imag_sign(imag_sign) + " "
          + es::_complex_component(to_str(std::abs(imag)) + "i ") + es::bracket("( ", current_depth)
-         + es::member("abs") + es::op("= ") + es::number(to_str(std::abs(complex))) + es::op(", ")
-         + es::class_member("arg/pi") + es::op("= ") + es::number(to_str(std::arg(complex) / pi))
-         + es::bracket(" )", current_depth);
+         + es::member("abs") + es::op("= ") + es::signed_number(to_str(std::abs(complex)))
+         + es::op(", ") + es::class_member("arg/pi") + es::op("= ")
+         + es::signed_number(to_str(std::arg(complex) / pi)) + es::bracket(" )", current_depth);
 }
 
 namespace es {
