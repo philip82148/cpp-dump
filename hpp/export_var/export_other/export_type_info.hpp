@@ -48,7 +48,7 @@ inline auto export_type_info(
   output += es::class_op(R"(")") + es::type_name(name) + es::class_op(R"(")");
 
   is_first = false;
-  append_output("has_code()", type_info.hash_code());
+  append_output("hash_code()", type_info.hash_code());
 
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2;
 }
