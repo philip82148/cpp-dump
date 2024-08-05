@@ -496,7 +496,7 @@ inline auto hex(int digits = -1, int chunk = 0, bool space_fill = false) {
 
 /*
  * Manipulator for the display style of integers.
- * This is an experimental feature.
+ * See README for details.
  */
 inline auto udec(int digits = -1, int chunk = 0, bool space_fill = true) {
   return int_style(10, digits, chunk, space_fill, true);
@@ -504,7 +504,7 @@ inline auto udec(int digits = -1, int chunk = 0, bool space_fill = true) {
 
 /*
  * Manipulator for the display style of integers.
- * This is an experimental feature.
+ * See README for details.
  */
 inline auto ubin(int digits = -1, int chunk = 0, bool space_fill = false) {
   return int_style(2, digits, chunk, space_fill, true);
@@ -512,7 +512,7 @@ inline auto ubin(int digits = -1, int chunk = 0, bool space_fill = false) {
 
 /*
  * Manipulator for the display style of integers.
- * This is an experimental feature.
+ * See README for details.
  */
 inline auto uoct(int digits = -1, int chunk = 0, bool space_fill = false) {
   return int_style(8, digits, chunk, space_fill, true);
@@ -520,7 +520,7 @@ inline auto uoct(int digits = -1, int chunk = 0, bool space_fill = false) {
 
 /*
  * Manipulator for the display style of integers.
- * This is an experimental feature.
+ * See README for details.
  */
 inline auto uhex(int digits = -1, int chunk = 0, bool space_fill = false) {
   return int_style(16, digits, chunk, space_fill, true);
