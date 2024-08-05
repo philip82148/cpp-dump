@@ -97,11 +97,7 @@ export_other(const std::bitset<N> &bitset, const std::string &, std::size_t, std
 
 namespace es {
 
-inline std::string _complex_component(std::string_view s) {
-  return es_style == es_style_t::original ? es::identifier(s) : es::signed_number(s);
-}
-
-inline std::string _imag_sign(std::string_view s) {
+inline std::string _complex_complex(std::string_view s) {
   return es_style == es_style_t::original ? es::identifier(s) : es::signed_number(s);
 }
 
@@ -128,11 +124,13 @@ inline std::string export_other(
   auto imag = std::imag(complex);
   auto imag_sign = imag >= 0 ? "+" : "-";
 
-  return es::_complex_component(to_str(std::real(complex))) + " " + es::_imag_sign(imag_sign) + " "
-         + es::_complex_component(to_str(std::abs(imag)) + "i ") + es::bracket("( ", current_depth)
-         + es::member("abs") + es::op("= ") + es::signed_number(to_str(std::abs(complex)))
-         + es::op(", ") + es::class_member("arg/pi") + es::op("= ")
-         + es::signed_number(to_str(std::arg(complex) / pi)) + es::bracket(" )", current_depth);
+  return es::_complex_complex(
+             to_str(std::real(complex)) + " " + imag_sign + " " + to_str(std::abs(imag)) + "i "
+         )
+         + es::bracket("( ", current_depth) + es::member("abs") + es::op("= ")
+         + es::signed_number(to_str(std::abs(complex))) + es::op(", ") + es::class_member("arg/pi")
+         + es::op("= ") + es::signed_number(to_str(std::arg(complex) / pi))
+         + es::bracket(" )", current_depth);
 }
 
 namespace es {

@@ -34,7 +34,7 @@
 
 // Other
 [0m[02m[dump] [0m[36mmy_bitset[0m[02m => [0m[32m0b 0011 1010[0m
-[0m[02m[dump] [0m[36mmy_complex[0m[02m => [0m[32m1.000000[0m [32m+[0m [32m1.000000i [0m[02m( [0m[36mabs[0m[02m= [0m1.414214[0m[02m, [0m[36marg/pi[0m[02m= [0m0.250000[0m[02m )[0m
+[0m[02m[dump] [0m[36mmy_complex[0m[02m => [0m[32m1.000000 + 1.000000i [0m[02m( [0m[36mabs[0m[02m= [0m1.414214[0m[02m, [0m[36marg/pi[0m[02m= [0m0.250000[0m[02m )[0m
 [0m[02m[dump] [0m[36mmy_optional[0m[02m => [0m[32m?[0m15[0m[02m, [0m[36mstd::nullopt[0m[02m => [0m[32mstd::nullopt[0m
 [0m[02m[dump] [0m[36mmy_variant[0m[02m => [0m[32m|[0m"1[0m"[0m
 
