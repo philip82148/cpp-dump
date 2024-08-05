@@ -156,9 +156,9 @@ CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(i, str());
 Using manipulators, you can set which and how many elements of an array/map/set and how the index of an array and integers will be displayed.  
 See [Formatting with manipulators](#formatting-with-manipulators) for details.
 
-![manipulators.png](./readme/manipulators.png)
+![manipulator-front-etc.png](./readme/manipulator-front-etc.png)
 
-![cont-index.png](./readme/cont-index.png)
+![manipulator-index.png](./readme/manipulator-index.png)
 
 ## Requirement
 
@@ -461,12 +461,17 @@ cpp_dump::front(std::size_t iteration_count = cpp_dump::max_iteration_count);
 cpp_dump::middle(std::size_t iteration_count = cpp_dump::max_iteration_count);
 cpp_dump::back(std::size_t iteration_count = cpp_dump::max_iteration_count);
 cpp_dump::both_ends(std::size_t half_iteration_count = cpp_dump::max_iteration_count / 2);
-cpp_dump::int_style(int base = 16, int digits = -1, int chunk = 2, bool space_fill = false);
 cpp_dump::index();
-cpp_dump::dec(int digits = -1, int chunk = 0);
-cpp_dump::bin(int digits = -1, int chunk = 0);
-cpp_dump::oct(int digits = -1, int chunk = 0);
-cpp_dump::hex(int digits = -1, int chunk = 0);
+cpp_dump::int_style(int base, int digits = -1, int chunk = 0,
+    bool space_fill = false, bool make_unsigned_or_no_space_for_minus = false);
+cpp_dump::bin(int digits = -1, int chunk = 0, bool space_fill = false);
+cpp_dump::oct(int digits = -1, int chunk = 0, bool space_fill = false);
+cpp_dump::hex(int digits = -1, int chunk = 0, bool space_fill = false);
+cpp_dump::dec(int digits = -1, int chunk = 0, bool space_fill = true);
+cpp_dump::ubin(int digits = -1, int chunk = 0, bool space_fill = false);
+cpp_dump::uoct(int digits = -1, int chunk = 0, bool space_fill = false);
+cpp_dump::uhex(int digits = -1, int chunk = 0, bool space_fill = false);
+cpp_dump::udec(int digits = -1, int chunk = 0, bool space_fill = true);
 cpp_dump::map_k(return_value_of_manipulator);
 cpp_dump::map_v(return_value_of_manipulator);
 cpp_dump::map_kv(return_value_of_manipulator_for_key, return_value_of_manipulator_for_value);
@@ -615,37 +620,20 @@ inline cpp_dump::log_label::log_label_func_t cpp_dump::log_label_func = cpp_dump
 
 ### Formatting with manipulators
 
-[See Full Example Code](./readme/formatting-with-manipulators.cpp)
-
 Using manipulators, you can set which and how many elements of an array/map/set will be displayed.  
-See [front, middle, back, both_ends manipulators](#front-middle-back-both_ends-manipulators) for details.
+See [front, middle, back, both_ends manipulators](#front-middle-back-both_ends-manipulators) for details.  
+[See Full Example Code](./readme/formatting-with-manipulators.cpp)
 
 ```cpp
 // Show the last 10 elements for the 1st dimension, the first 5 and the last 5 for the 2nd dimension.
-cpp_dump(some_huge_vector | cp::back(10) | cp::both_ends(5));
-```
-
-![omitting-a-vector.png](./readme/omitting-a-vector.png)
-
-And you can set how integers are displayed with manipulators.  
-See [int_style manipulators](#int_style-manipulators) for details.
-
-```cpp
-// Show integers in binary, minimum 8 digits, separated by every 2 characters.
-cpp_dump(some_huge_vector | cp::bin(8, 2) | cp::front(5) | cp::front(5));
-```
-
-![int-style](./readme/int-style.png)
-
-```cpp
-// Show integers in decimal, minimum 2 digits.
 cpp_dump(some_huge_vector | cp::back(10) | cp::both_ends(5) | cp::dec(2));
 ```
 
-![manipulators.png](./readme/manipulators.png)
+![manipulator-front-etc.png](./readme/manipulator-front-etc.png)
 
-Furthermore, you can show the indexes of an array by using a manipulator.  
-See [index manipulator](#index-manipulator) for details.
+And you can show the indexes of an array by using a manipulator.  
+See [index manipulator](#index-manipulator) for details.  
+[See Full Example Code](./readme/formatting-with-manipulators.cpp)
 
 ```cpp
 CPP_DUMP_SET_OPTION(max_iteration_count, 5);
@@ -654,7 +642,24 @@ CPP_DUMP_SET_OPTION(max_iteration_count, 5);
 cpp_dump(some_huge_vector | cp::dec(2) | cp::index());
 ```
 
-![cont-index.png](./readme/cont-index.png)
+![manipulator-index.png](./readme/manipulator-index.png)
+
+Furthermore, you can set how integers are displayed with manipulators.  
+See [int_style manipulators](#int_style-manipulators) for details.  
+[See Full Example Code](./readme/formatting-with-manipulators.cpp)
+
+```cpp
+// Show integers in binary, minimum 16 digits, separated by every 4 characters.
+cpp_dump(0x3e8 | cp::bin(16, 4));
+// Show integers in octal, minimum 6 digits, separated by every 3 characters.
+cpp_dump(0x3e8 | cp::oct(6, 3));
+// Show integers in hexadecimal, minimum 4 digits, separated by every 2 characters.
+cpp_dump(0x3e8 | cp::hex(4, 2));
+// Show integers in minimum 4 digits.
+cpp_dump(0x3e8 | cp::dec(4));
+```
+
+![manipulator-int-style.png](./readme/manipulator-int-style.png)
 
 #### front, middle, back, both_ends manipulators
 
@@ -671,35 +676,7 @@ cpp_dump(variable | cp::front() | cp::back());
 
 The further left manipulator will act on the more outside dimensions of the array/map/set.  
 **Caution:**  
-**These manipulators other than front() calculate the container's size. Containers whose size cannot be calculated with std::size() will cost O(N) in computation. In particular, passing an infinite sequence to these manipulators will result in an infinite loop.**
-
-#### int_style manipulators
-
-```cpp
-cpp_dump::int_style(int base = 16, int digits = -1, int chunk = 2, bool space_fill = false);
-cpp_dump::dec(int digits = -1, int chunk = 0) {
-  return int_style(10, digits, chunk, true);
-}
-cpp_dump::bin(int digits = -1, int chunk = 0) {
-  return int_style(2, digits, chunk, false);
-}
-cpp_dump::oct(int digits = -1, int chunk = 0) {
-  return int_style(8, digits, chunk, false);
-}
-cpp_dump::hex(int digits = -1, int chunk = 0) {
-  return int_style(16, digits, chunk, false);
-}
-
-// Example
-cpp_dump(... << cp::int_style() << ... << variable);
-cpp_dump(variable | ... | cp::int_style() | ...);
-```
-
-Parameter `base` of `int_style()` supports values of 2, 8, 10, 16. For other values, this manipulator resets the effects of the previous `int_style()` manipulators.  
-`digits` supports values of `digits` >= 0 and `digits` <= 'the maximum digits', where 'the maximum digits' is the maximum number of digits that can be represented by the type for the given `base`. For other values, it is treated as `digits` = 'the maximum digits'.  
-`chunk` supports values of `chunk` >= 0. For other values, it is treated as `chunk` = 0.  
-Unlike `front` and other manipulators, `int_style()` manipulator acts on all integers in the variable. (The order is irrelevant.)  
-`dec(...)`, `bin(...)`, `oct(...)`, `hex(...)` are aliases of `int_style(...)`
+**These manipulators other than `front()` calculate the container's size. Containers whose size cannot be calculated with `std::size()` will cost O(N) in computation. In particular, passing an infinite sequence to these manipulators will result in an infinite loop.**
 
 #### index manipulator
 
@@ -711,8 +688,80 @@ cpp_dump(... << cp::index() << ... << variable);
 cpp_dump(variable | ... | cp::index() | ...);
 ```
 
-Like `int_style` manipulator, this manipulator acts on all sequence containers in the variable. (The order is irrelevant.)  
+Unlike the `front()` and other manipulators, the `index()` manipulator acts on all sequence containers in the variable. (The order is irrelevant.)  
 It does not affect maps/sets.
+
+#### int_style manipulators
+
+```cpp
+cpp_dump::int_style(int base, int digits = -1, int chunk = 0,
+    bool space_fill = false, bool make_unsigned_or_no_space_for_minus = false);
+
+cpp_dump::bin(int digits = -1, int chunk = 0, bool space_fill = false) {
+  return int_style(2, digits, chunk, space_fill, false);
+}
+cpp_dump::oct(int digits = -1, int chunk = 0, bool space_fill = false) {
+  return int_style(8, digits, chunk, space_fill, false);
+}
+cpp_dump::hex(int digits = -1, int chunk = 0, bool space_fill = false) {
+  return int_style(16, digits, chunk, space_fill, false);
+}
+cpp_dump::dec(int digits = -1, int chunk = 0, bool space_fill = true) {
+  return int_style(10, digits, chunk, space_fill, false);
+}
+
+cpp_dump::ubin(int digits = -1, int chunk = 0, bool space_fill = false) {
+  return int_style(2, digits, chunk, space_fill, true);
+}
+cpp_dump::uoct(int digits = -1, int chunk = 0, bool space_fill = false) {
+  return int_style(8, digits, chunk, space_fill, true);
+}
+cpp_dump::uhex(int digits = -1, int chunk = 0, bool space_fill = false) {
+  return int_style(16, digits, chunk, space_fill, true);
+}
+cpp_dump::udec(int digits = -1, int chunk = 0, bool space_fill = true) {
+  return int_style(10, digits, chunk, space_fill, true);
+}
+
+// Example
+cpp_dump(... << cp::uhex() << ... << variable);
+cpp_dump(variable | ... | cp::uhex() | ...);
+```
+
+The parameter `base` of `int_style()` supports values of 2, 8, 10, 16. For other values, this manipulator resets the effects of the previous `int_style()` manipulators.  
+`digits` supports values of `digits` >= 0 and `digits` <= 'the maximum digits', where 'the maximum digits' is the maximum number of digits that can be represented by the type for the given `base`. For other values, it is treated as `digits` = 'the maximum digits'.  
+`chunk` supports values of `chunk` >= 0. For other values, it is treated as `chunk` = 0.  
+Like the `index()` manipulators, the `int_style()` manipulator acts on all integers in the variable. (The order is irrelevant.)  
+The `bin(...)`, `oct(...)`, `hex(...)`, `ubin(...)`, `uoct(...)`, `uhex(...)`, `dec(...)`, `udec(...)`, are aliases of `int_style(...)`
+
+For signed integer types, the `bin(...)`, `oct(...)`, `hex(...)`, and `dec(...)` manipulators will add an extra space for positive values and a minus sign for negative values.  
+For unsigned integer types, these manipulators will not add any extra space or minus sign.  
+[See Full Example Code](./readme/formatting-with-manipulators.cpp)
+
+```cpp
+cpp_dump(signed_int_vector | cp::front(2) | cp::hex(2));
+cpp_dump(unsigned_int_vector | cp::front(2) | cp::hex(2));
+cpp_dump(signed_int_vector | cp::front(2) | cp::dec(2));
+cpp_dump(unsigned_int_vector | cp::front(2) | cp::dec(2));
+```
+
+![manipulator-bin-etc.png](./readme/manipulator-bin-etc.png)
+
+The `ubin(...)`, `uoct(...)`, and `uhex(...)` manipulators interpret all integer types as unsigned.  
+If the original type is not unsigned, the suffix 'u' is shown.  
+However, the `udec(...)` manipulator acts differently from these.  
+The `udec(...)` manipulator interprets signed types as signed type, but it does not add an extra space for positive values.  
+This is suitable for showing a container of a signed integers when all values are positive.  
+[See Full Example Code](./readme/formatting-with-manipulators.cpp)
+
+```cpp
+cpp_dump(signed_int_vector | cp::front(2) | cp::uhex());
+cpp_dump(unsigned_int_vector | cp::front(2) | cp::uhex(2));
+cpp_dump(signed_int_vector | cp::front(2) | cp::udec(2));
+cpp_dump(unsigned_int_vector | cp::front(2) | cp::udec(2));
+```
+
+![manipulator-ubin-etc.png](./readme/manipulator-ubin-etc.png)
 
 #### map\_\* manipulators
 
