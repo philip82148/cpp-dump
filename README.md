@@ -734,8 +734,8 @@ The parameter `base` of `int_style()` supports values of 2, 8, 10, 16. For other
 Like the `index()` manipulators, the `int_style()` manipulator acts on all integers in the variable. (The order is irrelevant.)  
 The `bin(...)`, `oct(...)`, `hex(...)`, `ubin(...)`, `uoct(...)`, `uhex(...)`, `dec(...)`, `udec(...)`, are aliases of `int_style(...)`
 
-For signed integer types, the `bin(...)`, `oct(...)`, `hex(...)`, and `dec(...)` manipulators will add an extra space for positive integers and a minus sign for negative integers.  
-For unsigned integer types, the `bin(...)`, `oct(...)`, `hex(...)`, and `dec(...)` manipulators will not add an extra space or minus sign.  
+For signed integer types, the `bin(...)`, `oct(...)`, `hex(...)`, and `dec(...)` manipulators will add an extra space for positive values and a minus sign for negative values.  
+For unsigned integer types, these manipulators will not add any extra space or minus sign.  
 [See Full Example Code](./readme/formatting-with-manipulators.cpp)
 
 ```cpp
@@ -749,8 +749,8 @@ cpp_dump(unsigned_int_vector | cp::front(2) | cp::dec(2));
 
 The `ubin(...)`, `uoct(...)`, and `uhex(...)` manipulators interpret all integer types as unsigned.  
 If the original type is not unsigned, the suffix 'u' is shown.  
-However, `udec(...)` manipulator acts differently from these.  
-`udec(...)` interprets signed types as signed type, but it does not add an extra space for positive integers.  
+However, the `udec(...)` manipulator acts differently from these.  
+The `udec(...)` manipulator interprets signed types as signed type, but it does not add an extra space for positive values.  
 This is suitable for showing a container of a signed integers when all values are positive.  
 [See Full Example Code](./readme/formatting-with-manipulators.cpp)
 
