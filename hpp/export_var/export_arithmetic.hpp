@@ -192,9 +192,10 @@ inline auto export_arithmetic(
     new_output.reserve(output.size() + (output.size() - 1) / chunk + add_space_for_minus);
 
     for (std::size_t pos = 0; pos < output.size(); pos += chunk) {
-      if (pos > 0) new_output.append(1, ' ');
       new_output.append(output, pos, chunk);
+      new_output.append(1, ' ');
     }
+    if (base == 10) new_output.erase(new_output.size() - 1);
 
     output.swap(new_output);
   }

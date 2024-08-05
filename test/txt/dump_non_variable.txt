@@ -157,8 +157,8 @@ here.`,
        cp::cont_indent_style_t::when_nested => cpp_dump::cont_indent_style_t::when_nested, 
        cp::cont_indent_style_t::when_non_tuples_nested => cpp_dump::cont_indent_style_t::when_non_tuples_nested, 
        cp::cont_indent_style_t::always => cpp_dump::cont_indent_style_t::always, cp::cont_indent_style => cpp_dump::cont_indent_style_t::when_nested
-[dump] cp::int_style(16, 8) << 10000u => 0x00 00 27 10u, cp::int_style(16, 8) << 10000l =>  0x00 00 27 10, cp::int_style(16, 8) << 10000ul => 0x00 00 27 10u, 
-       cp::int_style(16, 8) << 10000ll =>  0x00 00 27 10, cp::int_style(16, 8) << 10000ull => 0x00 00 27 10u
+[dump] cp::int_style(16, 8) << 10000u => 0x 00 00 27 10u, cp::int_style(16, 8) << 10000l =>  0x 00 00 27 10, cp::int_style(16, 8) << 10000ul => 0x 00 00 27 10u, 
+       cp::int_style(16, 8) << 10000ll =>  0x 00 00 27 10, cp::int_style(16, 8) << 10000ull => 0x 00 00 27 10u
 [dump] array50 => [ 0, 1, ... ], map50 => { 0: 1, 1: 2, ... }, set50 => { 0, 1, ... }
 [dump] cp::front() << array50 => [ 0, 1, ... ], cp::front() << map50 => { 0: 1, 1: 2, ... }, cp::front() << set50 => { 0, 1, ... }
 [dump] cp::middle() << array50 => [ ..., 24, 25, ... ], cp::middle() << map50 => { ..., 24: 25, 25: 26, ... }, cp::middle() << set50 => { ..., 24, 25, ... }
@@ -766,58 +766,58 @@ here.`,
          ...
        }
 [dump] cp::int_style(12, 3, 3) << cp::front(2) << cp::int_style(2, 0, 0) << cp::map_kv(cp::int_style(16, 3, 3) << cp::back(2), cp::front(2)) << multimap2 => {
-         [ ...,  0x004,  0x002 ] (3): [
+         [ ...,  0x 004,  0x 002 ] (3): [
            [ 0b1011, 0b10110, 0b1011, 0b10110 ],
            [ 0b1110, 0b10101, 0b1011, 0b10110 ],
            ...
          ],
-         [ ...,  0x004,  0x000 ] (1): [
+         [ ...,  0x 004,  0x 000 ] (1): [
            [ 0b10101, 0b101, 0b10, -0b101 ]
          ],
          ...
        }
 [dump] multimap2 | cp::front(2) | cp::map_kv(cp::int_style(16, 3, 3) | cp::back(2), cp::front(2)) | cp::int_style(12, 3, 3) | cp::int_style(2, 0, 0) => {
-         [ ...,  0x004,  0x002 ] (3): [
+         [ ...,  0x 004,  0x 002 ] (3): [
            [ 0b1011, 0b10110, 0b1011, 0b10110 ],
            [ 0b1110, 0b10101, 0b1011, 0b10110 ],
            ...
          ],
-         [ ...,  0x004,  0x000 ] (1): [
+         [ ...,  0x 004,  0x 000 ] (1): [
            [ 0b10101, 0b101, 0b10, -0b101 ]
          ],
          ...
        }
 [dump] cp::int_style(12, 3, 3) << cp::int_style(8, 3, 3) << cp::map_kv(cp::int_style(16, 3, 3) << cp::back(2), cp::front(2)) << multimap2 => {
-         [  0o001,  0o002,  0o004,  0o002 ] (3): [
-           [  0o013,  0o026,  0o013,  0o026 ],
-           [  0o016,  0o025,  0o013,  0o026 ],
-           [  0o000,  0o005,  0o031 ]
+         [  0o 001,  0o 002,  0o 004,  0o 002 ] (3): [
+           [  0o 013,  0o 026,  0o 013,  0o 026 ],
+           [  0o 016,  0o 025,  0o 013,  0o 026 ],
+           [  0o 000,  0o 005,  0o 031 ]
          ],
-         [  0o003,  0o004,  0o000 ] (1): [
-           [  0o025,  0o005,  0o002, -0o005 ]
+         [  0o 003,  0o 004,  0o 000 ] (1): [
+           [  0o 025,  0o 005,  0o 002, -0o 005 ]
          ],
-         [  0o005,  0o006,  0o007,  0o010 ] (1): [
-           [  0o016, -0o002 ]
+         [  0o 005,  0o 006,  0o 007,  0o 010 ] (1): [
+           [  0o 016, -0o 002 ]
          ]
        }
 [dump] multimap2 | cp::map_kv(cp::int_style(16, 3, 3) | cp::back(2), cp::front(2)) | cp::int_style(12, 3, 3) | cp::int_style(8, 3, 3) => {
-         [  0o001,  0o002,  0o004,  0o002 ] (3): [
-           [  0o013,  0o026,  0o013,  0o026 ],
-           [  0o016,  0o025,  0o013,  0o026 ],
-           [  0o000,  0o005,  0o031 ]
+         [  0o 001,  0o 002,  0o 004,  0o 002 ] (3): [
+           [  0o 013,  0o 026,  0o 013,  0o 026 ],
+           [  0o 016,  0o 025,  0o 013,  0o 026 ],
+           [  0o 000,  0o 005,  0o 031 ]
          ],
-         [  0o003,  0o004,  0o000 ] (1): [
-           [  0o025,  0o005,  0o002, -0o005 ]
+         [  0o 003,  0o 004,  0o 000 ] (1): [
+           [  0o 025,  0o 005,  0o 002, -0o 005 ]
          ],
-         [  0o005,  0o006,  0o007,  0o010 ] (1): [
-           [  0o016, -0o002 ]
+         [  0o 005,  0o 006,  0o 007,  0o 010 ] (1): [
+           [  0o 016, -0o 002 ]
          ]
        }
 [dump] cp::front(1) << cp::map_v( cp::int_style(8, 3, 3) << cp::middle(1) << cp::int_style(16, 3, 3) << cp::middle(2) << cp::int_style(5, 3, 3) ) << multimap2
          => {
            [ 1, 2, 4, 2 ] (3): [
              ...,
-             [ ...,  0x015,  0x00B, ... ],
+             [ ...,  0x 015,  0x 00B, ... ],
              ...
            ],
            ...
@@ -825,20 +825,20 @@ here.`,
 [dump] multimap2 | cp::front(1) | cp::map_v( cp::int_style(8, 3, 3) | cp::middle(1) | cp::int_style(16, 3, 3) | cp::middle(2) | cp::int_style(5, 3, 3) ) => {
          [ 1, 2, 4, 2 ] (3): [
            ...,
-           [ ...,  0x015,  0x00B, ... ],
+           [ ...,  0x 015,  0x 00B, ... ],
            ...
          ],
          ...
        }
 [dump] i => 0, cp::int_style(i) << 0x10000 => 65536
 [dump] i => 1, cp::int_style(i) << 0x10000 => 65536
-[dump] i => 2, cp::int_style(i) << 0x10000 =>  0b00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 00
+[dump] i => 2, cp::int_style(i) << 0x10000 =>  0b 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 00
 [dump] i => 3, cp::int_style(i) << 0x10000 => 65536
 [dump] i => 4, cp::int_style(i) << 0x10000 => 65536
 [dump] i => 5, cp::int_style(i) << 0x10000 => 65536
 [dump] i => 6, cp::int_style(i) << 0x10000 => 65536
 [dump] i => 7, cp::int_style(i) << 0x10000 => 65536
-[dump] i => 8, cp::int_style(i) << 0x10000 =>  0o0 00 00 20 00 00
+[dump] i => 8, cp::int_style(i) << 0x10000 =>  0o 0 00 00 20 00 00
 [dump] i => 9, cp::int_style(i) << 0x10000 => 65536
 [dump] i => 10, cp::int_style(i) << 0x10000 =>  00 00 06 55 36
 [dump] i => 11, cp::int_style(i) << 0x10000 => 65536
@@ -846,7 +846,7 @@ here.`,
 [dump] i => 13, cp::int_style(i) << 0x10000 => 65536
 [dump] i => 14, cp::int_style(i) << 0x10000 => 65536
 [dump] i => 15, cp::int_style(i) << 0x10000 => 65536
-[dump] i => 16, cp::int_style(i) << 0x10000 =>  0x00 01 00 00
+[dump] i => 16, cp::int_style(i) << 0x10000 =>  0x 00 01 00 00
 [dump] vec3 => [
          [ 1, 20, 4 ],
          [ -2, 0, -10 ]
@@ -925,34 +925,34 @@ here.`,
 [dump]  4
 [dump]   5
 [dump]  -6
-[dump] 0x83u
-[dump] 0x84
-[dump] -0x74
-[dump] -0x85
-[dump] 0x86u
-[dump]  0x87
-[dump] -0x77
-[dump]  0x88
-[dump] 0x  89u
-[dump]  0x  8A
-[dump] - 0x 7A
-[dump]  0x0 8B
-[dump] 0x   8Cu
-[dump]  0x   8D
-[dump] - 0x 7D
-[dump]  0x00 8E
-[dump] 0x     8Fu
-[dump]  0x     80
-[dump]  - 0x 71
-[dump]  0x0 00 82
+[dump] 0x 83u
+[dump] 0x 84
+[dump] -0x 74
+[dump] -0x 85
+[dump] 0x 86u
+[dump]  0x 87
+[dump] -0x 77
+[dump]  0x 88
+[dump] 0x   89u
+[dump]  0x   8A
+[dump]  - 0x 7A
+[dump]  0x 0 8B
+[dump] 0x    8Cu
+[dump]  0x    8D
+[dump]  - 0x 7D
+[dump]  0x 00 8E
+[dump] 0x      8Fu
+[dump]  0x      80
+[dump]   - 0x 71
+[dump]  0x 0 00 82
 [dump] 0 0000
 [dump]      0
-[dump] 0x0 0000u
-[dump] 0x     0u
+[dump] 0x 0 0000u
+[dump] 0x      0u
 [dump]  0 0000
 [dump]       0
-[dump]  0x0 0000
-[dump]  0x     0
+[dump]  0x 0 0000
+[dump]  0x      0
 [dump] 00000
 [dump]     0
 [dump] 0x00000u
