@@ -29,7 +29,7 @@
   bool is_first;
 
 #define _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1_2                                                 \
-  auto append_output = [&](const std::string &member_name, const auto &member) -> void {           \
+  auto append_output = [&](std::string_view member_name, const auto &member) -> void {             \
     if (is_first) {                                                                                \
       is_first = false;                                                                            \
     } else {                                                                                       \
