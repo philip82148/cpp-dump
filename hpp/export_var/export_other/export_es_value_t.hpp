@@ -125,7 +125,7 @@ inline std::string export_es_value_t(
 
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1_1;
 
-  auto append_output = [&](const std::string &member_name, const auto &member) -> void {
+  auto append_output = [&](std::string_view member_name, const auto &member) -> void {
     if (is_first) {
       is_first = false;
     } else {
@@ -135,7 +135,7 @@ inline std::string export_es_value_t(
     if (shift_indent) output += "\n" + new_indent;
 
     if constexpr (std::is_same_v<decltype(member), const std::string &>) {
-      output += es::apply(member, member_name + "= ");
+      output += es::apply(member, std::string(member_name) + "= ");
       output += _export_es_value_str(member);
     } else {
       output += es::member(member_name) + es::op("= ");
