@@ -1,7 +1,7 @@
 
 // Basic Type
-[dump] false => false, 0 => 0, 0.0 => 0.000000, '0' => '0'
-[dump] true => true, 3.14 => 3.140000, my_int => 15, 9265 => 9265
+[dump] false => false, 0 => 0, 0.0 => 0.000000, 'a' => 'a'
+[dump] true => true, 3.14 => 3.140000, my_int => 15, -9265 => -9265
 [dump] "This is a string." => "This is a string."
 [dump] ptr => *15, void_ptr => , nullptr => nullptr
 

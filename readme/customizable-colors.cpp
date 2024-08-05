@@ -70,7 +70,7 @@ int main() {
   std::vector<std::pair<int, std::string>> vector_of_pairs{{1, "apple"}, {3, "banana"}};
 
   std::clog << "\n// Basic Type" << std::endl;
-  cpp_dump(false, 0, 0.0, '0'), cpp_dump(true, 3.14, my_int, 9265);
+  cpp_dump(false, 0, 0.0, 'a'), cpp_dump(true, 3.14, my_int, -9265);
   cpp_dump("This is a string."), cpp_dump(ptr, void_ptr, nullptr);
 
   std::clog << "\n// Container" << std::endl;
