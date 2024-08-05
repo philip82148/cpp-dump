@@ -68,9 +68,8 @@ inline std::string export_arithmetic(
   char upper = to_hex_char((value >> 4) & 0x0f);
   char lower = to_hex_char(value & 0x0f);
 
-  char number[] = {'0', 'x', upper, lower};
-  return es::character({quoted_char, sizeof(quoted_char)}) + es::op(" (")
-         + es::number({number, sizeof(number)}) + es::op(")");
+  char number[] = {' ', '0', 'x', upper, lower};
+  return es::character({quoted_char, sizeof(quoted_char)}) + es::number({number, sizeof(number)});
 }
 
 template <typename UnsignedT>
