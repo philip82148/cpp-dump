@@ -451,9 +451,9 @@ inline constexpr bool is_value_with_command = _is_value_with_command<_remove_cvr
  * See README for details.
  */
 inline auto int_style(
-    int base = 16,
+    int base,
     int digits = -1,
-    int chunk = 2,
+    int chunk = 0,
     bool space_fill = false,
     bool make_unsigned_or_no_space_for_minus = false
 ) {
