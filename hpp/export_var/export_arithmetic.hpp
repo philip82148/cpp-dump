@@ -108,14 +108,14 @@ inline auto export_arithmetic(
     T value, const std::string &, std::size_t, std::size_t, bool, const export_command &command
 ) -> std::enable_if_t<std::is_integral_v<T>, std::string> {
   std::string output = command.format(value);
-  if (!output.empty()) return es::number(output);
+  if (!output.empty()) return es::signed_number(output);
 
   auto int_style_ = command.int_style();
-  if (!int_style_) return es::number(std::to_string(value));
+  if (!int_style_) return es::signed_number(std::to_string(value));
 
   auto [base, digits, chunk, space_fill, make_unsigned_or_no_space_for_minus] = int_style_.value();
 
-  if (base == 10 && digits == 0 && chunk == 0) return es::number(std::to_string(value));
+  if (base == 10 && digits == 0 && chunk == 0) return es::signed_number(std::to_string(value));
 
   unsigned int max_digits = _get_max_digits<T>(base);
   if (digits > max_digits) digits = max_digits;
@@ -206,9 +206,9 @@ inline auto export_arithmetic(
 
   std::reverse(output.begin(), output.end());
 
-  if (make_unsigned) return es::number(output) + es::op(" u");
+  if (make_unsigned) return es::signed_number(output) + es::op(" u");
 
-  return es::number(output);
+  return es::signed_number(output);
 }
 
 template <typename T>
@@ -216,9 +216,9 @@ inline auto export_arithmetic(
     T value, const std::string &, std::size_t, std::size_t, bool, const export_command &command
 ) -> std::enable_if_t<std::is_floating_point_v<T>, std::string> {
   std::string output = command.format(value);
-  if (!output.empty()) return es::number(output);
+  if (!output.empty()) return es::signed_number(output);
 
-  return es::number(std::to_string(value));
+  return es::signed_number(std::to_string(value));
 }
 
 }  // namespace _detail

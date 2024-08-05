@@ -37,6 +37,7 @@ int main() {
           },
           "\x1b[38;2;139;191;139m",  // class_op: white closer to green
           "\x1b[38;2;217;242;255m",  // member_op: white closer to light blue
+          ""                         // number_op: default
       })
   );
 

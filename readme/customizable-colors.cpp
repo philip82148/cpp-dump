@@ -36,12 +36,15 @@ int main() {
           },
           "\x1b[02m",  // class_op: dark
           "\x1b[02m",  // member_op: dark
+          ""           // number_op: default
       })
   );
 
-  // Use the 'op' color for operators in class names and members (::, <>, (), etc...).
+  // Use the 'class_op'/'member_op'/'number_op' color for operators
+  // in class names, members, and numbers (::, <>, (), -, +, etc...).
   CPP_DUMP_SET_OPTION(detailed_class_es, true);
   CPP_DUMP_SET_OPTION(detailed_member_es, true);
+  CPP_DUMP_SET_OPTION(detailed_number_es, true);
 
   // Use a color scheme closer to standard syntax highlighting.
   // CPP_DUMP_SET_OPTION(es_style, cp::es_style_t::by_syntax);
@@ -67,7 +70,7 @@ int main() {
   std::vector<std::pair<int, std::string>> vector_of_pairs{{1, "apple"}, {3, "banana"}};
 
   std::clog << "\n// Basic Type" << std::endl;
-  cpp_dump(false, 0, 0.0, '0'), cpp_dump(true, 3.14, my_int, 9265);
+  cpp_dump(false, 0, 0.0, 'a'), cpp_dump(true, 3.14, my_int, -9265);
   cpp_dump("This is a string."), cpp_dump(ptr, void_ptr, nullptr);
 
   std::clog << "\n// Container" << std::endl;

@@ -59,6 +59,7 @@ int main(int argc, char *argv[]) {
   CPP_DUMP_SET_OPTION(es_style, es_style_);
   CPP_DUMP_SET_OPTION(detailed_class_es, detailed_es);
   CPP_DUMP_SET_OPTION(detailed_member_es, detailed_es);
+  CPP_DUMP_SET_OPTION(detailed_number_es, detailed_es);
 
   CPP_DUMP_SET_OPTION(
       es_value,
@@ -78,12 +79,14 @@ int main(int argc, char *argv[]) {
           },
           "\x1b[38;2;139;191;139m",  // class_op: white closer to green
           "\x1b[38;2;217;242;255m",  // member_op: white closer to light blue
+          ""                         // number_op: default
       })
   );
 
   // basic
   cpp_dump(false, 0, 0.0, '0', (const char *)"0", string{"0"}, string_view{"0"});
   cpp_dump(true, 3.14, 159265, "This is a test string");
+  cpp_dump(-0, -3.14, -159265);
   cpp_dump("This contains newline\nhere.", R"(This contains ".)", R"(This contains `.)");
 
   // vector
@@ -225,11 +228,12 @@ int main(int argc, char *argv[]) {
 
   // format
   CPP_DUMP_SET_OPTION(print_expr, true);
-  cpp_dump(3.14159265f | cp::format("%.3f"));
-  cpp_dump(3.141592653589793L | cp::format("%.15Lf"));
-  cpp_dump(314159265 | cp::format("%020d"));
-  cpp_dump(31415926535ll | cp::format("%020lld"));
+  cpp_dump(3.14159265f | cp::format("%+.3f"));
+  cpp_dump(3.141592653589793L | cp::format("%+.15Lf"));
+  cpp_dump(314159265 | cp::format("%+020d"));
+  cpp_dump(31415926535ll | cp::format("%+020lld"));
   cpp_dump(complex1 | cp::format("%.10f"));
+  cpp_dump(-3.14159265f | cp::format("[%10.3f]"));
 
   vector<vector<bool>> vec4 = {
       {true, false, true, false},
