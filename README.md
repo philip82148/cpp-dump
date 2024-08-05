@@ -742,7 +742,7 @@ cpp_dump(... << cp::uhex() << ... << variable);
 cpp_dump(variable | ... | cp::uhex() | ...);
 ```
 
-The parameter `base` of `int_style()` supports values of 2, 8, 10, 16. For other values, this manipulator resets the effects of the previous `int_style()` manipulators.  
+The parameter `base` of `int_style()` supports values of 2, 8, 10, 16. For other values, this manipulator does nothing.  
 `digits` supports values of `digits` >= 0 and `digits` <= 'the maximum digits', where 'the maximum digits' is the maximum number of digits that can be represented by the type for the given `base`. For other values, it is treated as `digits` = 'the maximum digits'.  
 `chunk` supports values of `chunk` >= 0. For other values, it is treated as `chunk` = 0.  
 Like the `index()` manipulators, the `int_style()` manipulator acts on all integers in the variable. (The order is irrelevant.)  
