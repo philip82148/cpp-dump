@@ -133,7 +133,7 @@ inline bool detailed_class_es = false;
 inline bool detailed_member_es = false;
 
 /**
- * If true, the 'number_op' color is used for operators in numbers (+, -, etc...).
+ * If true, the 'number_op' color is used for operators in numbers (-, +, etc...).
  */
 inline bool detailed_number_es = false;
 

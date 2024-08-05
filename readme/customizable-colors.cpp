@@ -36,12 +36,15 @@ int main() {
           },
           "\x1b[02m",  // class_op: dark
           "\x1b[02m",  // member_op: dark
+          ""           // number_op: default
       })
   );
 
-  // Use the 'op' color for operators in class names and members (::, <>, (), etc...).
+  // Use the 'class_op'/'member_op'/'number_op' color for operators
+  // in class names, members, and numbers (::, <>, (), -, +, etc...).
   CPP_DUMP_SET_OPTION(detailed_class_es, true);
   CPP_DUMP_SET_OPTION(detailed_member_es, true);
+  CPP_DUMP_SET_OPTION(detailed_number_es, true);
 
   // Use a color scheme closer to standard syntax highlighting.
   // CPP_DUMP_SET_OPTION(es_style, cp::es_style_t::by_syntax);

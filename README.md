@@ -112,17 +112,20 @@ CPP_DUMP_SET_OPTION(es_value, (cp::es_value_t{
   "\e[96m",        // member: light cyan
   "\e[31m",        // unsupported: red
   {
-    "\e[33m",  // bracket_by_depth[0]: yellow
-    "\e[35m",  // bracket_by_depth[1]: magenta
-    "\e[36m",  // bracket_by_depth[2]: cyan
+    "\e[33m",      // bracket_by_depth[0]: yellow
+    "\e[35m",      // bracket_by_depth[1]: magenta
+    "\e[36m",      // bracket_by_depth[2]: cyan
   },
-  "\e[02m",  // class_op: dark
-  "\e[02m",  // member_op: dark
+  "\e[02m",        // class_op: dark
+  "\e[02m",        // member_op: dark
+  ""               // number_op: default
 }));
 
-// Use the 'class_op'/'member_op' color for operators in class names and members (::, <>, (), etc...).
+// Use the 'class_op'/'member_op'/'number_op' color for operators
+// in class names, members, and numbers (::, <>, (), -, +, etc...).
 CPP_DUMP_SET_OPTION(detailed_class_es, true);
 CPP_DUMP_SET_OPTION(detailed_member_es, true);
+CPP_DUMP_SET_OPTION(detailed_number_es, true);
 
 // Use a color scheme closer to standard syntax highlighting.
 // CPP_DUMP_SET_OPTION(es_style, cp::es_style_t::by_syntax);
@@ -278,6 +281,11 @@ If true, the 'class_op' color is used for operators in class names (`::`, `<>`, 
 Type: `bool` Default: `false`  
 If true, the 'member_op' color is used for operators in members (`()`, etc...).
 
+#### `detailed_number_es`
+
+Type: `bool` Default: `false`  
+If true, the 'number_op' color is used for operators in numbers (`-`, `+`, etc...).
+
 #### `cont_indent_style`
 
 Type: `enum class cpp_dump::cont_indent_style_t` Default: `cpp_dump::cont_indent_style_t::when_nested`  
@@ -363,6 +371,7 @@ struct cpp_dump::es_value_t {
   std::vector<std::string> bracket_by_depth{"\e[02m"};  // dark
   std::string class_op = "\e[02m";                      // dark
   std::string member_op = "\e[02m";                     // dark
+  std::string number_op{};                              // default
 };
 
 /**
@@ -422,14 +431,19 @@ inline cpp_dump::es_style_t cpp_dump::es_style = cpp_dump::es_style_t::original;
 inline cpp_dump::es_value_t cpp_dump::es_value;
 
 /**
- * If true, the 'op' color is used for operators in class names (::, <>, etc...).
+ * If true, the 'class_op' color is used for operators in class names (::, <>, etc...).
  */
 inline bool cpp_dump::detailed_class_es = false;
 
 /**
- * If true, the 'op' color is used for operators in members ((), etc...).
+ * If true, the 'member_op' color is used for operators in members ((), etc...).
  */
 inline bool cpp_dump::detailed_member_es = false;
+
+/**
+ * If true, the 'number_op' color is used for operators in numbers (-, +, etc...).
+ */
+inline bool cpp_dump::detailed_number_es = false;
 
 /**
  * Style of indents of the Container, Set and Map categories (See 'Supported types')
