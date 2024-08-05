@@ -168,13 +168,8 @@ inline auto export_arithmetic(
 
   // Add a minus when value < 0 (part 1)
   bool need_minus = !make_unsigned && value < 0;
-  bool added_minus_before_fill = space_fill && (digits == 0 || output.length() < digits);
-  bool added_prefix = false;
-  if (need_minus && added_minus_before_fill) {
-    output.append(reversed_prefix);
-    output.push_back('-');
-    added_prefix = true;
-  }
+  bool minus_before_fill = base == 10 && space_fill;
+  if (need_minus && minus_before_fill) output.push_back('-');
 
   if (output.length() < digits) {
     // Fill with spaces/zeros
@@ -200,10 +195,10 @@ inline auto export_arithmetic(
     output.swap(new_output);
   }
 
-  if (!added_prefix) output.append(reversed_prefix);
+  output.append(reversed_prefix);
 
   // Add a minus when value < 0 (part 2)
-  if (need_minus && !added_minus_before_fill) {
+  if (need_minus && !minus_before_fill) {
     output.push_back('-');
   } else if (add_space_for_minus && length_was_below_digits) {
     output.push_back(' ');

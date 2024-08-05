@@ -916,7 +916,7 @@ here.`,
 [dump] -3 0000
 [dump] 4000
 [dump] 5000
-[dump] -6000
+[dump] - 6000
 [dump] 700
 [dump] 800
 [dump] -900
@@ -936,15 +936,15 @@ here.`,
 [dump]  0x 88
 [dump] 0x   89 u
 [dump]  0x   8A
-[dump]  - 0x 7A
+[dump] -0x   7A
 [dump]  0x 0 8B
 [dump] 0x    8C u
 [dump]  0x    8D
-[dump]  - 0x 7D
+[dump] -0x    7D
 [dump]  0x 00 8E
 [dump] 0x      8F u
 [dump]  0x      80
-[dump]   - 0x 71
+[dump] -0x      71
 [dump]  0x 0 00 82
 [dump] 0 0000
 [dump]      0
