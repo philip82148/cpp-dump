@@ -49,6 +49,8 @@ struct empty_class {};
 #define CPP_DUMP_SET_OPTION_IN_GLOBAL(variable, value)                                             \
   _p_CPP_DUMP_SET_OPTION_IN_GLOBAL_AUX(variable, value, __LINE__)
 
+namespace types {
+
 /**
  * Type of cpp_dump::options::es_style.
  * cpp_dump::export_var() supports this type.
@@ -80,6 +82,8 @@ struct es_value_t {
  * cpp_dump::export_var() supports this type.
  */
 enum class cont_indent_style_t { minimal, when_nested, when_non_tuples_nested, always };
+
+}  // namespace types
 
 namespace options {
 
@@ -118,12 +122,12 @@ inline log_label::log_label_func_t log_label_func = log_label::default_func;
 /**
  * Style of the escape sequences (output coloring).
  */
-inline es_style_t es_style = es_style_t::original;
+inline types::es_style_t es_style = types::es_style_t::original;
 
 /**
  * Values of the escape sequences (output coloring).
  */
-inline es_value_t es_value;
+inline types::es_value_t es_value;
 
 /**
  * If true, the 'class_op' color is used for operators in class names (::, <>, etc...).
@@ -143,7 +147,7 @@ inline bool detailed_number_es = false;
 /**
  * Style of indents of the Container, Set and Map categories (See 'Supported types').
  */
-inline cont_indent_style_t cont_indent_style = cont_indent_style_t::when_nested;
+inline types::cont_indent_style_t cont_indent_style = types::cont_indent_style_t::when_nested;
 
 }  // namespace options
 

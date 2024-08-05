@@ -26,11 +26,11 @@ namespace _detail {
 namespace es {
 
 inline std::string _ptr_asterisk(std::string_view s) {
-  return options::es_style == es_style_t::original ? es::identifier(s) : es::op(s);
+  return options::es_style == types::es_style_t::original ? es::identifier(s) : es::op(s);
 }
 
 inline std::string _raw_address(std::string_view s) {
-  return options::es_style == es_style_t::original ? es::identifier(s) : es::number(s);
+  return options::es_style == types::es_style_t::original ? es::identifier(s) : es::number(s);
 }
 
 }  // namespace es

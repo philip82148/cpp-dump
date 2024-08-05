@@ -47,7 +47,7 @@ here.`
          70000000000000000,
          800000000000
        ]
-CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::always);
+CPP_DUMP_SET_OPTION(cont_indent_style, cp::types::cont_indent_style_t::always);
 [dump] vec1d1 => [
          10000000000000000,
          20000000000000000,
@@ -58,7 +58,7 @@ CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::always);
          70000000000000000,
          800000
        ]
-CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_nested);
+CPP_DUMP_SET_OPTION(cont_indent_style, cp::types::cont_indent_style_t::when_nested);
 [dump] vector_of_string => [
          
 `this string contains a newline
@@ -81,19 +81,19 @@ here`
            9000000
          ]
        ]
-CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_non_tuples_nested);
+CPP_DUMP_SET_OPTION(cont_indent_style, cp::types::cont_indent_style_t::when_non_tuples_nested);
 [dump] vector2d3 => [
          [ 10000000000000000, 20000000000000000, 30000000000000000, 40000000000000000, 50000000000000000, 60000000000000000, 70000000000000000, 8000000 ]
        ]
-CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::minimal);
+CPP_DUMP_SET_OPTION(cont_indent_style, cp::types::cont_indent_style_t::minimal);
 [dump] vector2d3
          => [ [ 10000000000000000, 20000000000000000, 30000000000000000, 40000000000000000, 50000000000000000, 60000000000000000, 70000000000000000, 8000000 ] ]
 [dump] vector2d4 => [
          [ 10000000000000000, 20000000000000000, 30000000000000000, 40000000000000000, 50000000000000000, 60000000000000000, 70000000000000000, 80000000 ]
        ]
-CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_non_tuples_nested);
+CPP_DUMP_SET_OPTION(cont_indent_style, cp::types::cont_indent_style_t::when_non_tuples_nested);
 [dump] vec_of_tuple => [ ( 1, 2 ) ]
-CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_nested);
+CPP_DUMP_SET_OPTION(cont_indent_style, cp::types::cont_indent_style_t::when_nested);
 [dump] vec_of_tuple => [
          ( 1, 2 )
        ]
@@ -115,19 +115,19 @@ CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_nested);
 `this string contains a newline
 here`
        }
-CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_non_tuples_nested);
+CPP_DUMP_SET_OPTION(cont_indent_style, cp::types::cont_indent_style_t::when_non_tuples_nested);
 [dump] set_of_vec1 => {
          [ 10000000000000000, 20000000000000000, 30000000000000000, 40000000000000000, 50000000000000000, 60000000000000000, 70000000000000000, 8000000 ]
        }
-CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::minimal);
+CPP_DUMP_SET_OPTION(cont_indent_style, cp::types::cont_indent_style_t::minimal);
 [dump] set_of_vec1
          => { [ 10000000000000000, 20000000000000000, 30000000000000000, 40000000000000000, 50000000000000000, 60000000000000000, 70000000000000000, 8000000 ] }
 [dump] set_of_vec2 => {
          [ 10000000000000000, 20000000000000000, 30000000000000000, 40000000000000000, 50000000000000000, 60000000000000000, 70000000000000000, 80000000 ]
        }
-CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_non_tuples_nested);
+CPP_DUMP_SET_OPTION(cont_indent_style, cp::types::cont_indent_style_t::when_non_tuples_nested);
 [dump] set_of_tuple => { ( 1, 2 ) }
-CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_nested);
+CPP_DUMP_SET_OPTION(cont_indent_style, cp::types::cont_indent_style_t::when_nested);
 [dump] set_of_tuple => {
          ( 1, 2 )
        }
@@ -168,14 +168,14 @@ here`: 800000000000000
 `this string contains a newline
 here`
        }
-CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_non_tuples_nested);
+CPP_DUMP_SET_OPTION(cont_indent_style, cp::types::cont_indent_style_t::when_non_tuples_nested);
 [dump] map_of_vec_key1 => {
          [ 1000000000000000, 2000000000000000, 3000000000000000, 400000000000000, 500000000000000, 600000000000000, 700000000000000, 800000000000000 ]: 1
        }
 [dump] map_of_vec_value1 => {
          1: [ 1000000000000000, 2000000000000000, 3000000000000000, 400000000000000, 500000000000000, 600000000000000, 700000000000000, 800000000000000 ]
        }
-CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::minimal);
+CPP_DUMP_SET_OPTION(cont_indent_style, cp::types::cont_indent_style_t::minimal);
 [dump] map_of_vec_key1
          => { [ 1000000000000000, 2000000000000000, 3000000000000000, 400000000000000, 500000000000000, 600000000000000, 700000000000000, 800000000000000 ]: 1 }
 [dump] map_of_vec_value1
@@ -186,10 +186,10 @@ CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::minimal);
 [dump] map_of_vec_value2 => {
          1: [ 1000000000000000, 2000000000000000, 3000000000000000, 4000000000000000, 500000000000000, 600000000000000, 700000000000000, 800000000000000 ]
        }
-CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_non_tuples_nested);
+CPP_DUMP_SET_OPTION(cont_indent_style, cp::types::cont_indent_style_t::when_non_tuples_nested);
 [dump] map_of_tuple_key => { 1: ( 2, 3 ) }
 [dump] map_of_tuple_value => { ( 1, 2 ): 3 }
-CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_nested);
+CPP_DUMP_SET_OPTION(cont_indent_style, cp::types::cont_indent_style_t::when_nested);
 [dump] map_of_tuple_key => {
          1: ( 2, 3 )
        }

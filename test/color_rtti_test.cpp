@@ -13,7 +13,7 @@ struct class_a {};
 int main() {
   CPP_DUMP_SET_OPTION(
       es_value,
-      (cp::es_value_t{
+      (cp::types::es_value_t{
           "\x1b[02m",                // log: dark
           "\x1b[38;2;86;154;214m",   // expression:
           "\x1b[36m",                // reserved: cyan

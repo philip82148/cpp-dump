@@ -125,12 +125,12 @@ inline auto export_map(
   auto skipped_map = command.create_skip_container(map_wrapper);
 
   bool shift_indent;
-  if (options::cont_indent_style == cont_indent_style_t::always) {
+  if (options::cont_indent_style == types::cont_indent_style_t::always) {
     shift_indent = true;
-  } else if (options::cont_indent_style == cont_indent_style_t::when_nested) {
+  } else if (options::cont_indent_style == types::cont_indent_style_t::when_nested) {
     shift_indent = is_multimap<T> || is_iterable_like<typename T::key_type>
                    || is_iterable_like<typename T::mapped_type>;
-  } else if (options::cont_indent_style == cont_indent_style_t::when_non_tuples_nested) {
+  } else if (options::cont_indent_style == types::cont_indent_style_t::when_non_tuples_nested) {
     shift_indent =
         is_multimap<T>
         || (is_iterable_like<typename T::key_type> && !is_tuple<typename T::key_type>)

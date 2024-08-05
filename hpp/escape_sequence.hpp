@@ -19,7 +19,7 @@ namespace cpp_dump {
 
 namespace _detail {
 
-inline bool use_es() { return options::es_style != es_style_t::no_es; }
+inline bool use_es() { return options::es_style != types::es_style_t::no_es; }
 
 namespace es {
 
