@@ -8,6 +8,7 @@
 #pragma once
 
 #include <string>
+#include <string_view>
 
 #include "../escape_sequence.hpp"
 #include "../export_command/export_command.hpp"
