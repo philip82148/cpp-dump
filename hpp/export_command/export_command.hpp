@@ -451,9 +451,9 @@ inline constexpr bool is_value_with_command = _is_value_with_command<_remove_cvr
  * See README for details.
  */
 inline auto int_style(
-    int base = 16,
+    int base,
     int digits = -1,
-    int chunk = 2,
+    int chunk = 0,
     bool space_fill = false,
     bool make_unsigned_or_no_space_for_minus = false
 ) {
@@ -466,64 +466,64 @@ inline auto int_style(
  * Manipulator for the display style of integers.
  * See README for details.
  */
-inline auto dec(int digits = -1, int chunk = 0) {
-  return int_style(10, digits, chunk, true, false);
-}
-
-/*
- * Manipulator for the display style of integers.
- * This is an experimental feature.
- */
-inline auto udec(int digits = -1, int chunk = 0) {
-  return int_style(10, digits, chunk, true, true);
+inline auto dec(int digits = -1, int chunk = 0, bool space_fill = true) {
+  return int_style(10, digits, chunk, space_fill, false);
 }
 
 /*
  * Manipulator for the display style of integers.
  * See README for details.
  */
-inline auto bin(int digits = -1, int chunk = 0) {
-  return int_style(2, digits, chunk, false, false);
-}
-
-/*
- * Manipulator for the display style of integers.
- * This is an experimental feature.
- */
-inline auto ubin(int digits = -1, int chunk = 0) {
-  return int_style(2, digits, chunk, false, true);
+inline auto bin(int digits = -1, int chunk = 0, bool space_fill = false) {
+  return int_style(2, digits, chunk, space_fill, false);
 }
 
 /*
  * Manipulator for the display style of integers.
  * See README for details.
  */
-inline auto oct(int digits = -1, int chunk = 0) {
-  return int_style(8, digits, chunk, false, false);
-}
-
-/*
- * Manipulator for the display style of integers.
- * This is an experimental feature.
- */
-inline auto uoct(int digits = -1, int chunk = 0) {
-  return int_style(8, digits, chunk, false, true);
+inline auto oct(int digits = -1, int chunk = 0, bool space_fill = false) {
+  return int_style(8, digits, chunk, space_fill, false);
 }
 
 /*
  * Manipulator for the display style of integers.
  * See README for details.
  */
-inline auto hex(int digits = -1, int chunk = 0) {
-  return int_style(16, digits, chunk, false, false);
+inline auto hex(int digits = -1, int chunk = 0, bool space_fill = false) {
+  return int_style(16, digits, chunk, space_fill, false);
 }
 
 /*
  * Manipulator for the display style of integers.
- * This is an experimental feature.
+ * See README for details.
  */
-inline auto uhex(int digits = -1, int chunk = 0) {
-  return int_style(16, digits, chunk, false, true);
+inline auto udec(int digits = -1, int chunk = 0, bool space_fill = true) {
+  return int_style(10, digits, chunk, space_fill, true);
+}
+
+/*
+ * Manipulator for the display style of integers.
+ * See README for details.
+ */
+inline auto ubin(int digits = -1, int chunk = 0, bool space_fill = false) {
+  return int_style(2, digits, chunk, space_fill, true);
+}
+
+/*
+ * Manipulator for the display style of integers.
+ * See README for details.
+ */
+inline auto uoct(int digits = -1, int chunk = 0, bool space_fill = false) {
+  return int_style(8, digits, chunk, space_fill, true);
+}
+
+/*
+ * Manipulator for the display style of integers.
+ * See README for details.
+ */
+inline auto uhex(int digits = -1, int chunk = 0, bool space_fill = false) {
+  return int_style(16, digits, chunk, space_fill, true);
 }
 
 /*

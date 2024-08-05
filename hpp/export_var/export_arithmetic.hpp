@@ -9,6 +9,7 @@
 
 #include <algorithm>
 #include <iomanip>
+#include <ios>
 #include <limits>
 #include <sstream>
 #include <string>
@@ -67,9 +68,8 @@ inline std::string export_arithmetic(
   char upper = to_hex_char((value >> 4) & 0x0f);
   char lower = to_hex_char(value & 0x0f);
 
-  char number[] = {'0', 'x', upper, lower};
-  return es::character({quoted_char, sizeof(quoted_char)}) + es::op(" (")
-         + es::number({number, sizeof(number)}) + es::op(")");
+  char number[] = {' ', '0', 'x', upper, lower};
+  return es::character({quoted_char, sizeof(quoted_char)}) + es::number({number, sizeof(number)});
 }
 
 template <typename UnsignedT>
@@ -121,8 +121,9 @@ inline auto export_arithmetic(
   if (digits > max_digits) digits = max_digits;
   if (chunk > max_digits) chunk = 0;
 
-  bool make_unsigned = base != 10 && make_unsigned_or_no_space_for_minus;
-  bool add_space_for_minus = std::is_signed_v<T> && !make_unsigned_or_no_space_for_minus;
+  const bool make_unsigned =
+      std::is_signed_v<T> && base != 10 && make_unsigned_or_no_space_for_minus;
+  const bool add_extra_space = !(std::is_unsigned_v<T> || make_unsigned_or_no_space_for_minus);
 
   using UnsignedT = std::make_unsigned_t<T>;
   // Let stringstream recognize the type as an integer.
@@ -138,70 +139,76 @@ inline auto export_arithmetic(
     unsigned_tmp = value;
   }
 
+  std::string_view reversed_prefix;
+
   // Create a string of an integer with base as the radix
   if (base == 10) {
     output = std::to_string(unsigned_tmp);
     std::reverse(output.begin(), output.end());
   } else if (base == 2) {
-    output.reserve(digits > 0 ? digits + (chunk == 0 && add_space_for_minus) : sizeof(T) * 8 + 1);
+    output.reserve(sizeof(T) * 8 + 3);
 
     bool is_first = true;
     while (is_first || unsigned_tmp) {
       is_first = false;
       char next_digit = static_cast<char>((unsigned_tmp & 0x01) + '0');
-      output.append(1, next_digit);
+      output.push_back(next_digit);
       unsigned_tmp >>= 1;
     }
+
+    reversed_prefix = "b0";
   } else {
     std::stringstream ss;
-    ss << std::setbase(base) << unsigned_tmp;
+    ss << std::setbase(base) << std::uppercase << unsigned_tmp;
     output = ss.str();
     std::reverse(output.begin(), output.end());
+
+    reversed_prefix = base == 16 ? "x0" : "o0";
   }
 
   // Add a minus when value < 0 (part 1)
-  bool need_minus = !make_unsigned && value < 0;
-  bool added_minus_before_fill = space_fill && (digits == 0 || output.length() < digits);
-  if (need_minus && added_minus_before_fill) output.append(1, '-');
+  const bool need_minus = !make_unsigned && value < 0;
+  const bool minus_before_fill = base == 10 && space_fill;
+  if (need_minus && minus_before_fill) output.push_back('-');
 
-  if (output.length() < digits) {
+  if (output.size() < digits) {
     // Fill with spaces/zeros
     if (space_fill) {
-      output.append(digits - output.length(), ' ');
+      output.append(digits - output.size(), ' ');
     } else {
-      output.append(digits - output.length(), '0');
+      output.append(digits - output.size(), '0');
     }
   }
 
-  bool length_was_below_digits = output.length() <= digits;
+  const bool length_was_below_digits = output.size() <= digits;
   if (chunk > 0) {
     // Add a space between chunks
     std::string new_output;
-    new_output.reserve(output.size() + (output.size() - 1) / chunk + add_space_for_minus);
+    new_output.reserve(output.size() * 2);
 
     for (std::size_t pos = 0; pos < output.size(); pos += chunk) {
-      if (pos > 0) new_output.append(1, ' ');
       new_output.append(output, pos, chunk);
+      new_output.push_back(' ');
     }
+    if (base == 10) new_output.pop_back();
 
     output.swap(new_output);
   }
 
+  output.append(reversed_prefix);
+
   // Add a minus when value < 0 (part 2)
-  if (need_minus && !added_minus_before_fill) {
-    output.append(1, '-');
-  } else if (add_space_for_minus && length_was_below_digits) {
-    output.append(1, ' ');
+  if (need_minus && !minus_before_fill) {
+    output.push_back('-');
+  } else if (length_was_below_digits && add_extra_space) {
+    output.push_back(' ');
   }
 
   std::reverse(output.begin(), output.end());
 
-  if (base == 10) return es::number(output);
+  if (make_unsigned) return es::number(output) + es::op(" u");
 
-  std::string suffix = " _" + std::to_string(base);
-  if (make_unsigned) suffix += "u";
-
-  return es::number(output) + es::op(suffix);
+  return es::number(output);
 }
 
 template <typename T>
