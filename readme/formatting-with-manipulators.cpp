@@ -55,7 +55,7 @@ int main() {
 
   std::clog << "\n// manipulator-format.png\n" << std::endl;
 
-  constexpr double pi = M_PI;
+  constexpr double pi = 3.14159265358979323846;
   cpp_dump(pi | cp::format("%.10f"));
 
   std::clog << "\n// manipulator-bw-boolnum.png\n" << std::endl;

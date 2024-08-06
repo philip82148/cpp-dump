@@ -32,7 +32,7 @@ set(raw_address_file supports-various-types;customizable-colors;no-es;formatting
 if("${basename}" IN_LIST raw_address_file)
    # Do not remove escape sequences but remove raw addresses.
    if("${basename}" STREQUAL no-es)
-      string(REGEX REPLACE " (0x[0-9a-f]+|00[0-9A-F]+)," " ," error_contents "${error_contents}")
+      string(REGEX REPLACE " (0x[0-9a-f]+|00[0-9A-F]+)," " 0x7fffffffffff," error_contents "${error_contents}")
    else()
       string(REGEX REPLACE "${esc}\\[32m(0x[0-9a-f]+|00[0-9A-F]+)${esc}\\[0m" "${esc}[32m0x7fffffffffff${esc}[0m" error_contents "${error_contents}")
    endif()
