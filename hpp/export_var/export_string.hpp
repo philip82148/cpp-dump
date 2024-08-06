@@ -27,28 +27,7 @@ inline std::string export_string(
     bool fail_on_newline,
     const export_command &command
 ) {
-  if (command.escape_str()) {
-    auto need_escape = [](char c) {
-      return !std::isprint(static_cast<unsigned char>(c)) || c == '"' || c == '\\';
-    };
-    auto escape = [](char c) -> std::string {
-      if (c == '"') return R"(\")";
-      if (c == '\\') return R"(\\)";
-      return escape_non_printable_char(c);
-    };
-
-    std::string output(1, '"');
-    auto begin = value.begin();
-    decltype(begin) end;
-    while ((end = std::find_if(begin, value.end(), need_escape)) != value.end()) {
-      output.append(begin, end);
-      output.append(escape(*end));
-      begin = end + 1;
-    }
-    output.append(begin, end).push_back('"');
-
-    return es::escaped_str(output);
-  }
+  if (command.escape_str()) return es::escaped_str(escape_string(value));
 
   // str = replace_string(str, R"(\)", R"(\\)");
   // str = replace_string(str, R"(`)", R"(\`)");
