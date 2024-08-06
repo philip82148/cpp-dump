@@ -91,7 +91,7 @@ inline std::string export_arithmetic(
     if (char_to_escaped.count(value)) {
       char_str = char_to_escaped.at(value);
     } else if (command.char_as_hex()) {
-      char_str = "''  ";
+      char_str = "    ";
     } else {
       char_str = {'\'', '\\', 'x', upper, lower, '\''};
     }
