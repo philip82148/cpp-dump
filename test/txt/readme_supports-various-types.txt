@@ -1,9 +1,9 @@
 
 // Basic Type
-[0m[02m[dump] [0m[36mfalse[0m[02m => [0mfalse[0m[02m, [0m[36m0[0m[02m => [0m0[0m[02m, [0m[36m0.0[0m[02m => [0m0.000000[0m[02m, [0m[36m'a'[0m[02m => [0m'a'[0m
+[0m[02m[dump] [0m[36mfalse[0m[02m => [0mfalse[0m[02m, [0m[36m0[0m[02m => [0m0[0m[02m, [0m[36m0.0[0m[02m => [0m0.000000[0m
 [0m[02m[dump] [0m[36mtrue[0m[02m => [0mtrue[0m[02m, [0m[36m3.14[0m[02m => [0m3.140000[0m[02m, [0m[36mmy_int[0m[02m => [0m15[0m[02m, [0m[36m-9265[0m[02m => [0m-9265[0m
-[0m[02m[dump] [0m[36m"This is a string."[0m[02m => [0m"This is a string.[0m"[0m
-[0m[02m[dump] [0m[36mptr[0m[02m => [0m[32m*[0m15[0m[02m, [0m[36mvoid_ptr[0m[02m => [0m[32m[0m[02m, [0m[36mnullptr[0m[02m => [0mnullptr[0m
+[0m[02m[dump] [0m[36m"This is a string."[0m[02m => [0m"This is a string.[0m"[0m[02m, [0m[36m'a'[0m[02m => [0m'a'[0m[02m, [0m[36m'\n'[0m[02m => [0m'[0m[02m\n[0m'[0m
+[0m[02m[dump] [0m[36mptr[0m[02m => [0m[32m*[0m15[0m[02m, [0m[36mvoid_ptr[0m[02m => [0m[32m0x7fffffffffff[0m[02m, [0m[36mnullptr[0m[02m => [0mnullptr[0m
 
 // Container
 [0m[02m[dump] [0m[36mmy_vector[0m[02m => [0m[02m[[0m

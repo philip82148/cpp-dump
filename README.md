@@ -40,8 +40,8 @@ cpp-dump supports a wide variety of types. Also, it supports nested containers o
 ```cpp
 // See the full example code for the definitions of the variables.
 std::clog << "\n// Basic Type" << std::endl;
-cpp_dump(false, 0, 0.0, 'a'); cpp_dump(true, 3.14, my_int, -9265);
-cpp_dump("This is a string."); cpp_dump(ptr, void_ptr, nullptr);
+cpp_dump(false, 0, 0.0); cpp_dump(true, 3.14, my_int, -9265);
+cpp_dump("This is a string.", 'a', '\n'); cpp_dump(ptr, void_ptr, nullptr);
 
 std::clog << "\n// Container" << std::endl;
 cpp_dump(my_vector);
@@ -102,23 +102,24 @@ You can modify the escape sequences to change the colors of the output using the
 ```cpp
 // Use more colors
 CPP_DUMP_SET_OPTION(es_value, (cp::es_value_t{
-  "\e[02m",        // log: dark
-  "\e[34m",        // expression: blue
-  "\e[38;5;39m",   // reserved: light blue
-  "\e[38;5;193m",  // number: light green
-  "\e[38;5;172m",  // character: orange
-  "\e[02m",        // op: dark
-  "\e[32m",        // identifier:  green
-  "\e[96m",        // member: light cyan
-  "\e[31m",        // unsupported: red
+  "\x1b[02m",        // log: dark
+  "\x1b[34m",        // expression: blue
+  "\x1b[38;5;39m",   // reserved: light blue
+  "\x1b[38;5;193m",  // number: light green
+  "\x1b[38;5;172m",  // character: orange
+  "\x1b[02m",        // op: dark
+  "\x1b[32m",        // identifier:  green
+  "\x1b[96m",        // member: light cyan
+  "\x1b[31m",        // unsupported: red
   {
-    "\e[33m",      // bracket_by_depth[0]: yellow
-    "\e[35m",      // bracket_by_depth[1]: magenta
-    "\e[36m",      // bracket_by_depth[2]: cyan
+    "\x1b[33m",      // bracket_by_depth[0]: yellow
+    "\x1b[35m",      // bracket_by_depth[1]: magenta
+    "\x1b[36m",      // bracket_by_depth[2]: cyan
   },
-  "\e[02m",        // class_op: dark
-  "\e[02m",        // member_op: dark
-  ""               // number_op: default
+  "\x1b[02m",        // class_op: dark
+  "\x1b[02m",        // member_op: dark
+  "",                // number_op: default
+  "\x1b[38;5;220m"   // escaped_char: light orange
 }));
 
 // Use the 'class_op'/'member_op'/'number_op' color for operators
@@ -154,14 +155,18 @@ CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(i, str());
 
 ## Advanced Feature
 
-### Manipulators to change the display style
+### 20+ Manipulators to change the display style
 
-Using manipulators, you can set which and how many elements of an array/map/set and how the index of an array and integers will be displayed.  
+This library has over 20 manipulators to change the display style.  
 See [Formatting with manipulators](#formatting-with-manipulators) for details.
 
 ![manipulator-front-etc.png](./readme/manipulator-front-etc.png)
 
 ![manipulator-index.png](./readme/manipulator-index.png)
+
+![manipulator-ubin-etc.png](./readme/manipulator-ubin-etc.png)
+
+![manipulator-stresc.png](./readme/manipulator-stresc.png)
 
 ## Requirement
 
@@ -359,19 +364,20 @@ enum class cpp_dump::es_style_t { no_es, original, by_syntax };
  * cpp_dump::export_var() supports this type.
  */
 struct cpp_dump::es_value_t {
-  std::string log = "\e[02m";                           // dark
-  std::string expression = "\e[36m";                    // cyan
-  std::string reserved{};                               // default
-  std::string number{};                                 // default
-  std::string character{};                              // default
-  std::string op = "\e[02m";                            // dark
-  std::string identifier = "\e[32m";                    // green
-  std::string member = "\e[36m";                        // cyan
-  std::string unsupported = "\e[31m";                   // red
-  std::vector<std::string> bracket_by_depth{"\e[02m"};  // dark
-  std::string class_op = "\e[02m";                      // dark
-  std::string member_op = "\e[02m";                     // dark
-  std::string number_op{};                              // default
+  std::string log = "\x1b[02m";                           // dark
+  std::string expression = "\x1b[36m";                    // cyan
+  std::string reserved{};                                 // default
+  std::string number{};                                   // default
+  std::string character{};                                // default
+  std::string op = "\x1b[02m";                            // dark
+  std::string identifier = "\x1b[32m";                    // green
+  std::string member = "\x1b[36m";                        // cyan
+  std::string unsupported = "\x1b[31m";                   // red
+  std::vector<std::string> bracket_by_depth{"\x1b[02m"};  // dark
+  std::string class_op = "\x1b[02m";                      // dark
+  std::string member_op = "\x1b[02m";                     // dark
+  std::string number_op{};                                // default
+  std::string escaped_char = "\x1b[02m";                  // dark
 };
 
 /**
@@ -489,6 +495,12 @@ cpp_dump::udec(int digits = -1, int chunk = 0, bool space_fill = true);
 cpp_dump::map_k(return_value_of_manipulator);
 cpp_dump::map_v(return_value_of_manipulator);
 cpp_dump::map_kv(return_value_of_manipulator_for_key, return_value_of_manipulator_for_value);
+cpp_dump::format(const char *f);
+cpp_dump::bw(bool left = false);
+cpp_dump::boolnum();
+cpp_dump::stresc();
+cpp_dump::charhex();
+cpp_dump::addr(std::size_t depth = 0);
 
 // See 'Customize "[dump]"'.
 namespace cpp_dump::log_label {
@@ -675,7 +687,7 @@ cpp_dump(0x3e8 | cp::dec(4));
 
 ![manipulator-int-style.png](./readme/manipulator-int-style.png)
 
-#### front, middle, back, both_ends manipulators
+#### `front()`, `middle()`, `back()`, `both_ends()` manipulators
 
 ```cpp
 cpp_dump::front(std::size_t iteration_count = cpp_dump::max_iteration_count);
@@ -692,7 +704,7 @@ The further left manipulator will act on the more outside dimensions of the arra
 **Caution:**  
 **These manipulators other than `front()` calculate the container's size. Containers whose size cannot be calculated with `std::size()` will cost O(N) in computation. In particular, passing an infinite sequence to these manipulators will result in an infinite loop.**
 
-#### index manipulator
+#### `index()` manipulator
 
 ```cpp
 cpp_dump::index();
@@ -705,7 +717,7 @@ cpp_dump(variable | ... | cp::index() | ...);
 Unlike the `front()` and other manipulators, the `index()` manipulator acts on all sequence containers in the variable. (The order is irrelevant.)  
 It does not affect maps/sets.
 
-#### int_style manipulators
+#### `int_style()` manipulators
 
 ```cpp
 cpp_dump::int_style(int base, int digits = -1, int chunk = 0,
@@ -748,7 +760,7 @@ The parameter `base` of `int_style()` supports values of 2, 8, 10, 16. For other
 Like the `index()` manipulators, the `int_style()` manipulator acts on all integers in the variable. (The order is irrelevant.)  
 The `bin(...)`, `oct(...)`, `hex(...)`, `ubin(...)`, `uoct(...)`, `uhex(...)`, `dec(...)`, `udec(...)`, are aliases of `int_style(...)`
 
-For signed integer types, the `bin(...)`, `oct(...)`, `hex(...)`, and `dec(...)` manipulators will add an extra space for positive values and a minus sign for negative values.  
+For signed integer types, the `bin()`, `oct()`, `hex()`, and `dec()` manipulators will add an extra space for positive values and a minus sign for negative values.  
 For unsigned integer types, these manipulators will not add any extra space or minus sign.  
 [See Full Example Code](./readme/formatting-with-manipulators.cpp)
 
@@ -761,10 +773,10 @@ cpp_dump(unsigned_int_vector | cp::front(2) | cp::dec(2));
 
 ![manipulator-bin-etc.png](./readme/manipulator-bin-etc.png)
 
-The `ubin(...)`, `uoct(...)`, and `uhex(...)` manipulators interpret all integer types as unsigned.  
+The `ubin()`, `uoct()`, and `uhex()` manipulators interpret all integer types as unsigned.  
 If the original type is not unsigned, the suffix 'u' is shown.  
-However, the `udec(...)` manipulator acts differently from these.  
-The `udec(...)` manipulator interprets signed types as signed type, but it does not add an extra space for positive values.  
+However, the `udec()` manipulator acts differently from these.  
+The `udec()` manipulator interprets signed types as signed type, but it does not add an extra space for positive values.  
 This is suitable for showing a container of a signed integers when all values are positive.  
 [See Full Example Code](./readme/formatting-with-manipulators.cpp)
 
@@ -777,7 +789,7 @@ cpp_dump(unsigned_int_vector | cp::front(2) | cp::udec(2));
 
 ![manipulator-ubin-etc.png](./readme/manipulator-ubin-etc.png)
 
-#### map\_\* manipulators
+#### `map_*()` manipulators
 
 ```cpp
 cpp_dump::map_k(return_value_of_manipulator);
@@ -791,6 +803,98 @@ cpp_dump(map | cp::front() | cp::map_kv(cp::hex(), cp::back()));
 
 These manipulators act on (multi)maps.  
 In this example, the keys are displayed in hexadecimal, and if the values are iterable, the front part of the values is omitted.
+
+#### `format()` manipulator (experimental feature)
+
+```cpp
+cpp_dump::format(const char *f);
+```
+
+This manipulator uses `snprintf()` to format numbers (integers and floating points).  
+Make sure that the types specified by format specifiers match the actual types.  
+[See Full Example Code](./readme/formatting-with-manipulators.cpp)
+
+```cpp
+cpp_dump(pi | cp::format("%.10f"));
+```
+
+![manipulator-format.png](./readme/manipulator-format.png)
+
+#### `bw()`, `boolnum()` manipulator (experimental feature)
+
+```cpp
+cpp_dump::bw(bool left = false);
+cpp_dump::boolnum();
+```
+
+These manipulators are for formatting bool.  
+The `bw()` manipulator adds a space when a bool value is `true` to match the width of `false`.  
+bw stands for "bool width".  
+The `boolnum()` manipulator shows bool values as `1` or `0`.  
+[See Full Example Code](./readme/formatting-with-manipulators.cpp)
+
+```cpp
+cpp_dump(bool_vector | cp::bw());
+cpp_dump(bool_vector | cp::bw(true));
+cpp_dump(bool_vector | cp::boolnum());
+```
+
+![manipulator-bw-boolnum.png](./readme/manipulator-bw-boolnum.png)
+
+#### `stresc()` manipulator (experimental feature)
+
+```cpp
+cpp_dump::stresc();
+```
+
+This manipulator escapes strings.  
+For escaped characters, the 'escaped_char' color is used.  
+[See Full Example Code](./readme/formatting-with-manipulators.cpp)
+
+```cpp
+cpp_dump("\a\t\\\"\n\x7f need to be escaped.");
+cpp_dump("\a\t\\\"\n\x7f need to be escaped." | cp::stresc());
+```
+
+![manipulator-stresc.png](./readme/manipulator-stresc.png)
+
+#### `charhex()` manipulator (experimental feature)
+
+```cpp
+cpp_dump::charhex();
+```
+
+This manipulator shows chars with their hex.  
+The width of their string representation is fixed.  
+[See Full Example Code](./readme/formatting-with-manipulators.cpp)
+
+```cpp
+for (auto c : "\a\t\\\"\n\x7f ABC") cpp_dump(c | cp::charhex());
+```
+
+![manipulator-charhex.png](./readme/manipulator-charhex.png)
+
+#### `addr()` manipulator (experimental feature)
+
+```cpp
+cpp_dump::addr(std::size_t depth = 0);
+```
+
+This manipulator shows pointers by their address.  
+Use the `depth` parameter to specify the depth of pointers for displaying addresses.  
+[See Full Example Code](./readme/formatting-with-manipulators.cpp)
+
+```cpp
+int my_int = 15;
+int *int_ptr = &my_int;
+int **int_ptr_ptr = &int_ptr;
+
+cpp_dump(int_ptr_ptr);
+cpp_dump(int_ptr_ptr | cp::addr());
+cpp_dump(int_ptr_ptr | cp::addr(1));
+```
+
+![manipulator-addr.png](./readme/manipulator-addr.png)
 
 ### Change the output destination from the standard error output
 
