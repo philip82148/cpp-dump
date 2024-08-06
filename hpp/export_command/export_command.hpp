@@ -44,6 +44,7 @@ struct export_command {
     bool make_unsigned_or_no_space_for_minus;
   };
   enum class bool_style_t { normal, true_left, true_right, number };
+  struct stresc {};
   struct charhex {};
   struct index {};
 
@@ -52,6 +53,7 @@ struct export_command {
     bool_style_t bool_style{bool_style_t::normal};
     const char *format{nullptr};
     std::size_t addr_depth{static_cast<std::size_t>(-1)};
+    bool escape_str{false};
     bool char_as_hex{false};
     bool show_index{false};
 
@@ -81,6 +83,7 @@ struct export_command {
     explicit global_props_t(bool_style_t bool_style_) : bool_style(bool_style_) {}
     explicit global_props_t(const char *format_) : format(format_) {}
     explicit global_props_t(std::size_t addr_depth_) : addr_depth(addr_depth_) {}
+    explicit global_props_t(stresc) : escape_str(true) {}
     explicit global_props_t(charhex) : char_as_hex(true) {}
     explicit global_props_t(index) : show_index(true) {}
 
@@ -123,6 +126,8 @@ struct export_command {
 
   explicit export_command(std::size_t addr_depth)
       : _global_props(std::make_shared<global_props_t>(addr_depth)) {}
+
+  explicit export_command(stresc) : _global_props(std::make_shared<global_props_t>(stresc{})) {}
 
   explicit export_command(charhex) : _global_props(std::make_shared<global_props_t>(charhex{})) {}
 
@@ -215,6 +220,8 @@ struct export_command {
   std::size_t addr_depth() const {
     return _global_props ? _global_props->addr_depth : static_cast<std::size_t>(-1);
   }
+
+  bool escape_str() const { return _global_props && _global_props->escape_str; }
 
   bool char_as_hex() const { return _global_props && _global_props->char_as_hex; }
 
@@ -549,6 +556,12 @@ inline auto boolnum() {
   using bool_style_t = _detail::export_command::bool_style_t;
   return _detail::export_command(bool_style_t::number);
 }
+
+/*
+ * Manipulator for the display style of char.
+ * This is an experimental feature.
+ */
+inline auto stresc() { return _detail::export_command(_detail::export_command::stresc{}); }
 
 /*
  * Manipulator for the display style of char.
