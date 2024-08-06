@@ -156,12 +156,16 @@ CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(i, str());
 
 ### Manipulators to change the display style
 
-Using manipulators, you can set which and how many elements of an array/map/set and how the index of an array and integers will be displayed.  
+This library has over 20 manipulators to change the display style.  
 See [Formatting with manipulators](#formatting-with-manipulators) for details.
 
 ![manipulator-front-etc.png](./readme/manipulator-front-etc.png)
 
 ![manipulator-index.png](./readme/manipulator-index.png)
+
+![manipulator-ubin-etc.png](./readme/manipulator-ubin-etc.png)
+
+![manipulator-stresc.png](./readme/manipulator-stresc.png)
 
 ## Requirement
 
