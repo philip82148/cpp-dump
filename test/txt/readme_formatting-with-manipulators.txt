@@ -120,10 +120,10 @@
 
 // manipulator-stresc.png
 
-[0m[02m[dump] [0m[36m"\a\t\\\"\r\n\x7f need to be escaped."[0m[02m => [0m
+[0m[02m[dump] [0m[36m"\a\t\\\"\n\x7f need to be escaped."[0m[02m => [0m
 `	\"
  need to be escaped.[0m`[0m
-[0m[02m[dump] [0m[36m"\a\t\\\"\r\n\x7f need to be escaped." | cp::stresc()[0m[02m => [0m"[0m[02m\a\t\\\"\r\n\x7F[0m need to be escaped."[0m
+[0m[02m[dump] [0m[36m"\a\t\\\"\n\x7f need to be escaped." | cp::stresc()[0m[02m => [0m"[0m[02m\a\t\\\"\n\x7F[0m need to be escaped."[0m
 
 // manipulator-charhex.png
 
@@ -131,7 +131,6 @@
 [0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m'[0m[02m\t[0m'[0m0x09[0m
 [0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m'[0m[02m\\[0m'[0m0x5C[0m
 [0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m'"'[0m 0x22[0m
-[0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m'[0m[02m\r[0m'[0m0x0D[0m
 [0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m'[0m[02m\n[0m'[0m0x0A[0m
 [0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m    0x7F[0m
 [0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m' '[0m 0x20[0m

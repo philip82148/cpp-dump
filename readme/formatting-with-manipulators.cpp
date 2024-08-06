@@ -71,12 +71,12 @@ int main() {
 
   std::clog << "\n// manipulator-stresc.png\n" << std::endl;
 
-  cpp_dump("\a\t\\\"\r\n\x7f need to be escaped.");
-  cpp_dump("\a\t\\\"\r\n\x7f need to be escaped." | cp::stresc());
+  cpp_dump("\a\t\\\"\n\x7f need to be escaped.");
+  cpp_dump("\a\t\\\"\n\x7f need to be escaped." | cp::stresc());
 
   std::clog << "\n// manipulator-charhex.png\n" << std::endl;
 
-  for (auto c : "\a\t\\\"\r\n\x7f ABC") cpp_dump(c | cp::charhex());
+  for (auto c : "\a\t\\\"\n\x7f ABC") cpp_dump(c | cp::charhex());
 
   std::clog << "\n// manipulator-addr.png\n" << std::endl;
 
