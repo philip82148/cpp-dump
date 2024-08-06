@@ -152,6 +152,7 @@ inline std::string export_es_value_t(
   append_output("class_op", esv.class_op);
   append_output("member_op", esv.member_op);
   append_output("number_op", esv.number_op);
+  append_output("escaped_char", esv.escaped_char);
 
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2;
 }
