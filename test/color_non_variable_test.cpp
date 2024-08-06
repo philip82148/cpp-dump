@@ -85,8 +85,8 @@ int main(int argc, char *argv[]) {
   );
 
   // basic
-  cpp_dump(false, 0, 0.0, '0', (const char *)"0", string{"0"}, string_view{"0"}, '\0');
-  cpp_dump('\0', '\x7f');
+  cpp_dump(false, 0, 0.0, '0', (const char *)"0", string{"0"}, string_view{"0"});
+  cpp_dump('\0', '\x7f', '\n', 'a');
   cpp_dump(true, 3.14, 159265, "This is a test string");
   cpp_dump(-0, -3.14, -159265);
   cpp_dump("This contains newline\nhere.", R"(This contains ".)", R"(This contains `.)");
