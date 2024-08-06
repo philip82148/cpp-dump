@@ -1049,14 +1049,14 @@ int64_t cp::hex(), cp::dec()
          [ true, true, true, true ]
        ]
 [dump] vec5 | cp::bw() => [
-         [ true , false, true , false ],
-         [ false, false, false, false ],
-         [ true , true , true , true  ]
-       ]
-[dump] vec5 | cp::bw(true) => [
          [  true, false,  true, false ],
          [ false, false, false, false ],
          [  true,  true,  true,  true ]
+       ]
+[dump] vec5 | cp::bw(true) => [
+         [ true , false, true , false ],
+         [ false, false, false, false ],
+         [ true , true , true , true  ]
        ]
 [dump] vec5 | cp::boolnum() => [
          [ 1, 0, 1, 0 ],
@@ -1064,14 +1064,14 @@ int64_t cp::hex(), cp::dec()
          [ 1, 1, 1, 1 ]
        ]
 [dump] vec5 | cp::hex() | cp::bw() => [
-         [ true , false, true , false ],
-         [ false, false, false, false ],
-         [ true , true , true , true  ]
-       ]
-[dump] vec5 | cp::hex() | cp::bw(true) => [
          [  true, false,  true, false ],
          [ false, false, false, false ],
          [  true,  true,  true,  true ]
+       ]
+[dump] vec5 | cp::hex() | cp::bw(true) => [
+         [ true , false, true , false ],
+         [ false, false, false, false ],
+         [ true , true , true , true  ]
        ]
 [dump] vec5 | cp::hex() | cp::boolnum() => [
          [ 1, 0, 1, 0 ],
