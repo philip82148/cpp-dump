@@ -14,6 +14,16 @@ here.`,
 
 
 `
+[dump] c => '\0'
+[dump] c => '\a'
+[dump] c => '\b'
+[dump] c => '\f'
+[dump] c => '\n'
+[dump] c => '\r'
+[dump] c => '\t'
+[dump] c => '\v'
+[dump] c => 'a'
+[dump] c => '\x7F'
 [dump] volatile_int => 3589, volatile_double => 79.323000
 [dump] (vector<int>{3, 1, 4}) => [ 3, 1, 4 ]
 [dump] (vector<vector<int>>{{3}, {1, 4}, {1, 5, 9}}) => [
@@ -825,6 +835,16 @@ int64_t cp::hex(), cp::dec()
 [dump] vec6 => [ 'P', 'i', '=', '3', '.', '1', '4', '.', '.', '.' ]
 [dump] vec6 | cp::charhex() => [ 'P' 0x50, 'i' 0x69, '=' 0x3D, '3' 0x33, '.' 0x2E, '1' 0x31, '4' 0x34, '.' 0x2E, '.' 0x2E, '.' 0x2E ]
 [dump] vec6 | cp::bin() | cp::charhex() => [ 'P' 0x50, 'i' 0x69, '=' 0x3D, '3' 0x33, '.' 0x2E, '1' 0x31, '4' 0x34, '.' 0x2E, '.' 0x2E, '.' 0x2E ]
+[dump] c2 | cp::charhex() => '\0'0x00, c2 => '\0'
+[dump] c2 | cp::charhex() => '\a'0x07, c2 => '\a'
+[dump] c2 | cp::charhex() => '\b'0x08, c2 => '\b'
+[dump] c2 | cp::charhex() => '\f'0x0C, c2 => '\f'
+[dump] c2 | cp::charhex() => '\n'0x0A, c2 => '\n'
+[dump] c2 | cp::charhex() => '\r'0x0D, c2 => '\r'
+[dump] c2 | cp::charhex() => '\t'0x09, c2 => '\t'
+[dump] c2 | cp::charhex() => '\v'0x0B, c2 => '\v'
+[dump] c2 | cp::charhex() => 'a' 0x61, c2 => 'a'
+[dump] c2 | cp::charhex() =>     0x7F, c2 => '\x7F'
 [dump] vec2d | (back | cp::index()) => [
          ...,
          3: [ 0: 15, 1: -16 ],
