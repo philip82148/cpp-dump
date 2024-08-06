@@ -32,10 +32,10 @@ int main() {
 
   std::clog << "\n// manipulator-int-style.png\n" << std::endl;
 
-  cpp_dump(0x3e8 | cp::bin(16, 4));
-  cpp_dump(0x3e8 | cp::oct(6, 3));
-  cpp_dump(0x3e8 | cp::hex(4, 2));
-  cpp_dump(0x3e8 | cp::dec(4));
+  cpp_dump(0x3e8u | cp::bin(16, 4));
+  cpp_dump(0x3e8u | cp::oct(6, 3));
+  cpp_dump(0x3e8u | cp::hex(4, 2));
+  cpp_dump(0x3e8u | cp::dec(4));
 
   std::clog << "\n// manipulator-bin-etc.png\n" << std::endl;
 
