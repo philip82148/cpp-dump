@@ -547,9 +547,9 @@ inline auto format(const char *f) { return _detail::export_command(f); }
  * See README for details.
  * This is an experimental feature.
  */
-inline auto bw(bool right = false) {
+inline auto bw(bool left = false) {
   using bool_style_t = _detail::export_command::bool_style_t;
-  return _detail::export_command(right ? bool_style_t::true_right : bool_style_t::true_left);
+  return _detail::export_command(left ? bool_style_t::true_left : bool_style_t::true_right);
 }
 
 /*
