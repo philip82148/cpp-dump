@@ -102,22 +102,22 @@ You can modify the escape sequences to change the colors of the output using the
 ```cpp
 // Use more colors
 CPP_DUMP_SET_OPTION(es_value, (cp::es_value_t{
-  "\e[02m",        // log: dark
-  "\e[34m",        // expression: blue
-  "\e[38;5;39m",   // reserved: light blue
-  "\e[38;5;193m",  // number: light green
-  "\e[38;5;172m",  // character: orange
-  "\e[02m",        // op: dark
-  "\e[32m",        // identifier:  green
-  "\e[96m",        // member: light cyan
-  "\e[31m",        // unsupported: red
+  "\x1b[02m",        // log: dark
+  "\x1b[34m",        // expression: blue
+  "\x1b[38;5;39m",   // reserved: light blue
+  "\x1b[38;5;193m",  // number: light green
+  "\x1b[38;5;172m",  // character: orange
+  "\x1b[02m",        // op: dark
+  "\x1b[32m",        // identifier:  green
+  "\x1b[96m",        // member: light cyan
+  "\x1b[31m",        // unsupported: red
   {
-    "\e[33m",      // bracket_by_depth[0]: yellow
-    "\e[35m",      // bracket_by_depth[1]: magenta
-    "\e[36m",      // bracket_by_depth[2]: cyan
+    "\x1b[33m",      // bracket_by_depth[0]: yellow
+    "\x1b[35m",      // bracket_by_depth[1]: magenta
+    "\x1b[36m",      // bracket_by_depth[2]: cyan
   },
-  "\e[02m",        // class_op: dark
-  "\e[02m",        // member_op: dark
+  "\x1b[02m",        // class_op: dark
+  "\x1b[02m",        // member_op: dark
   ""               // number_op: default
 }));
 
@@ -363,18 +363,18 @@ enum class cpp_dump::es_style_t { no_es, original, by_syntax };
  * cpp_dump::export_var() supports this type.
  */
 struct cpp_dump::es_value_t {
-  std::string log = "\e[02m";                           // dark
-  std::string expression = "\e[36m";                    // cyan
+  std::string log = "\x1b[02m";                           // dark
+  std::string expression = "\x1b[36m";                    // cyan
   std::string reserved{};                               // default
   std::string number{};                                 // default
   std::string character{};                              // default
-  std::string op = "\e[02m";                            // dark
-  std::string identifier = "\e[32m";                    // green
-  std::string member = "\e[36m";                        // cyan
-  std::string unsupported = "\e[31m";                   // red
-  std::vector<std::string> bracket_by_depth{"\e[02m"};  // dark
-  std::string class_op = "\e[02m";                      // dark
-  std::string member_op = "\e[02m";                     // dark
+  std::string op = "\x1b[02m";                            // dark
+  std::string identifier = "\x1b[32m";                    // green
+  std::string member = "\x1b[36m";                        // cyan
+  std::string unsupported = "\x1b[31m";                   // red
+  std::vector<std::string> bracket_by_depth{"\x1b[02m"};  // dark
+  std::string class_op = "\x1b[02m";                      // dark
+  std::string member_op = "\x1b[02m";                     // dark
   std::string number_op{};                              // default
 };
 
