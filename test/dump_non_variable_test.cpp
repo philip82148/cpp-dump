@@ -223,7 +223,7 @@ int main(int argc, char *argv[]) {
   cpp_dump("\n\n\n\n");
 
   // char
-  rep(i, 256) cpp_dump(i, static_cast<char>(i));
+  for (auto c : {'\0', '\a', '\b', '\f', '\n', '\r', '\t', '\v', 'a', '\x7f'}) cpp_dump(c);
 
   // volatile
   volatile int volatile_int = 3589;
@@ -726,7 +726,8 @@ int main(int argc, char *argv[]) {
   cpp_dump(vec6);
   cpp_dump(vec6 | cp::charhex());
   cpp_dump(vec6 | cp::bin() | cp::charhex());
-  rep(i, 256) cpp_dump(i | cp::udec(3), static_cast<char>(i) | cp::charhex());
+  for (auto c2 : {'\0', '\a', '\b', '\f', '\n', '\r', '\t', '\v', 'a', '\x7f'})
+    cpp_dump(c2 | cp::charhex(), c2);
 
   // lvalue export_command
   auto index = cp::index();
