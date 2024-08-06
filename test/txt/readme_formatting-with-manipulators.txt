@@ -127,18 +127,18 @@
 
 // manipulator-charhex.png
 
-[0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m'\a'[0m0x07[0m
-[0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m'\t'[0m0x09[0m
-[0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m'\' [0m0x5C[0m
-[0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m'"' [0m0x22[0m
-[0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m'\r'[0m0x0D[0m
-[0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m'\n'[0m0x0A[0m
-[0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m    [0m0x7F[0m
-[0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m' ' [0m0x20[0m
-[0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m'A' [0m0x41[0m
-[0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m'B' [0m0x42[0m
-[0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m'C' [0m0x43[0m
-[0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m'\0'[0m0x00[0m
+[0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m'[0m[02m\a[0m'[0m0x07[0m
+[0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m'[0m[02m\t[0m'[0m0x09[0m
+[0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m'[0m[02m\\[0m'[0m0x5C[0m
+[0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m'"'[0m 0x22[0m
+[0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m'[0m[02m\r[0m'[0m0x0D[0m
+[0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m'[0m[02m\n[0m'[0m0x0A[0m
+[0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m    0x7F[0m
+[0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m' '[0m 0x20[0m
+[0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m'A'[0m 0x41[0m
+[0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m'B'[0m 0x42[0m
+[0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m'C'[0m 0x43[0m
+[0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m'[0m[02m\0[0m'[0m0x00[0m
 
 // manipulator-addr.png
 
