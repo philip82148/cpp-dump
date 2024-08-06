@@ -1082,12 +1082,12 @@ int64_t cp::hex(), cp::dec()
 [dump] vec6 | cp::charhex() => [ 'P' 0x50, 'i' 0x69, '=' 0x3D, '3' 0x33, '.' 0x2E, '1' 0x31, '4' 0x34, '.' 0x2E, '.' 0x2E, '.' 0x2E ]
 [dump] vec6 | cp::bin() | cp::charhex() => [ 'P' 0x50, 'i' 0x69, '=' 0x3D, '3' 0x33, '.' 0x2E, '1' 0x31, '4' 0x34, '.' 0x2E, '.' 0x2E, '.' 0x2E ]
 [dump] i | cp::udec(3) =>   0, static_cast<char>(i) | cp::charhex() => '\0'0x00
-[dump] i | cp::udec(3) =>   1, static_cast<char>(i) | cp::charhex() => ''  0x01
-[dump] i | cp::udec(3) =>   2, static_cast<char>(i) | cp::charhex() => ''  0x02
-[dump] i | cp::udec(3) =>   3, static_cast<char>(i) | cp::charhex() => ''  0x03
-[dump] i | cp::udec(3) =>   4, static_cast<char>(i) | cp::charhex() => ''  0x04
-[dump] i | cp::udec(3) =>   5, static_cast<char>(i) | cp::charhex() => ''  0x05
-[dump] i | cp::udec(3) =>   6, static_cast<char>(i) | cp::charhex() => ''  0x06
+[dump] i | cp::udec(3) =>   1, static_cast<char>(i) | cp::charhex() =>     0x01
+[dump] i | cp::udec(3) =>   2, static_cast<char>(i) | cp::charhex() =>     0x02
+[dump] i | cp::udec(3) =>   3, static_cast<char>(i) | cp::charhex() =>     0x03
+[dump] i | cp::udec(3) =>   4, static_cast<char>(i) | cp::charhex() =>     0x04
+[dump] i | cp::udec(3) =>   5, static_cast<char>(i) | cp::charhex() =>     0x05
+[dump] i | cp::udec(3) =>   6, static_cast<char>(i) | cp::charhex() =>     0x06
 [dump] i | cp::udec(3) =>   7, static_cast<char>(i) | cp::charhex() => '\a'0x07
 [dump] i | cp::udec(3) =>   8, static_cast<char>(i) | cp::charhex() => '\b'0x08
 [dump] i | cp::udec(3) =>   9, static_cast<char>(i) | cp::charhex() => '\t'0x09
@@ -1095,24 +1095,24 @@ int64_t cp::hex(), cp::dec()
 [dump] i | cp::udec(3) =>  11, static_cast<char>(i) | cp::charhex() => '\v'0x0B
 [dump] i | cp::udec(3) =>  12, static_cast<char>(i) | cp::charhex() => '\f'0x0C
 [dump] i | cp::udec(3) =>  13, static_cast<char>(i) | cp::charhex() => '\r'0x0D
-[dump] i | cp::udec(3) =>  14, static_cast<char>(i) | cp::charhex() => ''  0x0E
-[dump] i | cp::udec(3) =>  15, static_cast<char>(i) | cp::charhex() => ''  0x0F
-[dump] i | cp::udec(3) =>  16, static_cast<char>(i) | cp::charhex() => ''  0x10
-[dump] i | cp::udec(3) =>  17, static_cast<char>(i) | cp::charhex() => ''  0x11
-[dump] i | cp::udec(3) =>  18, static_cast<char>(i) | cp::charhex() => ''  0x12
-[dump] i | cp::udec(3) =>  19, static_cast<char>(i) | cp::charhex() => ''  0x13
-[dump] i | cp::udec(3) =>  20, static_cast<char>(i) | cp::charhex() => ''  0x14
-[dump] i | cp::udec(3) =>  21, static_cast<char>(i) | cp::charhex() => ''  0x15
-[dump] i | cp::udec(3) =>  22, static_cast<char>(i) | cp::charhex() => ''  0x16
-[dump] i | cp::udec(3) =>  23, static_cast<char>(i) | cp::charhex() => ''  0x17
-[dump] i | cp::udec(3) =>  24, static_cast<char>(i) | cp::charhex() => ''  0x18
-[dump] i | cp::udec(3) =>  25, static_cast<char>(i) | cp::charhex() => ''  0x19
-[dump] i | cp::udec(3) =>  26, static_cast<char>(i) | cp::charhex() => ''  0x1A
-[dump] i | cp::udec(3) =>  27, static_cast<char>(i) | cp::charhex() => ''  0x1B
-[dump] i | cp::udec(3) =>  28, static_cast<char>(i) | cp::charhex() => ''  0x1C
-[dump] i | cp::udec(3) =>  29, static_cast<char>(i) | cp::charhex() => ''  0x1D
-[dump] i | cp::udec(3) =>  30, static_cast<char>(i) | cp::charhex() => ''  0x1E
-[dump] i | cp::udec(3) =>  31, static_cast<char>(i) | cp::charhex() => ''  0x1F
+[dump] i | cp::udec(3) =>  14, static_cast<char>(i) | cp::charhex() =>     0x0E
+[dump] i | cp::udec(3) =>  15, static_cast<char>(i) | cp::charhex() =>     0x0F
+[dump] i | cp::udec(3) =>  16, static_cast<char>(i) | cp::charhex() =>     0x10
+[dump] i | cp::udec(3) =>  17, static_cast<char>(i) | cp::charhex() =>     0x11
+[dump] i | cp::udec(3) =>  18, static_cast<char>(i) | cp::charhex() =>     0x12
+[dump] i | cp::udec(3) =>  19, static_cast<char>(i) | cp::charhex() =>     0x13
+[dump] i | cp::udec(3) =>  20, static_cast<char>(i) | cp::charhex() =>     0x14
+[dump] i | cp::udec(3) =>  21, static_cast<char>(i) | cp::charhex() =>     0x15
+[dump] i | cp::udec(3) =>  22, static_cast<char>(i) | cp::charhex() =>     0x16
+[dump] i | cp::udec(3) =>  23, static_cast<char>(i) | cp::charhex() =>     0x17
+[dump] i | cp::udec(3) =>  24, static_cast<char>(i) | cp::charhex() =>     0x18
+[dump] i | cp::udec(3) =>  25, static_cast<char>(i) | cp::charhex() =>     0x19
+[dump] i | cp::udec(3) =>  26, static_cast<char>(i) | cp::charhex() =>     0x1A
+[dump] i | cp::udec(3) =>  27, static_cast<char>(i) | cp::charhex() =>     0x1B
+[dump] i | cp::udec(3) =>  28, static_cast<char>(i) | cp::charhex() =>     0x1C
+[dump] i | cp::udec(3) =>  29, static_cast<char>(i) | cp::charhex() =>     0x1D
+[dump] i | cp::udec(3) =>  30, static_cast<char>(i) | cp::charhex() =>     0x1E
+[dump] i | cp::udec(3) =>  31, static_cast<char>(i) | cp::charhex() =>     0x1F
 [dump] i | cp::udec(3) =>  32, static_cast<char>(i) | cp::charhex() => ' ' 0x20
 [dump] i | cp::udec(3) =>  33, static_cast<char>(i) | cp::charhex() => '!' 0x21
 [dump] i | cp::udec(3) =>  34, static_cast<char>(i) | cp::charhex() => '"' 0x22
@@ -1208,135 +1208,135 @@ int64_t cp::hex(), cp::dec()
 [dump] i | cp::udec(3) => 124, static_cast<char>(i) | cp::charhex() => '|' 0x7C
 [dump] i | cp::udec(3) => 125, static_cast<char>(i) | cp::charhex() => '}' 0x7D
 [dump] i | cp::udec(3) => 126, static_cast<char>(i) | cp::charhex() => '~' 0x7E
-[dump] i | cp::udec(3) => 127, static_cast<char>(i) | cp::charhex() => ''  0x7F
-[dump] i | cp::udec(3) => 128, static_cast<char>(i) | cp::charhex() => ''  0x80
-[dump] i | cp::udec(3) => 129, static_cast<char>(i) | cp::charhex() => ''  0x81
-[dump] i | cp::udec(3) => 130, static_cast<char>(i) | cp::charhex() => ''  0x82
-[dump] i | cp::udec(3) => 131, static_cast<char>(i) | cp::charhex() => ''  0x83
-[dump] i | cp::udec(3) => 132, static_cast<char>(i) | cp::charhex() => ''  0x84
-[dump] i | cp::udec(3) => 133, static_cast<char>(i) | cp::charhex() => ''  0x85
-[dump] i | cp::udec(3) => 134, static_cast<char>(i) | cp::charhex() => ''  0x86
-[dump] i | cp::udec(3) => 135, static_cast<char>(i) | cp::charhex() => ''  0x87
-[dump] i | cp::udec(3) => 136, static_cast<char>(i) | cp::charhex() => ''  0x88
-[dump] i | cp::udec(3) => 137, static_cast<char>(i) | cp::charhex() => ''  0x89
-[dump] i | cp::udec(3) => 138, static_cast<char>(i) | cp::charhex() => ''  0x8A
-[dump] i | cp::udec(3) => 139, static_cast<char>(i) | cp::charhex() => ''  0x8B
-[dump] i | cp::udec(3) => 140, static_cast<char>(i) | cp::charhex() => ''  0x8C
-[dump] i | cp::udec(3) => 141, static_cast<char>(i) | cp::charhex() => ''  0x8D
-[dump] i | cp::udec(3) => 142, static_cast<char>(i) | cp::charhex() => ''  0x8E
-[dump] i | cp::udec(3) => 143, static_cast<char>(i) | cp::charhex() => ''  0x8F
-[dump] i | cp::udec(3) => 144, static_cast<char>(i) | cp::charhex() => ''  0x90
-[dump] i | cp::udec(3) => 145, static_cast<char>(i) | cp::charhex() => ''  0x91
-[dump] i | cp::udec(3) => 146, static_cast<char>(i) | cp::charhex() => ''  0x92
-[dump] i | cp::udec(3) => 147, static_cast<char>(i) | cp::charhex() => ''  0x93
-[dump] i | cp::udec(3) => 148, static_cast<char>(i) | cp::charhex() => ''  0x94
-[dump] i | cp::udec(3) => 149, static_cast<char>(i) | cp::charhex() => ''  0x95
-[dump] i | cp::udec(3) => 150, static_cast<char>(i) | cp::charhex() => ''  0x96
-[dump] i | cp::udec(3) => 151, static_cast<char>(i) | cp::charhex() => ''  0x97
-[dump] i | cp::udec(3) => 152, static_cast<char>(i) | cp::charhex() => ''  0x98
-[dump] i | cp::udec(3) => 153, static_cast<char>(i) | cp::charhex() => ''  0x99
-[dump] i | cp::udec(3) => 154, static_cast<char>(i) | cp::charhex() => ''  0x9A
-[dump] i | cp::udec(3) => 155, static_cast<char>(i) | cp::charhex() => ''  0x9B
-[dump] i | cp::udec(3) => 156, static_cast<char>(i) | cp::charhex() => ''  0x9C
-[dump] i | cp::udec(3) => 157, static_cast<char>(i) | cp::charhex() => ''  0x9D
-[dump] i | cp::udec(3) => 158, static_cast<char>(i) | cp::charhex() => ''  0x9E
-[dump] i | cp::udec(3) => 159, static_cast<char>(i) | cp::charhex() => ''  0x9F
-[dump] i | cp::udec(3) => 160, static_cast<char>(i) | cp::charhex() => ''  0xA0
-[dump] i | cp::udec(3) => 161, static_cast<char>(i) | cp::charhex() => ''  0xA1
-[dump] i | cp::udec(3) => 162, static_cast<char>(i) | cp::charhex() => ''  0xA2
-[dump] i | cp::udec(3) => 163, static_cast<char>(i) | cp::charhex() => ''  0xA3
-[dump] i | cp::udec(3) => 164, static_cast<char>(i) | cp::charhex() => ''  0xA4
-[dump] i | cp::udec(3) => 165, static_cast<char>(i) | cp::charhex() => ''  0xA5
-[dump] i | cp::udec(3) => 166, static_cast<char>(i) | cp::charhex() => ''  0xA6
-[dump] i | cp::udec(3) => 167, static_cast<char>(i) | cp::charhex() => ''  0xA7
-[dump] i | cp::udec(3) => 168, static_cast<char>(i) | cp::charhex() => ''  0xA8
-[dump] i | cp::udec(3) => 169, static_cast<char>(i) | cp::charhex() => ''  0xA9
-[dump] i | cp::udec(3) => 170, static_cast<char>(i) | cp::charhex() => ''  0xAA
-[dump] i | cp::udec(3) => 171, static_cast<char>(i) | cp::charhex() => ''  0xAB
-[dump] i | cp::udec(3) => 172, static_cast<char>(i) | cp::charhex() => ''  0xAC
-[dump] i | cp::udec(3) => 173, static_cast<char>(i) | cp::charhex() => ''  0xAD
-[dump] i | cp::udec(3) => 174, static_cast<char>(i) | cp::charhex() => ''  0xAE
-[dump] i | cp::udec(3) => 175, static_cast<char>(i) | cp::charhex() => ''  0xAF
-[dump] i | cp::udec(3) => 176, static_cast<char>(i) | cp::charhex() => ''  0xB0
-[dump] i | cp::udec(3) => 177, static_cast<char>(i) | cp::charhex() => ''  0xB1
-[dump] i | cp::udec(3) => 178, static_cast<char>(i) | cp::charhex() => ''  0xB2
-[dump] i | cp::udec(3) => 179, static_cast<char>(i) | cp::charhex() => ''  0xB3
-[dump] i | cp::udec(3) => 180, static_cast<char>(i) | cp::charhex() => ''  0xB4
-[dump] i | cp::udec(3) => 181, static_cast<char>(i) | cp::charhex() => ''  0xB5
-[dump] i | cp::udec(3) => 182, static_cast<char>(i) | cp::charhex() => ''  0xB6
-[dump] i | cp::udec(3) => 183, static_cast<char>(i) | cp::charhex() => ''  0xB7
-[dump] i | cp::udec(3) => 184, static_cast<char>(i) | cp::charhex() => ''  0xB8
-[dump] i | cp::udec(3) => 185, static_cast<char>(i) | cp::charhex() => ''  0xB9
-[dump] i | cp::udec(3) => 186, static_cast<char>(i) | cp::charhex() => ''  0xBA
-[dump] i | cp::udec(3) => 187, static_cast<char>(i) | cp::charhex() => ''  0xBB
-[dump] i | cp::udec(3) => 188, static_cast<char>(i) | cp::charhex() => ''  0xBC
-[dump] i | cp::udec(3) => 189, static_cast<char>(i) | cp::charhex() => ''  0xBD
-[dump] i | cp::udec(3) => 190, static_cast<char>(i) | cp::charhex() => ''  0xBE
-[dump] i | cp::udec(3) => 191, static_cast<char>(i) | cp::charhex() => ''  0xBF
-[dump] i | cp::udec(3) => 192, static_cast<char>(i) | cp::charhex() => ''  0xC0
-[dump] i | cp::udec(3) => 193, static_cast<char>(i) | cp::charhex() => ''  0xC1
-[dump] i | cp::udec(3) => 194, static_cast<char>(i) | cp::charhex() => ''  0xC2
-[dump] i | cp::udec(3) => 195, static_cast<char>(i) | cp::charhex() => ''  0xC3
-[dump] i | cp::udec(3) => 196, static_cast<char>(i) | cp::charhex() => ''  0xC4
-[dump] i | cp::udec(3) => 197, static_cast<char>(i) | cp::charhex() => ''  0xC5
-[dump] i | cp::udec(3) => 198, static_cast<char>(i) | cp::charhex() => ''  0xC6
-[dump] i | cp::udec(3) => 199, static_cast<char>(i) | cp::charhex() => ''  0xC7
-[dump] i | cp::udec(3) => 200, static_cast<char>(i) | cp::charhex() => ''  0xC8
-[dump] i | cp::udec(3) => 201, static_cast<char>(i) | cp::charhex() => ''  0xC9
-[dump] i | cp::udec(3) => 202, static_cast<char>(i) | cp::charhex() => ''  0xCA
-[dump] i | cp::udec(3) => 203, static_cast<char>(i) | cp::charhex() => ''  0xCB
-[dump] i | cp::udec(3) => 204, static_cast<char>(i) | cp::charhex() => ''  0xCC
-[dump] i | cp::udec(3) => 205, static_cast<char>(i) | cp::charhex() => ''  0xCD
-[dump] i | cp::udec(3) => 206, static_cast<char>(i) | cp::charhex() => ''  0xCE
-[dump] i | cp::udec(3) => 207, static_cast<char>(i) | cp::charhex() => ''  0xCF
-[dump] i | cp::udec(3) => 208, static_cast<char>(i) | cp::charhex() => ''  0xD0
-[dump] i | cp::udec(3) => 209, static_cast<char>(i) | cp::charhex() => ''  0xD1
-[dump] i | cp::udec(3) => 210, static_cast<char>(i) | cp::charhex() => ''  0xD2
-[dump] i | cp::udec(3) => 211, static_cast<char>(i) | cp::charhex() => ''  0xD3
-[dump] i | cp::udec(3) => 212, static_cast<char>(i) | cp::charhex() => ''  0xD4
-[dump] i | cp::udec(3) => 213, static_cast<char>(i) | cp::charhex() => ''  0xD5
-[dump] i | cp::udec(3) => 214, static_cast<char>(i) | cp::charhex() => ''  0xD6
-[dump] i | cp::udec(3) => 215, static_cast<char>(i) | cp::charhex() => ''  0xD7
-[dump] i | cp::udec(3) => 216, static_cast<char>(i) | cp::charhex() => ''  0xD8
-[dump] i | cp::udec(3) => 217, static_cast<char>(i) | cp::charhex() => ''  0xD9
-[dump] i | cp::udec(3) => 218, static_cast<char>(i) | cp::charhex() => ''  0xDA
-[dump] i | cp::udec(3) => 219, static_cast<char>(i) | cp::charhex() => ''  0xDB
-[dump] i | cp::udec(3) => 220, static_cast<char>(i) | cp::charhex() => ''  0xDC
-[dump] i | cp::udec(3) => 221, static_cast<char>(i) | cp::charhex() => ''  0xDD
-[dump] i | cp::udec(3) => 222, static_cast<char>(i) | cp::charhex() => ''  0xDE
-[dump] i | cp::udec(3) => 223, static_cast<char>(i) | cp::charhex() => ''  0xDF
-[dump] i | cp::udec(3) => 224, static_cast<char>(i) | cp::charhex() => ''  0xE0
-[dump] i | cp::udec(3) => 225, static_cast<char>(i) | cp::charhex() => ''  0xE1
-[dump] i | cp::udec(3) => 226, static_cast<char>(i) | cp::charhex() => ''  0xE2
-[dump] i | cp::udec(3) => 227, static_cast<char>(i) | cp::charhex() => ''  0xE3
-[dump] i | cp::udec(3) => 228, static_cast<char>(i) | cp::charhex() => ''  0xE4
-[dump] i | cp::udec(3) => 229, static_cast<char>(i) | cp::charhex() => ''  0xE5
-[dump] i | cp::udec(3) => 230, static_cast<char>(i) | cp::charhex() => ''  0xE6
-[dump] i | cp::udec(3) => 231, static_cast<char>(i) | cp::charhex() => ''  0xE7
-[dump] i | cp::udec(3) => 232, static_cast<char>(i) | cp::charhex() => ''  0xE8
-[dump] i | cp::udec(3) => 233, static_cast<char>(i) | cp::charhex() => ''  0xE9
-[dump] i | cp::udec(3) => 234, static_cast<char>(i) | cp::charhex() => ''  0xEA
-[dump] i | cp::udec(3) => 235, static_cast<char>(i) | cp::charhex() => ''  0xEB
-[dump] i | cp::udec(3) => 236, static_cast<char>(i) | cp::charhex() => ''  0xEC
-[dump] i | cp::udec(3) => 237, static_cast<char>(i) | cp::charhex() => ''  0xED
-[dump] i | cp::udec(3) => 238, static_cast<char>(i) | cp::charhex() => ''  0xEE
-[dump] i | cp::udec(3) => 239, static_cast<char>(i) | cp::charhex() => ''  0xEF
-[dump] i | cp::udec(3) => 240, static_cast<char>(i) | cp::charhex() => ''  0xF0
-[dump] i | cp::udec(3) => 241, static_cast<char>(i) | cp::charhex() => ''  0xF1
-[dump] i | cp::udec(3) => 242, static_cast<char>(i) | cp::charhex() => ''  0xF2
-[dump] i | cp::udec(3) => 243, static_cast<char>(i) | cp::charhex() => ''  0xF3
-[dump] i | cp::udec(3) => 244, static_cast<char>(i) | cp::charhex() => ''  0xF4
-[dump] i | cp::udec(3) => 245, static_cast<char>(i) | cp::charhex() => ''  0xF5
-[dump] i | cp::udec(3) => 246, static_cast<char>(i) | cp::charhex() => ''  0xF6
-[dump] i | cp::udec(3) => 247, static_cast<char>(i) | cp::charhex() => ''  0xF7
-[dump] i | cp::udec(3) => 248, static_cast<char>(i) | cp::charhex() => ''  0xF8
-[dump] i | cp::udec(3) => 249, static_cast<char>(i) | cp::charhex() => ''  0xF9
-[dump] i | cp::udec(3) => 250, static_cast<char>(i) | cp::charhex() => ''  0xFA
-[dump] i | cp::udec(3) => 251, static_cast<char>(i) | cp::charhex() => ''  0xFB
-[dump] i | cp::udec(3) => 252, static_cast<char>(i) | cp::charhex() => ''  0xFC
-[dump] i | cp::udec(3) => 253, static_cast<char>(i) | cp::charhex() => ''  0xFD
-[dump] i | cp::udec(3) => 254, static_cast<char>(i) | cp::charhex() => ''  0xFE
-[dump] i | cp::udec(3) => 255, static_cast<char>(i) | cp::charhex() => ''  0xFF
+[dump] i | cp::udec(3) => 127, static_cast<char>(i) | cp::charhex() =>     0x7F
+[dump] i | cp::udec(3) => 128, static_cast<char>(i) | cp::charhex() =>     0x80
+[dump] i | cp::udec(3) => 129, static_cast<char>(i) | cp::charhex() =>     0x81
+[dump] i | cp::udec(3) => 130, static_cast<char>(i) | cp::charhex() =>     0x82
+[dump] i | cp::udec(3) => 131, static_cast<char>(i) | cp::charhex() =>     0x83
+[dump] i | cp::udec(3) => 132, static_cast<char>(i) | cp::charhex() =>     0x84
+[dump] i | cp::udec(3) => 133, static_cast<char>(i) | cp::charhex() =>     0x85
+[dump] i | cp::udec(3) => 134, static_cast<char>(i) | cp::charhex() =>     0x86
+[dump] i | cp::udec(3) => 135, static_cast<char>(i) | cp::charhex() =>     0x87
+[dump] i | cp::udec(3) => 136, static_cast<char>(i) | cp::charhex() =>     0x88
+[dump] i | cp::udec(3) => 137, static_cast<char>(i) | cp::charhex() =>     0x89
+[dump] i | cp::udec(3) => 138, static_cast<char>(i) | cp::charhex() =>     0x8A
+[dump] i | cp::udec(3) => 139, static_cast<char>(i) | cp::charhex() =>     0x8B
+[dump] i | cp::udec(3) => 140, static_cast<char>(i) | cp::charhex() =>     0x8C
+[dump] i | cp::udec(3) => 141, static_cast<char>(i) | cp::charhex() =>     0x8D
+[dump] i | cp::udec(3) => 142, static_cast<char>(i) | cp::charhex() =>     0x8E
+[dump] i | cp::udec(3) => 143, static_cast<char>(i) | cp::charhex() =>     0x8F
+[dump] i | cp::udec(3) => 144, static_cast<char>(i) | cp::charhex() =>     0x90
+[dump] i | cp::udec(3) => 145, static_cast<char>(i) | cp::charhex() =>     0x91
+[dump] i | cp::udec(3) => 146, static_cast<char>(i) | cp::charhex() =>     0x92
+[dump] i | cp::udec(3) => 147, static_cast<char>(i) | cp::charhex() =>     0x93
+[dump] i | cp::udec(3) => 148, static_cast<char>(i) | cp::charhex() =>     0x94
+[dump] i | cp::udec(3) => 149, static_cast<char>(i) | cp::charhex() =>     0x95
+[dump] i | cp::udec(3) => 150, static_cast<char>(i) | cp::charhex() =>     0x96
+[dump] i | cp::udec(3) => 151, static_cast<char>(i) | cp::charhex() =>     0x97
+[dump] i | cp::udec(3) => 152, static_cast<char>(i) | cp::charhex() =>     0x98
+[dump] i | cp::udec(3) => 153, static_cast<char>(i) | cp::charhex() =>     0x99
+[dump] i | cp::udec(3) => 154, static_cast<char>(i) | cp::charhex() =>     0x9A
+[dump] i | cp::udec(3) => 155, static_cast<char>(i) | cp::charhex() =>     0x9B
+[dump] i | cp::udec(3) => 156, static_cast<char>(i) | cp::charhex() =>     0x9C
+[dump] i | cp::udec(3) => 157, static_cast<char>(i) | cp::charhex() =>     0x9D
+[dump] i | cp::udec(3) => 158, static_cast<char>(i) | cp::charhex() =>     0x9E
+[dump] i | cp::udec(3) => 159, static_cast<char>(i) | cp::charhex() =>     0x9F
+[dump] i | cp::udec(3) => 160, static_cast<char>(i) | cp::charhex() =>     0xA0
+[dump] i | cp::udec(3) => 161, static_cast<char>(i) | cp::charhex() =>     0xA1
+[dump] i | cp::udec(3) => 162, static_cast<char>(i) | cp::charhex() =>     0xA2
+[dump] i | cp::udec(3) => 163, static_cast<char>(i) | cp::charhex() =>     0xA3
+[dump] i | cp::udec(3) => 164, static_cast<char>(i) | cp::charhex() =>     0xA4
+[dump] i | cp::udec(3) => 165, static_cast<char>(i) | cp::charhex() =>     0xA5
+[dump] i | cp::udec(3) => 166, static_cast<char>(i) | cp::charhex() =>     0xA6
+[dump] i | cp::udec(3) => 167, static_cast<char>(i) | cp::charhex() =>     0xA7
+[dump] i | cp::udec(3) => 168, static_cast<char>(i) | cp::charhex() =>     0xA8
+[dump] i | cp::udec(3) => 169, static_cast<char>(i) | cp::charhex() =>     0xA9
+[dump] i | cp::udec(3) => 170, static_cast<char>(i) | cp::charhex() =>     0xAA
+[dump] i | cp::udec(3) => 171, static_cast<char>(i) | cp::charhex() =>     0xAB
+[dump] i | cp::udec(3) => 172, static_cast<char>(i) | cp::charhex() =>     0xAC
+[dump] i | cp::udec(3) => 173, static_cast<char>(i) | cp::charhex() =>     0xAD
+[dump] i | cp::udec(3) => 174, static_cast<char>(i) | cp::charhex() =>     0xAE
+[dump] i | cp::udec(3) => 175, static_cast<char>(i) | cp::charhex() =>     0xAF
+[dump] i | cp::udec(3) => 176, static_cast<char>(i) | cp::charhex() =>     0xB0
+[dump] i | cp::udec(3) => 177, static_cast<char>(i) | cp::charhex() =>     0xB1
+[dump] i | cp::udec(3) => 178, static_cast<char>(i) | cp::charhex() =>     0xB2
+[dump] i | cp::udec(3) => 179, static_cast<char>(i) | cp::charhex() =>     0xB3
+[dump] i | cp::udec(3) => 180, static_cast<char>(i) | cp::charhex() =>     0xB4
+[dump] i | cp::udec(3) => 181, static_cast<char>(i) | cp::charhex() =>     0xB5
+[dump] i | cp::udec(3) => 182, static_cast<char>(i) | cp::charhex() =>     0xB6
+[dump] i | cp::udec(3) => 183, static_cast<char>(i) | cp::charhex() =>     0xB7
+[dump] i | cp::udec(3) => 184, static_cast<char>(i) | cp::charhex() =>     0xB8
+[dump] i | cp::udec(3) => 185, static_cast<char>(i) | cp::charhex() =>     0xB9
+[dump] i | cp::udec(3) => 186, static_cast<char>(i) | cp::charhex() =>     0xBA
+[dump] i | cp::udec(3) => 187, static_cast<char>(i) | cp::charhex() =>     0xBB
+[dump] i | cp::udec(3) => 188, static_cast<char>(i) | cp::charhex() =>     0xBC
+[dump] i | cp::udec(3) => 189, static_cast<char>(i) | cp::charhex() =>     0xBD
+[dump] i | cp::udec(3) => 190, static_cast<char>(i) | cp::charhex() =>     0xBE
+[dump] i | cp::udec(3) => 191, static_cast<char>(i) | cp::charhex() =>     0xBF
+[dump] i | cp::udec(3) => 192, static_cast<char>(i) | cp::charhex() =>     0xC0
+[dump] i | cp::udec(3) => 193, static_cast<char>(i) | cp::charhex() =>     0xC1
+[dump] i | cp::udec(3) => 194, static_cast<char>(i) | cp::charhex() =>     0xC2
+[dump] i | cp::udec(3) => 195, static_cast<char>(i) | cp::charhex() =>     0xC3
+[dump] i | cp::udec(3) => 196, static_cast<char>(i) | cp::charhex() =>     0xC4
+[dump] i | cp::udec(3) => 197, static_cast<char>(i) | cp::charhex() =>     0xC5
+[dump] i | cp::udec(3) => 198, static_cast<char>(i) | cp::charhex() =>     0xC6
+[dump] i | cp::udec(3) => 199, static_cast<char>(i) | cp::charhex() =>     0xC7
+[dump] i | cp::udec(3) => 200, static_cast<char>(i) | cp::charhex() =>     0xC8
+[dump] i | cp::udec(3) => 201, static_cast<char>(i) | cp::charhex() =>     0xC9
+[dump] i | cp::udec(3) => 202, static_cast<char>(i) | cp::charhex() =>     0xCA
+[dump] i | cp::udec(3) => 203, static_cast<char>(i) | cp::charhex() =>     0xCB
+[dump] i | cp::udec(3) => 204, static_cast<char>(i) | cp::charhex() =>     0xCC
+[dump] i | cp::udec(3) => 205, static_cast<char>(i) | cp::charhex() =>     0xCD
+[dump] i | cp::udec(3) => 206, static_cast<char>(i) | cp::charhex() =>     0xCE
+[dump] i | cp::udec(3) => 207, static_cast<char>(i) | cp::charhex() =>     0xCF
+[dump] i | cp::udec(3) => 208, static_cast<char>(i) | cp::charhex() =>     0xD0
+[dump] i | cp::udec(3) => 209, static_cast<char>(i) | cp::charhex() =>     0xD1
+[dump] i | cp::udec(3) => 210, static_cast<char>(i) | cp::charhex() =>     0xD2
+[dump] i | cp::udec(3) => 211, static_cast<char>(i) | cp::charhex() =>     0xD3
+[dump] i | cp::udec(3) => 212, static_cast<char>(i) | cp::charhex() =>     0xD4
+[dump] i | cp::udec(3) => 213, static_cast<char>(i) | cp::charhex() =>     0xD5
+[dump] i | cp::udec(3) => 214, static_cast<char>(i) | cp::charhex() =>     0xD6
+[dump] i | cp::udec(3) => 215, static_cast<char>(i) | cp::charhex() =>     0xD7
+[dump] i | cp::udec(3) => 216, static_cast<char>(i) | cp::charhex() =>     0xD8
+[dump] i | cp::udec(3) => 217, static_cast<char>(i) | cp::charhex() =>     0xD9
+[dump] i | cp::udec(3) => 218, static_cast<char>(i) | cp::charhex() =>     0xDA
+[dump] i | cp::udec(3) => 219, static_cast<char>(i) | cp::charhex() =>     0xDB
+[dump] i | cp::udec(3) => 220, static_cast<char>(i) | cp::charhex() =>     0xDC
+[dump] i | cp::udec(3) => 221, static_cast<char>(i) | cp::charhex() =>     0xDD
+[dump] i | cp::udec(3) => 222, static_cast<char>(i) | cp::charhex() =>     0xDE
+[dump] i | cp::udec(3) => 223, static_cast<char>(i) | cp::charhex() =>     0xDF
+[dump] i | cp::udec(3) => 224, static_cast<char>(i) | cp::charhex() =>     0xE0
+[dump] i | cp::udec(3) => 225, static_cast<char>(i) | cp::charhex() =>     0xE1
+[dump] i | cp::udec(3) => 226, static_cast<char>(i) | cp::charhex() =>     0xE2
+[dump] i | cp::udec(3) => 227, static_cast<char>(i) | cp::charhex() =>     0xE3
+[dump] i | cp::udec(3) => 228, static_cast<char>(i) | cp::charhex() =>     0xE4
+[dump] i | cp::udec(3) => 229, static_cast<char>(i) | cp::charhex() =>     0xE5
+[dump] i | cp::udec(3) => 230, static_cast<char>(i) | cp::charhex() =>     0xE6
+[dump] i | cp::udec(3) => 231, static_cast<char>(i) | cp::charhex() =>     0xE7
+[dump] i | cp::udec(3) => 232, static_cast<char>(i) | cp::charhex() =>     0xE8
+[dump] i | cp::udec(3) => 233, static_cast<char>(i) | cp::charhex() =>     0xE9
+[dump] i | cp::udec(3) => 234, static_cast<char>(i) | cp::charhex() =>     0xEA
+[dump] i | cp::udec(3) => 235, static_cast<char>(i) | cp::charhex() =>     0xEB
+[dump] i | cp::udec(3) => 236, static_cast<char>(i) | cp::charhex() =>     0xEC
+[dump] i | cp::udec(3) => 237, static_cast<char>(i) | cp::charhex() =>     0xED
+[dump] i | cp::udec(3) => 238, static_cast<char>(i) | cp::charhex() =>     0xEE
+[dump] i | cp::udec(3) => 239, static_cast<char>(i) | cp::charhex() =>     0xEF
+[dump] i | cp::udec(3) => 240, static_cast<char>(i) | cp::charhex() =>     0xF0
+[dump] i | cp::udec(3) => 241, static_cast<char>(i) | cp::charhex() =>     0xF1
+[dump] i | cp::udec(3) => 242, static_cast<char>(i) | cp::charhex() =>     0xF2
+[dump] i | cp::udec(3) => 243, static_cast<char>(i) | cp::charhex() =>     0xF3
+[dump] i | cp::udec(3) => 244, static_cast<char>(i) | cp::charhex() =>     0xF4
+[dump] i | cp::udec(3) => 245, static_cast<char>(i) | cp::charhex() =>     0xF5
+[dump] i | cp::udec(3) => 246, static_cast<char>(i) | cp::charhex() =>     0xF6
+[dump] i | cp::udec(3) => 247, static_cast<char>(i) | cp::charhex() =>     0xF7
+[dump] i | cp::udec(3) => 248, static_cast<char>(i) | cp::charhex() =>     0xF8
+[dump] i | cp::udec(3) => 249, static_cast<char>(i) | cp::charhex() =>     0xF9
+[dump] i | cp::udec(3) => 250, static_cast<char>(i) | cp::charhex() =>     0xFA
+[dump] i | cp::udec(3) => 251, static_cast<char>(i) | cp::charhex() =>     0xFB
+[dump] i | cp::udec(3) => 252, static_cast<char>(i) | cp::charhex() =>     0xFC
+[dump] i | cp::udec(3) => 253, static_cast<char>(i) | cp::charhex() =>     0xFD
+[dump] i | cp::udec(3) => 254, static_cast<char>(i) | cp::charhex() =>     0xFE
+[dump] i | cp::udec(3) => 255, static_cast<char>(i) | cp::charhex() =>     0xFF
 [dump] vec2d | (back | cp::index()) => [
          ...,
          3: [ 0: 15, 1: -16 ],
