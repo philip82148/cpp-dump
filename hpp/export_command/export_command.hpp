@@ -94,6 +94,7 @@ struct export_command {
       if (g.int_style) int_style = g.int_style;
       if (g.bool_style != bool_style_t::normal) bool_style = g.bool_style;
       if (g.format != nullptr) format = g.format;
+      if (g.escape_str) escape_str = g.escape_str;
       if (g.char_as_hex) char_as_hex = g.char_as_hex;
       if (g.show_index) show_index = g.show_index;
     }
@@ -102,6 +103,7 @@ struct export_command {
       if (!int_style) int_style = g.int_style;
       if (bool_style == bool_style_t::normal) bool_style = g.bool_style;
       if (format == nullptr) format = g.format;
+      if (!escape_str) escape_str = g.escape_str;
       if (!char_as_hex) char_as_hex = g.char_as_hex;
       if (!show_index) show_index = g.show_index;
     }
