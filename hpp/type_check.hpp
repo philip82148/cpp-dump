@@ -211,7 +211,7 @@ inline constexpr bool _is_other_type<std::complex<Args...>> = true;
 template <typename... Args>
 inline constexpr bool _is_other_type<std::variant<Args...>> = true;
 template <>
-inline constexpr bool _is_other_type<es_value_t> = true;
+inline constexpr bool _is_other_type<types::es_value_t> = true;
 
 template <typename T>
 inline constexpr bool is_other_type =

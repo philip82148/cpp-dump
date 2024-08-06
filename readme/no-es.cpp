@@ -16,7 +16,7 @@
 namespace cp = cpp_dump;
 
 int main() {
-  CPP_DUMP_SET_OPTION(es_style, cp::es_style_t::no_es);
+  CPP_DUMP_SET_OPTION(es_style, cp::types::es_style_t::no_es);
 
   int my_int = 15;
   int *ptr = &my_int;

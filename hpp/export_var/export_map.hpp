@@ -107,7 +107,7 @@ inline auto export_map(
 ) -> std::enable_if_t<is_map<T>, std::string> {
   if (map.empty()) return es::bracket("{ }", current_depth);
 
-  if (current_depth >= max_depth)
+  if (current_depth >= options::max_depth)
     return es::bracket("{ ", current_depth) + es::op("...") + es::bracket(" }", current_depth);
 
   std::size_t next_depth = current_depth + 1;
@@ -125,12 +125,12 @@ inline auto export_map(
   auto skipped_map = command.create_skip_container(map_wrapper);
 
   bool shift_indent;
-  if (cont_indent_style == cont_indent_style_t::always) {
+  if (options::cont_indent_style == types::cont_indent_style_t::always) {
     shift_indent = true;
-  } else if (cont_indent_style == cont_indent_style_t::when_nested) {
+  } else if (options::cont_indent_style == types::cont_indent_style_t::when_nested) {
     shift_indent = is_multimap<T> || is_iterable_like<typename T::key_type>
                    || is_iterable_like<typename T::mapped_type>;
-  } else if (cont_indent_style == cont_indent_style_t::when_non_tuples_nested) {
+  } else if (options::cont_indent_style == types::cont_indent_style_t::when_non_tuples_nested) {
     shift_indent =
         is_multimap<T>
         || (is_iterable_like<typename T::key_type> && !is_tuple<typename T::key_type>)
@@ -156,7 +156,7 @@ inline auto export_map(
         output += es::op("...");
 
         if (last_line_length + get_length(output) + std::string_view(" }").size()
-            > max_line_width) {
+            > options::max_line_width) {
           shift_indent = true;
           break;
         }
@@ -208,7 +208,8 @@ inline auto export_map(
       }
 
       output += elem_str;
-      if (last_line_length + get_length(output) + std::string_view(" }").size() > max_line_width) {
+      if (last_line_length + get_length(output) + std::string_view(" }").size()
+          > options::max_line_width) {
         shift_indent = true;
         break;
       }

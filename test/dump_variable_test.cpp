@@ -27,11 +27,11 @@ int main(int argc, char *argv[]) {
   if (argc != 4) return 1;
   bool compiler_dependent = static_cast<bool>(stoi(argv[1]));
   auto es_style_ = (array{
-      cp::es_style_t::no_es,
-      cp::es_style_t::original,
-      cp::es_style_t::by_syntax,
+      cp::types::es_style_t::no_es,
+      cp::types::es_style_t::original,
+      cp::types::es_style_t::by_syntax,
   }[stoi(argv[2])]);
-  bool detailed_es = es_style_ == cp::es_style_t::by_syntax;
+  bool detailed_es = es_style_ == cp::types::es_style_t::by_syntax;
   bool color_test = stoi(argv[3]);
 
   CPP_DUMP_SET_OPTION(es_style, es_style_);
@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
   if (color_test)
     CPP_DUMP_SET_OPTION(
         es_value,
-        (cp::es_value_t{
+        (cp::types::es_value_t{
             "\x1b[02m",                // log: dark
             "\x1b[38;2;86;154;214m",   // expression:
             "\x1b[36m",                // reserved: cyan
