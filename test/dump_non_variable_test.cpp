@@ -725,9 +725,15 @@ int main(int argc, char *argv[]) {
   vector<char> vec6(sv1.begin(), sv1.end());
   cpp_dump(vec6);
   cpp_dump(vec6 | cp::charhex());
-  cpp_dump(vec6 | cp::bin() | cp::charhex());
+  cpp_dump(vec6 | cp::bin() | cp::charhex() | cp::bin());
   for (auto c2 : {'\0', '\a', '\b', '\f', '\n', '\r', '\t', '\v', 'a', '\x7f'})
     cpp_dump(c2 | cp::charhex(), c2);
+
+  // stresc
+  std::string all_str;
+  rep(i, 256) all_str.push_back(static_cast<char>(i));
+  cpp_dump(all_str | cp::stresc());
+  cpp_dump(all_str | cp::charhex() | cp::stresc() | cp::charhex());
 
   // lvalue export_command
   auto index = cp::index();
