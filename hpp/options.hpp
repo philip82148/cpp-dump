@@ -117,7 +117,7 @@ inline bool print_expr = true;
 /**
  * Function that returns the label that cpp_dump() prints at the beginning of the output.
  */
-inline log_label::log_label_func_t log_label_func = log_label::default_func;
+inline types::log_label_func_t log_label_func = log_label::default_func;
 
 /**
  * Style of the escape sequences (output coloring).
