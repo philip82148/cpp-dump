@@ -86,7 +86,7 @@ int main(int argc, char *argv[]) {
 
   // basic
   cpp_dump(false, 0, 0.0, '0', (const char *)"0", string{"0"}, string_view{"0"});
-  cpp_dump('\0', '\x7f', '\n', 'a');
+  for (auto c : "\x01\x30\x7f\n\\\'\ta ") cpp_dump(c);
   cpp_dump(true, 3.14, 159265, "This is a test string");
   cpp_dump(-0, -3.14, -159265);
   cpp_dump("This contains newline\nhere.", R"(This contains ".)", R"(This contains `.)");
@@ -254,10 +254,7 @@ int main(int argc, char *argv[]) {
   vector<char> vec5(sv1.begin(), sv1.end());
   cpp_dump(vec5);
   cpp_dump(vec5 | cp::charhex());
-  cpp_dump('\x00' | cp::charhex());
-  cpp_dump('\x01' | cp::charhex());
-  cpp_dump('\x30' | cp::charhex());
-  cpp_dump('\x7f' | cp::charhex());
+  for (auto c : "\x01\x30\x7f\n\\\'\ta ") cpp_dump(c | cp::charhex());
 
   std::string all_str;
   rep(i, 256) all_str.push_back(static_cast<char>(i));
