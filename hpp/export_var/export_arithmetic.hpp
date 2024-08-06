@@ -8,6 +8,7 @@
 #pragma once
 
 #include <algorithm>
+#include <cctype>
 #include <iomanip>
 #include <ios>
 #include <limits>
@@ -15,6 +16,7 @@
 #include <string>
 #include <string_view>
 #include <type_traits>
+#include <unordered_map>
 
 #include "../escape_sequence.hpp"
 #include "../export_command/export_command.hpp"
@@ -57,19 +59,50 @@ inline auto export_arithmetic(
 inline std::string export_arithmetic(
     char value, const std::string &, std::size_t, std::size_t, bool, const export_command &command
 ) {
-  char quoted_char[] = {'\'', value, '\''};
+  const bool is_printable = std::isprint(value);
 
-  if (!command.char_as_hex()) return es::character({quoted_char, sizeof(quoted_char)});
+  if (!command.char_as_hex() && is_printable) {
+    char quoted_char[] = {'\'', value, '\''};
+
+    return es::character({quoted_char, sizeof(quoted_char)});
+  }
 
   auto to_hex_char = [](unsigned char c) -> char {
     return static_cast<char>(c < 10 ? '0' + c : 'A' + (c - 10));
   };
-
   char upper = to_hex_char((value >> 4) & 0x0f);
   char lower = to_hex_char(value & 0x0f);
 
-  char number[] = {' ', '0', 'x', upper, lower};
-  return es::character({quoted_char, sizeof(quoted_char)}) + es::number({number, sizeof(number)});
+  static const std::unordered_map<char, std::string_view> char_to_escaped{
+      {'\0', "'\\0'"},  // null
+      {'\a', "'\\a'"},  // bell
+      {'\b', "'\\b'"},  // backspace
+      {'\f', "'\\f'"},  // form feed
+      {'\n', "'\\n'"},  // LF
+      {'\r', "'\\r'"},  // CR
+      {'\t', "'\\t'"},  // Horizontal tab
+      {'\v', "'\\v'"},  // Vertical tab
+  };
+
+  std::string char_str;
+  if (is_printable) {
+    char_str = {'\'', value, '\'', ' '};
+  } else {
+    if (char_to_escaped.count(value)) {
+      char_str = char_to_escaped.at(value);
+    } else if (command.char_as_hex()) {
+      char_str = "    ";
+    } else {
+      char_str = {'\'', '\\', 'x', upper, lower, '\''};
+    }
+  }
+
+  if (command.char_as_hex()) {
+    char number[] = {'0', 'x', upper, lower};
+    return es::character(char_str) + es::number({number, sizeof(number)});
+  }
+
+  return es::character(char_str);
 }
 
 template <typename UnsignedT>

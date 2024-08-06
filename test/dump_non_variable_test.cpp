@@ -222,6 +222,9 @@ int main(int argc, char *argv[]) {
   cpp_dump("This contains newline\nhere.", R"(This contains ".)", R"(This contains `.)");
   cpp_dump("\n\n\n\n");
 
+  // char
+  for (auto c : {'\0', '\a', '\b', '\f', '\n', '\r', '\t', '\v', 'a', '\x7f'}) cpp_dump(c);
+
   // volatile
   volatile int volatile_int = 3589;
   volatile double volatile_double = 79.323;
@@ -723,6 +726,8 @@ int main(int argc, char *argv[]) {
   cpp_dump(vec6);
   cpp_dump(vec6 | cp::charhex());
   cpp_dump(vec6 | cp::bin() | cp::charhex());
+  for (auto c2 : {'\0', '\a', '\b', '\f', '\n', '\r', '\t', '\v', 'a', '\x7f'})
+    cpp_dump(c2 | cp::charhex(), c2);
 
   // lvalue export_command
   auto index = cp::index();
