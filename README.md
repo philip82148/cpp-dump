@@ -829,7 +829,7 @@ cpp_dump::boolnum();
 
 These manipulators are for formatting bool.  
 The `bw()` manipulator adds a space when a bool value is `true` to match the width of `false`.  
-bw stands for "bool width".
+bw stands for "bool width".  
 The `boolnum()` manipulator shows bool values as `1` or `0`.  
 [See Full Example Code](./readme/formatting-with-manipulators.cpp)
 
