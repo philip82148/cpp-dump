@@ -537,12 +537,14 @@ inline auto uhex(int digits = -1, int chunk = 0, bool space_fill = false) {
 
 /*
  * Manipulator for the display style of numbers.
+ * See README for details.
  * This is an experimental feature.
  */
 inline auto format(const char *f) { return _detail::export_command(f); }
 
 /*
  * Manipulator for the display style of bool.
+ * See README for details.
  * This is an experimental feature.
  */
 inline auto bw(bool right = false) {
@@ -552,6 +554,7 @@ inline auto bw(bool right = false) {
 
 /*
  * Manipulator for the display style of bool.
+ * See README for details.
  * This is an experimental feature.
  */
 inline auto boolnum() {
@@ -561,12 +564,14 @@ inline auto boolnum() {
 
 /*
  * Manipulator for the display style of char.
+ * See README for details.
  * This is an experimental feature.
  */
 inline auto stresc() { return _detail::export_command(_detail::export_command::stresc{}); }
 
 /*
  * Manipulator for the display style of char.
+ * See README for details.
  * This is an experimental feature.
  */
 inline auto charhex() { return _detail::export_command(_detail::export_command::charhex{}); }
@@ -574,6 +579,7 @@ inline auto charhex() { return _detail::export_command(_detail::export_command::
 /*
  * Manipulator for the display style of pointers.
  * See README for details.
+ * This is an experimental feature.
  */
 inline auto addr(std::size_t depth = 0) { return _detail::export_command(depth); }
 
