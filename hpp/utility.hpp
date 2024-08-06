@@ -96,7 +96,7 @@ inline std::string escape_non_printable_char(char c) {
   if (char_to_escaped.count(c)) return std::string(char_to_escaped.at(c));
 
   auto to_hex_char = [](unsigned char uc) -> char {
-    return static_cast<char>(uc < 10 ? '0' + uc : 'A' + (uc - 10));
+    return static_cast<char>(uc < 10 ? '0' + uc : 'a' + (uc - 10));
   };
   char upper = to_hex_char((c >> 4) & 0x0f);
   char lower = to_hex_char(c & 0x0f);
