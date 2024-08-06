@@ -59,38 +59,34 @@ inline std::string export_arithmetic(
     char value, const std::string &, std::size_t, std::size_t, bool, const export_command &command
 ) {
   const bool is_printable = std::isprint(static_cast<unsigned char>(value));
+  const bool need_escape = !is_printable || value == '\'' || value == '\\';
 
-  if (!command.char_as_hex() && is_printable) {
-    char quoted_char[] = {'\'', value, '\''};
+  std::string char_str_es;
+  if (need_escape) {
+    auto escaped = is_printable ? std::string({'\\', value}) : escape_non_printable_char(value);
 
-    return es::character({quoted_char, sizeof(quoted_char)});
-  }
-
-  std::string char_str;
-  if (is_printable) {
-    char quoted_char[] = {'\'', value, '\'', ' '};
-    char_str = es::character({quoted_char, sizeof(quoted_char)});
-  } else {
-    std::string escaped = escape_non_printable_char(value);
     if (command.char_as_hex() && escaped.size() > 2) {
-      char_str = std::string(4, ' ');
+      char_str_es = std::string(4, ' ');
     } else {
-      char_str = es::character("'") + es::escaped_char(escaped) + es::character("'");
+      char_str_es = es::character("'") + es::escaped_char(escaped) + es::character("'");
     }
+  } else {
+    char quoted_char[] = {'\'', value, '\''};
+    char_str_es = es::character({quoted_char, sizeof(quoted_char)});
   }
 
-  if (command.char_as_hex()) {
-    auto to_hex_char = [](unsigned char c) -> char {
-      return static_cast<char>(c < 10 ? '0' + c : 'A' + (c - 10));
-    };
-    char upper = to_hex_char((value >> 4) & 0x0f);
-    char lower = to_hex_char(value & 0x0f);
+  if (!command.char_as_hex()) return char_str_es;
 
-    char number[] = {'0', 'x', upper, lower};
-    return char_str + es::number({number, sizeof(number)});
-  }
+  if (!need_escape) char_str_es.push_back(' ');
 
-  return char_str;
+  auto to_hex_char = [](unsigned char c) -> char {
+    return static_cast<char>(c < 10 ? '0' + c : 'A' + (c - 10));
+  };
+  char upper = to_hex_char((value >> 4) & 0x0f);
+  char lower = to_hex_char(value & 0x0f);
+
+  char number[] = {'0', 'x', upper, lower};
+  return char_str_es + es::number({number, sizeof(number)});
 }
 
 template <typename UnsignedT>
