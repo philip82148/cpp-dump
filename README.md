@@ -676,13 +676,13 @@ See [int_style manipulators](#int_style-manipulators) for details.
 
 ```cpp
 // Show integers in binary, minimum 16 digits, separated by every 4 characters.
-cpp_dump(0x3e8 | cp::bin(16, 4));
+cpp_dump(0x3e8u | cp::bin(16, 4));
 // Show integers in octal, minimum 6 digits, separated by every 3 characters.
-cpp_dump(0x3e8 | cp::oct(6, 3));
+cpp_dump(0x3e8u | cp::oct(6, 3));
 // Show integers in hexadecimal, minimum 4 digits, separated by every 2 characters.
-cpp_dump(0x3e8 | cp::hex(4, 2));
+cpp_dump(0x3e8u | cp::hex(4, 2));
 // Show integers in minimum 4 digits.
-cpp_dump(0x3e8 | cp::dec(4));
+cpp_dump(0x3e8u | cp::dec(4));
 ```
 
 ![manipulator-int-style.png](./readme/manipulator-int-style.png)

@@ -48,10 +48,10 @@
 
 // manipulator-int-style.png
 
-[0m[02m[dump] [0m[36m0x3e8 | cp::bin(16, 4)[0m[02m => [0m 0b 0000 0011 1110 1000[0m
-[0m[02m[dump] [0m[36m0x3e8 | cp::oct(6, 3)[0m[02m => [0m 0o 001 750[0m
-[0m[02m[dump] [0m[36m0x3e8 | cp::hex(4, 2)[0m[02m => [0m 0x 03 E8[0m
-[0m[02m[dump] [0m[36m0x3e8 | cp::dec(4)[0m[02m => [0m 1000[0m
+[0m[02m[dump] [0m[36m0x3e8u | cp::bin(16, 4)[0m[02m => [0m0b 0000 0011 1110 1000[0m
+[0m[02m[dump] [0m[36m0x3e8u | cp::oct(6, 3)[0m[02m => [0m0o 001 750[0m
+[0m[02m[dump] [0m[36m0x3e8u | cp::hex(4, 2)[0m[02m => [0m0x 03 E8[0m
+[0m[02m[dump] [0m[36m0x3e8u | cp::dec(4)[0m[02m => [0m1000[0m
 
 // manipulator-bin-etc.png
 
