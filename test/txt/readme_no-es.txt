@@ -1,8 +1,8 @@
 
 // Basic Type
-[dump] false => false, 0 => 0, 0.0 => 0.000000, 'a' => 'a'
+[dump] false => false, 0 => 0, 0.0 => 0.000000
 [dump] true => true, 3.14 => 3.140000, my_int => 15, -9265 => -9265
-[dump] "This is a string." => "This is a string."
+[dump] "This is a string." => "This is a string.", 'a' => 'a', '\n' => '\n'
 [dump] ptr => *15, void_ptr => 0x7fffffffffff, nullptr => nullptr
 
 // Container
