@@ -143,6 +143,6 @@
 // manipulator-addr.png
 
 [0m[02m[dump] [0m[36mint_ptr_ptr[0m[02m => [0m[32m*[0m[32m*[0m15[0m
-[0m[02m[dump] [0m[36mint_ptr_ptr | cp::addr()[0m[02m => [0m[32m0x7fff116d5f20[0m
-[0m[02m[dump] [0m[36mint_ptr_ptr | cp::addr(1)[0m[02m => [0m[32m*[0m[32m0x7fff116d5f0c[0m
+[0m[02m[dump] [0m[36mint_ptr_ptr | cp::addr()[0m[02m => [0m[32m0x7fffffffffff[0m
+[0m[02m[dump] [0m[36mint_ptr_ptr | cp::addr(1)[0m[02m => [0m[32m*[0m[32m0x7fffffffffff[0m
 
