@@ -104,6 +104,29 @@ inline std::string escape_non_printable_char(char c) {
   return std::string({'\\', 'x', upper, lower});
 }
 
+inline std::string escape_string(std::string_view s) {
+  auto need_escape = [](char c) {
+    return !std::isprint(static_cast<unsigned char>(c)) || c == '"' || c == '\\';
+  };
+  auto escape = [](char c) -> std::string {
+    if (c == '"') return R"(\")";
+    if (c == '\\') return R"(\\)";
+    return escape_non_printable_char(c);
+  };
+
+  std::string retval(1, '"');
+  auto begin = s.begin();
+  decltype(begin) end;
+  while ((end = std::find_if(begin, s.end(), need_escape)) != s.end()) {
+    retval.append(begin, end);
+    retval.append(escape(*end));
+    begin = end + 1;
+  }
+  retval.append(begin, end).push_back('"');
+
+  return retval;
+}
+
 }  // namespace _detail
 
 }  // namespace cpp_dump

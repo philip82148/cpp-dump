@@ -21,12 +21,6 @@ namespace cpp_dump {
 
 namespace _detail {
 
-inline std::string _export_es_value_str(std::string_view es) {
-  std::string escaped_es = replace_string(es, "\x1b", "\\e");
-
-  return es::apply(es, R"(")" + escaped_es + R"(")");
-}
-
 inline std::string _export_es_value_vector(
     const std::vector<std::string> &es_vec,
     const std::string &indent,
@@ -69,7 +63,7 @@ inline std::string _export_es_value_vector(
 
     if (command.show_index()) output += es::member(std::to_string(index_)) + es::op(": ");
 
-    output += _export_es_value_str(es);
+    output += es::apply(es, escape_string(es));
     if (last_line_length + get_length(output) + std::string_view(" ]").size() > max_line_width) {
       shift_indent = true;
       break;
@@ -106,7 +100,7 @@ inline std::string _export_es_value_vector(
     output += "\n" + new_indent;
     if (command.show_index()) output += es::member(std::to_string(index_)) + es::op(": ");
 
-    output += _export_es_value_str(es);
+    output += es::apply(es, escape_string(es));
   }
   output += "\n" + indent + es::bracket("]", current_depth);
 
@@ -135,8 +129,7 @@ inline std::string export_es_value_t(
     if (shift_indent) output += "\n" + new_indent;
 
     if constexpr (std::is_same_v<decltype(member), const std::string &>) {
-      output += es::apply(member, std::string(member_name) + "= ");
-      output += _export_es_value_str(member);
+      output += es::apply(member, std::string(member_name) + "= " + escape_string(member));
     } else {
       output += es::member(member_name) + es::op("= ");
       output += _export_es_value_vector(
