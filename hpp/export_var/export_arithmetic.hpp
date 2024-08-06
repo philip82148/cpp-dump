@@ -16,6 +16,7 @@
 #include <string>
 #include <string_view>
 #include <type_traits>
+#include <unordered_map>
 
 #include "../escape_sequence.hpp"
 #include "../export_command/export_command.hpp"
@@ -72,19 +73,32 @@ inline std::string export_arithmetic(
   char upper = to_hex_char((value >> 4) & 0x0f);
   char lower = to_hex_char(value & 0x0f);
 
+  static const std::unordered_map<char, std::string_view> char_to_escaped{
+      {'\0', "'\\0'"},  // null
+      {'\a', "'\\a'"},  // bell
+      {'\b', "'\\b'"},  // backspace
+      {'\f', "'\\f'"},  // form feed
+      {'\n', "'\\n'"},  // LF
+      {'\r', "'\\r'"},  // CR
+      {'\t', "'\\t'"},  // Horizontal tab
+      {'\v', "'\\v'"},  // Vertical tab
+  };
+
   std::string char_str;
   if (is_printable) {
-    char_str = {'\'', value, '\''};
+    char_str = {'\'', value, '\'', ' '};
   } else {
-    if (command.char_as_hex()) {
-      char_str = "'' ";
+    if (char_to_escaped.count(value)) {
+      char_str = char_to_escaped.at(value);
+    } else if (command.char_as_hex()) {
+      char_str = "''  ";
     } else {
       char_str = {'\'', '\\', 'x', upper, lower, '\''};
     }
   }
 
   if (command.char_as_hex()) {
-    char number[] = {' ', '0', 'x', upper, lower};
+    char number[] = {'0', 'x', upper, lower};
     return es::character(char_str) + es::number({number, sizeof(number)});
   }
 
