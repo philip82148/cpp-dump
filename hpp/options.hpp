@@ -72,6 +72,7 @@ struct es_value_t {
   std::string class_op = "\x1b[02m";                      // dark
   std::string member_op = "\x1b[02m";                     // dark
   std::string number_op{};                                // default
+  std::string escaped_char = "\x1b[02m";                  // dark
 };
 
 /**

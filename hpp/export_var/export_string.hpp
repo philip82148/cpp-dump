@@ -47,7 +47,7 @@ inline std::string export_string(
     }
     output.append(begin, end).push_back('"');
 
-    return es::character(output);
+    return es::escaped_str(output);
   }
 
   // str = replace_string(str, R"(\)", R"(\\)");
