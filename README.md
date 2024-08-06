@@ -155,7 +155,7 @@ CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(i, str());
 
 ## Advanced Feature
 
-### Manipulators to change the display style
+### Over 20 Manipulators to change the display style
 
 This library has over 20 manipulators to change the display style.  
 See [Formatting with manipulators](#formatting-with-manipulators) for details.
