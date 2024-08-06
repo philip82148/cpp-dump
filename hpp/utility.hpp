@@ -78,6 +78,29 @@ inline std::string replace_string(
   return retval;
 }
 
+inline std::string escape_non_printable_char(char c) {
+  static const std::unordered_map<char, std::string_view> char_to_escaped{
+      {'\0', "\\0"},  // null
+      {'\a', "\\a"},  // bell
+      {'\b', "\\b"},  // backspace
+      {'\f', "\\f"},  // form feed
+      {'\n', "\\n"},  // LF
+      {'\r', "\\r"},  // CR
+      {'\t', "\\t"},  // Horizontal tab
+      {'\v', "\\v"},  // Vertical tab
+  };
+
+  if (char_to_escaped.count(c)) return std::string(char_to_escaped.at(c));
+
+  auto to_hex_char = [](unsigned char uc) -> char {
+    return static_cast<char>(uc < 10 ? '0' + uc : 'A' + (uc - 10));
+  };
+  char upper = to_hex_char((c >> 4) & 0x0f);
+  char lower = to_hex_char(c & 0x0f);
+
+  return std::string({'\\', 'x', upper, lower});
+}
+
 }  // namespace _detail
 
 }  // namespace cpp_dump

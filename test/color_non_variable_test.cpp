@@ -257,4 +257,8 @@ int main(int argc, char *argv[]) {
   cpp_dump('\x01' | cp::charhex());
   cpp_dump('\x30' | cp::charhex());
   cpp_dump('\x7f' | cp::charhex());
+
+  std::string all_str;
+  rep(i, 256) all_str.push_back(static_cast<char>(i));
+  cpp_dump(all_str | cp::stresc());
 }
