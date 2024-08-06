@@ -490,7 +490,7 @@ cpp_dump::map_k(return_value_of_manipulator);
 cpp_dump::map_v(return_value_of_manipulator);
 cpp_dump::map_kv(return_value_of_manipulator_for_key, return_value_of_manipulator_for_value);
 cpp_dump::format(const char *f);
-cpp_dump::bw(bool right = false);
+cpp_dump::bw(bool left = false);
 cpp_dump::boolnum();
 cpp_dump::stresc();
 cpp_dump::charhex();
@@ -817,7 +817,7 @@ cpp_dump(pi | cp::format("%.10f"));
 #### `bw()`, `boolnum()` manipulator (experimental feature)
 
 ```cpp
-cpp_dump::bw(bool right = false);
+cpp_dump::bw(bool left = false);
 cpp_dump::boolnum();
 ```
 
