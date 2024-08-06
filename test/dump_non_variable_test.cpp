@@ -223,7 +223,7 @@ int main(int argc, char *argv[]) {
   cpp_dump("\n\n\n\n");
 
   // char
-  for (auto c : {'\0', '\a', '\b', '\f', '\n', '\r', '\t', '\v', 'a', '\x7f'}) cpp_dump(c);
+  rep(i, 256) cpp_dump(i, static_cast<char>(i));
 
   // volatile
   volatile int volatile_int = 3589;
@@ -726,8 +726,7 @@ int main(int argc, char *argv[]) {
   cpp_dump(vec6);
   cpp_dump(vec6 | cp::charhex());
   cpp_dump(vec6 | cp::bin() | cp::charhex() | cp::bin());
-  for (auto c2 : {'\0', '\a', '\b', '\f', '\n', '\r', '\t', '\v', 'a', '\x7f'})
-    cpp_dump(c2 | cp::charhex(), c2);
+  rep(i, 256) cpp_dump(i | cp::udec(3), static_cast<char>(i) | cp::charhex());
 
   // stresc
   std::string all_str;
