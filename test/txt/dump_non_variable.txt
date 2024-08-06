@@ -53,7 +53,7 @@ here.`,
 [dump] i => 36, static_cast<char>(i) => '$'
 [dump] i => 37, static_cast<char>(i) => '%'
 [dump] i => 38, static_cast<char>(i) => '&'
-[dump] i => 39, static_cast<char>(i) => '''
+[dump] i => 39, static_cast<char>(i) => '\''
 [dump] i => 40, static_cast<char>(i) => '('
 [dump] i => 41, static_cast<char>(i) => ')'
 [dump] i => 42, static_cast<char>(i) => '*'
@@ -106,7 +106,7 @@ here.`,
 [dump] i => 89, static_cast<char>(i) => 'Y'
 [dump] i => 90, static_cast<char>(i) => 'Z'
 [dump] i => 91, static_cast<char>(i) => '['
-[dump] i => 92, static_cast<char>(i) => '\'
+[dump] i => 92, static_cast<char>(i) => '\\'
 [dump] i => 93, static_cast<char>(i) => ']'
 [dump] i => 94, static_cast<char>(i) => '^'
 [dump] i => 95, static_cast<char>(i) => '_'
@@ -1120,7 +1120,7 @@ int64_t cp::hex(), cp::dec()
 [dump] i | cp::udec(3) =>  36, static_cast<char>(i) | cp::charhex() => '$' 0x24
 [dump] i | cp::udec(3) =>  37, static_cast<char>(i) | cp::charhex() => '%' 0x25
 [dump] i | cp::udec(3) =>  38, static_cast<char>(i) | cp::charhex() => '&' 0x26
-[dump] i | cp::udec(3) =>  39, static_cast<char>(i) | cp::charhex() => ''' 0x27
+[dump] i | cp::udec(3) =>  39, static_cast<char>(i) | cp::charhex() => '\''0x27
 [dump] i | cp::udec(3) =>  40, static_cast<char>(i) | cp::charhex() => '(' 0x28
 [dump] i | cp::udec(3) =>  41, static_cast<char>(i) | cp::charhex() => ')' 0x29
 [dump] i | cp::udec(3) =>  42, static_cast<char>(i) | cp::charhex() => '*' 0x2A
@@ -1173,7 +1173,7 @@ int64_t cp::hex(), cp::dec()
 [dump] i | cp::udec(3) =>  89, static_cast<char>(i) | cp::charhex() => 'Y' 0x59
 [dump] i | cp::udec(3) =>  90, static_cast<char>(i) | cp::charhex() => 'Z' 0x5A
 [dump] i | cp::udec(3) =>  91, static_cast<char>(i) | cp::charhex() => '[' 0x5B
-[dump] i | cp::udec(3) =>  92, static_cast<char>(i) | cp::charhex() => '\' 0x5C
+[dump] i | cp::udec(3) =>  92, static_cast<char>(i) | cp::charhex() => '\\'0x5C
 [dump] i | cp::udec(3) =>  93, static_cast<char>(i) | cp::charhex() => ']' 0x5D
 [dump] i | cp::udec(3) =>  94, static_cast<char>(i) | cp::charhex() => '^' 0x5E
 [dump] i | cp::udec(3) =>  95, static_cast<char>(i) | cp::charhex() => '_' 0x5F
