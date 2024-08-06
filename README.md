@@ -40,8 +40,8 @@ cpp-dump supports a wide variety of types. Also, it supports nested containers o
 ```cpp
 // See the full example code for the definitions of the variables.
 std::clog << "\n// Basic Type" << std::endl;
-cpp_dump(false, 0, 0.0, 'a'); cpp_dump(true, 3.14, my_int, -9265);
-cpp_dump("This is a string."); cpp_dump(ptr, void_ptr, nullptr);
+cpp_dump(false, 0, 0.0); cpp_dump(true, 3.14, my_int, -9265);
+cpp_dump("This is a string.", 'a', '\n'); cpp_dump(ptr, void_ptr, nullptr);
 
 std::clog << "\n// Container" << std::endl;
 cpp_dump(my_vector);
@@ -118,7 +118,8 @@ CPP_DUMP_SET_OPTION(es_value, (cp::es_value_t{
   },
   "\x1b[02m",        // class_op: dark
   "\x1b[02m",        // member_op: dark
-  ""               // number_op: default
+  "",                // number_op: default
+  "\x1b[38;5;220m"   // escaped_char: light orange
 }));
 
 // Use the 'class_op'/'member_op'/'number_op' color for operators
@@ -365,9 +366,9 @@ enum class cpp_dump::es_style_t { no_es, original, by_syntax };
 struct cpp_dump::es_value_t {
   std::string log = "\x1b[02m";                           // dark
   std::string expression = "\x1b[36m";                    // cyan
-  std::string reserved{};                               // default
-  std::string number{};                                 // default
-  std::string character{};                              // default
+  std::string reserved{};                                 // default
+  std::string number{};                                   // default
+  std::string character{};                                // default
   std::string op = "\x1b[02m";                            // dark
   std::string identifier = "\x1b[32m";                    // green
   std::string member = "\x1b[36m";                        // cyan
@@ -375,7 +376,8 @@ struct cpp_dump::es_value_t {
   std::vector<std::string> bracket_by_depth{"\x1b[02m"};  // dark
   std::string class_op = "\x1b[02m";                      // dark
   std::string member_op = "\x1b[02m";                     // dark
-  std::string number_op{};                              // default
+  std::string number_op{};                                // default
+  std::string escaped_char = "\x1b[02m";                  // dark
 };
 
 /**
