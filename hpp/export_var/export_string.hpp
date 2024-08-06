@@ -28,14 +28,21 @@ inline std::string export_string(
     const export_command &command
 ) {
   if (command.escape_str()) {
-    auto is_print = [](char c) { return std::isprint(static_cast<unsigned char>(c)); };
+    auto need_escape = [](char c) {
+      return !std::isprint(static_cast<unsigned char>(c)) || c == '"' || c == '\\';
+    };
+    auto escape = [](char c) -> std::string {
+      if (c == '"') return R"(\")";
+      if (c == '\\') return R"(\\)";
+      return escape_non_printable_char(c);
+    };
 
     std::string output(1, '"');
     auto begin = value.begin();
     decltype(begin) end;
-    while ((end = std::find_if_not(begin, value.end(), is_print)) != value.end()) {
+    while ((end = std::find_if(begin, value.end(), need_escape)) != value.end()) {
       output.append(begin, end);
-      output.append(escape_non_printable_char(*end));
+      output.append(escape(*end));
       begin = end + 1;
     }
     output.append(begin, end).push_back('"');
