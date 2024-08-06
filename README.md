@@ -846,8 +846,8 @@ For escaped characters, the 'escaped_char' color is used.
 [See Full Example Code](./readme/formatting-with-manipulators.cpp)
 
 ```cpp
-cpp_dump("\a\t\\\"\r\n\x7f need to be escaped.");
-cpp_dump("\a\t\\\"\r\n\x7f need to be escaped." | cp::stresc());
+cpp_dump("\a\t\\\"\n\x7f need to be escaped.");
+cpp_dump("\a\t\\\"\n\x7f need to be escaped." | cp::stresc());
 ```
 
 ![manipulator-stresc.png](./readme/manipulator-stresc.png)
@@ -863,7 +863,7 @@ The width of their string representation is fixed.
 [See Full Example Code](./readme/formatting-with-manipulators.cpp)
 
 ```cpp
-for (auto c : "\a\t\\\"\r\n\x7f ABC") cpp_dump(c | cp::charhex());
+for (auto c : "\a\t\\\"\n\x7f ABC") cpp_dump(c | cp::charhex());
 ```
 
 ![manipulator-charhex.png](./readme/manipulator-charhex.png)
