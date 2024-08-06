@@ -60,7 +60,9 @@ inline std::string bracket(std::string_view s, std::size_t d) {
 inline std::string type_name(std::string_view s) {
   if (!use_es()) return std::string(s);
 
-  auto is_operator = [](char c) { return !(std::isalnum(c) || c == '_'); };
+  auto is_operator = [](char c) {
+    return !(std::isalnum(static_cast<unsigned char>(c)) || c == '_');
+  };
 
   std::string output;
   auto begin = s.begin();
@@ -90,7 +92,9 @@ inline std::string class_name(std::string_view s) {
 inline std::string enumerator(std::string_view s) {
   if (!use_es()) return std::string(s);
 
-  auto is_operator = [](char c) { return !(std::isalnum(c) || c == '_'); };
+  auto is_operator = [](char c) {
+    return !(std::isalnum(static_cast<unsigned char>(c)) || c == '_');
+  };
 
   auto op_rbegin = std::find_if(s.rbegin(), s.rend(), is_operator);
   if (op_rbegin == s.rend()) return es::member(s);
@@ -112,7 +116,9 @@ inline std::string class_member(std::string_view s) {
   if (!use_es()) return std::string(s);
   if (!detailed_member_es) return es::member(s);
 
-  auto is_operator = [](char c) { return !(std::isalnum(c) || c == '_'); };
+  auto is_operator = [](char c) {
+    return !(std::isalnum(static_cast<unsigned char>(c)) || c == '_');
+  };
 
   std::string output;
   auto begin = s.begin();
@@ -136,7 +142,9 @@ inline std::string signed_number(std::string_view s) {
   if (!use_es()) return std::string(s);
   if (!detailed_number_es) return es::number(s);
 
-  auto is_operator = [](char c) { return !(std::isalnum(c) || c == '.'); };
+  auto is_operator = [](char c) {
+    return !(std::isalnum(static_cast<unsigned char>(c)) || c == '.');
+  };
 
   std::string output;
   auto begin = s.begin();

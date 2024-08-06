@@ -33,7 +33,9 @@ inline std::size_t get_length(std::string_view s) {
     length += end - begin;
 
     begin = end + es_begin_token.size();
-    end = std::find_if(begin, s.end(), [](char c) { return !(std::isdigit(c) || c == ';'); });
+    end = std::find_if(begin, s.end(), [](char c) {
+      return !(std::isdigit(static_cast<unsigned char>(c)) || c == ';');
+    });
 
     if (end == s.end()) break;
     begin = end + 1;
