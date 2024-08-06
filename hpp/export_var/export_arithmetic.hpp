@@ -68,10 +68,15 @@ inline std::string export_arithmetic(
 
   std::string char_str;
   if (is_printable) {
-    char_str = {'\'', value, '\'', ' '};
+    char quoted_char[] = {'\'', value, '\'', ' '};
+    char_str = es::character({quoted_char, sizeof(quoted_char)});
   } else {
-    char_str = "'" + escape_non_printable_char(value) + "'";
-    if (char_str.size() > 4 && command.char_as_hex()) char_str = std::string(4, ' ');
+    std::string escaped = escape_non_printable_char(value);
+    if (command.char_as_hex() && escaped.size() > 2) {
+      char_str = std::string(4, ' ');
+    } else {
+      char_str = es::character("'") + es::escaped_char(escaped) + es::character("'");
+    }
   }
 
   if (command.char_as_hex()) {
@@ -82,10 +87,10 @@ inline std::string export_arithmetic(
     char lower = to_hex_char(value & 0x0f);
 
     char number[] = {'0', 'x', upper, lower};
-    return es::character(char_str) + es::number({number, sizeof(number)});
+    return char_str + es::number({number, sizeof(number)});
   }
 
-  return es::character(char_str);
+  return char_str;
 }
 
 template <typename UnsignedT>
