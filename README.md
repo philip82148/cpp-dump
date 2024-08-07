@@ -1,21 +1,17 @@
-# cpp-dump
+# cpp-dump: A C++ library for printing any variable for debugging
 
-[日本語記事はこちら！](https://zenn.dev/sassan/articles/19db660e4da0a4)  
-[I Made a C++ Version of Python print() Function (DEV article)](https://dev.to/philip82148/i-made-a-c-version-of-consolelog-o88)
+[日本語記事はこちら！](https://zenn.dev/sassan/articles/19db660e4da0a4)
 
-## Overview
+Python has `print()`, JavaScript has `console.log()`, and PHP has `var_dump()` — functions that print variables of any type and are incredibly useful for debugging. But what about C++? Enter cpp-dump. cpp-dump is a library that automatically formats and prints variables of any type. With features like auto-indentation, colored output, string representations similar to JavaScript, Python, and C++, and over 20 manipulators, cpp-dump is equipped with everything you need to effortlessly and clearly print variables.
 
-cpp-dump is a C++ library for debugging purposes that can print any variable, including user types.
+Points:
 
-This library has the following features:
-
-- Prints string representations of a wide variety of types to the standard error output (or other configurable outputs). This includes multidimensional arrays, (multi)maps, and (multi)sets, and even complex numbers, error objects, etc.
-- Automatically indents so that the output fits into the maximum line width.
-- Customizable output color.
-- The file name, line, and function name can also be attached to the log output.
-- Header-only library, no build or dependencies required.
-- Can print even user-defined types by using macros or defining operators.
-- The string representation of variables is similar to JavaScript, Python, and C++ syntax.
+- cpp-dump has an auto-indentation feature. The output fits into the maximum line width, and nested containers are formatted for readability.
+- The string representation of variables is similar to JavaScript, Python, and C++ syntax. The output is readable without being overloaded with information. (You can add more details using manipulators if you want.)
+- Colored output is available, with extensive customization options. You can achieve syntax highlighting similar to that in IDEs.
+- With over 20 manipulators, you can easily change the format or add information to the output.
+- By using macros, cpp-dump supports user-defined types as well. There is no need to write new functions for printing.
+- cpp-dump is a header-only library. No build or dependencies are required!
 
 ## Introduction
 
