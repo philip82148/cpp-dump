@@ -24,7 +24,9 @@
 #define _p_CPP_DUMP_EXPAND_FOR_CPP_DUMP(expr) #expr
 
 /**
- * Print string representations of expression(s) and result(s) to std::clog.
+ * Print string representations of expressions and results to std::clog or other configurable
+ * outputs.
+ * If you want to change the output, define an explicit specialization of cpp_dump::write_log().
  * This macro uses cpp_dump::export_var() internally.
  */
 #define cpp_dump(...)                                                                              \

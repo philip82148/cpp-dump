@@ -305,15 +305,11 @@ The style of indents of the Container, Set and Map categories (See [Supported ty
 
 ```cpp
 /**
- * Output string representations of expression(s) and result(s) to std::clog.
- * This is an alias of CPP_DUMP(expressions...).
+ * Print string representations of expressions and results to std::clog or other configurable outputs.
+ * If you want to change the output, define an explicit specialization of cpp_dump::write_log().
+ * This macro uses cpp_dump::export_var() internally.
  */
 #define cpp_dump(expressions...)
-
-/**
- * Output string representations of expression(s) and result(s) to std::clog.
- */
-#define CPP_DUMP(expressions...)
 
 /**
  * Make export_var() support type T.
