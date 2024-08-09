@@ -27,7 +27,7 @@
  * Print string representations of expression(s) and result(s) to std::clog.
  * This macro uses cpp_dump::export_var() internally.
  */
-#define CPP_DUMP(...)                                                                              \
+#define cpp_dump(...)                                                                              \
   cpp_dump::_detail::cpp_dump_macro<_p_CPP_DUMP_VA_SIZE(__VA_ARGS__)>(                             \
       {__FILE__, __LINE__, __func__},                                                              \
       {_p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_CPP_DUMP, __VA_ARGS__)},                       \
@@ -35,11 +35,10 @@
   )
 
 /**
- * Print string representations of expression(s) and result(s) to std::clog.
- * This macro uses cpp_dump::export_var() internally.
- * This is an alias of CPP_DUMP(...).
+ * This is deprecated.
+ * Use cpp_dump() instead.
  */
-#define cpp_dump(...) CPP_DUMP(__VA_ARGS__)
+#define CPP_DUMP(...) cpp_dump(__VA_ARGS__)
 
 namespace cpp_dump {
 
