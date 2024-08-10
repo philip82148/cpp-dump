@@ -269,7 +269,7 @@ The style of the escape sequences (the output coloring).
 
 #### `es_value`
 
-Type: `cpp_dump::es_value_t` Default: (Default constructor, see [Types](#types))  
+Type: `cpp_dump::types::es_value_t` Default: (Default constructor, see [Types](#types))  
 The values of the escape sequences.
 
 #### `detailed_class_es`
@@ -289,7 +289,7 @@ If true, the 'number_op' color is used for operators in numbers (`-`, `+`, etc..
 
 #### `cont_indent_style`
 
-Type: `enum class cpp_dump::cont_indent_style_t` Default: `cpp_dump::cont_indent_style_t::when_nested`  
+Type: `enum class cpp_dump::types::cont_indent_style_t` Default: `cpp_dump::types::cont_indent_style_t::when_nested`  
 The style of indents of the Container, Set and Map categories (See [Supported types](#supported-types)).
 
 | Name                     | Description                                                                                                                               |
@@ -382,7 +382,7 @@ enum class cont_indent_style_t { minimal, when_nested, when_non_tuples_nested, a
 
 using log_label_func_t = std::function<std::string(std::string_view, std::size_t, std::string_view)>;
 
-}  // namespace cpp_dump
+}  // namespace cpp_dump::types
 ```
 
 ### Variables
@@ -619,8 +619,8 @@ cpp_dump(my_class_A);
 
 ### Customize `[dump]`
 
-Assigning a function to `cpp_dump::log_label_func`, you can customize `[dump]`.  
-cpp-dump has some functions that create a function to assign to `cpp_dump::log_label_func`, so you don't have to make your own function.
+Assigning a function to `cpp_dump::options::log_label_func`, you can customize `[dump]`.  
+cpp-dump has some functions that create a function to assign to `cpp_dump::options::log_label_func`, so you don't have to make your own function.
 
 ```cpp
 namespace cpp_dump::types {
@@ -632,12 +632,12 @@ using log_label_func_t =
 
 namespace cpp_dump::log_label {
 
-// Default function assigned to cpp_dump::log_label_func.
+// Default function assigned to cpp_dump::options::log_label_func.
 std::string default_func(std::string_view, std::size_t, std::string_view) {
   return "[dump] ";
 }
 
-// Functions that create a function that can be assigned to cpp_dump::log_label_func.
+// Functions that create a function that can be assigned to cpp_dump::options::log_label_func.
 types::log_label_func_t line(bool show_func = false, int min_width = 0);
 types::log_label_func_t basename(bool show_func = false, int min_width = 0);
 types::log_label_func_t filename(bool show_func = false, int min_width = 0);
@@ -721,11 +721,7 @@ The further left manipulator will act on the more outside dimensions of the arra
 #### `index()` manipulator
 
 ```cpp
-namespace cpp_dump {
-
-index();
-
-}  // namespace cpp_dump
+cpp_dump::index();
 
 // Example
 cpp_dump(... << cp::index() << ... << variable);
@@ -1005,7 +1001,7 @@ cpp_dump() prints variables recursively, so they can dump nested variables of an
 | Enum          | `CPP_DUMP_DEFINE_EXPORT_ENUM(T, members...);` is at top level.                                                                                                                                                                                                                                        |                                                   |
 | Ostream       | All of the above are not satisfied, `std::is_function_v<T> == false && std::is_member_pointer_v<T> == false`, and the function `std::ostream& operator<<(std::ostream&, const T &)` is defined. **The string representation of T must not be an empty string** (This makes manipulators unsupported). |                                                   |
 | User-defined2 | All of the above are not satisfied, T has all members specified by just one `CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(members...);` at top level, and the member functions to be displayed is const.                                                                                                   |                                                   |
-| Asterisk      | All of the above are not satisfied, `cpp_dump::enable_asterisk == true` and the function `TypeExceptT operator*(const T &)` or the const member function `TypeExceptT T::operator*() const` is defined.                                                                                               | Iterators                                         |
+| Asterisk      | All of the above are not satisfied, `cpp_dump::options::enable_asterisk == true` and the function `TypeExceptT operator*(const T &)` or the const member function `TypeExceptT T::operator*() const` is defined.                                                                                      | Iterators                                         |
 
 ### Display example
 
