@@ -29,7 +29,8 @@ int main() {
           },
           "\x1b[38;2;139;191;139m",  // class_op: white closer to green
           "\x1b[38;2;217;242;255m",  // member_op: white closer to light blue
-          ""                         // number_op: default
+          "",                        // number_op: default
+          "\x1b[38;2;203;186;113m"   // escaped_char:
       })
   );
   CPP_DUMP_SET_OPTION(detailed_class_es, true);

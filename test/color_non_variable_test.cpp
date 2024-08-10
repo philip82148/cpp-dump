@@ -79,12 +79,14 @@ int main(int argc, char *argv[]) {
           },
           "\x1b[38;2;139;191;139m",  // class_op: white closer to green
           "\x1b[38;2;217;242;255m",  // member_op: white closer to light blue
-          ""                         // number_op: default
+          "",                        // number_op: default
+          "\x1b[38;2;203;186;113m"   // escaped_char:
       })
   );
 
   // basic
   cpp_dump(false, 0, 0.0, '0', (const char *)"0", string{"0"}, string_view{"0"});
+  for (auto c : "\x01\x30\x7f\n\\\'\ta ") cpp_dump(c);
   cpp_dump(true, 3.14, 159265, "This is a test string");
   cpp_dump(-0, -3.14, -159265);
   cpp_dump("This contains newline\nhere.", R"(This contains ".)", R"(This contains `.)");
@@ -252,4 +254,9 @@ int main(int argc, char *argv[]) {
   vector<char> vec5(sv1.begin(), sv1.end());
   cpp_dump(vec5);
   cpp_dump(vec5 | cp::charhex());
+  for (auto c : "\x01\x30\x7f\n\\\'\ta ") cpp_dump(c | cp::charhex());
+
+  std::string all_str;
+  rep(i, 256) all_str.push_back(static_cast<char>(i));
+  cpp_dump(all_str | cp::stresc());
 }

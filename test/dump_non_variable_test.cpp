@@ -222,6 +222,9 @@ int main(int argc, char *argv[]) {
   cpp_dump("This contains newline\nhere.", R"(This contains ".)", R"(This contains `.)");
   cpp_dump("\n\n\n\n");
 
+  // char
+  rep(i, 256) cpp_dump(i, static_cast<char>(i));
+
   // volatile
   volatile int volatile_int = 3589;
   volatile double volatile_double = 79.323;
@@ -725,7 +728,14 @@ int main(int argc, char *argv[]) {
   vector<char> vec6(sv1.begin(), sv1.end());
   cpp_dump(vec6);
   cpp_dump(vec6 | cp::charhex());
-  cpp_dump(vec6 | cp::bin() | cp::charhex());
+  cpp_dump(vec6 | cp::bin() | cp::charhex() | cp::bin());
+  rep(i, 256) cpp_dump(i | cp::udec(3), static_cast<char>(i) | cp::charhex());
+
+  // stresc
+  std::string all_str;
+  rep(i, 256) all_str.push_back(static_cast<char>(i));
+  cpp_dump(all_str | cp::stresc());
+  cpp_dump(all_str | cp::charhex() | cp::stresc() | cp::charhex());
 
   // lvalue export_command
   auto index = cp::index();

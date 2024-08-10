@@ -19,8 +19,16 @@ namespace cpp_dump {
 
 namespace _detail {
 
-inline std::string
-export_string(std::string_view value, const std::string &, std::size_t, std::size_t, bool fail_on_newline, const export_command &) {
+inline std::string export_string(
+    std::string_view value,
+    const std::string &,
+    std::size_t,
+    std::size_t,
+    bool fail_on_newline,
+    const export_command &command
+) {
+  if (command.escape_str()) return es::escaped_str(escape_string(value));
+
   // str = replace_string(str, R"(\)", R"(\\)");
   // str = replace_string(str, R"(`)", R"(\`)");
 

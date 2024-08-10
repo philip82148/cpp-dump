@@ -32,10 +32,10 @@ int main() {
 
   std::clog << "\n// manipulator-int-style.png\n" << std::endl;
 
-  cpp_dump(0x3e8 | cp::bin(16, 4));
-  cpp_dump(0x3e8 | cp::oct(6, 3));
-  cpp_dump(0x3e8 | cp::hex(4, 2));
-  cpp_dump(0x3e8 | cp::dec(4));
+  cpp_dump(0x3e8u | cp::bin(16, 4));
+  cpp_dump(0x3e8u | cp::oct(6, 3));
+  cpp_dump(0x3e8u | cp::hex(4, 2));
+  cpp_dump(0x3e8u | cp::dec(4));
 
   std::clog << "\n// manipulator-bin-etc.png\n" << std::endl;
 
@@ -52,4 +52,40 @@ int main() {
   cpp_dump(unsigned_int_vector | cp::front(2) | cp::uhex(2));
   cpp_dump(signed_int_vector | cp::front(2) | cp::udec(2));
   cpp_dump(unsigned_int_vector | cp::front(2) | cp::udec(2));
+
+  std::clog << "\n// manipulator-format.png\n" << std::endl;
+
+  constexpr double pi = 3.14159265358979323846;
+  cpp_dump(pi | cp::format("%.10f"));
+
+  std::clog << "\n// manipulator-bw-boolnum.png\n" << std::endl;
+
+  std::vector<std::vector<bool>> bool_vector{
+      {true, false, true, true, false},
+      {false, false, false, true, true},
+  };
+
+  cpp_dump(bool_vector | cp::bw());
+  cpp_dump(bool_vector | cp::bw(true));
+  cpp_dump(bool_vector | cp::boolnum());
+
+  std::clog << "\n// manipulator-stresc.png\n" << std::endl;
+
+  cpp_dump("\a\t\\\"\n\x7f need to be escaped.");
+  cpp_dump("\a\t\\\"\n\x7f need to be escaped." | cp::stresc());
+
+  std::clog << "\n// manipulator-charhex.png\n" << std::endl;
+
+  for (auto c : "\a\t\\\"\n\x7f ABC") cpp_dump(c | cp::charhex());
+
+  std::clog << "\n// manipulator-addr.png\n" << std::endl;
+
+  int my_int = 15;
+  int *int_ptr = &my_int;
+  int **int_ptr_ptr = &int_ptr;
+  cpp_dump(int_ptr_ptr);
+  cpp_dump(int_ptr_ptr | cp::addr());
+  cpp_dump(int_ptr_ptr | cp::addr(1));
+
+  std::clog << std::endl;
 }

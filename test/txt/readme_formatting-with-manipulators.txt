@@ -48,10 +48,10 @@
 
 // manipulator-int-style.png
 
-[0m[02m[dump] [0m[36m0x3e8 | cp::bin(16, 4)[0m[02m => [0m 0b 0000 0011 1110 1000[0m
-[0m[02m[dump] [0m[36m0x3e8 | cp::oct(6, 3)[0m[02m => [0m 0o 001 750[0m
-[0m[02m[dump] [0m[36m0x3e8 | cp::hex(4, 2)[0m[02m => [0m 0x 03 E8[0m
-[0m[02m[dump] [0m[36m0x3e8 | cp::dec(4)[0m[02m => [0m 1000[0m
+[0m[02m[dump] [0m[36m0x3e8u | cp::bin(16, 4)[0m[02m => [0m0b 0000 0011 1110 1000[0m
+[0m[02m[dump] [0m[36m0x3e8u | cp::oct(6, 3)[0m[02m => [0m0o 001 750[0m
+[0m[02m[dump] [0m[36m0x3e8u | cp::hex(4, 2)[0m[02m => [0m0x 03 E8[0m
+[0m[02m[dump] [0m[36m0x3e8u | cp::dec(4)[0m[02m => [0m1000[0m
 
 // manipulator-bin-etc.png
 
@@ -98,3 +98,50 @@
          [02m[ [0m30[0m[02m, [0m15[0m[02m, [0m 0[0m[02m, [0m15[0m[02m, [0m30[0m[02m, [0m[02m...[0m[02m ][0m[02m,[0m
          [02m...[0m
        [02m][0m
+
+// manipulator-format.png
+
+[0m[02m[dump] [0m[36mpi | cp::format("%.10f")[0m[02m => [0m3.1415926536[0m
+
+// manipulator-bw-boolnum.png
+
+[0m[02m[dump] [0m[36mbool_vector | cp::bw()[0m[02m => [0m[02m[[0m
+         [02m[ [0m true[0m[02m, [0mfalse[0m[02m, [0m true[0m[02m, [0m true[0m[02m, [0mfalse[0m[02m ][0m[02m,[0m
+         [02m[ [0mfalse[0m[02m, [0mfalse[0m[02m, [0mfalse[0m[02m, [0m true[0m[02m, [0m true[0m[02m ][0m
+       [02m][0m
+[0m[02m[dump] [0m[36mbool_vector | cp::bw(true)[0m[02m => [0m[02m[[0m
+         [02m[ [0mtrue [0m[02m, [0mfalse[0m[02m, [0mtrue [0m[02m, [0mtrue [0m[02m, [0mfalse[0m[02m ][0m[02m,[0m
+         [02m[ [0mfalse[0m[02m, [0mfalse[0m[02m, [0mfalse[0m[02m, [0mtrue [0m[02m, [0mtrue [0m[02m ][0m
+       [02m][0m
+[0m[02m[dump] [0m[36mbool_vector | cp::boolnum()[0m[02m => [0m[02m[[0m
+         [02m[ [0m1[0m[02m, [0m0[0m[02m, [0m1[0m[02m, [0m1[0m[02m, [0m0[0m[02m ][0m[02m,[0m
+         [02m[ [0m0[0m[02m, [0m0[0m[02m, [0m0[0m[02m, [0m1[0m[02m, [0m1[0m[02m ][0m
+       [02m][0m
+
+// manipulator-stresc.png
+
+[0m[02m[dump] [0m[36m"\a\t\\\"\n\x7f need to be escaped."[0m[02m => [0m
+`	\"
+ need to be escaped.[0m`[0m
+[0m[02m[dump] [0m[36m"\a\t\\\"\n\x7f need to be escaped." | cp::stresc()[0m[02m => [0m"[0m[02m\a\t\\\"\n\x7F[0m need to be escaped."[0m
+
+// manipulator-charhex.png
+
+[0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m'[0m[02m\a[0m'[0m0x07[0m
+[0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m'[0m[02m\t[0m'[0m0x09[0m
+[0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m'[0m[02m\\[0m'[0m0x5C[0m
+[0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m'"'[0m 0x22[0m
+[0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m'[0m[02m\n[0m'[0m0x0A[0m
+[0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m    0x7F[0m
+[0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m' '[0m 0x20[0m
+[0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m'A'[0m 0x41[0m
+[0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m'B'[0m 0x42[0m
+[0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m'C'[0m 0x43[0m
+[0m[02m[dump] [0m[36mc | cp::charhex()[0m[02m => [0m'[0m[02m\0[0m'[0m0x00[0m
+
+// manipulator-addr.png
+
+[0m[02m[dump] [0m[36mint_ptr_ptr[0m[02m => [0m[32m*[0m[32m*[0m15[0m
+[0m[02m[dump] [0m[36mint_ptr_ptr | cp::addr()[0m[02m => [0m[32m0x7fffffffffff[0m
+[0m[02m[dump] [0m[36mint_ptr_ptr | cp::addr(1)[0m[02m => [0m[32m*[0m[32m0x7fffffffffff[0m
+

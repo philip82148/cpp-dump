@@ -34,9 +34,10 @@ int main() {
               "\x1b[35m",  // bracket_by_depth[1]: magenta
               "\x1b[36m",  // bracket_by_depth[2]: cyan
           },
-          "\x1b[02m",  // class_op: dark
-          "\x1b[02m",  // member_op: dark
-          ""           // number_op: default
+          "\x1b[02m",       // class_op: dark
+          "\x1b[02m",       // member_op: dark
+          "",               // number_op: default
+          "\x1b[38;5;220m"  // escaped_char: light orange
       })
   );
 
@@ -70,8 +71,8 @@ int main() {
   std::vector<std::pair<int, std::string>> vector_of_pairs{{1, "apple"}, {3, "banana"}};
 
   std::clog << "\n// Basic Type" << std::endl;
-  cpp_dump(false, 0, 0.0, 'a'), cpp_dump(true, 3.14, my_int, -9265);
-  cpp_dump("This is a string."), cpp_dump(ptr, void_ptr, nullptr);
+  cpp_dump(false, 0, 0.0), cpp_dump(true, 3.14, my_int, -9265);
+  cpp_dump("This is a string.", 'a', '\n'), cpp_dump(ptr, void_ptr, nullptr);
 
   std::clog << "\n// Container" << std::endl;
   cpp_dump(my_vector);

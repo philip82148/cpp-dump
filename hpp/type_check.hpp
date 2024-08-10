@@ -18,6 +18,7 @@
 #include <queue>
 #include <set>
 #include <stack>
+#include <string>
 #include <string_view>
 #include <tuple>
 #include <type_traits>
@@ -276,24 +277,41 @@ inline constexpr bool is_exportable = _is_exportable_partial<T> || is_ostream<T>
 template <typename T>
 inline constexpr bool is_iterable_like = is_container<T> || is_map<T> || is_set<T> || is_tuple<T>;
 
-inline std::string _get_typename_aux(std::string_view func_name) {
+// The return type must be a built-in type, otherwise we don't know how it will be stringified.
+template <typename T>
+const char* _get_typename() {
+#if defined(__GNUC__) && !defined(__clang__)
+  return __PRETTY_FUNCTION__;
+#elif defined(__clang__)
+  return __PRETTY_FUNCTION__;
+#elif defined(_MSC_VER)
+  return __FUNCSIG__;
+#else
+  return "";
+#endif
+}
+
+// Currently, used only by export_exception() and CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT()
+template <typename T>
+std::string get_typename() {
 #if defined(__GNUC__) && !defined(__clang__)
   constexpr std::size_t prefix_length =
-      std::string_view("const char* cpp_dump::_detail::get_typename() [with T = ").size();
+      std::string_view("const char* cpp_dump::_detail::_get_typename() [with T = ").size();
   constexpr std::size_t suffix_length = std::string_view("]").size();
 #elif defined(__clang__)
   constexpr std::size_t prefix_length =
-      std::string_view("const char *cpp_dump::_detail::get_typename() [T = ").size();
+      std::string_view("const char *cpp_dump::_detail::_get_typename() [T = ").size();
   constexpr std::size_t suffix_length = std::string_view("]").size();
 #elif defined(_MSC_VER)
   constexpr std::size_t prefix_length =
-      std::string_view("const char *__cdecl cpp_dump::_detail::get_typename<").size();
+      std::string_view("const char *__cdecl cpp_dump::_detail::_get_typename<").size();
   constexpr std::size_t suffix_length = std::string_view(">(void)").size();
 #else
   constexpr std::size_t prefix_length = 0;
   constexpr std::size_t suffix_length = 0;
 #endif
 
+  std::string_view func_name = _get_typename<T>();
   std::string type_name(func_name, prefix_length, func_name.size() - prefix_length - suffix_length);
 
 #if defined(_MSC_VER)
@@ -302,25 +320,6 @@ inline std::string _get_typename_aux(std::string_view func_name) {
 #endif
 
   return type_name;
-}
-
-// The return type must be a built-in type, otherwise we don't know how it will be stringified.
-// Currently, used only by export_exception() and CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT()
-template <typename T>
-const char* get_typename() {
-  static std::string type_name = _get_typename_aux(
-#if defined(__GNUC__) && !defined(__clang__)
-      __PRETTY_FUNCTION__
-#elif defined(__clang__)
-      __PRETTY_FUNCTION__
-#elif defined(_MSC_VER)
-      __FUNCSIG__
-#else
-      ""
-#endif
-  );
-
-  return type_name.c_str();
 }
 
 }  // namespace _detail

@@ -27,14 +27,14 @@ execute_process(
    COMMAND "${cmd_path}" ERROR_VARIABLE error_contents COMMAND_ERROR_IS_FATAL ANY
 )
 
-set(raw_address_file supports-various-types;customizable-colors;no-es)
+set(raw_address_file supports-various-types;customizable-colors;no-es;formatting-with-manipulators)
 
 if("${basename}" IN_LIST raw_address_file)
    # Do not remove escape sequences but remove raw addresses.
    if("${basename}" STREQUAL no-es)
-      string(REGEX REPLACE " (0x[0-9a-f]+|00[0-9A-F]+)," " ," error_contents "${error_contents}")
+      string(REGEX REPLACE " (0x[0-9a-f]+|00[0-9A-F]+)," " 0x7fffffffffff," error_contents "${error_contents}")
    else()
-      string(REGEX REPLACE "m(0x[0-9a-f]+|00[0-9A-F]+)${esc}\\[0m" "m${esc}[0m" error_contents "${error_contents}")
+      string(REGEX REPLACE "${esc}\\[32m(0x[0-9a-f]+|00[0-9A-F]+)${esc}\\[0m" "${esc}[32m0x7fffffffffff${esc}[0m" error_contents "${error_contents}")
    endif()
 elseif("${basename}" STREQUAL "user-defined-class2")
    string(REGEX REPLACE "main.*::.*class_A" "class_A" error_contents "${error_contents}")

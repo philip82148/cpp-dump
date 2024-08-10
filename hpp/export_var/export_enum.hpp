@@ -34,10 +34,10 @@
   template <>                                                                                                        \
   inline std::string                                                                                                 \
   export_enum(const TYPE &enum_const, const std::string &, std::size_t, std::size_t, bool, const export_command &) { \
-    static std::unordered_map<TYPE, std::string_view> enum_to_string{                                                \
+    static const std::unordered_map<TYPE, std::string_view> enum_to_string{                                          \
         _p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_EXPORT_ENUM, __VA_ARGS__)};                                     \
     return enum_to_string.count(enum_const)                                                                          \
-               ? es::enumerator(enum_to_string[enum_const])                                                          \
+               ? es::enumerator(enum_to_string.at(enum_const))                                                       \
                : es::class_name(#TYPE) + es::op("::") + es::unsupported("?");                                        \
   }                                                                                                                  \
                                                                                                                      \
