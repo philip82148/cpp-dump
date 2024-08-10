@@ -497,7 +497,7 @@ cpp_dump::addr(std::size_t depth = 0);
 // See 'Customize "[dump]"'.
 namespace cpp_dump::log_label {
 
-std::string std::string default_func(std::string_view, std::size_t, std::string_view);
+std::string default_func(std::string_view, std::size_t, std::string_view);
 log_label_func_t line(bool show_func = false, int min_width = 0);
 log_label_func_t basename(bool show_func = false, int min_width = 0);
 log_label_func_t filename(bool show_func = false, int min_width = 0);
