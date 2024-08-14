@@ -95,7 +95,7 @@ struct tuple_of_non_copyable_and_non_movable_class {
 
 template <>
 struct std::tuple_size<tuple_of_non_copyable_and_non_movable_class>
-    : integral_constant<std::size_t, 2> {};
+    : std::integral_constant<std::size_t, 2> {};
 
 template <size_t i>
 struct std::tuple_element<i, tuple_of_non_copyable_and_non_movable_class> {
