@@ -54,3 +54,6 @@ int main() {
       check_iota(EXPAND_VA(TO_16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31))
   );
 }
+
+template <>
+void cpp_dump::write_log(std::string_view) {}
