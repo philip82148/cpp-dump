@@ -93,18 +93,14 @@ struct tuple_of_non_copyable_and_non_movable_class {
   }
 } tuple_of_non_copyable_and_non_movable_class1;
 
-namespace std {
-
 template <>
-struct tuple_size<tuple_of_non_copyable_and_non_movable_class> : integral_constant<std::size_t, 2> {
-};
+struct std::tuple_size<tuple_of_non_copyable_and_non_movable_class>
+    : integral_constant<std::size_t, 2> {};
 
 template <size_t i>
-struct tuple_element<i, tuple_of_non_copyable_and_non_movable_class> {
+struct std::tuple_element<i, tuple_of_non_copyable_and_non_movable_class> {
   using type = non_copyable_and_non_movable_class;
 };
-
-}  // namespace std
 
 struct ostream_able_class_a {
 } ostream_able_class_a_1;
