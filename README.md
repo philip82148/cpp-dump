@@ -890,15 +890,14 @@ cpp_dump(int_ptr_ptr | cp::addr(1));
 
 ### Change the output destination from the standard error output
 
-```cpp
-namespace cpp_dump {
+To change the output destination, define an explicit specialization of `cpp_dump::write_log()` with `void`.
 
+```cpp
+// When you write this in a source file, remove the inline keyword.
 template <>
-void write_log(std::string_view output) {
+inline void cpp_dump::write_log(std::string_view output) {
   elsewhere << output << std::endl;
 }
-
-}  // namespace cpp_dump
 ```
 
 ### For competitive programming use
