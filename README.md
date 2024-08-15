@@ -721,9 +721,6 @@ It does not affect maps/sets.
 [See Full Example Code](./readme/formatting-with-manipulators.cpp)
 
 ```cpp
-CPP_DUMP_SET_OPTION(max_iteration_count, 5);
-
-// Show the indexes of the vector.
 cpp_dump(some_huge_vector | cp::dec(2) | cp::index());
 ```
 
@@ -764,7 +761,8 @@ cpp_dump::udec(int digits = -1, int chunk = 0, bool space_fill = true) {
 
 The parameter `base` of `int_style()` supports values of 2, 8, 10, 16. For other values, this manipulator does nothing.  
 `digits` supports values of `digits` >= 0 and `digits` <= 'the maximum digits', where 'the maximum digits' is the maximum number of digits that can be represented by the type for the given `base`. For other values, it is treated as `digits` = 'the maximum digits'.  
-`chunk` supports values of `chunk` >= 0. For other values, it is treated as `chunk` = 0.  
+`chunk` supports values of `chunk` >= 0. For other values, it is treated as `chunk` = 0.
+
 Like the `index()` manipulators, the `int_style()` manipulator acts on all integers in the variable. (The order is irrelevant.)  
 The `bin(...)`, `oct(...)`, `hex(...)`, `ubin(...)`, `uoct(...)`, `uhex(...)`, `dec(...)`, `udec(...)`, are aliases of `int_style(...)`
 
@@ -895,16 +893,17 @@ cpp_dump(int_ptr_ptr | cp::addr(1));
 cpp_dump::map_k(return_value_of_manipulator);
 cpp_dump::map_v(return_value_of_manipulator);
 cpp_dump::map_kv(return_value_of_manipulator_for_key, return_value_of_manipulator_for_value);
-
-// Example
-cpp_dump(cp::front() << cp::map_kv(cp::hex(), cp::back()) << map);
-cpp_dump(map | cp::front() | cp::map_kv(cp::hex(), cp::back()));
 ```
 
 These manipulators are **order-sensitive**.
 
 These manipulators act on (multi)maps.  
-In this example, the keys are displayed in hexadecimal, and if the values are iterable, the front part of the values is omitted.
+In the following example, the keys are displayed in hexadecimal, and if the values are iterable, the front part of the values is omitted.
+
+```cpp
+cpp_dump(cp::front() << cp::map_kv(cp::hex(), cp::back()) << map);
+cpp_dump(map | cp::front() | cp::map_kv(cp::hex(), cp::back()));
+```
 
 ### Change the output destination from the standard error output
 
