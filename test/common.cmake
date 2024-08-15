@@ -2,8 +2,10 @@ string(ASCII 27 esc0x1b)
 
 function(diff_and_message log_file txt_file error_message)
     if(WIN32)
+        string(REPLACE "/" "\\" log_file "${log_file}")
+        string(REPLACE "/" "\\" txt_file "${txt_file}")
         execute_process(
-            COMMAND "${CMAKE_COMMAND}" -E compare_files "${log_file}" "${txt_file}" RESULT_VARIABLE not_successful
+            COMMAND fc.exe "${log_file}" "${txt_file}" RESULT_VARIABLE not_successful OUTPUT_VARIABLE output
         )
     else()
         execute_process(COMMAND diff -u "${log_file}" "${txt_file}" RESULT_VARIABLE not_successful OUTPUT_VARIABLE output)
