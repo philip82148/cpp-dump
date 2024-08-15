@@ -639,7 +639,7 @@ inline cpp_dump::log_label::log_label_func_t cpp_dump::log_label_func = cpp_dump
 ### Formatting with manipulators
 
 Using manipulators, you can easily change the format or add information to the output.  
-For example, you can select which elements and how many elements of an array, map, or set will be displayed using manipulators such as [front, middle, back, and both_ends](#front-middle-back-both_ends-manipulators).  
+For example, you can select which elements and how many elements of an array, map, or set will be displayed using [the front, middle, back, and both_ends manipulators](#front-middle-back-both_ends-manipulators).  
 [See Full Example Code](./readme/formatting-with-manipulators.cpp)
 
 ```cpp
