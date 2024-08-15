@@ -2,7 +2,7 @@
 
 #include "../dump.hpp"
 
-CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(i, str());
+CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC(i, str());
 
 int main() {
   std::clog << std::endl;

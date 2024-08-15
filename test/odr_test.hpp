@@ -16,7 +16,7 @@ struct class_b {
 
 CPP_DUMP_DEFINE_EXPORT_ENUM(enum_a, enum_a::s, enum_a::k);
 CPP_DUMP_DEFINE_EXPORT_OBJECT(class_a, int_a, a_str());
-CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(int_b, b_str());
+CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC(int_b, b_str());
 CPP_DUMP_SET_OPTION_IN_GLOBAL(max_line_width, 100);
 CPP_DUMP_SET_OPTION_IN_GLOBAL(max_depth, 5);
 CPP_DUMP_SET_OPTION_IN_GLOBAL(max_iteration_count, 20);

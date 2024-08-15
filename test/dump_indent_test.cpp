@@ -39,8 +39,8 @@ struct self_reference_class {
 };
 
 CPP_DUMP_DEFINE_EXPORT_OBJECT(class_a, int_a, str);
-CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(int_b, str);
-CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(str_member, pointer, ref);
+CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC(int_b, str);
+CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC(str_member, pointer, ref);
 
 #define PRINT(x) (x), (clog << #x ";" << endl)
 
