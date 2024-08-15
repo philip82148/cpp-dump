@@ -195,7 +195,7 @@ ostream &operator<<(ostream &os, unsupported_non_const_class &) {
   return os;
 }
 
-CPP_DUMP_SET_OPTION_IN_GLOBAL(max_iteration_count, 100);
+CPP_DUMP_SET_OPTION_GLOBAL(max_iteration_count, 100);
 
 int main(int argc, char *argv[]) {
   if (argc != 2) return 1;
@@ -207,7 +207,7 @@ int main(int argc, char *argv[]) {
 
   CPP_DUMP_SET_OPTION(es_style, es_style_);
 
-  // Verify if CPP_DUMP_SET_OPTION_IN_GLOBAL is working correctly.
+  // Verify if CPP_DUMP_SET_OPTION_GLOBAL is working correctly.
   cpp_dump(cpp_dump::max_iteration_count == 100);
 
   // basic

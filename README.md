@@ -190,7 +190,7 @@ If you want to customize the library, you can write the configuration code as fo
 #ifdef DEBUGGING
 #include "path/to/cpp-dump/dump.hpp"
 namespace cp = cpp_dump;
-CPP_DUMP_SET_OPTION_IN_GLOBAL(max_line_width, 100);
+CPP_DUMP_SET_OPTION_GLOBAL(max_line_width, 100);
 #else
 #define cpp_dump(...)
 #endif
@@ -339,7 +339,7 @@ The style of indents of the Container, Set and Map categories (See [Supported ty
  * Set a value to a variable in cpp_dump namespace.
  * Use this if you want to run it in the global namespace, meaning before the main starts.
  */
-#define CPP_DUMP_SET_OPTION_IN_GLOBAL(variable, value)
+#define CPP_DUMP_SET_OPTION_GLOBAL(variable, value)
 ```
 
 ### Types
