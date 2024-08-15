@@ -49,3 +49,10 @@
   } /* namespace _detail */                                                                                        \
                                                                                                                    \
   }  // namespace cpp_dump
+
+/**
+ * This is deprecated.
+ * Use CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC() instead.
+ */
+#define CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(...)                                               \
+  CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC(__VA_ARGS__)
