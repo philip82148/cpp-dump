@@ -2,13 +2,13 @@
 
 [日本語記事はこちら！](https://zenn.dev/sassan/articles/19db660e4da0a4)
 
-Python has `print()`, JavaScript has `console.log()`, and PHP has `var_dump()` — functions that print variables of any type and are incredibly useful for debugging. But what about C++? Enter cpp-dump. cpp-dump is a library that automatically formats and prints variables of any type. With features like auto-indentation, colored output, string representations similar to JavaScript, Python, and C++, and over 20 manipulators, cpp-dump is equipped with everything you need to effortlessly and clearly print variables.
+Python has `print()`, JavaScript has `console.log()`, and PHP has `var_dump()` — functions that print variables of any type and are useful for debugging when you don't have time. But what about C++? Enter `cpp_dump()`. cpp-dump is a library that automatically formats and prints variables of any type. With features like auto-indentation, colored output, string representations similar to JavaScript, Python, and C++, and over 20 manipulators, cpp-dump is equipped with everything you need to effortlessly and clearly print variables.
 
 Key points:
 
 - cpp-dump has an auto-indentation feature. The output fits into the maximum line width, and nested containers are formatted for readability.
 - The string representation of variables is similar to JavaScript, Python, and C++ syntax. The output is readable without being overloaded with information. (You can add more details using manipulators if you want.)
-- Colored output is available, with extensive customization options. You can achieve syntax highlighting similar to that in IDEs.
+- Customizable colored output is available. You can achieve syntax highlighting similar to that of IDEs.
 - With over 20 manipulators, you can easily change the format or add information to the output.
 - By using macros, cpp-dump supports user-defined types as well. There is no need to write new functions for printing.
 - cpp-dump is a header-only library. No build or dependencies are required!
