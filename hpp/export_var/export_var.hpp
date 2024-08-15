@@ -11,7 +11,6 @@
 
 #include "../export_command/export_command.hpp"
 #include "../type_check.hpp"
-#include "./dangerous_export_object.hpp"
 #include "./export_arithmetic.hpp"
 #include "./export_asterisk.hpp"
 #include "./export_container.hpp"
@@ -19,6 +18,7 @@
 #include "./export_exception.hpp"
 #include "./export_map.hpp"
 #include "./export_object.hpp"
+#include "./export_object_generic.hpp"
 #include "./export_ostream.hpp"
 #include "./export_other/export_other.hpp"
 #include "./export_pointer.hpp"
