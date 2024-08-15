@@ -93,18 +93,14 @@ struct tuple_of_non_copyable_and_non_movable_class {
   }
 } tuple_of_non_copyable_and_non_movable_class1;
 
-namespace std {
-
 template <>
-struct tuple_size<tuple_of_non_copyable_and_non_movable_class> : integral_constant<std::size_t, 2> {
-};
+struct std::tuple_size<tuple_of_non_copyable_and_non_movable_class>
+    : std::integral_constant<std::size_t, 2> {};
 
 template <size_t i>
-struct tuple_element<i, tuple_of_non_copyable_and_non_movable_class> {
+struct std::tuple_element<i, tuple_of_non_copyable_and_non_movable_class> {
   using type = non_copyable_and_non_movable_class;
 };
-
-}  // namespace std
 
 struct ostream_able_class_a {
 } ostream_able_class_a_1;
@@ -199,7 +195,7 @@ ostream &operator<<(ostream &os, unsupported_non_const_class &) {
   return os;
 }
 
-CPP_DUMP_SET_OPTION_IN_GLOBAL(max_iteration_count, 100);
+CPP_DUMP_SET_OPTION_GLOBAL(max_iteration_count, 100);
 
 int main(int argc, char *argv[]) {
   if (argc != 2) return 1;
@@ -211,7 +207,7 @@ int main(int argc, char *argv[]) {
 
   CPP_DUMP_SET_OPTION(es_style, es_style_);
 
-  // Verify if CPP_DUMP_SET_OPTION_IN_GLOBAL is working correctly.
+  // Verify if CPP_DUMP_SET_OPTION_GLOBAL is working correctly.
   cpp_dump(cpp_dump::options::max_iteration_count == 100);
 
   // basic

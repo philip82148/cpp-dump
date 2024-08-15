@@ -10,9 +10,9 @@ if(NOT cmd_args)
    message(FATAL_ERROR "Variable cmd_args not defined")
 endif()
 
-file(MAKE_DIRECTORY "${test_dir}/log")
+include("${test_dir}/common.cmake")
 
-string(ASCII 27 esc)
+file(MAKE_DIRECTORY "${test_dir}/log")
 
 list(GET cmd_args 0 suffix)
 list(GET cmd_args 1 es_style)
@@ -22,12 +22,4 @@ set(txt_file "${test_dir}/txt/color_non_variable_${suffix}.txt")
 execute_process(
    COMMAND "${cmd_path}" "${es_style}" ERROR_FILE "${log_file}" COMMAND_ERROR_IS_FATAL ANY
 )
-execute_process(
-   COMMAND "${CMAKE_COMMAND}" -E compare_files "${log_file}" "${txt_file}" RESULT_VARIABLE not_successful
-)
-
-if(not_successful)
-   message(SEND_ERROR "${log_file} with color does not match ${txt_file} !")
-   file(READ "${log_file}" contents)
-   message(STATUS "${contents}")
-endif()
+diff_and_message("${log_file}" "${txt_file}" "${log_file} does not match ${txt_file} !")

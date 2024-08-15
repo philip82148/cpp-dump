@@ -249,19 +249,19 @@ inline constexpr bool is_ostream = decltype(_is_ostream<_remove_cvref<T>>(0))::v
 struct export_command;
 
 template <typename T>
-auto _is_dangerously_exportable_object(int) -> std::enable_if_t<
+auto _is_exportable_object_generic(int) -> std::enable_if_t<
     !_is_exportable_partial<T> && !is_ostream<T>,
-    decltype(dangerous_export_object(std::declval<T>(), "", 0, 0, false, std::declval<export_command>()), std::true_type())>;
+    decltype(export_object_generic(std::declval<T>(), "", 0, 0, false, std::declval<export_command>()), std::true_type())>;
 template <typename>
-std::false_type _is_dangerously_exportable_object(long);
+std::false_type _is_exportable_object_generic(long);
 
 template <typename T>
-inline constexpr bool is_dangerously_exportable_object =
-    decltype(_is_dangerously_exportable_object<_remove_cvref<T>>(0))::value;
+inline constexpr bool is_exportable_object_generic =
+    decltype(_is_exportable_object_generic<_remove_cvref<T>>(0))::value;
 
 template <typename T>
 auto _is_asterisk(int) -> std::enable_if_t<
-    !_is_exportable_partial<T> && !is_ostream<T> && !is_dangerously_exportable_object<T>
+    !_is_exportable_partial<T> && !is_ostream<T> && !is_exportable_object_generic<T>
         && !std::is_same_v<_remove_cvref<decltype(*std::declval<const T>())>, T>,
     std::true_type>;
 template <typename>
@@ -271,8 +271,8 @@ template <typename T>
 inline constexpr bool is_asterisk = decltype(_is_asterisk<_remove_cvref<T>>(0))::value;
 
 template <typename T>
-inline constexpr bool is_exportable = _is_exportable_partial<T> || is_ostream<T>
-                                      || is_dangerously_exportable_object<T> || is_asterisk<T>;
+inline constexpr bool is_exportable =
+    _is_exportable_partial<T> || is_ostream<T> || is_exportable_object_generic<T> || is_asterisk<T>;
 
 template <typename T>
 inline constexpr bool is_iterable_like = is_container<T> || is_map<T> || is_set<T> || is_tuple<T>;
@@ -291,7 +291,7 @@ const char* _get_typename() {
 #endif
 }
 
-// Currently, used only by export_exception() and CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT()
+// Currently, used only by export_exception() and CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC()
 template <typename T>
 std::string get_typename() {
 #if defined(__GNUC__) && !defined(__clang__)

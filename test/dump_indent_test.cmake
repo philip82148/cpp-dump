@@ -10,9 +10,9 @@ if(NOT cmd_args)
    message(FATAL_ERROR "Variable cmd_args not defined")
 endif()
 
-file(MAKE_DIRECTORY "${test_dir}/log")
+include("${test_dir}/common.cmake")
 
-string(ASCII 27 esc)
+file(MAKE_DIRECTORY "${test_dir}/log")
 
 list(GET cmd_args 0 suffix)
 list(GET cmd_args 1 width)
@@ -24,48 +24,24 @@ set(txt_file "${test_dir}/txt/dump_indent_${suffix}.txt")
 execute_process(
    COMMAND "${cmd_path}" "${width}" "${depth}" 0 0 ERROR_VARIABLE error_contents COMMAND_ERROR_IS_FATAL ANY
 )
-string(REGEX REPLACE "\r\n" "\n" error_contents "${error_contents}")
+crlf_to_lf(error_contents)
 file(WRITE "${log_file}" "${error_contents}")
-execute_process(
-   COMMAND "${CMAKE_COMMAND}" -E compare_files "${log_file}" "${txt_file}" RESULT_VARIABLE not_successful
-)
-
-if(not_successful)
-   message(SEND_ERROR "${log_file} does not match ${txt_file} !")
-   file(READ "${log_file}" contents)
-   message(STATUS "${contents}")
-endif()
+diff_and_message("${log_file}" "${txt_file}" "${log_file} does not match ${txt_file} !")
 
 # original
 execute_process(
    COMMAND "${cmd_path}" "${width}" "${depth}" 1 0 ERROR_VARIABLE error_contents COMMAND_ERROR_IS_FATAL ANY
 )
-string(REGEX REPLACE "${esc}\\[[^m]*m" "" error_contents "${error_contents}")
-string(REGEX REPLACE "\r\n" "\n" error_contents "${error_contents}")
+remove_es(error_contents)
+crlf_to_lf(error_contents)
 file(WRITE "${log_file}" "${error_contents}")
-execute_process(
-   COMMAND "${CMAKE_COMMAND}" -E compare_files "${log_file}" "${txt_file}" RESULT_VARIABLE not_successful
-)
-
-if(not_successful)
-   message(SEND_ERROR "${log_file} with color does not match ${txt_file} !")
-   file(READ "${log_file}" contents)
-   message(STATUS "${contents}")
-endif()
+diff_and_message("${log_file}" "${txt_file}" "${log_file} with color (original) does not match ${txt_file} !")
 
 # by_syntax
 execute_process(
    COMMAND "${cmd_path}" "${width}" "${depth}" 2 0 ERROR_VARIABLE error_contents COMMAND_ERROR_IS_FATAL ANY
 )
-string(REGEX REPLACE "${esc}\\[[^m]*m" "" error_contents "${error_contents}")
-string(REGEX REPLACE "\r\n" "\n" error_contents "${error_contents}")
+remove_es(error_contents)
+crlf_to_lf(error_contents)
 file(WRITE "${log_file}" "${error_contents}")
-execute_process(
-   COMMAND "${CMAKE_COMMAND}" -E compare_files "${log_file}" "${txt_file}" RESULT_VARIABLE not_successful
-)
-
-if(not_successful)
-   message(SEND_ERROR "${log_file} with color does not match ${txt_file} !")
-   file(READ "${log_file}" contents)
-   message(STATUS "${contents}")
-endif()
+diff_and_message("${log_file}" "${txt_file}" "${log_file} with color (by_syntax) does not match ${txt_file} !")
