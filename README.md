@@ -638,8 +638,8 @@ inline cpp_dump::log_label::log_label_func_t cpp_dump::log_label_func = cpp_dump
 
 ### Formatting with manipulators
 
-Using manipulators, you can set which and how many elements of an array/map/set will be displayed.  
-See [front, middle, back, both_ends manipulators](#front-middle-back-both_ends-manipulators) for details.  
+Using manipulators, you can easily change the format or add information to the output.  
+For example, you can select which elements and how many elements of an array, map, or set will be displayed using the [front, middle, back, both_ends manipulators](#front-middle-back-both_ends-manipulators).
 [See Full Example Code](./readme/formatting-with-manipulators.cpp)
 
 ```cpp
@@ -649,8 +649,7 @@ cpp_dump(some_huge_vector | cp::back(10) | cp::both_ends(5) | cp::dec(2));
 
 ![manipulator-front-etc.png](./readme/manipulator-front-etc.png)
 
-And you can show the indexes of an array by using a manipulator.  
-See [index manipulator](#index-manipulator) for details.  
+And you can show the indexes of an array by using the [index manipulator](#index-manipulator).  
 [See Full Example Code](./readme/formatting-with-manipulators.cpp)
 
 ```cpp
@@ -662,8 +661,7 @@ cpp_dump(some_huge_vector | cp::dec(2) | cp::index());
 
 ![manipulator-index.png](./readme/manipulator-index.png)
 
-Furthermore, you can set how integers are displayed with manipulators.  
-See [int_style manipulators](#int_style-manipulators) for details.  
+There are also many other manipulators, such as [int_style manipulators](#int_style-manipulators).  
 [See Full Example Code](./readme/formatting-with-manipulators.cpp)
 
 ```cpp
@@ -679,6 +677,16 @@ cpp_dump(0x3e8u | cp::dec(4));
 
 ![manipulator-int-style.png](./readme/manipulator-int-style.png)
 
+#### How to use manipulators
+
+You can use manipulators by applying `|` operator or `<<` operator.  
+The order of manipulators matters for some, but not for others.
+
+```cpp
+cpp_dump(variable | manipulatorA() | manipulatorB());
+cpp_dump(manipulatorA() << manipulatorB() << variable);
+```
+
 #### `front()`, `middle()`, `back()`, `both_ends()` manipulators
 
 ```cpp
@@ -686,28 +694,42 @@ cpp_dump::front(std::size_t iteration_count = cpp_dump::max_iteration_count);
 cpp_dump::middle(std::size_t iteration_count = cpp_dump::max_iteration_count);
 cpp_dump::back(std::size_t iteration_count = cpp_dump::max_iteration_count);
 cpp_dump::both_ends(std::size_t half_iteration_count = cpp_dump::max_iteration_count / 2);
-
-// Example
-cpp_dump(cp::front() << cp::back() << variable);
-cpp_dump(variable | cp::front() | cp::back());
 ```
+
+Effect of order of manipulators: Variable
 
 The further left manipulator will act on the more outside dimensions of the array/map/set.  
 **Caution:**  
-**These manipulators other than `front()` calculate the container's size. Containers whose size cannot be calculated with `std::size()` will cost O(N) in computation. In particular, passing an infinite sequence to these manipulators will result in an infinite loop.**
+**These manipulators other than `front()` calculate the container's size. Containers whose size cannot be calculated with `std::size()` will cost O(N) in computation. In particular, passing an infinite sequence to these manipulators will result in an infinite loop.**  
+[See Full Example Code](./readme/formatting-with-manipulators.cpp)
+
+```cpp
+// Show the last 10 elements for the 1st dimension, the first 5 and the last 5 for the 2nd dimension.
+cpp_dump(some_huge_vector | cp::back(10) | cp::both_ends(5) | cp::dec(2));
+```
+
+![manipulator-front-etc.png](./readme/manipulator-front-etc.png)
 
 #### `index()` manipulator
 
 ```cpp
 cpp_dump::index();
-
-// Example
-cpp_dump(... << cp::index() << ... << variable);
-cpp_dump(variable | ... | cp::index() | ...);
 ```
 
+Effect of order of manipulators: Invariant
+
 Unlike the `front()` and other manipulators, the `index()` manipulator acts on all sequence containers in the variable. (The order is irrelevant.)  
-It does not affect maps/sets.
+It does not affect maps/sets.  
+[See Full Example Code](./readme/formatting-with-manipulators.cpp)
+
+```cpp
+CPP_DUMP_SET_OPTION(max_iteration_count, 5);
+
+// Show the indexes of the vector.
+cpp_dump(some_huge_vector | cp::dec(2) | cp::index());
+```
+
+![manipulator-index.png](./readme/manipulator-index.png)
 
 #### `int_style()` manipulators
 
@@ -740,11 +762,9 @@ cpp_dump::uhex(int digits = -1, int chunk = 0, bool space_fill = false) {
 cpp_dump::udec(int digits = -1, int chunk = 0, bool space_fill = true) {
   return int_style(10, digits, chunk, space_fill, true);
 }
-
-// Example
-cpp_dump(... << cp::uhex() << ... << variable);
-cpp_dump(variable | ... | cp::uhex() | ...);
 ```
+
+Effect of order of manipulators: Invariant
 
 The parameter `base` of `int_style()` supports values of 2, 8, 10, 16. For other values, this manipulator does nothing.  
 `digits` supports values of `digits` >= 0 and `digits` <= 'the maximum digits', where 'the maximum digits' is the maximum number of digits that can be represented by the type for the given `base`. For other values, it is treated as `digits` = 'the maximum digits'.  
@@ -781,26 +801,13 @@ cpp_dump(unsigned_int_vector | cp::front(2) | cp::udec(2));
 
 ![manipulator-ubin-etc.png](./readme/manipulator-ubin-etc.png)
 
-#### `map_*()` manipulators
-
-```cpp
-cpp_dump::map_k(return_value_of_manipulator);
-cpp_dump::map_v(return_value_of_manipulator);
-cpp_dump::map_kv(return_value_of_manipulator_for_key, return_value_of_manipulator_for_value);
-
-// Example
-cpp_dump(cp::front() << cp::map_kv(cp::hex(), cp::back()) << map);
-cpp_dump(map | cp::front() | cp::map_kv(cp::hex(), cp::back()));
-```
-
-These manipulators act on (multi)maps.  
-In this example, the keys are displayed in hexadecimal, and if the values are iterable, the front part of the values is omitted.
-
-#### `format()` manipulator (experimental feature)
+#### `format()` manipulator
 
 ```cpp
 cpp_dump::format(const char *f);
 ```
+
+Effect of order of manipulators: Invariant
 
 This manipulator uses `snprintf()` to format numbers (integers and floating points).  
 Make sure that the types specified by format specifiers match the actual types.  
@@ -812,12 +819,14 @@ cpp_dump(pi | cp::format("%.10f"));
 
 ![manipulator-format.png](./readme/manipulator-format.png)
 
-#### `bw()`, `boolnum()` manipulator (experimental feature)
+#### `bw()`, `boolnum()` manipulator
 
 ```cpp
 cpp_dump::bw(bool left = false);
 cpp_dump::boolnum();
 ```
+
+Effect of order of manipulators: Invariant
 
 These manipulators are for formatting bool.  
 The `bw()` manipulator adds a space when a bool value is `true` to match the width of `false`.  
@@ -833,11 +842,13 @@ cpp_dump(bool_vector | cp::boolnum());
 
 ![manipulator-bw-boolnum.png](./readme/manipulator-bw-boolnum.png)
 
-#### `stresc()` manipulator (experimental feature)
+#### `stresc()` manipulator
 
 ```cpp
 cpp_dump::stresc();
 ```
+
+Effect of order of manipulators: Invariant
 
 This manipulator escapes strings.  
 For escaped characters, the 'escaped_char' color is used.  
@@ -850,11 +861,13 @@ cpp_dump("\a\t\\\"\n\x7f need to be escaped." | cp::stresc());
 
 ![manipulator-stresc.png](./readme/manipulator-stresc.png)
 
-#### `charhex()` manipulator (experimental feature)
+#### `charhex()` manipulator
 
 ```cpp
 cpp_dump::charhex();
 ```
+
+Effect of order of manipulators: Invariant
 
 This manipulator shows chars with their hex.  
 The width of their string representation is fixed.  
@@ -866,11 +879,13 @@ for (auto c : "\a\t\\\"\n\x7f ABC") cpp_dump(c | cp::charhex());
 
 ![manipulator-charhex.png](./readme/manipulator-charhex.png)
 
-#### `addr()` manipulator (experimental feature)
+#### `addr()` manipulator
 
 ```cpp
 cpp_dump::addr(std::size_t depth = 0);
 ```
+
+Effect of order of manipulators: Invariant
 
 This manipulator shows pointers by their address.  
 Use the `depth` parameter to specify the depth of pointers for displaying addresses.  
@@ -887,6 +902,23 @@ cpp_dump(int_ptr_ptr | cp::addr(1));
 ```
 
 ![manipulator-addr.png](./readme/manipulator-addr.png)
+
+#### `map_*()` manipulators
+
+```cpp
+cpp_dump::map_k(return_value_of_manipulator);
+cpp_dump::map_v(return_value_of_manipulator);
+cpp_dump::map_kv(return_value_of_manipulator_for_key, return_value_of_manipulator_for_value);
+
+// Example
+cpp_dump(cp::front() << cp::map_kv(cp::hex(), cp::back()) << map);
+cpp_dump(map | cp::front() | cp::map_kv(cp::hex(), cp::back()));
+```
+
+Effect of order of manipulators: Variable
+
+These manipulators act on (multi)maps.  
+In this example, the keys are displayed in hexadecimal, and if the values are iterable, the front part of the values is omitted.
 
 ### Change the output destination from the standard error output
 
