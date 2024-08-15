@@ -679,7 +679,7 @@ cpp_dump(0x3e8u | cp::dec(4));
 
 #### How to use manipulators
 
-You can use manipulators by applying `|` operator or `<<` operator.  
+You can use the manipulators by applying the '|' operator or the '<<' operator.  
 The order of manipulators matters for some, but not for others.
 
 ```cpp
