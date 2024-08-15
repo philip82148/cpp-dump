@@ -24,6 +24,6 @@ set(txt_file "${test_dir}/txt/color_indent_${suffix}.txt")
 execute_process(
    COMMAND "${cmd_path}" "${width}" "${depth}" "${es_style}" 1 ERROR_VARIABLE error_contents COMMAND_ERROR_IS_FATAL ANY
 )
-string(REGEX REPLACE "\r\n" "\n" error_contents "${error_contents}")
+crlf_to_lf(error_contents)
 file(WRITE "${log_file}" "${error_contents}")
 diff_and_message("${log_file}" "${txt_file}" "${log_file} does not match ${txt_file} !")

@@ -24,7 +24,7 @@ set(txt_file "${test_dir}/txt/dump_indent_${suffix}.txt")
 execute_process(
    COMMAND "${cmd_path}" "${width}" "${depth}" 0 0 ERROR_VARIABLE error_contents COMMAND_ERROR_IS_FATAL ANY
 )
-string(REGEX REPLACE "\r\n" "\n" error_contents "${error_contents}")
+crlf_to_lf(error_contents)
 file(WRITE "${log_file}" "${error_contents}")
 diff_and_message("${log_file}" "${txt_file}" "${log_file} does not match ${txt_file} !")
 
@@ -32,8 +32,8 @@ diff_and_message("${log_file}" "${txt_file}" "${log_file} does not match ${txt_f
 execute_process(
    COMMAND "${cmd_path}" "${width}" "${depth}" 1 0 ERROR_VARIABLE error_contents COMMAND_ERROR_IS_FATAL ANY
 )
-string(REGEX REPLACE "${esc0x1b}\\[[^m]*m" "" error_contents "${error_contents}")
-string(REGEX REPLACE "\r\n" "\n" error_contents "${error_contents}")
+remove_es(error_contents)
+crlf_to_lf(error_contents)
 file(WRITE "${log_file}" "${error_contents}")
 diff_and_message("${log_file}" "${txt_file}" "${log_file} with color (original) does not match ${txt_file} !")
 
@@ -41,7 +41,7 @@ diff_and_message("${log_file}" "${txt_file}" "${log_file} with color (original) 
 execute_process(
    COMMAND "${cmd_path}" "${width}" "${depth}" 2 0 ERROR_VARIABLE error_contents COMMAND_ERROR_IS_FATAL ANY
 )
-string(REGEX REPLACE "${esc0x1b}\\[[^m]*m" "" error_contents "${error_contents}")
-string(REGEX REPLACE "\r\n" "\n" error_contents "${error_contents}")
+remove_es(error_contents)
+crlf_to_lf(error_contents)
 file(WRITE "${log_file}" "${error_contents}")
 diff_and_message("${log_file}" "${txt_file}" "${log_file} with color (by_syntax) does not match ${txt_file} !")

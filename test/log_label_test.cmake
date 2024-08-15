@@ -34,7 +34,7 @@ if(WIN32)
    string(REGEX REPLACE "\\\\" "/" error_contents "${error_contents}")
 endif()
 
-string(REGEX REPLACE "${esc0x1b}\\[[^m]*m" "" error_contents "${error_contents}")
+remove_es(error_contents)
 file(WRITE "${log_file}" "${error_contents}")
 diff_and_message("${log_file}" "${txt_file}" "${log_file} with color (original) does not match ${txt_file} !")
 
@@ -47,6 +47,6 @@ if(WIN32)
    string(REGEX REPLACE "\\\\" "/" error_contents "${error_contents}")
 endif()
 
-string(REGEX REPLACE "${esc0x1b}\\[[^m]*m" "" error_contents "${error_contents}")
+remove_es(error_contents)
 file(WRITE "${log_file}" "${error_contents}")
 diff_and_message("${log_file}" "${txt_file}" "${log_file} with color (by_syntax) does not match ${txt_file} !")

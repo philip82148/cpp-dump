@@ -19,3 +19,11 @@ function(diff_and_message log_file txt_file error_message)
         message(SEND_ERROR "${error_message}\n${output}")
     endif()
 endfunction()
+
+macro(crlf_to_lf var)
+    string(REGEX REPLACE "\r\n" "\n" "${var}" "${${var}}")
+endmacro()
+
+macro(remove_es var)
+    string(REGEX REPLACE "${esc0x1b}\\[[^m]*m" "" "${var}" "${${var}}")
+endmacro()

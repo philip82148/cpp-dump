@@ -36,7 +36,7 @@ diff_and_message("${log_file}" "${txt_file}" "${log_file} with color (original) 
 execute_process(
    COMMAND "${cmd_path}" 0 1 0 ERROR_VARIABLE error_contents COMMAND_ERROR_IS_FATAL ANY
 )
-string(REGEX REPLACE "${esc0x1b}\\[[^m]*m" "" error_contents "${error_contents}")
+remove_es(error_contents)
 file(WRITE "${log_file}" "${error_contents}")
 diff_and_message("${log_file}" "${txt_file}" "${log_file} with color (original) does not match ${txt_file} !")
 
@@ -44,7 +44,7 @@ diff_and_message("${log_file}" "${txt_file}" "${log_file} with color (original) 
 execute_process(
    COMMAND "${cmd_path}" 0 2 0 ERROR_VARIABLE error_contents COMMAND_ERROR_IS_FATAL ANY
 )
-string(REGEX REPLACE "${esc0x1b}\\[[^m]*m" "" error_contents "${error_contents}")
+remove_es(error_contents)
 file(WRITE "${log_file}" "${error_contents}")
 diff_and_message("${log_file}" "${txt_file}" "${log_file} with color (by_syntax) does not match ${txt_file} !")
 
@@ -70,7 +70,7 @@ diff_and_message("${log_file}" "${txt_file}" "${log_file} does not match ${txt_f
 execute_process(
    COMMAND "${cmd_path}" 1 1 0 ERROR_VARIABLE error_contents COMMAND_ERROR_IS_FATAL ANY
 )
-string(REGEX REPLACE "${esc0x1b}\\[[^m]*m" "" error_contents "${error_contents}")
+remove_es(error_contents)
 file(WRITE "${log_file}" "${error_contents}")
 diff_and_message("${log_file}" "${txt_file}" "${log_file} with color (original) does not match ${txt_file} !")
 
@@ -78,6 +78,6 @@ diff_and_message("${log_file}" "${txt_file}" "${log_file} with color (original) 
 execute_process(
    COMMAND "${cmd_path}" 1 2 0 ERROR_VARIABLE error_contents COMMAND_ERROR_IS_FATAL ANY
 )
-string(REGEX REPLACE "${esc0x1b}\\[[^m]*m" "" error_contents "${error_contents}")
+remove_es(error_contents)
 file(WRITE "${log_file}" "${error_contents}")
 diff_and_message("${log_file}" "${txt_file}" "${log_file} with color (by_syntax) does not match ${txt_file} !")
