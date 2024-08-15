@@ -79,7 +79,7 @@ std::string export_var(
     return export_other(value, indent, last_line_length, current_depth, fail_on_newline, command);
   } else if constexpr (is_ostream<T>) {
     return export_ostream(value, indent, last_line_length, current_depth, fail_on_newline, command);
-  } else if constexpr (is_dangerously_exportable_object<T>) {
+  } else if constexpr (is_exportable_object_generic<T>) {
     return export_object_generic(
         value, indent, last_line_length, current_depth, fail_on_newline, command
     );
