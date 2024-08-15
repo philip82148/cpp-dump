@@ -893,7 +893,8 @@ cpp_dump(int_ptr_ptr | cp::addr(1));
 To change the output destination, define an explicit specialization of `cpp_dump::write_log()` with `void`.
 
 ```cpp
-// When you write this in a source file, remove the inline keyword.
+// You can write this in a header file.
+// If you write it in a source file, you can remove the inline keyword.
 template <>
 inline void cpp_dump::write_log(std::string_view output) {
   elsewhere << output << std::endl;
