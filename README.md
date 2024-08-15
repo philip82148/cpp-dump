@@ -639,7 +639,7 @@ inline cpp_dump::log_label::log_label_func_t cpp_dump::log_label_func = cpp_dump
 ### Formatting with manipulators
 
 Using manipulators, you can easily change the format or add information to the output.  
-For example, you can select which elements and how many elements of an array, map, or set will be displayed using the [front, middle, back, both_ends manipulators](#front-middle-back-both_ends-manipulators).
+For example, you can select which elements and how many elements of an array, map, or set will be displayed using manipulators such as [front, middle, back, and both_ends](#front-middle-back-both_ends-manipulators).  
 [See Full Example Code](./readme/formatting-with-manipulators.cpp)
 
 ```cpp
@@ -649,7 +649,7 @@ cpp_dump(some_huge_vector | cp::back(10) | cp::both_ends(5) | cp::dec(2));
 
 ![manipulator-front-etc.png](./readme/manipulator-front-etc.png)
 
-And you can show the indexes of an array by using the [index manipulator](#index-manipulator).  
+And you can display the indexes of an array by using [the index manipulator](#index-manipulator).  
 [See Full Example Code](./readme/formatting-with-manipulators.cpp)
 
 ```cpp
@@ -661,7 +661,7 @@ cpp_dump(some_huge_vector | cp::dec(2) | cp::index());
 
 ![manipulator-index.png](./readme/manipulator-index.png)
 
-There are also many other manipulators, such as [int_style manipulators](#int_style-manipulators).  
+There are also many other manipulators, such as [the int_style manipulators](#int_style-manipulators).  
 [See Full Example Code](./readme/formatting-with-manipulators.cpp)
 
 ```cpp
