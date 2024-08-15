@@ -80,7 +80,7 @@ std::string export_var(
   } else if constexpr (is_ostream<T>) {
     return export_ostream(value, indent, last_line_length, current_depth, fail_on_newline, command);
   } else if constexpr (is_dangerously_exportable_object<T>) {
-    return dangerous_export_object(
+    return export_object_generic(
         value, indent, last_line_length, current_depth, fail_on_newline, command
     );
   } else {

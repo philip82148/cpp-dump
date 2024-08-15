@@ -29,7 +29,7 @@
   namespace _detail {                                                                                                \
                                                                                                                      \
   template <typename T>                                                                                              \
-  inline auto dangerous_export_object(                                                                               \
+  inline auto export_object_generic(                                                                                 \
       const T &value,                                                                                                \
       const std::string &indent,                                                                                     \
       std::size_t last_line_length,                                                                                  \

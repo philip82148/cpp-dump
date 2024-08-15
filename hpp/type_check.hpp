@@ -251,7 +251,7 @@ struct export_command;
 template <typename T>
 auto _is_dangerously_exportable_object(int) -> std::enable_if_t<
     !_is_exportable_partial<T> && !is_ostream<T>,
-    decltype(dangerous_export_object(std::declval<T>(), "", 0, 0, false, std::declval<export_command>()), std::true_type())>;
+    decltype(export_object_generic(std::declval<T>(), "", 0, 0, false, std::declval<export_command>()), std::true_type())>;
 template <typename>
 std::false_type _is_dangerously_exportable_object(long);
 
