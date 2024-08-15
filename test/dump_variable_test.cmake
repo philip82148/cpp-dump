@@ -10,9 +10,9 @@ if(NOT compiler_id)
    message(FATAL_ERROR "Variable compiler_id not defined")
 endif()
 
-file(MAKE_DIRECTORY "${test_dir}/log")
+include("${test_dir}/common.cmake")
 
-string(ASCII 27 esc)
+file(MAKE_DIRECTORY "${test_dir}/log")
 
 # os-dependent
 if(UNIX AND NOT APPLE)
@@ -30,31 +30,23 @@ endif()
 execute_process(
    COMMAND "${cmd_path}" 0 0 0 ERROR_FILE "${log_file}" COMMAND_ERROR_IS_FATAL ANY
 )
-execute_process(
-   COMMAND "${CMAKE_COMMAND}" -E compare_files "${log_file}" "${txt_file}" RESULT_VARIABLE not_successful
-)
+diff_and_message("${log_file}" "${txt_file}" "${log_file} with color (original) does not match ${txt_file} !")
 
-if(not_successful)
-   message(SEND_ERROR "${log_file} does not match ${txt_file} !")
-   file(READ "${log_file}" contents)
-   message(STATUS "${contents}")
-endif()
-
-# with color
+# original
 execute_process(
    COMMAND "${cmd_path}" 0 1 0 ERROR_VARIABLE error_contents COMMAND_ERROR_IS_FATAL ANY
 )
-string(REGEX REPLACE "${esc}\\[[^m]*m" "" error_contents "${error_contents}")
+remove_es(error_contents)
 file(WRITE "${log_file}" "${error_contents}")
-execute_process(
-   COMMAND "${CMAKE_COMMAND}" -E compare_files "${log_file}" "${txt_file}" RESULT_VARIABLE not_successful
-)
+diff_and_message("${log_file}" "${txt_file}" "${log_file} with color (original) does not match ${txt_file} !")
 
-if(not_successful)
-   message(SEND_ERROR "${log_file} with color does not match ${txt_file} !")
-   file(READ "${log_file}" contents)
-   message(STATUS "${contents}")
-endif()
+# by_syntax
+execute_process(
+   COMMAND "${cmd_path}" 0 2 0 ERROR_VARIABLE error_contents COMMAND_ERROR_IS_FATAL ANY
+)
+remove_es(error_contents)
+file(WRITE "${log_file}" "${error_contents}")
+diff_and_message("${log_file}" "${txt_file}" "${log_file} with color (by_syntax) does not match ${txt_file} !")
 
 # compiler-dependent
 if(compiler_id MATCHES "GNU")
@@ -72,28 +64,20 @@ endif()
 execute_process(
    COMMAND "${cmd_path}" 1 0 0 ERROR_FILE "${log_file}" COMMAND_ERROR_IS_FATAL ANY
 )
-execute_process(
-   COMMAND "${CMAKE_COMMAND}" -E compare_files "${log_file}" "${txt_file}" RESULT_VARIABLE not_successful
-)
-
-if(not_successful)
-   message(SEND_ERROR "${log_file} does not match ${txt_file} !")
-   file(READ "${log_file}" contents)
-   message(STATUS "${contents}")
-endif()
+diff_and_message("${log_file}" "${txt_file}" "${log_file} does not match ${txt_file} !")
 
 # with color
 execute_process(
    COMMAND "${cmd_path}" 1 1 0 ERROR_VARIABLE error_contents COMMAND_ERROR_IS_FATAL ANY
 )
-string(REGEX REPLACE "${esc}\\[[^m]*m" "" error_contents "${error_contents}")
+remove_es(error_contents)
 file(WRITE "${log_file}" "${error_contents}")
-execute_process(
-   COMMAND "${CMAKE_COMMAND}" -E compare_files "${log_file}" "${txt_file}" RESULT_VARIABLE not_successful
-)
+diff_and_message("${log_file}" "${txt_file}" "${log_file} with color (original) does not match ${txt_file} !")
 
-if(not_successful)
-   message(SEND_ERROR "${log_file} with color does not match ${txt_file} !")
-   file(READ "${log_file}" contents)
-   message(STATUS "${contents}")
-endif()
+# by_syntax
+execute_process(
+   COMMAND "${cmd_path}" 1 2 0 ERROR_VARIABLE error_contents COMMAND_ERROR_IS_FATAL ANY
+)
+remove_es(error_contents)
+file(WRITE "${log_file}" "${error_contents}")
+diff_and_message("${log_file}" "${txt_file}" "${log_file} with color (by_syntax) does not match ${txt_file} !")

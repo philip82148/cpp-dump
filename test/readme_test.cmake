@@ -16,9 +16,9 @@ if(NOT basename)
    message(FATAL_ERROR "Variable basename not defined")
 endif()
 
-file(MAKE_DIRECTORY "${test_dir}/log")
+include("${test_dir}/common.cmake")
 
-string(ASCII 27 esc)
+file(MAKE_DIRECTORY "${test_dir}/log")
 
 set(log_file "${test_dir}/log/readme_${basename}.log")
 set(txt_file "${test_dir}/txt/readme_${basename}.txt")
@@ -34,20 +34,11 @@ if("${basename}" IN_LIST raw_address_file)
    if("${basename}" STREQUAL no-es)
       string(REGEX REPLACE " (0x[0-9a-f]+|00[0-9A-F]+)," " 0x7fffffffffff," error_contents "${error_contents}")
    else()
-      string(REGEX REPLACE "${esc}\\[32m(0x[0-9a-f]+|00[0-9A-F]+)${esc}\\[0m" "${esc}[32m0x7fffffffffff${esc}[0m" error_contents "${error_contents}")
+      string(REGEX REPLACE "${esc0x1b}\\[32m(0x[0-9a-f]+|00[0-9A-F]+)${esc0x1b}\\[0m" "${esc0x1b}[32m0x7fffffffffff${esc0x1b}[0m" error_contents "${error_contents}")
    endif()
 elseif("${basename}" STREQUAL "user-defined-class2")
    string(REGEX REPLACE "main.*::.*class_A" "class_A" error_contents "${error_contents}")
 endif()
 
 file(WRITE "${log_file}" "${error_contents}")
-
-execute_process(
-   COMMAND "${CMAKE_COMMAND}" -E compare_files "${log_file}" "${txt_file}" RESULT_VARIABLE not_successful
-)
-
-if(not_successful)
-   message(SEND_ERROR "${log_file} does not match ${txt_file} !")
-   file(READ "${log_file}" contents)
-   message(STATUS "${contents}")
-endif()
+diff_and_message("${log_file}" "${txt_file}" "${log_file} does not match ${txt_file} !")
