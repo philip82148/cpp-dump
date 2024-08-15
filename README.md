@@ -927,12 +927,11 @@ inline void cpp_dump::write_log(std::string_view output) {
 #include "./cpp-dump/dump.hpp"
 #define dump(...) cpp_dump(__VA_ARGS__)
 namespace cp = cpp_dump;
+CPP_DUMP_SET_OPTION_GLOBAL(max_line_width, 80);
+CPP_DUMP_SET_OPTION_GLOBAL(log_label_func, cp::log_label::filename());
+CPP_DUMP_SET_OPTION_GLOBAL(enable_asterisk, true);
 #else
 #define dump(...)
-#define CPP_DUMP_SET_OPTION(...)
-#define CPP_DUMP_DEFINE_EXPORT_OBJECT(...)
-#define CPP_DUMP_DEFINE_EXPORT_ENUM(...)
-#define CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(...)
 #endif
 
 #include <bits/stdc++.h>
@@ -942,10 +941,6 @@ namespace cp = cpp_dump;
 using namespace std;
 
 int main() {
-  CPP_DUMP_SET_OPTION(max_line_width, 80);
-  CPP_DUMP_SET_OPTION(log_label_func, cp::log_label::filename());
-  CPP_DUMP_SET_OPTION(enable_asterisk, true);
-
   int N;
   cin >> N;
 
