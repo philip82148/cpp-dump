@@ -696,7 +696,7 @@ cpp_dump::back(std::size_t iteration_count = cpp_dump::max_iteration_count);
 cpp_dump::both_ends(std::size_t half_iteration_count = cpp_dump::max_iteration_count / 2);
 ```
 
-Order of manipulators: **sensitive**
+These manipulators are **order-sensitive**.
 
 The further left manipulator will act on the more outside dimensions of the array/map/set.  
 **Caution:**  
@@ -715,8 +715,6 @@ cpp_dump(some_huge_vector | cp::back(10) | cp::both_ends(5) | cp::dec(2));
 ```cpp
 cpp_dump::index();
 ```
-
-Order of manipulators: **insensitive**
 
 Unlike the `front()` and other manipulators, the `index()` manipulator acts on all sequence containers in the variable. (The order is irrelevant.)  
 It does not affect maps/sets.  
@@ -764,8 +762,6 @@ cpp_dump::udec(int digits = -1, int chunk = 0, bool space_fill = true) {
 }
 ```
 
-Order of manipulators: **insensitive**
-
 The parameter `base` of `int_style()` supports values of 2, 8, 10, 16. For other values, this manipulator does nothing.  
 `digits` supports values of `digits` >= 0 and `digits` <= 'the maximum digits', where 'the maximum digits' is the maximum number of digits that can be represented by the type for the given `base`. For other values, it is treated as `digits` = 'the maximum digits'.  
 `chunk` supports values of `chunk` >= 0. For other values, it is treated as `chunk` = 0.  
@@ -807,8 +803,6 @@ cpp_dump(unsigned_int_vector | cp::front(2) | cp::udec(2));
 cpp_dump::format(const char *f);
 ```
 
-Order of manipulators: **insensitive**
-
 This manipulator uses `snprintf()` to format numbers (integers and floating points).  
 Make sure that the types specified by format specifiers match the actual types.  
 [See Full Example Code](./readme/formatting-with-manipulators.cpp)
@@ -825,8 +819,6 @@ cpp_dump(pi | cp::format("%.10f"));
 cpp_dump::bw(bool left = false);
 cpp_dump::boolnum();
 ```
-
-Order of manipulators: **insensitive**
 
 These manipulators are for formatting bool.  
 The `bw()` manipulator adds a space when a bool value is `true` to match the width of `false`.  
@@ -848,8 +840,6 @@ cpp_dump(bool_vector | cp::boolnum());
 cpp_dump::stresc();
 ```
 
-Order of manipulators: **insensitive**
-
 This manipulator escapes strings.  
 For escaped characters, the 'escaped_char' color is used.  
 [See Full Example Code](./readme/formatting-with-manipulators.cpp)
@@ -867,8 +857,6 @@ cpp_dump("\a\t\\\"\n\x7f need to be escaped." | cp::stresc());
 cpp_dump::charhex();
 ```
 
-Order of manipulators: **insensitive**
-
 This manipulator shows chars with their hex.  
 The width of their string representation is fixed.  
 [See Full Example Code](./readme/formatting-with-manipulators.cpp)
@@ -884,8 +872,6 @@ for (auto c : "\a\t\\\"\n\x7f ABC") cpp_dump(c | cp::charhex());
 ```cpp
 cpp_dump::addr(std::size_t depth = 0);
 ```
-
-Order of manipulators: **insensitive**
 
 This manipulator shows pointers by their address.  
 Use the `depth` parameter to specify the depth of pointers for displaying addresses.  
@@ -915,7 +901,7 @@ cpp_dump(cp::front() << cp::map_kv(cp::hex(), cp::back()) << map);
 cpp_dump(map | cp::front() | cp::map_kv(cp::hex(), cp::back()));
 ```
 
-Order of manipulators: **sensitive**
+These manipulators are **order-sensitive**.
 
 These manipulators act on (multi)maps.  
 In this example, the keys are displayed in hexadecimal, and if the values are iterable, the front part of the values is omitted.
