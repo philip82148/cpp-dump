@@ -455,7 +455,7 @@ inline constexpr bool is_value_with_command = _is_value_with_command<_remove_cvr
 
 }  // namespace _detail
 
-/*
+/**
  * Manipulator for the display style of integers.
  * See README for details.
  */
@@ -471,7 +471,7 @@ inline auto int_style(
   );
 }
 
-/*
+/**
  * Manipulator for the display style of integers.
  * See README for details.
  */
@@ -479,7 +479,7 @@ inline auto dec(int digits = -1, int chunk = 0, bool space_fill = true) {
   return int_style(10, digits, chunk, space_fill, false);
 }
 
-/*
+/**
  * Manipulator for the display style of integers.
  * See README for details.
  */
@@ -487,7 +487,7 @@ inline auto bin(int digits = -1, int chunk = 0, bool space_fill = false) {
   return int_style(2, digits, chunk, space_fill, false);
 }
 
-/*
+/**
  * Manipulator for the display style of integers.
  * See README for details.
  */
@@ -495,7 +495,7 @@ inline auto oct(int digits = -1, int chunk = 0, bool space_fill = false) {
   return int_style(8, digits, chunk, space_fill, false);
 }
 
-/*
+/**
  * Manipulator for the display style of integers.
  * See README for details.
  */
@@ -503,7 +503,7 @@ inline auto hex(int digits = -1, int chunk = 0, bool space_fill = false) {
   return int_style(16, digits, chunk, space_fill, false);
 }
 
-/*
+/**
  * Manipulator for the display style of integers.
  * See README for details.
  */
@@ -511,7 +511,7 @@ inline auto udec(int digits = -1, int chunk = 0, bool space_fill = true) {
   return int_style(10, digits, chunk, space_fill, true);
 }
 
-/*
+/**
  * Manipulator for the display style of integers.
  * See README for details.
  */
@@ -519,7 +519,7 @@ inline auto ubin(int digits = -1, int chunk = 0, bool space_fill = false) {
   return int_style(2, digits, chunk, space_fill, true);
 }
 
-/*
+/**
  * Manipulator for the display style of integers.
  * See README for details.
  */
@@ -527,7 +527,7 @@ inline auto uoct(int digits = -1, int chunk = 0, bool space_fill = false) {
   return int_style(8, digits, chunk, space_fill, true);
 }
 
-/*
+/**
  * Manipulator for the display style of integers.
  * See README for details.
  */
@@ -535,61 +535,55 @@ inline auto uhex(int digits = -1, int chunk = 0, bool space_fill = false) {
   return int_style(16, digits, chunk, space_fill, true);
 }
 
-/*
+/**
  * Manipulator for the display style of numbers.
  * See README for details.
- * This is an experimental feature.
  */
 inline auto format(const char *f) { return _detail::export_command(f); }
 
-/*
+/**
  * Manipulator for the display style of bool.
  * See README for details.
- * This is an experimental feature.
  */
 inline auto bw(bool left = false) {
   using bool_style_t = _detail::export_command::bool_style_t;
   return _detail::export_command(left ? bool_style_t::true_left : bool_style_t::true_right);
 }
 
-/*
+/**
  * Manipulator for the display style of bool.
  * See README for details.
- * This is an experimental feature.
  */
 inline auto boolnum() {
   using bool_style_t = _detail::export_command::bool_style_t;
   return _detail::export_command(bool_style_t::number);
 }
 
-/*
+/**
  * Manipulator for the display style of char.
  * See README for details.
- * This is an experimental feature.
  */
 inline auto stresc() { return _detail::export_command(_detail::export_command::stresc{}); }
 
-/*
+/**
  * Manipulator for the display style of char.
  * See README for details.
- * This is an experimental feature.
  */
 inline auto charhex() { return _detail::export_command(_detail::export_command::charhex{}); }
 
-/*
+/**
  * Manipulator for the display style of pointers.
  * See README for details.
- * This is an experimental feature.
  */
 inline auto addr(std::size_t depth = 0) { return _detail::export_command(depth); }
 
-/*
+/**
  * Manipulator for the display style of containers.
  * See README for details.
  */
 inline auto index() { return _detail::export_command(_detail::export_command::index{}); }
 
-/*
+/**
  * Manipulator for the display style of iterables.
  * See README for details.
  */
@@ -603,7 +597,7 @@ inline auto front(std::size_t iteration_count = max_iteration_count) {
   );
 }
 
-/*
+/**
  * Manipulator for the display style of iterables.
  * See README for details.
  */
@@ -620,7 +614,7 @@ inline auto back(std::size_t iteration_count = max_iteration_count) {
   );
 }
 
-/*
+/**
  * Manipulator for the display style of iterables.
  * See README for details.
  */
@@ -639,7 +633,7 @@ inline auto both_ends(std::size_t half_iteration_count = max_iteration_count / 2
   );
 }
 
-/*
+/**
  * Manipulator for the display style of iterables.
  * See README for details.
  */
@@ -658,19 +652,19 @@ inline auto middle(std::size_t iteration_count = max_iteration_count) {
   );
 }
 
-/*
+/**
  * Manipulator for applying manipulators to map keys.
  * See README for details.
  */
 inline auto map_k(_detail::export_command &&c) { return _detail::_map_k(std::move(c)); }
 
-/*
+/**
  * Manipulator for applying manipulators to map values.
  * See README for details.
  */
 inline auto map_v(_detail::export_command &&c) { return _detail::_map_v(std::move(c)); }
 
-/*
+/**
  * Manipulator for applying manipulators to map keys and values.
  * See README for details.
  */
