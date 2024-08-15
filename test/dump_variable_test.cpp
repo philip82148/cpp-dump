@@ -11,7 +11,7 @@
 using namespace std;
 namespace cp = cpp_dump;
 
-CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(member_var, member_func());
+CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC(member_var, member_func());
 
 namespace ns {
 

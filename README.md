@@ -144,7 +144,7 @@ If you want to print a user-defined type, you can enable the library to print it
 [See Full Example Code](./readme/user-defined-class2.cpp)
 
 ```cpp
-CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(i, str());
+CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC(i, str());
 ```
 
 ![user-defined-class2.png](./readme/user-defined-class2.png)
@@ -322,7 +322,7 @@ The style of indents of the Container, Set and Map categories (See [Supported ty
  * Member functions to be displayed must be const.
  * Compile errors in this macro, such as ambiguous function calls, are never reported due to SFINAE.
  */
-#define CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(members...)
+#define CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC(members...)
 
 /**
  * Make export_var() support enum T.
@@ -553,7 +553,7 @@ cpp_dump(my_enum_A);
 
 ![user-defined-enum.png](./readme/user-defined-enum.png)
 
-#### 2. Use CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT() macro
+#### 2. Use CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC() macro
 
 This macro enables `cpp_dump()` to print any type with specified members.  
 This macro doesn't require the user type to be accessible from the top level (or even the type name).
@@ -566,8 +566,8 @@ If you use this macro only once, it won't cause ambiguous function call errors.
 
 ```cpp
 // At top level
-// CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(members...)
-CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(i, str());
+// CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC(members...)
+CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC(i, str());
 
 // Anywhere
 struct class_A {
@@ -930,7 +930,7 @@ namespace cp = cpp_dump;
 #define CPP_DUMP_SET_OPTION(...)
 #define CPP_DUMP_DEFINE_EXPORT_OBJECT(...)
 #define CPP_DUMP_DEFINE_EXPORT_ENUM(...)
-#define CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(...)
+#define CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC(...)
 #endif
 
 #include <bits/stdc++.h>
@@ -987,7 +987,7 @@ cpp_dump() prints variables recursively, so they can dump nested variables of an
 | User-defined  | `CPP_DUMP_DEFINE_EXPORT_OBJECT(T, members...);` is at top level and the member functions to be displayed is const.                                                                                                                                                                                    |                                                   |
 | Enum          | `CPP_DUMP_DEFINE_EXPORT_ENUM(T, members...);` is at top level.                                                                                                                                                                                                                                        |                                                   |
 | Ostream       | All of the above are not satisfied, `std::is_function_v<T> == false && std::is_member_pointer_v<T> == false`, and the function `std::ostream& operator<<(std::ostream&, const T &)` is defined. **The string representation of T must not be an empty string** (This makes manipulators unsupported). |                                                   |
-| User-defined2 | All of the above are not satisfied, T has all members specified by just one `CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(members...);` at top level, and the member functions to be displayed is const.                                                                                                   |                                                   |
+| User-defined2 | All of the above are not satisfied, T has all members specified by just one `CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC(members...);` at top level, and the member functions to be displayed is const.                                                                                                     |                                                   |
 | Asterisk      | All of the above are not satisfied, `cpp_dump::enable_asterisk == true` and the function `TypeExceptT operator*(const T &)` or the const member function `TypeExceptT T::operator*() const` is defined.                                                                                               | Iterators                                         |
 
 ### Display example

@@ -291,7 +291,7 @@ const char* _get_typename() {
 #endif
 }
 
-// Currently, used only by export_exception() and CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT()
+// Currently, used only by export_exception() and CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC()
 template <typename T>
 std::string get_typename() {
 #if defined(__GNUC__) && !defined(__clang__)
