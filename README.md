@@ -558,10 +558,8 @@ cpp_dump(my_enum_A);
 This macro enables `cpp_dump()` to print any type with specified members.  
 This macro doesn't require the user type to be accessible from the top level (or even the type name).
 
-However, if you do not use this macro carefully, it might cause ambiguous function call errors.  
-Moreover, the errors are never reported due to SFINAE, and the user type will remain unsupported.
-
-If you use this macro only once, it won't cause ambiguous function call errors.  
+If you use this macro two or more times, you need to be careful of ambiguous function call errors.  
+If such an error occurs, it won't be reported due to SFINAE.  
 [See Full Example Code](./readme/user-defined-class2.cpp)
 
 ```cpp
