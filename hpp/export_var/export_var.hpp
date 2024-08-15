@@ -11,7 +11,6 @@
 
 #include "../export_command/export_command.hpp"
 #include "../type_check.hpp"
-#include "./dangerous_export_object.hpp"
 #include "./export_arithmetic.hpp"
 #include "./export_asterisk.hpp"
 #include "./export_container.hpp"
@@ -19,6 +18,7 @@
 #include "./export_exception.hpp"
 #include "./export_map.hpp"
 #include "./export_object.hpp"
+#include "./export_object_generic.hpp"
 #include "./export_ostream.hpp"
 #include "./export_other/export_other.hpp"
 #include "./export_pointer.hpp"
@@ -79,8 +79,8 @@ std::string export_var(
     return export_other(value, indent, last_line_length, current_depth, fail_on_newline, command);
   } else if constexpr (is_ostream<T>) {
     return export_ostream(value, indent, last_line_length, current_depth, fail_on_newline, command);
-  } else if constexpr (is_dangerously_exportable_object<T>) {
-    return dangerous_export_object(
+  } else if constexpr (is_exportable_object_generic<T>) {
+    return export_object_generic(
         value, indent, last_line_length, current_depth, fail_on_newline, command
     );
   } else {
