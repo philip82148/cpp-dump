@@ -40,7 +40,9 @@
  * This is deprecated.
  * Use cpp_dump() instead.
  */
-#define CPP_DUMP(...) cpp_dump(__VA_ARGS__)
+#define CPP_DUMP(...)                                                                              \
+  _Pragma("message(\"WARNING: Deprecated. Use the lowercase 'cpp_dump()' macro instead.\")")       \
+      cpp_dump(__VA_ARGS__)
 
 namespace cpp_dump {
 
