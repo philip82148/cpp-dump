@@ -55,4 +55,6 @@
  * Use CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC() instead.
  */
 #define CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(...)                                               \
-  CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC(__VA_ARGS__)
+  _Pragma(                                                                                         \
+      "message (\"WARNING: Deprecated. Use CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC() instead.\")"    \
+  ) CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC(__VA_ARGS__)
