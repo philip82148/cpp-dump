@@ -14,7 +14,7 @@ target_include_directories(cpp-dump INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_
 # Install
 include(GNUInstallDirs)
 install(
-    FILES "cpp-dump.hpp"
+    FILES "cpp_dump.hpp"
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
 )
 install(

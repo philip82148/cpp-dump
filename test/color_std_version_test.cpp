@@ -10,7 +10,7 @@ struct source_location {
 #endif
 #endif
 
-#include "../cpp-dump.hpp"
+#include "../cpp_dump.hpp"
 
 // These are often used to write code faster in competitive programming.
 // This is the test for it.

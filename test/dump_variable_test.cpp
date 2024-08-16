@@ -3,7 +3,7 @@
 #include <unordered_map>
 #include <unordered_set>
 //
-#include "../cpp-dump.hpp"
+#include "../cpp_dump.hpp"
 
 // These are often used to write code faster in competitive programming.
 // This is the test for it.

@@ -1,6 +1,6 @@
 #include <string>
 
-#include "../cpp-dump.hpp"
+#include "../cpp_dump.hpp"
 
 enum class enum_a { s, k, l };
 
