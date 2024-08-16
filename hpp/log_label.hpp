@@ -26,15 +26,15 @@ using log_label_func_t =
 
 namespace log_label {
 
-/*
+/**
  * Default function assigned to cpp_dump::options::log_label_func.
  */
 inline std::string default_func(std::string_view, std::size_t, std::string_view) {
   return "[dump] ";
 }
 
-/*
- * Function that create a function to assign to `cpp_dump::options::log_label_func`.
+/**
+ * Function that create a function to assign to cpp_dump::options::log_label_func.
  * See README for details.
  */
 inline types::log_label_func_t line(bool show_func = false, int min_width = 0) {
@@ -50,8 +50,8 @@ inline types::log_label_func_t line(bool show_func = false, int min_width = 0) {
   };
 }
 
-/*
- * Function that create a function to assign to `cpp_dump::options::log_label_func`.
+/**
+ * Function that create a function to assign to cpp_dump::options::log_label_func.
  * See README for details.
  */
 inline types::log_label_func_t basename(bool show_func = false, int min_width = 0) {
@@ -77,8 +77,8 @@ inline types::log_label_func_t basename(bool show_func = false, int min_width = 
       };
 }
 
-/*
- * Function that create a function to assign to `cpp_dump::options::log_label_func`.
+/**
+ * Function that create a function to assign to cpp_dump::options::log_label_func.
  * See README for details.
  */
 inline types::log_label_func_t filename(bool show_func = false, int min_width = 0) {
@@ -100,8 +100,8 @@ inline types::log_label_func_t filename(bool show_func = false, int min_width = 
       };
 }
 
-/*
- * Function that create a function to assign to `cpp_dump::options::log_label_func`.
+/**
+ * Function that create a function to assign to cpp_dump::options::log_label_func.
  * See README for details.
  */
 inline types::log_label_func_t fullpath(
@@ -123,8 +123,8 @@ inline types::log_label_func_t fullpath(
       };
 }
 
-/*
- * Function that create a function to assign to `cpp_dump::options::log_label_func`.
+/**
+ * Function that create a function to assign to cpp_dump::options::log_label_func.
  * See README for details.
  */
 inline types::log_label_func_t fixed_length(
