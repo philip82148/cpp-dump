@@ -185,13 +185,13 @@ Then
 
 ### With CMake
 
-#### `cmake --install`
+#### Run `cmake --install` to copy the headers to `/usr/local/include/` or equivalent
 
 ```shell
 git clone https://github.com/philip82148/cpp-dump
 cd cpp-dump
 cmake -S . -B build # No configuration is needed because the library is header-only.
-sudo cmake --install build #  Copy the headers to /usr/local/include/ or equivalent
+sudo cmake --install build
 # (The cpp-dump folder can be removed after this.)
 ```
 
@@ -201,15 +201,12 @@ Then
 #include <cpp_dump.hpp>
 ```
 
-#### Use FetchContent
+#### Use `FetchContent`
 
 `CMakeLists.txt`
 
 ```cmake
-cmake_minimum_required(VERSION 3.11) # Minimum version that can use FetchContent
-project(MyProject)
-
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON) # Generate compile_commands.json
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON) # Generate compile_commands.json (optional)
 
 include(FetchContent)
 
@@ -220,13 +217,11 @@ FetchContent_Declare(cpp-dump
 )
 FetchContent_MakeAvailable(cpp-dump)
 
-add_executable(MyApp path/to/main.cpp) # Your source files
-target_link_libraries(MyApp PRIVATE cpp-dump) # Link cpp-dump to your source files
+# Link cpp-dump to your app
+target_link_libraries(MyApp PRIVATE cpp-dump)
 ```
 
 Then
-
-`path/to/main.cpp`
 
 ```cpp
 #include <cpp_dump.hpp>
@@ -236,39 +231,41 @@ Then
 
 If you want to customize the library, you can write the configuration code as follows:
 
+`my-debug.hpp`
+
 ```cpp
-// You can also write this in a header file -----------------------------------
 #ifdef DEBUGGING
 #include "path/to/cpp-dump/cpp_dump.hpp"
 namespace cp = cpp_dump;
 CPP_DUMP_SET_OPTION_GLOBAL(max_line_width, 100);
+// CPP_DUMP_DEFINE_EXPORT_ENUM(...);
+// CPP_DUMP_DEFINE_EXPORT_OBJECT(...);
+// CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC(...);
 #else
 #define cpp_dump(...)
+#define CPP_DUMP_SET_OPTION(...)
 #endif
-// You can also write this in a header file -----------------------------------
+```
+
+`main.cpp`
+
+```cpp
+#include "path/to/my-debug.hpp"
 
 int main() {
-  // To be continued...
+  cpp_dump(vec | cp::back());
 }
 ```
 
 If you want to configure the library within a function, use `CPP_DUMP_SET_OPTION()` instead.
 
 ```cpp
-// You can also write this in a header file -----------------------------------
-#ifdef DEBUGGING
-#include "path/to/cpp-dump/cpp_dump.hpp"
-namespace cp = cpp_dump;
-#else
-#define cpp_dump(...)
-#define CPP_DUMP_SET_OPTION(...)
-#endif
-// You can also write this in a header file -----------------------------------
+#include "path/to/my-debug.hpp"
 
-int main() {
-  CPP_DUMP_SET_OPTION(max_line_width, 100);
-
-  // To be continued...
+void func() {
+  CPP_DUMP_SET_OPTION(print_expr, false);
+  cpp_dump(vec | cp::back());
+  CPP_DUMP_SET_OPTION(print_expr, true);
 }
 ```
 
