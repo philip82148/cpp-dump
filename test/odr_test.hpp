@@ -23,9 +23,9 @@ CPP_DUMP_SET_OPTION_GLOBAL(max_iteration_count, 20);
 CPP_DUMP_SET_OPTION_GLOBAL(enable_asterisk, false);
 CPP_DUMP_SET_OPTION_GLOBAL(print_expr, true);
 CPP_DUMP_SET_OPTION_GLOBAL(log_label_func, cpp_dump::log_label::filename());
-CPP_DUMP_SET_OPTION_GLOBAL(es_style, cpp_dump::es_style_t::by_syntax);
+CPP_DUMP_SET_OPTION_GLOBAL(es_style, cpp_dump::types::es_style_t::by_syntax);
 CPP_DUMP_SET_OPTION_GLOBAL(
-    cont_indent_style, cpp_dump::cont_indent_style_t::when_non_tuples_nested
+    cont_indent_style, cpp_dump::types::cont_indent_style_t::when_non_tuples_nested
 );
 
 void odr_test();

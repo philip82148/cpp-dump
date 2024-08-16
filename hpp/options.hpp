@@ -15,7 +15,7 @@ namespace cpp_dump {
  * Set a value to a variable in cpp_dump namespace.
  * You can also assign values to the variables directly.
  */
-#define CPP_DUMP_SET_OPTION(variable, value) cpp_dump::variable = (value)
+#define CPP_DUMP_SET_OPTION(variable, value) cpp_dump::options::variable = (value)
 
 namespace _detail {
 
@@ -30,7 +30,8 @@ struct empty_class {};
                                                                                                    \
   namespace _dummy_variables_for_set_option_global {                                               \
                                                                                                    \
-  [[maybe_unused]] inline auto _dummy_##line = (cpp_dump::variable = (value), empty_class{});      \
+  [[maybe_unused]] inline auto _dummy_##line =                                                     \
+      (cpp_dump::options::variable = (value), empty_class{});                                      \
                                                                                                    \
   } /* namespace _dummy_variables_for_set_option_global */                                         \
                                                                                                    \
@@ -48,14 +49,16 @@ struct empty_class {};
 #define CPP_DUMP_SET_OPTION_GLOBAL(variable, value)                                                \
   _p_CPP_DUMP_SET_OPTION_GLOBAL_AUX(variable, value, __LINE__)
 
+namespace types {
+
 /**
- * Type of cpp_dump::es_style.
+ * Type of cpp_dump::options::es_style.
  * cpp_dump::export_var() supports this type.
  */
 enum class es_style_t { no_es, original, by_syntax };
 
 /**
- * Type of cpp_dump::es_value.
+ * Type of cpp_dump::options::es_value.
  * cpp_dump::export_var() supports this type.
  */
 struct es_value_t {
@@ -76,10 +79,14 @@ struct es_value_t {
 };
 
 /**
- * Type of cpp_dump::cont_indent_style.
+ * Type of cpp_dump::options::cont_indent_style.
  * cpp_dump::export_var() supports this type.
  */
 enum class cont_indent_style_t { minimal, when_nested, when_non_tuples_nested, always };
+
+}  // namespace types
+
+namespace options {
 
 /**
  * Maximum line width of the strings returned by cpp_dump() and cpp_dump::export_var().
@@ -111,17 +118,17 @@ inline bool print_expr = true;
 /**
  * Function that returns the label that cpp_dump() prints at the beginning of the output.
  */
-inline log_label::log_label_func_t log_label_func = log_label::default_func;
+inline types::log_label_func_t log_label_func = log_label::default_func;
 
 /**
  * Style of the escape sequences (output coloring).
  */
-inline es_style_t es_style = es_style_t::original;
+inline types::es_style_t es_style = types::es_style_t::original;
 
 /**
  * Values of the escape sequences (output coloring).
  */
-inline es_value_t es_value;
+inline types::es_value_t es_value;
 
 /**
  * If true, the 'class_op' color is used for operators in class names (::, <>, etc...).
@@ -141,6 +148,8 @@ inline bool detailed_number_es = false;
 /**
  * Style of indents of the Container, Set and Map categories (See 'Supported types').
  */
-inline cont_indent_style_t cont_indent_style = cont_indent_style_t::when_nested;
+inline types::cont_indent_style_t cont_indent_style = types::cont_indent_style_t::when_nested;
+
+}  // namespace options
 
 }  // namespace cpp_dump

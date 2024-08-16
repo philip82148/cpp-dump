@@ -19,7 +19,7 @@ namespace cpp_dump {
 
 namespace _detail {
 
-inline bool use_es() { return es_style != es_style_t::no_es; }
+inline bool use_es() { return options::es_style != types::es_style_t::no_es; }
 
 namespace es {
 
@@ -37,25 +37,39 @@ inline std::string apply(std::string_view es, std::string_view s) {
   }
 }
 
-inline std::string log(std::string_view s) { return es::apply(es_value.log, s); }
-inline std::string expression(std::string_view s) { return es::apply(es_value.expression, s); }
-inline std::string reserved(std::string_view s) { return es::apply(es_value.reserved, s); }
-inline std::string number(std::string_view s) { return es::apply(es_value.number, s); }
-inline std::string character(std::string_view s) { return es::apply(es_value.character, s); }
-inline std::string op(std::string_view s) { return es::apply(es_value.op, s); }
-inline std::string identifier(std::string_view s) { return es::apply(es_value.identifier, s); }
-inline std::string member(std::string_view s) { return es::apply(es_value.member, s); }
-inline std::string unsupported(std::string_view s) { return es::apply(es_value.unsupported, s); }
-inline std::string class_op(std::string_view s) { return es::apply(es_value.class_op, s); }
-inline std::string member_op(std::string_view s) { return es::apply(es_value.member_op, s); }
-inline std::string number_op(std::string_view s) { return es::apply(es_value.number_op, s); }
-inline std::string escaped_char(std::string_view s) { return es::apply(es_value.escaped_char, s); }
+inline std::string log(std::string_view s) { return es::apply(options::es_value.log, s); }
+inline std::string expression(std::string_view s) {
+  return es::apply(options::es_value.expression, s);
+}
+inline std::string reserved(std::string_view s) { return es::apply(options::es_value.reserved, s); }
+inline std::string number(std::string_view s) { return es::apply(options::es_value.number, s); }
+inline std::string character(std::string_view s) {
+  return es::apply(options::es_value.character, s);
+}
+inline std::string op(std::string_view s) { return es::apply(options::es_value.op, s); }
+inline std::string identifier(std::string_view s) {
+  return es::apply(options::es_value.identifier, s);
+}
+inline std::string member(std::string_view s) { return es::apply(options::es_value.member, s); }
+inline std::string unsupported(std::string_view s) {
+  return es::apply(options::es_value.unsupported, s);
+}
+inline std::string class_op(std::string_view s) { return es::apply(options::es_value.class_op, s); }
+inline std::string member_op(std::string_view s) {
+  return es::apply(options::es_value.member_op, s);
+}
+inline std::string number_op(std::string_view s) {
+  return es::apply(options::es_value.number_op, s);
+}
+inline std::string escaped_char(std::string_view s) {
+  return es::apply(options::es_value.escaped_char, s);
+}
 
 inline std::string bracket(std::string_view s, std::size_t d) {
-  auto sz = es_value.bracket_by_depth.size();
+  auto sz = options::es_value.bracket_by_depth.size();
   if (sz == 0) return std::string(s);
 
-  return es::apply(es_value.bracket_by_depth[d % sz], s);
+  return es::apply(options::es_value.bracket_by_depth[d % sz], s);
 }
 
 inline std::string type_name(std::string_view s) {
@@ -85,7 +99,7 @@ inline std::string type_name(std::string_view s) {
 
 inline std::string class_name(std::string_view s) {
   if (!use_es()) return std::string(s);
-  if (!detailed_class_es) return es::identifier(s);
+  if (!options::detailed_class_es) return es::identifier(s);
 
   return es::type_name(s);
 }
@@ -115,7 +129,7 @@ inline std::string enumerator(std::string_view s) {
 
 inline std::string class_member(std::string_view s) {
   if (!use_es()) return std::string(s);
-  if (!detailed_member_es) return es::member(s);
+  if (!options::detailed_member_es) return es::member(s);
 
   auto is_operator = [](char c) {
     return !(std::isalnum(static_cast<unsigned char>(c)) || c == '_');
@@ -141,7 +155,7 @@ inline std::string class_member(std::string_view s) {
 
 inline std::string signed_number(std::string_view s) {
   if (!use_es()) return std::string(s);
-  if (!detailed_number_es) return es::number(s);
+  if (!options::detailed_number_es) return es::number(s);
 
   auto is_operator = [](char c) {
     return !(std::isalnum(static_cast<unsigned char>(c)) || c == '.');

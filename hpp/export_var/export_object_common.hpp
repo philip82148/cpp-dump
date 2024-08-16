@@ -17,7 +17,7 @@
 #include "./export_var_fwd.hpp"
 
 #define _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1_1                                                 \
-  if (current_depth >= max_depth)                                                                  \
+  if (current_depth >= options::max_depth)                                                         \
     return class_name + es::bracket("{ ", current_depth) + es::op("...")                           \
            + es::bracket(" }", current_depth);                                                     \
                                                                                                    \
@@ -64,7 +64,7 @@
   if (!shift_indent) {                                                                             \
     output += es::bracket(" }", current_depth);                                                    \
                                                                                                    \
-    if (!has_newline(output) && last_line_length + get_length(output) <= max_line_width)           \
+    if (!has_newline(output) && last_line_length + get_length(output) <= options::max_line_width)  \
       return output;                                                                               \
                                                                                                    \
     if (fail_on_newline) return "\n";                                                              \

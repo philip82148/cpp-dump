@@ -49,11 +49,11 @@ int main(int argc, char *argv[]) {
   unsigned int max_line_width_ = stoi(argv[1]);
   unsigned int max_depth_ = stoi(argv[2]);
   auto es_style_ = (array{
-      cp::es_style_t::no_es,
-      cp::es_style_t::original,
-      cp::es_style_t::by_syntax,
+      cp::types::es_style_t::no_es,
+      cp::types::es_style_t::original,
+      cp::types::es_style_t::by_syntax,
   }[stoi(argv[3])]);
-  bool detailed_es = es_style_ == cp::es_style_t::by_syntax;
+  bool detailed_es = es_style_ == cp::types::es_style_t::by_syntax;
   bool color_test = stoi(argv[4]);
 
   CPP_DUMP_SET_OPTION(max_line_width, max_line_width_);
@@ -67,7 +67,7 @@ int main(int argc, char *argv[]) {
   if (color_test)
     CPP_DUMP_SET_OPTION(
         es_value,
-        (cp::es_value_t{
+        (cp::types::es_value_t{
             "\x1b[02m",                // log: dark
             "\x1b[38;2;86;154;214m",   // expression:
             "\x1b[36m",                // reserved: cyan
@@ -177,9 +177,9 @@ here.)");
   };
   cpp_dump(vec1d3);
 
-  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::always));
+  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::types::cont_indent_style_t::always));
   cpp_dump(vec1d1);
-  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_nested));
+  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::types::cont_indent_style_t::when_nested));
 
   vector<string> vector_of_string{this_string_contains_new_line_here};
   cpp_dump(vector_of_string);
@@ -197,7 +197,9 @@ here.)");
   vector<vector<long long>> vector2d2{vec1d_for_2d2};
   cpp_dump(vector2d2);
 
-  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_non_tuples_nested));
+  PRINT(
+      CPP_DUMP_SET_OPTION(cont_indent_style, cp::types::cont_indent_style_t::when_non_tuples_nested)
+  );
   vector<long long> vec1d_for_2d3 = {
       10000000000000000,
       20000000000000000,
@@ -210,7 +212,7 @@ here.)");
   };
   vector<vector<long long>> vector2d3{vec1d_for_2d3};
   cpp_dump(vector2d3);
-  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::minimal));
+  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::types::cont_indent_style_t::minimal));
   cpp_dump(vector2d3);
 
   vector<long long> vec1d_for_2d4 = {
@@ -225,10 +227,12 @@ here.)");
   };
   vector<vector<long long>> vector2d4{vec1d_for_2d4};
   cpp_dump(vector2d4);
-  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_non_tuples_nested));
+  PRINT(
+      CPP_DUMP_SET_OPTION(cont_indent_style, cp::types::cont_indent_style_t::when_non_tuples_nested)
+  );
   vector<tuple<long long, long long>> vec_of_tuple{{1, 2}};
   cpp_dump(vec_of_tuple);
-  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_nested));
+  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::types::cont_indent_style_t::when_nested));
   cpp_dump(vec_of_tuple);
 
   draw_line("test of set");
@@ -240,18 +244,22 @@ here.)");
   set<string> set_of_string{this_string_contains_new_line_here};
   cpp_dump(set_of_string);
 
-  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_non_tuples_nested));
+  PRINT(
+      CPP_DUMP_SET_OPTION(cont_indent_style, cp::types::cont_indent_style_t::when_non_tuples_nested)
+  );
   set<vector<long long>> set_of_vec1{vec1d_for_2d3};
   cpp_dump(set_of_vec1);
-  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::minimal));
+  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::types::cont_indent_style_t::minimal));
   cpp_dump(set_of_vec1);
 
   set<vector<long long>> set_of_vec2{vec1d_for_2d4};
   cpp_dump(set_of_vec2);
-  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_non_tuples_nested));
+  PRINT(
+      CPP_DUMP_SET_OPTION(cont_indent_style, cp::types::cont_indent_style_t::when_non_tuples_nested)
+  );
   set<tuple<long long, long long>> set_of_tuple{{1, 2}};
   cpp_dump(set_of_tuple);
-  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_nested));
+  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::types::cont_indent_style_t::when_nested));
   cpp_dump(set_of_tuple);
 
   draw_line("test of multiset");
@@ -305,7 +313,9 @@ here.)");
   };
   cpp_dump(map_of_string_value);
 
-  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_non_tuples_nested));
+  PRINT(
+      CPP_DUMP_SET_OPTION(cont_indent_style, cp::types::cont_indent_style_t::when_non_tuples_nested)
+  );
   vector<long long> vec1d_for_map_of_vec1 = {
       1000000000000000,
       2000000000000000,
@@ -324,7 +334,7 @@ here.)");
       {1, vec1d_for_map_of_vec1},
   };
   cpp_dump(map_of_vec_value1);
-  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::minimal));
+  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::types::cont_indent_style_t::minimal));
   cpp_dump(map_of_vec_key1);
   cpp_dump(map_of_vec_value1);
 
@@ -346,12 +356,14 @@ here.)");
       {1, vec1d_for_map_of_vec2},
   };
   cpp_dump(map_of_vec_value2);
-  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_non_tuples_nested));
+  PRINT(
+      CPP_DUMP_SET_OPTION(cont_indent_style, cp::types::cont_indent_style_t::when_non_tuples_nested)
+  );
   map<long long, tuple<long long, long long>> map_of_tuple_key{{1, {2, 3}}};
   cpp_dump(map_of_tuple_key);
   map<tuple<long long, long long>, long long> map_of_tuple_value{{{1, 2}, 3}};
   cpp_dump(map_of_tuple_value);
-  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::cont_indent_style_t::when_nested));
+  PRINT(CPP_DUMP_SET_OPTION(cont_indent_style, cp::types::cont_indent_style_t::when_nested));
   cpp_dump(map_of_tuple_key);
   cpp_dump(map_of_tuple_value);
 

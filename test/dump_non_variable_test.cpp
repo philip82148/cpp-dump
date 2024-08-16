@@ -200,15 +200,15 @@ CPP_DUMP_SET_OPTION_GLOBAL(max_iteration_count, 100);
 int main(int argc, char *argv[]) {
   if (argc != 2) return 1;
   auto es_style_ = (array{
-      cp::es_style_t::no_es,
-      cp::es_style_t::original,
-      cp::es_style_t::by_syntax,
+      cp::types::es_style_t::no_es,
+      cp::types::es_style_t::original,
+      cp::types::es_style_t::by_syntax,
   }[stoi(argv[1])]);
 
   CPP_DUMP_SET_OPTION(es_style, es_style_);
 
   // Verify if CPP_DUMP_SET_OPTION_GLOBAL is working correctly.
-  cpp_dump(cpp_dump::max_iteration_count == 100);
+  cpp_dump(cpp_dump::options::max_iteration_count == 100);
 
   // basic
   cpp_dump(false, 0, 0.0, '0', (const char *)"0", string{"0"}, string_view{"0"});
@@ -391,14 +391,17 @@ int main(int argc, char *argv[]) {
 
   // extra
   cpp_dump(
-      cp::es_style_t::no_es, cp::es_style_t::original, cp::es_style_t::by_syntax, cp::es_value
+      cp::types::es_style_t::no_es,
+      cp::types::es_style_t::original,
+      cp::types::es_style_t::by_syntax,
+      cp::options::es_value
   );
   cpp_dump(
-      cp::cont_indent_style_t::minimal,
-      cp::cont_indent_style_t::when_nested,
-      cp::cont_indent_style_t::when_non_tuples_nested,
-      cp::cont_indent_style_t::always,
-      cp::cont_indent_style
+      cp::types::cont_indent_style_t::minimal,
+      cp::types::cont_indent_style_t::when_nested,
+      cp::types::cont_indent_style_t::when_non_tuples_nested,
+      cp::types::cont_indent_style_t::always,
+      cp::options::cont_indent_style
   );
 
   // index, front, back, middle, both_ends

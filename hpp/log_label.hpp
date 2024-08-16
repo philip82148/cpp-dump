@@ -14,26 +14,30 @@
 
 namespace cpp_dump {
 
-namespace log_label {
+namespace types {
 
 /**
- * Type of cpp_dump::log_label_func.
+ * Type of cpp_dump::options::log_label_func.
  */
 using log_label_func_t =
     std::function<std::string(std::string_view, std::size_t, std::string_view)>;
 
-/*
- * Default function assigned to cpp_dump::log_label_func.
+}  // namespace types
+
+namespace log_label {
+
+/**
+ * Default function assigned to cpp_dump::options::log_label_func.
  */
 inline std::string default_func(std::string_view, std::size_t, std::string_view) {
   return "[dump] ";
 }
 
-/*
- * Function that create a function to assign to `cpp_dump::log_label_func`.
+/**
+ * Function that create a function to assign to cpp_dump::options::log_label_func.
  * See README for details.
  */
-inline log_label_func_t line(bool show_func = false, int min_width = 0) {
+inline types::log_label_func_t line(bool show_func = false, int min_width = 0) {
   return [=](std::string_view, std::size_t line, std::string_view func_name) -> std::string {
     std::string output = "[:" + std::to_string(line);
     if (show_func) output.append(" (").append(func_name).append(")");
@@ -46,11 +50,11 @@ inline log_label_func_t line(bool show_func = false, int min_width = 0) {
   };
 }
 
-/*
- * Function that create a function to assign to `cpp_dump::log_label_func`.
+/**
+ * Function that create a function to assign to cpp_dump::options::log_label_func.
  * See README for details.
  */
-inline log_label_func_t basename(bool show_func = false, int min_width = 0) {
+inline types::log_label_func_t basename(bool show_func = false, int min_width = 0) {
   return
       [=](std::string_view fullpath, std::size_t line, std::string_view func_name) -> std::string {
         auto slash_pos = fullpath.find_last_of("/\\");
@@ -73,11 +77,11 @@ inline log_label_func_t basename(bool show_func = false, int min_width = 0) {
       };
 }
 
-/*
- * Function that create a function to assign to `cpp_dump::log_label_func`.
+/**
+ * Function that create a function to assign to cpp_dump::options::log_label_func.
  * See README for details.
  */
-inline log_label_func_t filename(bool show_func = false, int min_width = 0) {
+inline types::log_label_func_t filename(bool show_func = false, int min_width = 0) {
   return
       [=](std::string_view fullpath, std::size_t line, std::string_view func_name) -> std::string {
         auto slash_pos = fullpath.find_last_of("/\\");
@@ -96,11 +100,13 @@ inline log_label_func_t filename(bool show_func = false, int min_width = 0) {
       };
 }
 
-/*
- * Function that create a function to assign to `cpp_dump::log_label_func`.
+/**
+ * Function that create a function to assign to cpp_dump::options::log_label_func.
  * See README for details.
  */
-inline log_label_func_t fullpath(int substr_start, bool show_func = false, int min_width = 0) {
+inline types::log_label_func_t fullpath(
+    int substr_start, bool show_func = false, int min_width = 0
+) {
   return
       [=](std::string_view fullpath, std::size_t line, std::string_view func_name) -> std::string {
         std::string output = "[";
@@ -117,11 +123,11 @@ inline log_label_func_t fullpath(int substr_start, bool show_func = false, int m
       };
 }
 
-/*
- * Function that create a function to assign to `cpp_dump::log_label_func`.
+/**
+ * Function that create a function to assign to cpp_dump::options::log_label_func.
  * See README for details.
  */
-inline log_label_func_t fixed_length(
+inline types::log_label_func_t fixed_length(
     int min_width, int max_width, int substr_start, bool show_func = false
 ) {
   return

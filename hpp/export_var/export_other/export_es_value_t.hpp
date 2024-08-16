@@ -31,12 +31,12 @@ inline std::string _export_es_value_vector(
 ) {
   if (es_vec.empty()) return es::bracket("[ ]", current_depth);
 
-  if (current_depth >= max_depth)
+  if (current_depth >= options::max_depth)
     return es::bracket("[ ", current_depth) + es::op("...") + es::bracket(" ]", current_depth);
 
   auto skipped_es_vec = command.create_skip_container(es_vec);
 
-  bool shift_indent = cont_indent_style == cont_indent_style_t::always;
+  bool shift_indent = options::cont_indent_style == types::cont_indent_style_t::always;
 
   std::string output = es::bracket("[ ", current_depth);
   bool is_first_elem = true;
@@ -53,7 +53,8 @@ inline std::string _export_es_value_vector(
     if (is_ellipsis) {
       output += es::op("...");
 
-      if (last_line_length + get_length(output) + std::string_view(" ]").size() > max_line_width) {
+      if (last_line_length + get_length(output) + std::string_view(" ]").size()
+          > options::max_line_width) {
         shift_indent = true;
         break;
       }
@@ -64,7 +65,8 @@ inline std::string _export_es_value_vector(
     if (command.show_index()) output += es::member(std::to_string(index_)) + es::op(": ");
 
     output += es::apply(es, escape_string(es));
-    if (last_line_length + get_length(output) + std::string_view(" ]").size() > max_line_width) {
+    if (last_line_length + get_length(output) + std::string_view(" ]").size()
+        > options::max_line_width) {
       shift_indent = true;
       break;
     }
@@ -108,14 +110,14 @@ inline std::string _export_es_value_vector(
 }
 
 inline std::string export_es_value_t(
-    const es_value_t &esv,
+    const types::es_value_t &esv,
     const std::string &indent,
     std::size_t last_line_length,
     std::size_t current_depth,
     bool fail_on_newline,
     const export_command &command
 ) {
-  std::string class_name = es::class_name("cpp_dump::es_value_t");
+  std::string class_name = es::class_name("cpp_dump::types::es_value_t");
 
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1_1;
 

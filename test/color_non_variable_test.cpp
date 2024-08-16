@@ -49,11 +49,11 @@ CPP_DUMP_DEFINE_EXPORT_ENUM(partially_supported_enum, supported);
 int main(int argc, char *argv[]) {
   if (argc != 2) return 1;
   auto es_style_ = (array{
-      cp::es_style_t::no_es,
-      cp::es_style_t::original,
-      cp::es_style_t::by_syntax,
+      cp::types::es_style_t::no_es,
+      cp::types::es_style_t::original,
+      cp::types::es_style_t::by_syntax,
   }[stoi(argv[1])]);
-  bool detailed_es = es_style_ == cp::es_style_t::by_syntax;
+  bool detailed_es = es_style_ == cp::types::es_style_t::by_syntax;
 
   CPP_DUMP_SET_OPTION(max_iteration_count, 100);
   CPP_DUMP_SET_OPTION(es_style, es_style_);
@@ -63,7 +63,7 @@ int main(int argc, char *argv[]) {
 
   CPP_DUMP_SET_OPTION(
       es_value,
-      (cp::es_value_t{
+      (cp::types::es_value_t{
           "\x1b[02m",                // log: dark
           "\x1b[38;2;86;154;214m",   // expression:
           "\x1b[36m",                // reserved: cyan
@@ -211,16 +211,16 @@ int main(int argc, char *argv[]) {
   cpp_dump(unsupported_class1);
 
   // extra
-  cpp_dump(cp::es_style_t::no_es);
-  cpp_dump(cp::es_style_t::original);
-  cpp_dump(cp::es_style_t::by_syntax);
-  cpp_dump(cp::es_value);
+  cpp_dump(cp::types::es_style_t::no_es);
+  cpp_dump(cp::types::es_style_t::original);
+  cpp_dump(cp::types::es_style_t::by_syntax);
+  cpp_dump(cp::options::es_value);
 
   // manipulators
   cpp_dump(vec2 | cp::index());
   cpp_dump(vec2 | cp::front(3) | cp::index());
-  cpp_dump(cp::es_value | cp::index());
-  cpp_dump(cp::es_value | cp::index() | cp::front(1));
+  cpp_dump(cp::options::es_value | cp::index());
+  cpp_dump(cp::options::es_value | cp::index() | cp::front(1));
 
   CPP_DUMP_SET_OPTION(print_expr, false);
   cpp_dump(-1 | cp::bin(), -1 | cp::oct(), -1 | cp::hex(), -1 | cp::dec());
