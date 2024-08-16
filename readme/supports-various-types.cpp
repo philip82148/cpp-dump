@@ -12,7 +12,7 @@
 #include <variant>
 #include <vector>
 
-#include "../cpp_dump.hpp"
+#include "../cpp-dump.hpp"
 
 int main() {
   int my_int = 15;

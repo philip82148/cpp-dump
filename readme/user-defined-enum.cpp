@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "../cpp_dump.hpp"
+#include "../cpp-dump.hpp"
 
 enum class enum_A { a, b, c };
 CPP_DUMP_DEFINE_EXPORT_ENUM(enum_A, enum_A::a, enum_A::b, enum_A::c);

@@ -180,7 +180,7 @@ git clone https://github.com/philip82148/cpp-dump
 Then
 
 ```cpp
-#include "path/to/cpp-dump/cpp_dump.hpp"
+#include "path/to/cpp-dump/cpp-dump.hpp"
 ```
 
 ### With CMake
@@ -198,7 +198,7 @@ sudo cmake --install build
 Then
 
 ```cpp
-#include <cpp_dump.hpp>
+#include <cpp-dump.hpp>
 ```
 
 #### Use `FetchContent`
@@ -224,7 +224,7 @@ target_link_libraries(MyApp PRIVATE cpp-dump)
 Then
 
 ```cpp
-#include <cpp_dump.hpp>
+#include <cpp-dump.hpp>
 ```
 
 ## Configuration (as needed)
@@ -235,7 +235,7 @@ If you want to customize the library, you can write the configuration code as fo
 
 ```cpp
 #ifdef DEBUGGING
-#include "path/to/cpp-dump/cpp_dump.hpp"
+#include "path/to/cpp-dump/cpp-dump.hpp"
 namespace cp = cpp_dump;
 CPP_DUMP_SET_OPTION_GLOBAL(max_line_width, 100);
 // CPP_DUMP_DEFINE_EXPORT_ENUM(...);
@@ -994,7 +994,7 @@ inline void cpp_dump::write_log(std::string_view output) {
 
 ```cpp
 #ifdef DEFINED_ONLY_IN_LOCAL
-#include "./cpp-dump/cpp_dump.hpp"
+#include "./cpp-dump/cpp-dump.hpp"
 #define dump(...) cpp_dump(__VA_ARGS__)
 namespace cp = cpp_dump;
 #else

@@ -3,7 +3,7 @@
 #include <set>
 #include <vector>
 
-#include "../cpp_dump.hpp"
+#include "../cpp-dump.hpp"
 namespace cp = cpp_dump;
 
 void my_func() {

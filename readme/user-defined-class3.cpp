@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "../cpp_dump.hpp"
+#include "../cpp-dump.hpp"
 
 struct class_A {
   int i;
