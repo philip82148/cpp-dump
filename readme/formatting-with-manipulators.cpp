@@ -2,7 +2,7 @@
 #include <iostream>
 #include <vector>
 
-#include "../dump.hpp"
+#include "../cpp-dump.hpp"
 namespace cp = cpp_dump;
 
 int main() {

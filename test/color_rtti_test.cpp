@@ -1,6 +1,6 @@
 #include <typeindex>
 
-#include "../dump.hpp"
+#include "../cpp-dump.hpp"
 
 namespace cp = cpp_dump;
 

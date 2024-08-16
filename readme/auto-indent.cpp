@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 
-#include "../dump.hpp"
+#include "../cpp-dump.hpp"
 
 int main() {
   std::clog << std::endl;

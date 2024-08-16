@@ -178,7 +178,7 @@ git clone https://github.com/philip82148/cpp-dump
 Then
 
 ```cpp
-#include "path/to/cpp-dump/dump.hpp"
+#include "path/to/cpp-dump/cpp-dump.hpp"
 ```
 
 ## Configuration (as needed)
@@ -188,7 +188,7 @@ If you want to customize the library, you can write the configuration code as fo
 ```cpp
 // You can also write this in a header file -----------------------------------
 #ifdef DEBUGGING
-#include "path/to/cpp-dump/dump.hpp"
+#include "path/to/cpp-dump/cpp-dump.hpp"
 namespace cp = cpp_dump;
 CPP_DUMP_SET_OPTION_GLOBAL(max_line_width, 100);
 #else
@@ -206,7 +206,7 @@ If you want to configure the library within a function, use `CPP_DUMP_SET_OPTION
 ```cpp
 // You can also write this in a header file -----------------------------------
 #ifdef DEBUGGING
-#include "path/to/cpp-dump/dump.hpp"
+#include "path/to/cpp-dump/cpp-dump.hpp"
 namespace cp = cpp_dump;
 #else
 #define cpp_dump(...)
@@ -946,7 +946,7 @@ inline void cpp_dump::write_log(std::string_view output) {
 
 ```cpp
 #ifdef DEFINED_ONLY_IN_LOCAL
-#include "./cpp-dump/dump.hpp"
+#include "./cpp-dump/cpp-dump.hpp"
 #define dump(...) cpp_dump(__VA_ARGS__)
 namespace cp = cpp_dump;
 #else

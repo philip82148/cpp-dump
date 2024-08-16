@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "../dump.hpp"
+#include "../cpp-dump.hpp"
 
 CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC(i, str());
 
