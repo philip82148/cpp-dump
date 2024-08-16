@@ -171,6 +171,8 @@ See [Formatting with manipulators](#formatting-with-manipulators) for details.
 
 ## Installation
 
+### Simplest solution
+
 ```shell
 git clone https://github.com/philip82148/cpp-dump
 ```
@@ -179,6 +181,55 @@ Then
 
 ```cpp
 #include "path/to/cpp-dump/cpp_dump.hpp"
+```
+
+### With CMake
+
+#### `cmake --install`
+
+```shell
+git clone https://github.com/philip82148/cpp-dump
+cd cpp-dump
+cmake -S . -B build # No configuration is needed because the library is header-only.
+sudo cmake --install build #  Copy the headers to /usr/local/include/ or equivalent
+# (The cpp-dump folder can be removed after this.)
+```
+
+Then
+
+```cpp
+#include <cpp_dump.hpp>
+```
+
+#### Use FetchContent
+
+`CMakeLists.txt`
+
+```cmake
+cmake_minimum_required(VERSION 3.11) # Minimum version that can use FetchContent
+project(MyProject)
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON) # Generate compile_commands.json
+
+include(FetchContent)
+
+# Fetch cpp-dump
+FetchContent_Declare(cpp-dump
+    GIT_REPOSITORY https://github.com/philip82148/cpp-dump
+    GIT_TAG main
+)
+FetchContent_MakeAvailable(cpp-dump)
+
+add_executable(MyApp path/to/main.cpp) # Your source files
+target_link_libraries(MyApp PRIVATE cpp-dump) # Link cpp-dump to your source files
+```
+
+Then
+
+`path/to/main.cpp`
+
+```cpp
+#include <cpp_dump.hpp>
 ```
 
 ## Configuration (as needed)
