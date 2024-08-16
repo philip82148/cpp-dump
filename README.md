@@ -231,7 +231,7 @@ Then
 
 If you want to customize the library, you can write the configuration code as follows:
 
-`my-debug.hpp`
+`custom-cpp-dump.hpp`
 
 ```cpp
 #ifdef DEBUGGING
@@ -250,7 +250,7 @@ CPP_DUMP_SET_OPTION_GLOBAL(max_line_width, 100);
 `main.cpp`
 
 ```cpp
-#include "path/to/my-debug.hpp"
+#include "path/to/custom-cpp-dump.hpp"
 
 int main() {
   cpp_dump(vec | cp::back());
@@ -260,7 +260,7 @@ int main() {
 If you want to configure the library within a function, use `CPP_DUMP_SET_OPTION()` instead.
 
 ```cpp
-#include "path/to/my-debug.hpp"
+#include "path/to/custom-cpp-dump.hpp"
 
 void func() {
   CPP_DUMP_SET_OPTION(print_expr, false);
