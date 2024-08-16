@@ -14,12 +14,12 @@
 #include <string>
 #include <string_view>
 
-#include "hpp/escape_sequence.hpp"
-#include "hpp/expand_va_macro.hpp"
-#include "hpp/export_command/export_command.hpp"
-#include "hpp/export_var/export_var.hpp"
-#include "hpp/options.hpp"
-#include "hpp/utility.hpp"
+#include "./cpp-dump/hpp/escape_sequence.hpp"
+#include "./cpp-dump/hpp/expand_va_macro.hpp"
+#include "./cpp-dump/hpp/export_command/export_command.hpp"
+#include "./cpp-dump/hpp/export_var/export_var.hpp"
+#include "./cpp-dump/hpp/options.hpp"
+#include "./cpp-dump/hpp/utility.hpp"
 
 #define _p_CPP_DUMP_EXPAND_FOR_CPP_DUMP(expr) #expr
 

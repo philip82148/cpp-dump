@@ -18,7 +18,7 @@ install(
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
 )
 install(
-    DIRECTORY "hpp"
+    DIRECTORY "cpp-dump"
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
 )
 
