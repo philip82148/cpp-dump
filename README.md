@@ -4,7 +4,7 @@
 
 cpp-dump is a C++ library for printing any variable for debugging.
 
-Python has `print()`, JavaScript has `console.log()`, and PHP has `var_dump()` — functions that print variables of any type and are useful for debugging when you want a quick way to inspect variables. But what about C++? cpp-dump gets the job done. cpp-dump is a library that automatically formats and prints variables of any type. With features like auto-indentation, colored output, string representations similar to JavaScript, Python, and C++, and over 20 manipulators, cpp-dump is equipped with everything you need to effortlessly and clearly print variables.
+Python has `print()`, JavaScript has `console.log()`, and PHP has `var_dump()` — functions that print variables of any type and are useful for debugging when you want a quick way to inspect variables. But what about C++? Enter `cpp_dump(...)`. cpp-dump is a library that automatically formats and prints variables of any type. With features like auto-indentation, colored output, string representations similar to JavaScript, Python, and C++, and over 20 manipulators, cpp-dump is equipped with everything you need to effortlessly and clearly print variables.
 
 Key points:
 
