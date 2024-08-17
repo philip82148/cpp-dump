@@ -19,7 +19,7 @@
 #define _p_CPP_DUMP_EXPAND_FOR_EXPORT_OBJECT_GENERIC2(member) append_output(#member, value.member)
 
 /**
- * Make export_var() support every type that has the specified members.
+ * Make cpp_dump::export_var() support every type that has the specified members.
  * Member functions to be displayed must be const.
  * Compile errors in this macro, such as ambiguous function calls, are never reported due to SFINAE.
  */
@@ -55,4 +55,6 @@
  * Use CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC() instead.
  */
 #define CPP_DUMP_DEFINE_DANGEROUS_EXPORT_OBJECT(...)                                               \
-  CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC(__VA_ARGS__)
+  _Pragma(                                                                                         \
+      "message (\"WARNING: Deprecated. Use CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC() instead.\")"    \
+  ) CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC(__VA_ARGS__)

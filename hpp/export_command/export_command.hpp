@@ -26,7 +26,7 @@ namespace _detail {
 const std::function<std::size_t(std::size_t, const std::function<std::size_t()> &)>
     _default_skip_size_func(
         [](std::size_t index, const std::function<std::size_t()> &) -> std::size_t {
-          if (index >= max_iteration_count) return static_cast<std::size_t>(-1);
+          if (index >= options::max_iteration_count) return static_cast<std::size_t>(-1);
           return 0;
         }
     );
@@ -587,7 +587,7 @@ inline auto index() { return _detail::export_command(_detail::export_command::in
  * Manipulator for the display style of iterables.
  * See README for details.
  */
-inline auto front(std::size_t iteration_count = max_iteration_count) {
+inline auto front(std::size_t iteration_count = options::max_iteration_count) {
   return _detail::export_command(
       [=](std::size_t index, const std::function<std::size_t()> &) -> std::size_t {
         if (index >= iteration_count) return static_cast<std::size_t>(-1);  // skip to the end
@@ -601,7 +601,7 @@ inline auto front(std::size_t iteration_count = max_iteration_count) {
  * Manipulator for the display style of iterables.
  * See README for details.
  */
-inline auto back(std::size_t iteration_count = max_iteration_count) {
+inline auto back(std::size_t iteration_count = options::max_iteration_count) {
   return _detail::export_command(
       [=](std::size_t index, const std::function<std::size_t()> &cont_size) -> std::size_t {
         std::size_t size = cont_size();
@@ -618,7 +618,7 @@ inline auto back(std::size_t iteration_count = max_iteration_count) {
  * Manipulator for the display style of iterables.
  * See README for details.
  */
-inline auto both_ends(std::size_t half_iteration_count = max_iteration_count / 2) {
+inline auto both_ends(std::size_t half_iteration_count = options::max_iteration_count / 2) {
   return _detail::export_command(
       [=](std::size_t index, const std::function<std::size_t()> &cont_size) -> std::size_t {
         std::size_t size = cont_size();
@@ -637,7 +637,7 @@ inline auto both_ends(std::size_t half_iteration_count = max_iteration_count / 2
  * Manipulator for the display style of iterables.
  * See README for details.
  */
-inline auto middle(std::size_t iteration_count = max_iteration_count) {
+inline auto middle(std::size_t iteration_count = options::max_iteration_count) {
   return _detail::export_command(
       [=](std::size_t index, const std::function<std::size_t()> &cont_size) -> std::size_t {
         std::size_t size = cont_size();

@@ -32,8 +32,7 @@ cpp_dump(my_vector);
 ### A wide variety of supported types
 
 cpp-dump supports a wide variety of types. Also, it supports nested containers of any combination of the types. Their string representation is similar to JavaScript, Python, and C++ syntax, which is easy to read.  
-[See All Supported Types](#supported-types)  
-[See Full Example Code](./readme/supports-various-types.cpp)
+[See All Supported Types](#supported-types) [See Full Example Code](./readme/supports-various-types.cpp)
 
 ```cpp
 // See the full example code for the definitions of the variables.
@@ -99,7 +98,7 @@ You can modify the escape sequences to change the colors of the output using the
 
 ```cpp
 // Use more colors
-CPP_DUMP_SET_OPTION(es_value, (cp::es_value_t{
+CPP_DUMP_SET_OPTION(es_value, (cp::types::es_value_t{
   "\x1b[02m",        // log: dark
   "\x1b[34m",        // expression: blue
   "\x1b[38;5;39m",   // reserved: light blue
@@ -127,7 +126,7 @@ CPP_DUMP_SET_OPTION(detailed_member_es, true);
 CPP_DUMP_SET_OPTION(detailed_number_es, true);
 
 // Use a color scheme closer to standard syntax highlighting.
-// CPP_DUMP_SET_OPTION(es_style, cp::es_style_t::by_syntax);
+// CPP_DUMP_SET_OPTION(es_style, cp::types::es_style_t::by_syntax);
 ```
 
 ![customizable-colors.png](./readme/customizable-colors.png)
@@ -137,7 +136,7 @@ To turn off output coloring, use the following code.
 
 ```cpp
 // Turn off output coloring
-CPP_DUMP_SET_OPTION(es_style, cpp_dump::es_style_t::no_es);
+CPP_DUMP_SET_OPTION(es_style, cp::types::es_style_t::no_es);
 ```
 
 ### Can print even user-defined types
@@ -185,7 +184,7 @@ Then
 
 ## Configuration (as needed)
 
-If you want to customize the library, you can write the configuration code as follows:
+If you want to customize the library, use the `CPP_DUMP_SET_OPTION_GLOBAL()` macro:
 
 ```cpp
 // You can also write this in a header file -----------------------------------
@@ -241,7 +240,7 @@ The maximum number of times `cpp_dump::export_var()` is called recursively.
 
 Type: `std::size_t` Default: `16`  
 The maximum number of iterations of `cpp_dump::export_var()` over an iterator.  
-Note that in a single call, `cpp_dump::export_var()` calls itself at most (`max_iteration_count`^(`max_depth`+1)-1)/(`max_iteration_count`-1)-1 times.
+Note that in a single call, `cpp_dump::export_var()` calls itself at most `(max_iteration_count^(max_depth+1)-1)/(max_iteration_count-1)` times.
 
 #### `enable_asterisk`
 
@@ -255,23 +254,23 @@ Whether `cpp_dump()` prints the expressions.
 
 #### `log_label_func`
 
-Type: `cpp_dump::log_label::log_label_func_t` Default: `cpp_dump::log_label::default_func`  
+Type: `cpp_dump::types::log_label_func_t` Default: `cpp_dump::log_label::default_func`  
 The function that returns the label that `cpp_dump()` prints at the beginning of the output.
 
 #### `es_style`
 
-Type: `enum class cpp_dump::es_style_t` Default `cpp_dump::es_style_t::original`  
+Type: `enum class cpp_dump::types::es_style_t` Default `cpp_dump::types::es_style_t::original`  
 The style of the escape sequences (the output coloring).
 
-| Name        | Description                                                                                                                               |
-| ----------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| `original`  | Default.                                                                                                                                  |
-| `by_syntax` | Use a color scheme closer to standard syntax highlighting. Pointers, bitsets, complexes, and etc. are colored differently from `original` |
-| `no_es`     | Turn off output coloring                                                                                                                  |
+| Name        | Description                                                                                                                                |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `original`  | Default.                                                                                                                                   |
+| `by_syntax` | Use a color scheme closer to standard syntax highlighting. Pointers, bitsets, complexes, and etc. are colored differently from `original`. |
+| `no_es`     | Turn off output coloring.                                                                                                                  |
 
 #### `es_value`
 
-Type: `cpp_dump::es_value_t` Default: (Default constructor, see [Types](#types))  
+Type: `cpp_dump::types::es_value_t` Default: (Default constructor, see [Types](#types))  
 The values of the escape sequences.
 
 #### `detailed_class_es`
@@ -291,12 +290,12 @@ If true, the 'number_op' color is used for operators in numbers (`-`, `+`, etc..
 
 #### `cont_indent_style`
 
-Type: `enum class cpp_dump::cont_indent_style_t` Default: `cpp_dump::cont_indent_style_t::when_nested`  
+Type: `enum class cpp_dump::types::cont_indent_style_t` Default: `cpp_dump::types::cont_indent_style_t::when_nested`  
 The style of indents of the Container, Set and Map categories (See [Supported types](#supported-types)).
 
 | Name                     | Description                                                                                                                               |
 | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| `minimal`                | Don't indent unless the `max_line_width` is exceeded                                                                                      |
+| `minimal`                | Don't indent unless the `max_line_width` is exceeded.                                                                                     |
 | `when_nested`            | Default. Always indent when the element/key/value type also falls into the Container/Set/Map/Tuple category.                              |
 | `when_non_tuples_nested` | Always indent when the element/key/value type falls into the Container/Set/Map category, but don't when it falls into the Tuple category. |
 | `always`                 | Always indent even if the Container/Set/Map is not nested.                                                                                |
@@ -314,31 +313,30 @@ The style of indents of the Container, Set and Map categories (See [Supported ty
 #define cpp_dump(expressions...)
 
 /**
- * Make export_var() support type T.
+ * Make cpp_dump::export_var() support type T.
  * Member functions to be displayed must be const.
  */
 #define CPP_DUMP_DEFINE_EXPORT_OBJECT(T, members...)
 
 /**
- * Make export_var() support every type that has the specified members.
+ * Make cpp_dump::export_var() support every type that has the specified members.
  * Member functions to be displayed must be const.
  * Compile errors in this macro, such as ambiguous function calls, are never reported due to SFINAE.
  */
 #define CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC(members...)
 
 /**
- * Make export_var() support enum T.
+ * Make cpp_dump::export_var() support enum T.
  */
 #define CPP_DUMP_DEFINE_EXPORT_ENUM(T, members...)
 
 /**
- * Set a value to a variable in cpp_dump namespace.
- * You can also assign values to the variables directly.
+ * Set a value to a variable in cpp_dump::options namespace.
  */
 #define CPP_DUMP_SET_OPTION(variable, value)
 
 /**
- * Set a value to a variable in cpp_dump namespace.
+ * Set a value to a variable in cpp_dump::options namespace.
  * Use this if you want to run it in the global namespace, meaning before the main starts.
  */
 #define CPP_DUMP_SET_OPTION_GLOBAL(variable, value)
@@ -347,17 +345,19 @@ The style of indents of the Container, Set and Map categories (See [Supported ty
 ### Types
 
 ```cpp
-/**
- * Type of cpp_dump::es_style.
- * cpp_dump::export_var() supports this type.
- */
-enum class cpp_dump::es_style_t { no_es, original, by_syntax };
+namespace cpp_dump::types {
 
 /**
- * Type of cpp_dump::es_value.
+ * Type of cpp_dump::options::es_style.
  * cpp_dump::export_var() supports this type.
  */
-struct cpp_dump::es_value_t {
+enum class es_style_t { no_es, original, by_syntax };
+
+/**
+ * Type of cpp_dump::options::es_value.
+ * cpp_dump::export_var() supports this type.
+ */
+struct es_value_t {
   std::string log = "\x1b[02m";                           // dark
   std::string expression = "\x1b[36m";                    // cyan
   std::string reserved{};                                 // default
@@ -375,158 +375,166 @@ struct cpp_dump::es_value_t {
 };
 
 /**
- * Type of cpp_dump::cont_indent_style.
+ * Type of cpp_dump::options::cont_indent_style.
  * cpp_dump::export_var() supports this type.
  */
-enum class cpp_dump::cont_indent_style_t
-    { minimal, when_nested, when_non_tuples_nested, always };
+enum class cont_indent_style_t { minimal, when_nested, when_non_tuples_nested, always };
 
-using cpp_dump::log_label::log_label_func_t =
-    std::function<std::string(std::string_view, std::size_t, std::string_view)>;
+using log_label_func_t = std::function<std::string(std::string_view, std::size_t, std::string_view)>;
+
+}  // namespace cpp_dump::types
 ```
 
 ### Variables
 
 ```cpp
+namespace cpp_dump::options {
+
 /**
  * Maximum line width of the strings returned by cpp_dump() and cpp_dump::export_var().
  */
-inline std::size_t cpp_dump::max_line_width = 160;
+inline std::size_t max_line_width = 160;
 
 /**
  * Maximum number of times cpp_dump::export_var() is called recursively.
  */
-inline std::size_t cpp_dump::max_depth = 4;
+inline std::size_t max_depth = 4;
 
 /**
  * Maximum number of iterations of cpp_dump::export_var() over an iterator.
  * Note that in a single call, cpp_dump::export_var() calls itself at most
- * (max_iteration_count^(max_depth+1)-1)/(max_iteration_count-1)-1 times.
+ * (max_iteration_count^(max_depth+1)-1)/(max_iteration_count-1) times.
  */
-inline std::size_t cpp_dump::max_iteration_count = 16;
+inline std::size_t max_iteration_count = 16;
 
 /**
  * Whether cpp_dump() prints types of the Asterisk category (See 'Supported types').
  */
-inline bool cpp_dump::enable_asterisk = false;
+inline bool enable_asterisk = false;
 
 /**
  * Whether cpp_dump() prints the expressions.
  */
-inline bool cpp_dump::print_expr = true;
+inline bool print_expr = true;
 
 /**
  * Function that returns the label that cpp_dump() prints at the beginning of the output.
  */
-inline cpp_dump::log_label::log_label_func_t cpp_dump::log_label_func = cpp_dump::log_label::default_func;
+inline types::log_label_func_t log_label_func = log_label::default_func;
 
 /**
  * Style of the escape sequences (output coloring).
  */
-inline cpp_dump::es_style_t cpp_dump::es_style = cpp_dump::es_style_t::original;
+inline types::es_style_t es_style = types::es_style_t::original;
 
 /**
  * Values of the escape sequences (output coloring).
  */
-inline cpp_dump::es_value_t cpp_dump::es_value;
+inline types::es_value_t es_value;
 
 /**
  * If true, the 'class_op' color is used for operators in class names (::, <>, etc...).
  */
-inline bool cpp_dump::detailed_class_es = false;
+inline bool detailed_class_es = false;
 
 /**
  * If true, the 'member_op' color is used for operators in members ((), etc...).
  */
-inline bool cpp_dump::detailed_member_es = false;
+inline bool detailed_member_es = false;
 
 /**
  * If true, the 'number_op' color is used for operators in numbers (-, +, etc...).
  */
-inline bool cpp_dump::detailed_number_es = false;
+inline bool detailed_number_es = false;
 
 /**
  * Style of indents of the Container, Set and Map categories (See 'Supported types')
  */
-inline cpp_dump::cont_indent_style_t cpp_dump::cont_indent_style = cpp_dump::cont_indent_style_t::when_nested;
+inline types::cont_indent_style_t cont_indent_style = types::cont_indent_style_t::when_nested;
+
+}  // namespace cpp_dump::options
 ```
 
 ### Functions
 
 ```cpp
+namespace cpp_dump {
+
 /**
  * Return a string representation of a variable.
  * cpp_dump() uses this function internally.
  */
 template <typename T>
-std::string cpp_dump::export_var(const T &value);
+std::string export_var(const T &value);
 
 /**
  * cpp_dump() uses this function to print logs.
  * Define an explicit specialization with 'void' to customize this function.
  */
 template <typename = void>
-void cpp_dump::write_log(std::string_view output) {
+void write_log(std::string_view output) {
   std::clog << output << std::endl;
 }
 
 // Manipulators (See 'Formatting with manipulators' for details.)
-cpp_dump::front(std::size_t iteration_count = cpp_dump::max_iteration_count);
-cpp_dump::middle(std::size_t iteration_count = cpp_dump::max_iteration_count);
-cpp_dump::back(std::size_t iteration_count = cpp_dump::max_iteration_count);
-cpp_dump::both_ends(std::size_t half_iteration_count = cpp_dump::max_iteration_count / 2);
-cpp_dump::index();
-cpp_dump::int_style(int base, int digits = -1, int chunk = 0,
+front(std::size_t iteration_count = options::max_iteration_count);
+middle(std::size_t iteration_count = options::max_iteration_count);
+back(std::size_t iteration_count = options::max_iteration_count);
+both_ends(std::size_t half_iteration_count = options::max_iteration_count / 2);
+index();
+int_style(int base, int digits = -1, int chunk = 0,
     bool space_fill = false, bool make_unsigned_or_no_space_for_minus = false);
-cpp_dump::bin(int digits = -1, int chunk = 0, bool space_fill = false);
-cpp_dump::oct(int digits = -1, int chunk = 0, bool space_fill = false);
-cpp_dump::hex(int digits = -1, int chunk = 0, bool space_fill = false);
-cpp_dump::dec(int digits = -1, int chunk = 0, bool space_fill = true);
-cpp_dump::ubin(int digits = -1, int chunk = 0, bool space_fill = false);
-cpp_dump::uoct(int digits = -1, int chunk = 0, bool space_fill = false);
-cpp_dump::uhex(int digits = -1, int chunk = 0, bool space_fill = false);
-cpp_dump::udec(int digits = -1, int chunk = 0, bool space_fill = true);
-cpp_dump::map_k(return_value_of_manipulator);
-cpp_dump::map_v(return_value_of_manipulator);
-cpp_dump::map_kv(return_value_of_manipulator_for_key, return_value_of_manipulator_for_value);
-cpp_dump::format(const char *f);
-cpp_dump::bw(bool left = false);
-cpp_dump::boolnum();
-cpp_dump::stresc();
-cpp_dump::charhex();
-cpp_dump::addr(std::size_t depth = 0);
+bin(int digits = -1, int chunk = 0, bool space_fill = false);
+oct(int digits = -1, int chunk = 0, bool space_fill = false);
+hex(int digits = -1, int chunk = 0, bool space_fill = false);
+dec(int digits = -1, int chunk = 0, bool space_fill = true);
+ubin(int digits = -1, int chunk = 0, bool space_fill = false);
+uoct(int digits = -1, int chunk = 0, bool space_fill = false);
+uhex(int digits = -1, int chunk = 0, bool space_fill = false);
+udec(int digits = -1, int chunk = 0, bool space_fill = true);
+map_k(return_value_of_manipulator);
+map_v(return_value_of_manipulator);
+map_kv(return_value_of_manipulator_for_key, return_value_of_manipulator_for_value);
+format(const char *f);
+bw(bool left = false);
+boolnum();
+stresc();
+charhex();
+addr(std::size_t depth = 0);
+
+}  // namespace cpp_dump
 
 // See 'Customize "[dump]"'.
 namespace cpp_dump::log_label {
 
 std::string default_func(std::string_view, std::size_t, std::string_view);
-log_label_func_t line(bool show_func = false, int min_width = 0);
-log_label_func_t basename(bool show_func = false, int min_width = 0);
-log_label_func_t filename(bool show_func = false, int min_width = 0);
-log_label_func_t fullpath(int substr_start, bool show_func = false, int min_width = 0);
-log_label_func_t fixed_length(int min_width, int max_width,
+types::log_label_func_t line(bool show_func = false, int min_width = 0);
+types::log_label_func_t basename(bool show_func = false, int min_width = 0);
+types::log_label_func_t filename(bool show_func = false, int min_width = 0);
+types::log_label_func_t fullpath(int substr_start, bool show_func = false, int min_width = 0);
+types::log_label_func_t fixed_length(int min_width, int max_width,
     int substr_start, bool show_func = false);
 
-}
+}  // namespace cpp_dump::log_label
 ```
 
 ### How to print a user-defined type with cpp-dump
 
 There are three ways to enable the library to print a user type.
 
-#### 1. Use CPP_DUMP_DEFINE_EXPORT_OBJECT() macro
+#### Method 1. Use CPP_DUMP_DEFINE_EXPORT_OBJECT() macro
 
-This macro requires the user type to be accessible from the top level, but it is the safest and easiest way to enable `cpp_dump()` to print a user type.  
+This macro requires the user type to be accessible from the global scope, but it is the safest and easiest way to enable `cpp_dump()` to print a user type.  
 [See Full Example Code](./readme/user-defined-class.cpp)
 
 ```cpp
-// Somewhere accessible from top level (not private or defined in a function)
+// Somewhere accessible from the global scope (not private or defined in a function)
 struct class_A {
   int i;
   std::string str() const { return std::to_string(i); }
 };
 
-// At top level
+// In the global scope
 // CPP_DUMP_DEFINE_EXPORT_OBJECT(type_name, members...)
 CPP_DUMP_DEFINE_EXPORT_OBJECT(class_A, i, str());
 
@@ -541,10 +549,10 @@ For enums, use CPP_DUMP_DEFINE_EXPORT_ENUM() macro.
 [See Full Example Code](./readme/user-defined-enum.cpp)
 
 ```cpp
-// Somewhere accessible from top level (not private or defined in a function)
+// Somewhere accessible from the global scope (not private or defined in a function)
 enum class enum_A { a, b, c };
 
-// At top level
+// In the global scope
 // CPP_DUMP_DEFINE_EXPORT_ENUM(enum_name, members...)
 CPP_DUMP_DEFINE_EXPORT_ENUM(enum_A, enum_A::a, enum_A::b, enum_A::c);
 
@@ -555,17 +563,17 @@ cpp_dump(my_enum_A);
 
 ![user-defined-enum.png](./readme/user-defined-enum.png)
 
-#### 2. Use CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC() macro
+#### Method 2. Use CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC() macro
 
 This macro enables `cpp_dump()` to print any type with specified members.  
-This macro doesn't require the user type to be accessible from the top level (or even the type name).
+This macro doesn't require the user type to be accessible from the global scope (or need even the type name).
 
-If you use this macro two or more times, you need to be careful of ambiguous function call errors.  
-If such an error occurs, it won't be reported due to SFINAE.  
+If you use this macro two or more times, you need to be careful of ambiguous function call compile errors.  
+If such an error occurs, it won't be reported due to SFINAE, and the user-defined type will remain unsupported.  
 [See Full Example Code](./readme/user-defined-class2.cpp)
 
 ```cpp
-// At top level
+// In the global scope
 // CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC(members...)
 CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC(i, str());
 
@@ -582,19 +590,19 @@ cpp_dump(my_class_A);
 
 ![user-defined-class2.png](./readme/user-defined-class2.png)
 
-#### 3. Define `std::ostream& operator<<(std::ostream&, const T &)` operator
+#### Method 3. Define `std::ostream& operator<<(std::ostream&, const T &)` operator
 
 The last way is to define the operator `std::ostream& operator<<(std::ostream&, const T &)`.  
 [See Full Example Code](./readme/user-defined-class3.cpp)
 
 ```cpp
-// Somewhere accessible from top level (not private or defined in a function)
+// Somewhere accessible from the global scope (not private or defined in a function)
 struct class_A {
   int i;
   std::string str() const { return std::to_string(i); }
 };
 
-// At top level
+// In the global scope
 std::ostream &operator<<(std::ostream &os, const class_A &a) {
   os << "class_A{ i= " << a.i << ", str()= \"" << a.str() << "\" }";
   return os;
@@ -609,31 +617,39 @@ cpp_dump(my_class_A);
 
 ### Customize `[dump]`
 
-Assigning a function to `cpp_dump::log_label_func`, you can customize `[dump]`.  
-cpp-dump has some functions that create a function to assign to `cpp_dump::log_label_func`, so you don't have to make your own function.
+Assigning a function to `cpp_dump::options::log_label_func`, you can customize `[dump]`.  
+cpp-dump has some functions that create a function to assign to `cpp_dump::options::log_label_func`, so you don't have to make your own function.
 
 ```cpp
-namespace cpp_dump::log_label {
+namespace cpp_dump::types {
 
 using log_label_func_t =
-    std::function<std::string(std::string_view fullpath, std::size_t line, std::string_view func_name)>;
+  std::function<std::string(std::string_view fullpath, std::size_t line, std::string_view func_name)>;
 
-// Default function assigned to cpp_dump::log_label_func.
+}  // namespace cpp_dump::types
+
+namespace cpp_dump::log_label {
+
+// Default function assigned to cpp_dump::options::log_label_func.
 std::string default_func(std::string_view, std::size_t, std::string_view) {
   return "[dump] ";
 }
 
-// Functions that create a function that can be assigned to cpp_dump::log_label_func.
-log_label_func_t line(bool show_func = false, int min_width = 0);
-log_label_func_t basename(bool show_func = false, int min_width = 0);
-log_label_func_t filename(bool show_func = false, int min_width = 0);
-log_label_func_t fullpath(int substr_start, bool show_func = false, int min_width = 0);
-log_label_func_t fixed_length(int min_width, int max_width,
+// Functions that create a function that can be assigned to cpp_dump::options::log_label_func.
+types::log_label_func_t line(bool show_func = false, int min_width = 0);
+types::log_label_func_t basename(bool show_func = false, int min_width = 0);
+types::log_label_func_t filename(bool show_func = false, int min_width = 0);
+types::log_label_func_t fullpath(int substr_start, bool show_func = false, int min_width = 0);
+types::log_label_func_t fixed_length(int min_width, int max_width,
     int substr_start, bool show_func = false);
 
-}
+}  // namespace cpp_dump::log_label
 
-inline cpp_dump::log_label::log_label_func_t cpp_dump::log_label_func = cpp_dump::log_label::default_func;
+namespace cpp_dump::options {
+
+inline types::log_label_func_t log_label_func = log_label::default_func;
+
+}  // namespace cpp_dump::options
 ```
 
 ### Formatting with manipulators
@@ -690,10 +706,14 @@ cpp_dump(manipulatorA() << manipulatorB() << variable);
 #### `front()`, `middle()`, `back()`, `both_ends()` manipulators
 
 ```cpp
-cpp_dump::front(std::size_t iteration_count = cpp_dump::max_iteration_count);
-cpp_dump::middle(std::size_t iteration_count = cpp_dump::max_iteration_count);
-cpp_dump::back(std::size_t iteration_count = cpp_dump::max_iteration_count);
-cpp_dump::both_ends(std::size_t half_iteration_count = cpp_dump::max_iteration_count / 2);
+namespace cpp_dump {
+
+front(std::size_t iteration_count = options::max_iteration_count);
+middle(std::size_t iteration_count = options::max_iteration_count);
+back(std::size_t iteration_count = options::max_iteration_count);
+both_ends(std::size_t half_iteration_count = options::max_iteration_count / 2);
+
+}  // namespace cpp_dump
 ```
 
 These manipulators are **order-sensitive**.
@@ -729,38 +749,42 @@ cpp_dump(some_huge_vector | cp::dec(2) | cp::index());
 #### `int_style()` manipulators
 
 ```cpp
-cpp_dump::int_style(int base, int digits = -1, int chunk = 0,
+namespace cpp_dump {
+
+int_style(int base, int digits = -1, int chunk = 0,
     bool space_fill = false, bool make_unsigned_or_no_space_for_minus = false);
 
-cpp_dump::bin(int digits = -1, int chunk = 0, bool space_fill = false) {
+bin(int digits = -1, int chunk = 0, bool space_fill = false) {
   return int_style(2, digits, chunk, space_fill, false);
 }
-cpp_dump::oct(int digits = -1, int chunk = 0, bool space_fill = false) {
+oct(int digits = -1, int chunk = 0, bool space_fill = false) {
   return int_style(8, digits, chunk, space_fill, false);
 }
-cpp_dump::hex(int digits = -1, int chunk = 0, bool space_fill = false) {
+hex(int digits = -1, int chunk = 0, bool space_fill = false) {
   return int_style(16, digits, chunk, space_fill, false);
 }
-cpp_dump::dec(int digits = -1, int chunk = 0, bool space_fill = true) {
+dec(int digits = -1, int chunk = 0, bool space_fill = true) {
   return int_style(10, digits, chunk, space_fill, false);
 }
 
-cpp_dump::ubin(int digits = -1, int chunk = 0, bool space_fill = false) {
+ubin(int digits = -1, int chunk = 0, bool space_fill = false) {
   return int_style(2, digits, chunk, space_fill, true);
 }
-cpp_dump::uoct(int digits = -1, int chunk = 0, bool space_fill = false) {
+uoct(int digits = -1, int chunk = 0, bool space_fill = false) {
   return int_style(8, digits, chunk, space_fill, true);
 }
-cpp_dump::uhex(int digits = -1, int chunk = 0, bool space_fill = false) {
+uhex(int digits = -1, int chunk = 0, bool space_fill = false) {
   return int_style(16, digits, chunk, space_fill, true);
 }
-cpp_dump::udec(int digits = -1, int chunk = 0, bool space_fill = true) {
+udec(int digits = -1, int chunk = 0, bool space_fill = true) {
   return int_style(10, digits, chunk, space_fill, true);
 }
+
+}  // namespace cpp_dump
 ```
 
 The parameter `base` of `int_style()` supports values of 2, 8, 10, 16. For other values, this manipulator does nothing.  
-`digits` supports values of `digits` >= 0 and `digits` <= 'the maximum digits', where 'the maximum digits' is the maximum number of digits that can be represented by the type for the given `base`. For other values, it is treated as `digits` = 'the maximum digits'.  
+`digits` supports values of `digits` >= 0 and `digits` <= 'the maximum digits', where 'the maximum digits' is the maximum number of digits that can be represented by the integer type for the given `base`. For other values, it is treated as `digits` = 'the maximum digits'.  
 `chunk` supports values of `chunk` >= 0. For other values, it is treated as `chunk` = 0.
 
 Like the `index()` manipulators, the `int_style()` manipulator acts on all integers in the variable. (The order is irrelevant.)  
@@ -780,7 +804,7 @@ cpp_dump(unsigned_int_vector | cp::front(2) | cp::dec(2));
 ![manipulator-bin-etc.png](./readme/manipulator-bin-etc.png)
 
 The `ubin()`, `uoct()`, and `uhex()` manipulators interpret all integer types as unsigned.  
-If the original type is not unsigned, the suffix 'u' is shown.  
+If the original type is not unsigned, the suffix `u` is shown.  
 However, the `udec()` manipulator acts differently from these.  
 The `udec()` manipulator interprets signed types as signed type, but it does not add an extra space for positive values.  
 This is suitable for showing a container of a signed integers when all values are positive.  
@@ -890,9 +914,13 @@ cpp_dump(int_ptr_ptr | cp::addr(1));
 #### `map_*()` manipulators
 
 ```cpp
-cpp_dump::map_k(return_value_of_manipulator);
-cpp_dump::map_v(return_value_of_manipulator);
-cpp_dump::map_kv(return_value_of_manipulator_for_key, return_value_of_manipulator_for_value);
+namespace cpp_dump {
+
+map_k(return_value_of_manipulator);
+map_v(return_value_of_manipulator);
+map_kv(return_value_of_manipulator_for_key, return_value_of_manipulator_for_value);
+
+}  // namespace cpp_dump
 ```
 
 These manipulators are **order-sensitive**.
@@ -979,11 +1007,11 @@ cpp_dump() prints variables recursively, so they can dump nested variables of an
 | Reference     | T is `std::reference_wrapper`                                                                                                                                                                                                                                                                         |                                                   |
 | Exception     | T is convertible to `std::exception`                                                                                                                                                                                                                                                                  |                                                   |
 | Other         | T is either `std::bitset`, `std::complex`, `std::optional`, `std::variant`, `std::type_info`, `std::type_index` or `std::source_location`(C++20 or higher and g++ and MSVC only)                                                                                                                      |                                                   |
-| User-defined  | `CPP_DUMP_DEFINE_EXPORT_OBJECT(T, members...);` is at top level and the member functions to be displayed is const.                                                                                                                                                                                    |                                                   |
-| Enum          | `CPP_DUMP_DEFINE_EXPORT_ENUM(T, members...);` is at top level.                                                                                                                                                                                                                                        |                                                   |
+| User-defined  | `CPP_DUMP_DEFINE_EXPORT_OBJECT(T, members...);` is in the global scope and the member functions to be displayed is const.                                                                                                                                                                             |                                                   |
+| Enum          | `CPP_DUMP_DEFINE_EXPORT_ENUM(T, members...);` is in the global scope.                                                                                                                                                                                                                                 |                                                   |
 | Ostream       | All of the above are not satisfied, `std::is_function_v<T> == false && std::is_member_pointer_v<T> == false`, and the function `std::ostream& operator<<(std::ostream&, const T &)` is defined. **The string representation of T must not be an empty string** (This makes manipulators unsupported). |                                                   |
 | User-defined2 | All of the above are not satisfied, T has all members specified by just one `CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC(members...);` at top level, and the member functions to be displayed is const.                                                                                                     |                                                   |
-| Asterisk      | All of the above are not satisfied, `cpp_dump::enable_asterisk == true` and the function `TypeExceptT operator*(const T &)` or the const member function `TypeExceptT T::operator*() const` is defined.                                                                                               | Iterators                                         |
+| Asterisk      | All of the above are not satisfied, `cpp_dump::options::enable_asterisk == true` and the function `TypeExceptT operator*(const T &)` or the const member function `TypeExceptT T::operator*() const` is defined.                                                                                      | Iterators                                         |
 
 ### Display example
 

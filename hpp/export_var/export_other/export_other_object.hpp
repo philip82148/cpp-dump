@@ -68,7 +68,7 @@ export_other_object(const T &, const std::string &, std::size_t, std::size_t, bo
 }  // namespace cpp_dump
 
 // By not using CPP_DUMP_DEFINE_EXPORT_OBJECT() here, users can use CPP_DUMP_DEFINE_EXPORT_OBJECT()
-// to overwrite export_var()
+// to overwrite cpp_dump::export_var()
 #if __cplusplus >= 202002L
 
 #if !defined(__clang__)

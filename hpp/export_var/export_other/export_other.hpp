@@ -70,7 +70,7 @@ inline std::string export_other(
 namespace es {
 
 inline std::string _bitset(std::string_view s) {
-  return es_style == es_style_t::original ? es::identifier(s) : es::number(s);
+  return options::es_style == types::es_style_t::original ? es::identifier(s) : es::number(s);
 }
 
 }  // namespace es
@@ -98,7 +98,8 @@ export_other(const std::bitset<N> &bitset, const std::string &, std::size_t, std
 namespace es {
 
 inline std::string _complex_complex(std::string_view s) {
-  return es_style == es_style_t::original ? es::identifier(s) : es::signed_number(s);
+  return options::es_style == types::es_style_t::original ? es::identifier(s)
+                                                          : es::signed_number(s);
 }
 
 }  // namespace es
@@ -136,7 +137,7 @@ inline std::string export_other(
 namespace es {
 
 inline std::string _variant_bar(std::string_view s) {
-  return es_style == es_style_t::original ? es::identifier(s) : es::op(s);
+  return options::es_style == types::es_style_t::original ? es::identifier(s) : es::op(s);
 }
 
 }  // namespace es
@@ -162,7 +163,7 @@ inline std::string export_other(
 }
 
 inline std::string export_other(
-    const es_value_t &esv,
+    const types::es_value_t &esv,
     const std::string &indent,
     std::size_t last_line_length,
     std::size_t current_depth,

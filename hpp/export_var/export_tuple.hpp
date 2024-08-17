@@ -87,7 +87,7 @@ inline auto export_tuple(
   if constexpr (tuple_size == 0) {
     return es::bracket("( )", current_depth);
   } else {
-    if (current_depth >= max_depth)
+    if (current_depth >= options::max_depth)
       return es::bracket("( ", current_depth) + es::op("...") + es::bracket(" )", current_depth);
 
     std::size_t next_depth = current_depth + 1;
@@ -98,7 +98,7 @@ inline auto export_tuple(
                          )
                          + es::bracket(" )", current_depth);
 
-    if (!has_newline(output) && last_line_length + get_length(output) <= max_line_width)
+    if (!has_newline(output) && last_line_length + get_length(output) <= options::max_line_width)
       return output;
 
     if (fail_on_newline) return "\n";

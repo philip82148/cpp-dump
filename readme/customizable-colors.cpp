@@ -19,7 +19,7 @@ int main() {
   // Use more colors
   CPP_DUMP_SET_OPTION(
       es_value,
-      (cp::es_value_t{
+      (cp::types::es_value_t{
           "\x1b[02m",        // log: dark
           "\x1b[34m",        // expression: blue
           "\x1b[38;5;39m",   // reserved: light blue
@@ -48,7 +48,7 @@ int main() {
   CPP_DUMP_SET_OPTION(detailed_number_es, true);
 
   // Use a color scheme closer to standard syntax highlighting.
-  // CPP_DUMP_SET_OPTION(es_style, cp::es_style_t::by_syntax);
+  // CPP_DUMP_SET_OPTION(es_style, cp::types::es_style_t::by_syntax);
 
   int my_int = 15;
   int *ptr = &my_int;
