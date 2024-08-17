@@ -958,6 +958,10 @@ CPP_DUMP_SET_OPTION_GLOBAL(log_label_func, cp::log_label::filename());
 CPP_DUMP_SET_OPTION_GLOBAL(enable_asterisk, true);
 #else
 #define dump(...)
+#define CPP_DUMP_SET_OPTION(...)
+#define CPP_DUMP_DEFINE_EXPORT_OBJECT(...)
+#define CPP_DUMP_DEFINE_EXPORT_ENUM(...)
+#define CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC(...)
 #endif
 
 #include <bits/stdc++.h>
