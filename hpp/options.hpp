@@ -12,8 +12,7 @@
 namespace cpp_dump {
 
 /**
- * Set a value to a variable in cpp_dump namespace.
- * You can also assign values to the variables directly.
+ * Set a value to a variable in cpp_dump::options namespace.
  */
 #define CPP_DUMP_SET_OPTION(variable, value) cpp_dump::options::variable = (value)
 
@@ -43,7 +42,7 @@ struct empty_class {};
   _p_CPP_DUMP_SET_OPTION_GLOBAL_AUX2(variable, value, line)
 
 /**
- * Set a value to a variable in cpp_dump namespace.
+ * Set a value to a variable in cpp_dump::options namespace.
  * Use this if you want to run it in the global namespace, meaning before the main starts.
  */
 #define CPP_DUMP_SET_OPTION_GLOBAL(variable, value)                                                \
@@ -101,7 +100,7 @@ inline std::size_t max_depth = 4;
 /**
  * Maximum number of iterations of cpp_dump::export_var() over an iterator.
  * Note that in a single call, cpp_dump::export_var() calls itself at most
- * (max_iteration_count^(max_depth+1)-1)/(max_iteration_count-1)-1 times.
+ * (max_iteration_count^(max_depth+1)-1)/(max_iteration_count-1) times.
  */
 inline std::size_t max_iteration_count = 16;
 
