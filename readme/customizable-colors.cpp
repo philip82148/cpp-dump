@@ -25,6 +25,7 @@ int main() {
           "\x1b[38;5;39m",   // reserved: light blue
           "\x1b[38;5;193m",  // number: light green
           "\x1b[38;5;172m",  // character: orange
+          "\x1b[38;5;220m",  // escaped_char: light orange
           "\x1b[02m",        // op: dark
           "\x1b[32m",        // identifier:  green
           "\x1b[96m",        // member: light cyan
@@ -34,10 +35,9 @@ int main() {
               "\x1b[35m",  // bracket_by_depth[1]: magenta
               "\x1b[36m",  // bracket_by_depth[2]: cyan
           },
-          "\x1b[02m",       // class_op: dark
-          "\x1b[02m",       // member_op: dark
-          "",               // number_op: default
-          "\x1b[38;5;220m"  // escaped_char: light orange
+          "\x1b[02m",  // class_op: dark
+          "\x1b[02m",  // member_op: dark
+          "",          // number_op: default
       })
   );
 
