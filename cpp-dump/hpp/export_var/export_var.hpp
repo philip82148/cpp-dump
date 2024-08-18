@@ -45,8 +45,6 @@ std::string export_var(
     return export_var(
         value.value, indent, last_line_length, current_depth, fail_on_newline, value.command
     );
-  } else if constexpr (!is_exportable<T>) {
-    return export_unsupported();
   } else if constexpr (is_exportable_object<T>) {
     return export_object(value, indent, last_line_length, current_depth, fail_on_newline, command);
   } else if constexpr (is_exportable_enum<T>) {
@@ -83,10 +81,13 @@ std::string export_var(
     return export_object_generic(
         value, indent, last_line_length, current_depth, fail_on_newline, command
     );
-  } else {
+  } else if constexpr (is_asterisk<T>) {
     return export_asterisk(
         value, indent, last_line_length, current_depth, fail_on_newline, command
     );
+  } else {
+    static_assert(!is_exportable<T>, "is_exportable<T> has a bug! This should not be showed.");
+    return export_unsupported();
   }
 }
 
