@@ -52,8 +52,8 @@ Key points:
   - [Variables](#variables)
   - [Functions](#functions)
   - [How to print a user-defined type with cpp-dump](#how-to-print-a-user-defined-type-with-cpp-dump)
-    - [Method 1. Use CPP\_DUMP\_DEFINE\_EXPORT\_OBJECT() macro](#method-1-use-cpp_dump_define_export_object-macro)
-    - [Method 2. Use CPP\_DUMP\_DEFINE\_EXPORT\_OBJECT\_GENERIC() macro](#method-2-use-cpp_dump_define_export_object_generic-macro)
+    - [Method 1. Use CPP_DUMP_DEFINE_EXPORT_OBJECT() macro](#method-1-use-cpp_dump_define_export_object-macro)
+    - [Method 2. Use CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC() macro](#method-2-use-cpp_dump_define_export_object_generic-macro)
     - [Method 3. Define `std::ostream& operator<<(std::ostream&, const T &)` operator](#method-3-define-stdostream-operatorstdostream-const-t--operator)
   - [Customize `[dump]`](#customize-dump)
   - [Formatting with manipulators](#formatting-with-manipulators)
@@ -89,7 +89,8 @@ cpp_dump(my_vector);
 ### A wide variety of supported types
 
 cpp-dump supports a wide variety of types. Also, it supports nested containers of any combination of the types. Their string representation is similar to JavaScript, Python, and C++ syntax, which is easy to read.  
-[See All Supported Types](#supported-types) [See Full Example Code](./readme/supports-various-types.cpp)
+[See All Supported Types](#supported-types)  
+[See Full Example Code](./readme/supports-various-types.cpp)
 
 ```cpp
 // See the full example code for the definitions of the variables.
