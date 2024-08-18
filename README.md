@@ -295,7 +295,7 @@ If you want to customize the library, you can write the configuration code as fo
 #ifdef DEBUGGING
 #include "path/to/cpp-dump/cpp-dump.hpp"
 namespace cp = cpp_dump;
-// You can also use this in a source file,
+// You can use this in both a header file and a source file,
 // but make sure not to use it more than once for the same option.
 CPP_DUMP_SET_OPTION_GLOBAL(max_line_width, 100);
 
