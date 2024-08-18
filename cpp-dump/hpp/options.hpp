@@ -51,6 +51,12 @@ struct empty_class {};
 namespace types {
 
 /**
+ * Type of cpp_dump::options::cont_indent_style.
+ * cpp_dump::export_var() supports this type.
+ */
+enum class cont_indent_style_t { minimal, when_nested, when_non_tuples_nested, always };
+
+/**
  * Type of cpp_dump::options::es_style.
  * cpp_dump::export_var() supports this type.
  */
@@ -77,12 +83,6 @@ struct es_value_t {
   std::string escaped_char = "\x1b[02m";                  // dark
 };
 
-/**
- * Type of cpp_dump::options::cont_indent_style.
- * cpp_dump::export_var() supports this type.
- */
-enum class cont_indent_style_t { minimal, when_nested, when_non_tuples_nested, always };
-
 }  // namespace types
 
 namespace options {
@@ -103,6 +103,11 @@ inline std::size_t max_depth = 4;
  * (max_iteration_count^(max_depth+1)-1)/(max_iteration_count-1) times.
  */
 inline std::size_t max_iteration_count = 16;
+
+/**
+ * Style of indents of the Container, Set and Map categories (See 'Supported types').
+ */
+inline types::cont_indent_style_t cont_indent_style = types::cont_indent_style_t::when_nested;
 
 /**
  * Whether cpp_dump() prints types of the Asterisk category (See 'Supported types').
@@ -143,11 +148,6 @@ inline bool detailed_member_es = false;
  * If true, the 'number_op' color is used for operators in numbers (-, +, etc...).
  */
 inline bool detailed_number_es = false;
-
-/**
- * Style of indents of the Container, Set and Map categories (See 'Supported types').
- */
-inline types::cont_indent_style_t cont_indent_style = types::cont_indent_style_t::when_nested;
 
 }  // namespace options
 

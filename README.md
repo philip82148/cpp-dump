@@ -37,6 +37,7 @@ Key points:
     - [`max_line_width`](#max_line_width)
     - [`max_depth`](#max_depth)
     - [`max_iteration_count`](#max_iteration_count)
+    - [`cont_indent_style`](#cont_indent_style)
     - [`enable_asterisk`](#enable_asterisk)
     - [`print_expr`](#print_expr)
     - [`log_label_func`](#log_label_func)
@@ -45,7 +46,6 @@ Key points:
     - [`detailed_class_es`](#detailed_class_es)
     - [`detailed_member_es`](#detailed_member_es)
     - [`detailed_number_es`](#detailed_number_es)
-    - [`cont_indent_style`](#cont_indent_style)
 - [Usage](#usage)
   - [Macros](#macros)
   - [Types](#types)
@@ -353,6 +353,18 @@ Type: `std::size_t` Default: `16`
 The maximum number of iterations of `cpp_dump::export_var()` over an iterator.  
 Note that in a single call, `cpp_dump::export_var()` calls itself at most `(max_iteration_count^(max_depth+1)-1)/(max_iteration_count-1)` times.
 
+#### `cont_indent_style`
+
+Type: `enum class cpp_dump::types::cont_indent_style_t` Default: `cpp_dump::types::cont_indent_style_t::when_nested`  
+The style of indents of the Container, Set and Map categories (See [Supported types](#supported-types)).
+
+| Name                     | Description                                                                                                                               |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `minimal`                | Don't indent unless the `max_line_width` is exceeded.                                                                                     |
+| `when_nested`            | Default. Always indent when the element/key/value type also falls into the Container/Set/Map/Tuple category.                              |
+| `when_non_tuples_nested` | Always indent when the element/key/value type falls into the Container/Set/Map category, but don't when it falls into the Tuple category. |
+| `always`                 | Always indent even if the Container/Set/Map is not nested.                                                                                |
+
 #### `enable_asterisk`
 
 Type: `bool` Default: `false`  
@@ -398,18 +410,6 @@ If true, the 'member_op' color is used for operators in members (`()`, etc...).
 
 Type: `bool` Default: `false`  
 If true, the 'number_op' color is used for operators in numbers (`-`, `+`, etc...).
-
-#### `cont_indent_style`
-
-Type: `enum class cpp_dump::types::cont_indent_style_t` Default: `cpp_dump::types::cont_indent_style_t::when_nested`  
-The style of indents of the Container, Set and Map categories (See [Supported types](#supported-types)).
-
-| Name                     | Description                                                                                                                               |
-| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| `minimal`                | Don't indent unless the `max_line_width` is exceeded.                                                                                     |
-| `when_nested`            | Default. Always indent when the element/key/value type also falls into the Container/Set/Map/Tuple category.                              |
-| `when_non_tuples_nested` | Always indent when the element/key/value type falls into the Container/Set/Map category, but don't when it falls into the Tuple category. |
-| `always`                 | Always indent even if the Container/Set/Map is not nested.                                                                                |
 
 ## Usage
 
@@ -459,6 +459,12 @@ The style of indents of the Container, Set and Map categories (See [Supported ty
 namespace cpp_dump::types {
 
 /**
+ * Type of cpp_dump::options::cont_indent_style.
+ * cpp_dump::export_var() supports this type.
+ */
+enum class cont_indent_style_t { minimal, when_nested, when_non_tuples_nested, always };
+
+/**
  * Type of cpp_dump::options::es_style.
  * cpp_dump::export_var() supports this type.
  */
@@ -484,12 +490,6 @@ struct es_value_t {
   std::string number_op{};                                // default
   std::string escaped_char = "\x1b[02m";                  // dark
 };
-
-/**
- * Type of cpp_dump::options::cont_indent_style.
- * cpp_dump::export_var() supports this type.
- */
-enum class cont_indent_style_t { minimal, when_nested, when_non_tuples_nested, always };
 
 using log_label_func_t = std::function<std::string(std::string_view, std::size_t, std::string_view)>;
 
@@ -517,6 +517,11 @@ inline std::size_t max_depth = 4;
  * (max_iteration_count^(max_depth+1)-1)/(max_iteration_count-1) times.
  */
 inline std::size_t max_iteration_count = 16;
+
+/**
+ * Style of indents of the Container, Set and Map categories (See 'Supported types')
+ */
+inline types::cont_indent_style_t cont_indent_style = types::cont_indent_style_t::when_nested;
 
 /**
  * Whether cpp_dump() prints types of the Asterisk category (See 'Supported types').
@@ -558,10 +563,6 @@ inline bool detailed_member_es = false;
  */
 inline bool detailed_number_es = false;
 
-/**
- * Style of indents of the Container, Set and Map categories (See 'Supported types')
- */
-inline types::cont_indent_style_t cont_indent_style = types::cont_indent_style_t::when_nested;
 
 }  // namespace cpp_dump::options
 ```
