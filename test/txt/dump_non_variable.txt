@@ -401,6 +401,7 @@ here.`,
          expression= "\x1B[36m", 
          reserved= "", 
          character= "", 
+         escaped_char= "\x1B[02m", 
          op= "\x1B[02m", 
          identifier= "\x1B[32m", 
          member= "\x1B[36m", 
@@ -408,8 +409,7 @@ here.`,
          bracket_by_depth= [ "\x1B[02m" ], 
          class_op= "\x1B[02m", 
          member_op= "\x1B[02m", 
-         number_op= "", 
-         escaped_char= "\x1B[02m"
+         number_op= ""
        }
 [dump] cp::types::cont_indent_style_t::minimal => cpp_dump::types::cont_indent_style_t::minimal, 
        cp::types::cont_indent_style_t::when_nested => cpp_dump::types::cont_indent_style_t::when_nested, 
