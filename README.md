@@ -161,6 +161,7 @@ CPP_DUMP_SET_OPTION(es_value, (cp::types::es_value_t{
   "\x1b[38;5;39m",   // reserved: light blue
   "\x1b[38;5;193m",  // number: light green
   "\x1b[38;5;172m",  // character: orange
+  "\x1b[38;5;220m",  // escaped_char: light orange
   "\x1b[02m",        // op: dark
   "\x1b[32m",        // identifier:  green
   "\x1b[96m",        // member: light cyan
@@ -173,7 +174,6 @@ CPP_DUMP_SET_OPTION(es_value, (cp::types::es_value_t{
   "\x1b[02m",        // class_op: dark
   "\x1b[02m",        // member_op: dark
   "",                // number_op: default
-  "\x1b[38;5;220m"   // escaped_char: light orange
 }));
 
 // Use the 'class_op'/'member_op'/'number_op' color for operators
@@ -399,17 +399,17 @@ The values of the escape sequences.
 #### `detailed_class_es`
 
 Type: `bool` Default: `false`  
-If true, the 'class_op' color is used for operators in class names (`::`, `<>`, etc...).
+If true, the `es_value.class_op` color is used for operators in class names (`::`, `<>`, etc...).
 
 #### `detailed_member_es`
 
 Type: `bool` Default: `false`  
-If true, the 'member_op' color is used for operators in members (`()`, etc...).
+If true, the `es_value.member_op` color is used for operators in members (`()`, etc...).
 
 #### `detailed_number_es`
 
 Type: `bool` Default: `false`  
-If true, the 'number_op' color is used for operators in numbers (`-`, `+`, etc...).
+If true, the `es_value.number_op` color is used for operators in numbers (`-`, `+`, etc...).
 
 ## Usage
 
@@ -480,6 +480,7 @@ struct es_value_t {
   std::string reserved{};                                 // default
   std::string number{};                                   // default
   std::string character{};                                // default
+  std::string escaped_char = "\x1b[02m";                  // dark
   std::string op = "\x1b[02m";                            // dark
   std::string identifier = "\x1b[32m";                    // green
   std::string member = "\x1b[36m";                        // cyan
@@ -488,7 +489,6 @@ struct es_value_t {
   std::string class_op = "\x1b[02m";                      // dark
   std::string member_op = "\x1b[02m";                     // dark
   std::string number_op{};                                // default
-  std::string escaped_char = "\x1b[02m";                  // dark
 };
 
 using log_label_func_t = std::function<std::string(std::string_view, std::size_t, std::string_view)>;
@@ -549,17 +549,17 @@ inline types::es_style_t es_style = types::es_style_t::original;
 inline types::es_value_t es_value;
 
 /**
- * If true, the 'class_op' color is used for operators in class names (::, <>, etc...).
+ * If true, the 'es_value.class_op' color is used for operators in class names (::, <>, etc...).
  */
 inline bool detailed_class_es = false;
 
 /**
- * If true, the 'member_op' color is used for operators in members ((), etc...).
+ * If true, the 'es_value.member_op' color is used for operators in members ((), etc...).
  */
 inline bool detailed_member_es = false;
 
 /**
- * If true, the 'number_op' color is used for operators in numbers (-, +, etc...).
+ * If true, the 'es_value.number_op' color is used for operators in numbers (-, +, etc...).
  */
 inline bool detailed_number_es = false;
 
@@ -975,7 +975,7 @@ cpp_dump::stresc();
 ```
 
 This manipulator escapes strings.  
-For escaped characters, the 'escaped_char' color is used.  
+For escaped characters, the `es_value.escaped_char` color is used.  
 [See Full Example Code](./readme/formatting-with-manipulators.cpp)
 
 ```cpp

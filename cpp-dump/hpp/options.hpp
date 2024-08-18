@@ -72,6 +72,7 @@ struct es_value_t {
   std::string reserved{};                                 // default
   std::string number{};                                   // default
   std::string character{};                                // default
+  std::string escaped_char = "\x1b[02m";                  // dark
   std::string op = "\x1b[02m";                            // dark
   std::string identifier = "\x1b[32m";                    // green
   std::string member = "\x1b[36m";                        // cyan
@@ -80,7 +81,6 @@ struct es_value_t {
   std::string class_op = "\x1b[02m";                      // dark
   std::string member_op = "\x1b[02m";                     // dark
   std::string number_op{};                                // default
-  std::string escaped_char = "\x1b[02m";                  // dark
 };
 
 }  // namespace types
@@ -135,17 +135,17 @@ inline types::es_style_t es_style = types::es_style_t::original;
 inline types::es_value_t es_value;
 
 /**
- * If true, the 'class_op' color is used for operators in class names (::, <>, etc...).
+ * If true, the 'es_value.class_op' color is used for operators in class names (::, <>, etc...).
  */
 inline bool detailed_class_es = false;
 
 /**
- * If true, the 'member_op' color is used for operators in members ((), etc...).
+ * If true, the 'es_value.member_op' color is used for operators in members ((), etc...).
  */
 inline bool detailed_member_es = false;
 
 /**
- * If true, the 'number_op' color is used for operators in numbers (-, +, etc...).
+ * If true, the 'es_value.number_op' color is used for operators in numbers (-, +, etc...).
  */
 inline bool detailed_number_es = false;
 
