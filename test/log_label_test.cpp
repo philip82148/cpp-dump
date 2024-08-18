@@ -3,7 +3,7 @@
 #include <ostream>
 #include <vector>
 
-#include "../dump.hpp"
+#include "../cpp-dump.hpp"
 
 //
 using namespace std;

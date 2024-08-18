@@ -28,6 +28,10 @@ Key points:
   - [20+ Manipulators to change the display style](#20-manipulators-to-change-the-display-style)
 - [Requirement](#requirement)
 - [Installation](#installation)
+  - [Simplest solution](#simplest-solution)
+  - [With CMake](#with-cmake)
+    - [Run `cmake --install` to copy the headers to `/usr/local/include/` or equivalent](#run-cmake---install-to-copy-the-headers-to-usrlocalinclude-or-equivalent)
+    - [Use `FetchContent`](#use-fetchcontent)
 - [Configuration (as needed)](#configuration-as-needed)
   - [Configuration options](#configuration-options)
     - [`max_line_width`](#max_line_width)
@@ -225,6 +229,8 @@ See [Formatting with manipulators](#formatting-with-manipulators) for details.
 
 ## Installation
 
+### Simplest solution
+
 ```shell
 git clone https://github.com/philip82148/cpp-dump
 ```
@@ -232,46 +238,98 @@ git clone https://github.com/philip82148/cpp-dump
 Then
 
 ```cpp
-#include "path/to/cpp-dump/dump.hpp"
+#include "path/to/cpp-dump/cpp-dump.hpp"
+```
+
+### With CMake
+
+#### Run `cmake --install` to copy the headers to `/usr/local/include/` or equivalent
+
+```shell
+git clone https://github.com/philip82148/cpp-dump
+cd cpp-dump
+cmake -S . -B build # No configuration is needed because the library is header-only.
+sudo cmake --install build
+# (The 'cpp-dump' folder can be removed after this.)
+```
+
+Then
+
+```cpp
+#include <cpp-dump.hpp>
+```
+
+#### Use `FetchContent`
+
+`CMakeLists.txt`
+
+```cmake
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON) # Generate compile_commands.json (optional)
+
+include(FetchContent)
+
+# Fetch cpp-dump
+FetchContent_Declare(cpp-dump
+    GIT_REPOSITORY https://github.com/philip82148/cpp-dump
+    GIT_TAG main
+)
+FetchContent_MakeAvailable(cpp-dump)
+
+# Link cpp-dump to your app
+target_link_libraries(MyApp PRIVATE cpp-dump)
+```
+
+Then
+
+```cpp
+#include <cpp-dump.hpp>
 ```
 
 ## Configuration (as needed)
 
-If you want to customize the library, use the `CPP_DUMP_SET_OPTION_GLOBAL()` macro:
+If you want to customize the library, you can write the configuration code as follows:
+
+`custom-cpp-dump.hpp`
 
 ```cpp
-// You can also write this in a header file -----------------------------------
 #ifdef DEBUGGING
-#include "path/to/cpp-dump/dump.hpp"
+#include "path/to/cpp-dump/cpp-dump.hpp"
 namespace cp = cpp_dump;
+// You can use this in both a header file and a source file,
+// but make sure not to use it more than once for the same option.
 CPP_DUMP_SET_OPTION_GLOBAL(max_line_width, 100);
+
+// To ensure proper instantiation of templates,
+// include these in at least one translation unit where cpp_dump(...) prints each type.
+// One way is to write them in a header file and then include it wherever needed.
+CPP_DUMP_DEFINE_EXPORT_ENUM(my_enum, my_enum::a, my_enum::b, my_enum::c);
+CPP_DUMP_DEFINE_EXPORT_OBJECT(my_class, member1, member2());
+CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC(member3, member4());
 #else
 #define cpp_dump(...)
+#define CPP_DUMP_SET_OPTION(...)
 #endif
-// You can also write this in a header file -----------------------------------
+```
+
+`main.cpp`
+
+```cpp
+#include "path/to/custom-cpp-dump.hpp"
 
 int main() {
-  // To be continued...
+  cpp_dump(vec | cp::back());
 }
 ```
 
 If you want to configure the library within a function, use `CPP_DUMP_SET_OPTION()` instead.
 
 ```cpp
-// You can also write this in a header file -----------------------------------
-#ifdef DEBUGGING
-#include "path/to/cpp-dump/dump.hpp"
-namespace cp = cpp_dump;
-#else
-#define cpp_dump(...)
-#define CPP_DUMP_SET_OPTION(...)
-#endif
-// You can also write this in a header file -----------------------------------
+#include "path/to/custom-cpp-dump.hpp"
 
-int main() {
-  CPP_DUMP_SET_OPTION(max_line_width, 100);
-
-  // To be continued...
+void func() {
+  CPP_DUMP_SET_OPTION(print_expr, false);
+  cpp_dump(vec | cp::back());
+  CPP_DUMP_SET_OPTION(print_expr, true);
 }
 ```
 
@@ -1003,7 +1061,7 @@ inline void cpp_dump::write_log(std::string_view output) {
 
 ```cpp
 #ifdef DEFINED_ONLY_IN_LOCAL
-#include "./cpp-dump/dump.hpp"
+#include "./cpp-dump/cpp-dump.hpp"
 #define dump(...) cpp_dump(__VA_ARGS__)
 namespace cp = cpp_dump;
 CPP_DUMP_SET_OPTION_GLOBAL(max_line_width, 80);
