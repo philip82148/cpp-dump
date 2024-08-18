@@ -72,6 +72,7 @@ struct es_value_t {
   std::string reserved{};                                 // default
   std::string number{};                                   // default
   std::string character{};                                // default
+  std::string escaped_char = "\x1b[02m";                  // dark
   std::string op = "\x1b[02m";                            // dark
   std::string identifier = "\x1b[32m";                    // green
   std::string member = "\x1b[36m";                        // cyan
@@ -80,7 +81,6 @@ struct es_value_t {
   std::string class_op = "\x1b[02m";                      // dark
   std::string member_op = "\x1b[02m";                     // dark
   std::string number_op{};                                // default
-  std::string escaped_char = "\x1b[02m";                  // dark
 };
 
 }  // namespace types
