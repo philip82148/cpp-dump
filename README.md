@@ -159,7 +159,7 @@ CPP_DUMP_SET_OPTION(es_value, (cp::types::es_value_t{
   "\x1b[02m",        // log: dark
   "\x1b[34m",        // expression: blue
   "\x1b[38;5;39m",   // reserved: light blue
-  "\x1b[38;5;193m",  // number: light green
+  "\x1b[38;5;150m",  // number: light green
   "\x1b[38;5;172m",  // character: orange
   "\x1b[38;5;220m",  // escaped_char: light orange
   "\x1b[02m",        // op: dark
