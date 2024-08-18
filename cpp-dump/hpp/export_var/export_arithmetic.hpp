@@ -124,11 +124,13 @@ template <typename T>
 inline auto export_arithmetic(
     T value, const std::string &, std::size_t, std::size_t, bool, const export_command &command
 ) -> std::enable_if_t<std::is_integral_v<T>, std::string> {
-  std::string output = command.format(value);
-  if (!output.empty()) return es::signed_number(output);
-
   auto int_style_ = command.int_style();
-  if (!int_style_) return es::signed_number(std::to_string(value));
+  if (!int_style_) {
+    std::string output = command.format(value);
+    if (!output.empty()) return es::signed_number(output);
+
+    return es::signed_number(std::to_string(value));
+  }
 
   auto [base, digits, chunk, space_fill, make_unsigned_or_no_space_for_minus] = int_style_.value();
 
@@ -156,6 +158,7 @@ inline auto export_arithmetic(
     unsigned_tmp = value;
   }
 
+  std::string output;
   std::string_view reversed_prefix;
 
   // Create a string of an integer with base as the radix
