@@ -250,7 +250,7 @@ git clone https://github.com/philip82148/cpp-dump
 cd cpp-dump
 cmake -S . -B build # No configuration is needed because the library is header-only.
 sudo cmake --install build
-# (The cpp-dump folder can be removed after this.)
+# (The 'cpp-dump' folder can be removed after this.)
 ```
 
 Then
@@ -287,7 +287,7 @@ Then
 
 ## Configuration (as needed)
 
-If you want to customize the library, use the `CPP_DUMP_SET_OPTION_GLOBAL()` macro:
+If you want to customize the library, you can write the configuration code as follows:
 
 `custom-cpp-dump.hpp`
 
@@ -295,10 +295,16 @@ If you want to customize the library, use the `CPP_DUMP_SET_OPTION_GLOBAL()` mac
 #ifdef DEBUGGING
 #include "path/to/cpp-dump/cpp-dump.hpp"
 namespace cp = cpp_dump;
+// You can also use this in a source file,
+// but make sure not to use it more than once for the same option.
 CPP_DUMP_SET_OPTION_GLOBAL(max_line_width, 100);
-// CPP_DUMP_DEFINE_EXPORT_ENUM(...);
-// CPP_DUMP_DEFINE_EXPORT_OBJECT(...);
-// CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC(...);
+
+// To ensure proper instantiation of templates,
+// include these in at least one translation unit where cpp_dump(...) prints each type.
+// One way is to write them in a header file and then include it wherever needed.
+CPP_DUMP_DEFINE_EXPORT_ENUM(my_enum, my_enum::a, my_enum::b, my_enum::c);
+CPP_DUMP_DEFINE_EXPORT_OBJECT(my_class, member1, member2());
+CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC(member3, member4());
 #else
 #define cpp_dump(...)
 #define CPP_DUMP_SET_OPTION(...)
