@@ -703,6 +703,8 @@ int main(int argc, char *argv[]) {
   cpp_dump(314159265 | cp::format("%020d"));
   cpp_dump(31415926535ll | cp::format("%020lld"));
   cpp_dump(complex1 | cp::format("%.10f"));
+  cpp_dump(1000 | cp::format("%010d") | cp::hex(3));
+  cpp_dump(1000 | cp::hex(3) | cp::format("%010d"));
 
   // bw, boolnum
   vector<vector<bool>> vec5 = {

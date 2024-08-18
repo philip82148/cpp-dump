@@ -1045,6 +1045,8 @@ int64_t cp::hex(), cp::dec()
 [dump] 314159265 | cp::format("%020d") => 00000000000314159265
 [dump] 31415926535ll | cp::format("%020lld") => 00000000031415926535
 [dump] complex1 | cp::format("%.10f") => 0.0000000000 - 1.0000000000i ( abs= 1.0000000000, arg/pi= -0.5000000000 )
+[dump] 1000 | cp::format("%010d") | cp::hex(3) =>  0x3E8
+[dump] 1000 | cp::hex(3) | cp::format("%010d") =>  0x3E8
 [dump] vec5 => [
          [ true, false, true, false ],
          [ false, false, false, false ],
