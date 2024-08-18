@@ -1,17 +1,72 @@
-# cpp-dump: A C++ library for printing any variable for debugging
+# cpp-dump <!-- omit in toc -->
 
 [日本語記事はこちら！](https://zenn.dev/sassan/articles/19db660e4da0a4)
 
-Python has `print()`, JavaScript has `console.log()`, and PHP has `var_dump()` — functions that print variables of any type and are incredibly useful for debugging. But what about C++? Enter cpp-dump. cpp-dump is a library that automatically formats and prints variables of any type. With features like auto-indentation, colored output, string representations similar to JavaScript, Python, and C++, and over 20 manipulators, cpp-dump is equipped with everything you need to effortlessly and clearly print variables.
+**cpp-dump is a C++ library for printing variables of any type for debugging.**
+
+Python has `print()`, JavaScript has `console.log()`, and PHP has `var_dump()` — functions that print variables of any type and are useful for debugging when you want a quick way to inspect variables. But what about C++? Enter `cpp_dump(...)`. cpp-dump is a library that automatically formats and prints variables of any type. With features like auto-indentation, colored output, string representations similar to JavaScript, Python, and C++, and over 20 manipulators, cpp-dump is equipped with everything you need to effortlessly and clearly print variables.
 
 Key points:
 
 - cpp-dump has an auto-indentation feature. The output fits into the maximum line width, and nested containers are formatted for readability.
 - The string representation of variables is similar to JavaScript, Python, and C++ syntax. The output is readable without being overloaded with information. (You can add more details using manipulators if you want.)
-- Colored output is available, with extensive customization options. You can achieve syntax highlighting similar to that in IDEs.
+- Customizable colored output is available. You can achieve syntax highlighting similar to that of IDEs.
 - With over 20 manipulators, you can easily change the format or add information to the output.
 - By using macros, cpp-dump supports user-defined types as well. There is no need to write new functions for printing.
 - cpp-dump is a header-only library. No build or dependencies are required!
+
+## Table of Contents <!-- omit in toc -->
+
+- [Introduction](#introduction)
+- [Features](#features)
+  - [A wide variety of supported types](#a-wide-variety-of-supported-types)
+  - [Auto indent](#auto-indent)
+  - [Filename and line can be printed instead of `[dump]`](#filename-and-line-can-be-printed-instead-of-dump)
+  - [Customizable output color](#customizable-output-color)
+  - [Can print even user-defined types](#can-print-even-user-defined-types)
+- [Advanced Feature](#advanced-feature)
+  - [20+ Manipulators to change the display style](#20-manipulators-to-change-the-display-style)
+- [Requirement](#requirement)
+- [Installation](#installation)
+- [Configuration (as needed)](#configuration-as-needed)
+  - [Configuration options](#configuration-options)
+    - [`max_line_width`](#max_line_width)
+    - [`max_depth`](#max_depth)
+    - [`max_iteration_count`](#max_iteration_count)
+    - [`enable_asterisk`](#enable_asterisk)
+    - [`print_expr`](#print_expr)
+    - [`log_label_func`](#log_label_func)
+    - [`es_style`](#es_style)
+    - [`es_value`](#es_value)
+    - [`detailed_class_es`](#detailed_class_es)
+    - [`detailed_member_es`](#detailed_member_es)
+    - [`detailed_number_es`](#detailed_number_es)
+    - [`cont_indent_style`](#cont_indent_style)
+- [Usage](#usage)
+  - [Macros](#macros)
+  - [Types](#types)
+  - [Variables](#variables)
+  - [Functions](#functions)
+  - [How to print a user-defined type with cpp-dump](#how-to-print-a-user-defined-type-with-cpp-dump)
+    - [Method 1. Use CPP\_DUMP\_DEFINE\_EXPORT\_OBJECT() macro](#method-1-use-cpp_dump_define_export_object-macro)
+    - [Method 2. Use CPP\_DUMP\_DEFINE\_EXPORT\_OBJECT\_GENERIC() macro](#method-2-use-cpp_dump_define_export_object_generic-macro)
+    - [Method 3. Define `std::ostream& operator<<(std::ostream&, const T &)` operator](#method-3-define-stdostream-operatorstdostream-const-t--operator)
+  - [Customize `[dump]`](#customize-dump)
+  - [Formatting with manipulators](#formatting-with-manipulators)
+    - [How to use manipulators](#how-to-use-manipulators)
+    - [`front()`, `middle()`, `back()`, `both_ends()` manipulators](#front-middle-back-both_ends-manipulators)
+    - [`index()` manipulator](#index-manipulator)
+    - [`int_style()` manipulators](#int_style-manipulators)
+    - [`format()` manipulator](#format-manipulator)
+    - [`bw()`, `boolnum()` manipulator](#bw-boolnum-manipulator)
+    - [`stresc()` manipulator](#stresc-manipulator)
+    - [`charhex()` manipulator](#charhex-manipulator)
+    - [`addr()` manipulator](#addr-manipulator)
+    - [`map_*()` manipulators](#map_-manipulators)
+  - [Change the output destination from the standard error output](#change-the-output-destination-from-the-standard-error-output)
+  - [For competitive programming use](#for-competitive-programming-use)
+- [Supported types](#supported-types)
+  - [Display example](#display-example)
 
 ## Introduction
 
@@ -30,8 +85,7 @@ cpp_dump(my_vector);
 ### A wide variety of supported types
 
 cpp-dump supports a wide variety of types. Also, it supports nested containers of any combination of the types. Their string representation is similar to JavaScript, Python, and C++ syntax, which is easy to read.  
-[See All Supported Types](#supported-types)  
-[See Full Example Code](./readme/supports-various-types.cpp)
+[See All Supported Types](#supported-types) [See Full Example Code](./readme/supports-various-types.cpp)
 
 ```cpp
 // See the full example code for the definitions of the variables.
@@ -229,7 +283,7 @@ Then
 
 ## Configuration (as needed)
 
-If you want to customize the library, you can write the configuration code as follows:
+If you want to customize the library, use the `CPP_DUMP_SET_OPTION_GLOBAL()` macro:
 
 `custom-cpp-dump.hpp`
 
@@ -287,7 +341,7 @@ The maximum number of times `cpp_dump::export_var()` is called recursively.
 
 Type: `std::size_t` Default: `16`  
 The maximum number of iterations of `cpp_dump::export_var()` over an iterator.  
-Note that in a single call, `cpp_dump::export_var()` calls itself at most (`max_iteration_count`^(`max_depth`+1)-1)/(`max_iteration_count`-1)-1 times.
+Note that in a single call, `cpp_dump::export_var()` calls itself at most `(max_iteration_count^(max_depth+1)-1)/(max_iteration_count-1)` times.
 
 #### `enable_asterisk`
 
@@ -309,11 +363,11 @@ The function that returns the label that `cpp_dump()` prints at the beginning of
 Type: `enum class cpp_dump::types::es_style_t` Default `cpp_dump::types::es_style_t::original`  
 The style of the escape sequences (the output coloring).
 
-| Name        | Description                                                                                                                               |
-| ----------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| `original`  | Default.                                                                                                                                  |
-| `by_syntax` | Use a color scheme closer to standard syntax highlighting. Pointers, bitsets, complexes, and etc. are colored differently from `original` |
-| `no_es`     | Turn off output coloring                                                                                                                  |
+| Name        | Description                                                                                                                                |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `original`  | Default.                                                                                                                                   |
+| `by_syntax` | Use a color scheme closer to standard syntax highlighting. Pointers, bitsets, complexes, and etc. are colored differently from `original`. |
+| `no_es`     | Turn off output coloring.                                                                                                                  |
 
 #### `es_value`
 
@@ -342,7 +396,7 @@ The style of indents of the Container, Set and Map categories (See [Supported ty
 
 | Name                     | Description                                                                                                                               |
 | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| `minimal`                | Don't indent unless the `max_line_width` is exceeded                                                                                      |
+| `minimal`                | Don't indent unless the `max_line_width` is exceeded.                                                                                     |
 | `when_nested`            | Default. Always indent when the element/key/value type also falls into the Container/Set/Map/Tuple category.                              |
 | `when_non_tuples_nested` | Always indent when the element/key/value type falls into the Container/Set/Map category, but don't when it falls into the Tuple category. |
 | `always`                 | Always indent even if the Container/Set/Map is not nested.                                                                                |
@@ -360,31 +414,30 @@ The style of indents of the Container, Set and Map categories (See [Supported ty
 #define cpp_dump(expressions...)
 
 /**
- * Make export_var() support type T.
+ * Make cpp_dump::export_var() support type T.
  * Member functions to be displayed must be const.
  */
 #define CPP_DUMP_DEFINE_EXPORT_OBJECT(T, members...)
 
 /**
- * Make export_var() support every type that has the specified members.
+ * Make cpp_dump::export_var() support every type that has the specified members.
  * Member functions to be displayed must be const.
  * Compile errors in this macro, such as ambiguous function calls, are never reported due to SFINAE.
  */
 #define CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC(members...)
 
 /**
- * Make export_var() support enum T.
+ * Make cpp_dump::export_var() support enum T.
  */
 #define CPP_DUMP_DEFINE_EXPORT_ENUM(T, members...)
 
 /**
- * Set a value to a variable in cpp_dump namespace.
- * You can also assign values to the variables directly.
+ * Set a value to a variable in cpp_dump::options namespace.
  */
 #define CPP_DUMP_SET_OPTION(variable, value)
 
 /**
- * Set a value to a variable in cpp_dump namespace.
+ * Set a value to a variable in cpp_dump::options namespace.
  * Use this if you want to run it in the global namespace, meaning before the main starts.
  */
 #define CPP_DUMP_SET_OPTION_GLOBAL(variable, value)
@@ -451,7 +504,7 @@ inline std::size_t max_depth = 4;
 /**
  * Maximum number of iterations of cpp_dump::export_var() over an iterator.
  * Note that in a single call, cpp_dump::export_var() calls itself at most
- * (max_iteration_count^(max_depth+1)-1)/(max_iteration_count-1)-1 times.
+ * (max_iteration_count^(max_depth+1)-1)/(max_iteration_count-1) times.
  */
 inline std::size_t max_iteration_count = 16;
 
@@ -570,19 +623,19 @@ types::log_label_func_t fixed_length(int min_width, int max_width,
 
 There are three ways to enable the library to print a user type.
 
-#### 1. Use CPP_DUMP_DEFINE_EXPORT_OBJECT() macro
+#### Method 1. Use CPP_DUMP_DEFINE_EXPORT_OBJECT() macro
 
-This macro requires the user type to be accessible from the top level, but it is the safest and easiest way to enable `cpp_dump()` to print a user type.  
+This macro requires the user type to be accessible from the global scope, but it is the safest and easiest way to enable `cpp_dump()` to print a user type.  
 [See Full Example Code](./readme/user-defined-class.cpp)
 
 ```cpp
-// Somewhere accessible from top level (not private or defined in a function)
+// Somewhere accessible from the global scope (not private or defined in a function)
 struct class_A {
   int i;
   std::string str() const { return std::to_string(i); }
 };
 
-// At top level
+// In the global scope
 // CPP_DUMP_DEFINE_EXPORT_OBJECT(type_name, members...)
 CPP_DUMP_DEFINE_EXPORT_OBJECT(class_A, i, str());
 
@@ -597,10 +650,10 @@ For enums, use CPP_DUMP_DEFINE_EXPORT_ENUM() macro.
 [See Full Example Code](./readme/user-defined-enum.cpp)
 
 ```cpp
-// Somewhere accessible from top level (not private or defined in a function)
+// Somewhere accessible from the global scope (not private or defined in a function)
 enum class enum_A { a, b, c };
 
-// At top level
+// In the global scope
 // CPP_DUMP_DEFINE_EXPORT_ENUM(enum_name, members...)
 CPP_DUMP_DEFINE_EXPORT_ENUM(enum_A, enum_A::a, enum_A::b, enum_A::c);
 
@@ -611,17 +664,17 @@ cpp_dump(my_enum_A);
 
 ![user-defined-enum.png](./readme/user-defined-enum.png)
 
-#### 2. Use CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC() macro
+#### Method 2. Use CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC() macro
 
 This macro enables `cpp_dump()` to print any type with specified members.  
-This macro doesn't require the user type to be accessible from the top level (or even the type name).
+This macro doesn't require the user type to be accessible from the global scope (or need even the type name).
 
-If you use this macro two or more times, you need to be careful of ambiguous function call errors.  
-If such an error occurs, it won't be reported due to SFINAE.  
+If you use this macro two or more times, you need to be careful of ambiguous function call compile errors.  
+If such an error occurs, it won't be reported due to SFINAE, and the user-defined type will remain unsupported.  
 [See Full Example Code](./readme/user-defined-class2.cpp)
 
 ```cpp
-// At top level
+// In the global scope
 // CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC(members...)
 CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC(i, str());
 
@@ -638,19 +691,19 @@ cpp_dump(my_class_A);
 
 ![user-defined-class2.png](./readme/user-defined-class2.png)
 
-#### 3. Define `std::ostream& operator<<(std::ostream&, const T &)` operator
+#### Method 3. Define `std::ostream& operator<<(std::ostream&, const T &)` operator
 
 The last way is to define the operator `std::ostream& operator<<(std::ostream&, const T &)`.  
 [See Full Example Code](./readme/user-defined-class3.cpp)
 
 ```cpp
-// Somewhere accessible from top level (not private or defined in a function)
+// Somewhere accessible from the global scope (not private or defined in a function)
 struct class_A {
   int i;
   std::string str() const { return std::to_string(i); }
 };
 
-// At top level
+// In the global scope
 std::ostream &operator<<(std::ostream &os, const class_A &a) {
   os << "class_A{ i= " << a.i << ", str()= \"" << a.str() << "\" }";
   return os;
@@ -832,7 +885,7 @@ udec(int digits = -1, int chunk = 0, bool space_fill = true) {
 ```
 
 The parameter `base` of `int_style()` supports values of 2, 8, 10, 16. For other values, this manipulator does nothing.  
-`digits` supports values of `digits` >= 0 and `digits` <= 'the maximum digits', where 'the maximum digits' is the maximum number of digits that can be represented by the type for the given `base`. For other values, it is treated as `digits` = 'the maximum digits'.  
+`digits` supports values of `digits` >= 0 and `digits` <= 'the maximum digits', where 'the maximum digits' is the maximum number of digits that can be represented by the integer type for the given `base`. For other values, it is treated as `digits` = 'the maximum digits'.  
 `chunk` supports values of `chunk` >= 0. For other values, it is treated as `chunk` = 0.
 
 Like the `index()` manipulators, the `int_style()` manipulator acts on all integers in the variable. (The order is irrelevant.)  
@@ -852,7 +905,7 @@ cpp_dump(unsigned_int_vector | cp::front(2) | cp::dec(2));
 ![manipulator-bin-etc.png](./readme/manipulator-bin-etc.png)
 
 The `ubin()`, `uoct()`, and `uhex()` manipulators interpret all integer types as unsigned.  
-If the original type is not unsigned, the suffix 'u' is shown.  
+If the original type is not unsigned, the suffix `u` is shown.  
 However, the `udec()` manipulator acts differently from these.  
 The `udec()` manipulator interprets signed types as signed type, but it does not add an extra space for positive values.  
 This is suitable for showing a container of a signed integers when all values are positive.  
@@ -962,9 +1015,13 @@ cpp_dump(int_ptr_ptr | cp::addr(1));
 #### `map_*()` manipulators
 
 ```cpp
-cpp_dump::map_k(return_value_of_manipulator);
-cpp_dump::map_v(return_value_of_manipulator);
-cpp_dump::map_kv(return_value_of_manipulator_for_key, return_value_of_manipulator_for_value);
+namespace cpp_dump {
+
+map_k(return_value_of_manipulator);
+map_v(return_value_of_manipulator);
+map_kv(return_value_of_manipulator_for_key, return_value_of_manipulator_for_value);
+
+}  // namespace cpp_dump
 ```
 
 These manipulators are **order-sensitive**.
@@ -997,6 +1054,9 @@ inline void cpp_dump::write_log(std::string_view output) {
 #include "./cpp-dump/cpp-dump.hpp"
 #define dump(...) cpp_dump(__VA_ARGS__)
 namespace cp = cpp_dump;
+CPP_DUMP_SET_OPTION_GLOBAL(max_line_width, 80);
+CPP_DUMP_SET_OPTION_GLOBAL(log_label_func, cp::log_label::filename());
+CPP_DUMP_SET_OPTION_GLOBAL(enable_asterisk, true);
 #else
 #define dump(...)
 #define CPP_DUMP_SET_OPTION(...)
@@ -1012,10 +1072,6 @@ namespace cp = cpp_dump;
 using namespace std;
 
 int main() {
-  CPP_DUMP_SET_OPTION(max_line_width, 80);
-  CPP_DUMP_SET_OPTION(log_label_func, cp::log_label::filename());
-  CPP_DUMP_SET_OPTION(enable_asterisk, true);
-
   int N;
   cin >> N;
 
@@ -1056,8 +1112,8 @@ cpp_dump() prints variables recursively, so they can dump nested variables of an
 | Reference     | T is `std::reference_wrapper`                                                                                                                                                                                                                                                                         |                                                   |
 | Exception     | T is convertible to `std::exception`                                                                                                                                                                                                                                                                  |                                                   |
 | Other         | T is either `std::bitset`, `std::complex`, `std::optional`, `std::variant`, `std::type_info`, `std::type_index` or `std::source_location`(C++20 or higher and g++ and MSVC only)                                                                                                                      |                                                   |
-| User-defined  | `CPP_DUMP_DEFINE_EXPORT_OBJECT(T, members...);` is at top level and the member functions to be displayed is const.                                                                                                                                                                                    |                                                   |
-| Enum          | `CPP_DUMP_DEFINE_EXPORT_ENUM(T, members...);` is at top level.                                                                                                                                                                                                                                        |                                                   |
+| User-defined  | `CPP_DUMP_DEFINE_EXPORT_OBJECT(T, members...);` is in the global scope and the member functions to be displayed is const.                                                                                                                                                                             |                                                   |
+| Enum          | `CPP_DUMP_DEFINE_EXPORT_ENUM(T, members...);` is in the global scope.                                                                                                                                                                                                                                 |                                                   |
 | Ostream       | All of the above are not satisfied, `std::is_function_v<T> == false && std::is_member_pointer_v<T> == false`, and the function `std::ostream& operator<<(std::ostream&, const T &)` is defined. **The string representation of T must not be an empty string** (This makes manipulators unsupported). |                                                   |
 | User-defined2 | All of the above are not satisfied, T has all members specified by just one `CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC(members...);` at top level, and the member functions to be displayed is const.                                                                                                     |                                                   |
 | Asterisk      | All of the above are not satisfied, `cpp_dump::options::enable_asterisk == true` and the function `TypeExceptT operator*(const T &)` or the const member function `TypeExceptT T::operator*() const` is defined.                                                                                      | Iterators                                         |

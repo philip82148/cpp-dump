@@ -18,7 +18,7 @@
 #define _p_CPP_DUMP_EXPAND_FOR_EXPORT_OBJECT(member) append_output(#member, value.member)
 
 /**
- * Make export_var() support type TYPE.
+ * Make cpp_dump::export_var() support type TYPE.
  * Member functions to be displayed must be const.
  */
 #define CPP_DUMP_DEFINE_EXPORT_OBJECT(TYPE, ...)                                                   \

@@ -21,7 +21,7 @@
   { member, #member }
 
 /**
- * Make export_var() support enum TYPE.
+ * Make cpp_dump::export_var() support enum TYPE.
  */
 #define CPP_DUMP_DEFINE_EXPORT_ENUM(TYPE, ...)                                                                       \
   namespace cpp_dump {                                                                                               \
