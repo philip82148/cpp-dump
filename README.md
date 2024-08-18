@@ -60,9 +60,9 @@ Key points:
     - [How to use manipulators](#how-to-use-manipulators)
     - [`front()`, `middle()`, `back()`, `both_ends()` manipulators](#front-middle-back-both_ends-manipulators)
     - [`index()` manipulator](#index-manipulator)
-    - [`int_style()` manipulators](#int_style-manipulators)
+    - [`int_style()` and its alias manipulators](#int_style-and-its-alias-manipulators)
     - [`format()` manipulator](#format-manipulator)
-    - [`bw()`, `boolnum()` manipulator](#bw-boolnum-manipulator)
+    - [`bw()`, `boolnum()` manipulators](#bw-boolnum-manipulators)
     - [`stresc()` manipulator](#stresc-manipulator)
     - [`charhex()` manipulator](#charhex-manipulator)
     - [`addr()` manipulator](#addr-manipulator)
@@ -858,7 +858,7 @@ cpp_dump(some_huge_vector | cp::dec(2) | cp::index());
 
 ![manipulator-index.png](./readme/manipulator-index.png)
 
-#### `int_style()` manipulators
+#### `int_style()` and its alias manipulators
 
 ```cpp
 namespace cpp_dump {
@@ -947,7 +947,7 @@ cpp_dump(pi | cp::format("%.10f"));
 
 ![manipulator-format.png](./readme/manipulator-format.png)
 
-#### `bw()`, `boolnum()` manipulator
+#### `bw()`, `boolnum()` manipulators
 
 ```cpp
 cpp_dump::bw(bool left = false);
