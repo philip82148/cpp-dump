@@ -1,17 +1,72 @@
-# cpp-dump: A C++ library for printing any variable for debugging
+# cpp-dump <!-- omit in toc -->
 
 [日本語記事はこちら！](https://zenn.dev/sassan/articles/19db660e4da0a4)
 
-Python has `print()`, JavaScript has `console.log()`, and PHP has `var_dump()` — functions that print variables of any type and are incredibly useful for debugging. But what about C++? Enter cpp-dump. cpp-dump is a library that automatically formats and prints variables of any type. With features like auto-indentation, colored output, string representations similar to JavaScript, Python, and C++, and over 20 manipulators, cpp-dump is equipped with everything you need to effortlessly and clearly print variables.
+**cpp-dump is a C++ library for printing variables of any type for debugging.**
+
+Python has `print()`, JavaScript has `console.log()`, and PHP has `var_dump()` — functions that print variables of any type and are useful for debugging when you want a quick way to inspect variables. But what about C++? Enter `cpp_dump(...)`. cpp-dump is a library that automatically formats and prints variables of any type. With features like auto-indentation, colored output, string representations similar to JavaScript, Python, and C++, and over 20 manipulators, cpp-dump is equipped with everything you need to effortlessly and clearly print variables.
 
 Key points:
 
 - cpp-dump has an auto-indentation feature. The output fits into the maximum line width, and nested containers are formatted for readability.
 - The string representation of variables is similar to JavaScript, Python, and C++ syntax. The output is readable without being overloaded with information. (You can add more details using manipulators if you want.)
-- Colored output is available, with extensive customization options. You can achieve syntax highlighting similar to that in IDEs.
+- Customizable colored output is available. You can achieve syntax highlighting similar to that of IDEs.
 - With over 20 manipulators, you can easily change the format or add information to the output.
 - By using macros, cpp-dump supports user-defined types as well. There is no need to write new functions for printing.
 - cpp-dump is a header-only library. No build or dependencies are required!
+
+## Table of Contents <!-- omit in toc -->
+
+- [Introduction](#introduction)
+- [Features](#features)
+  - [A wide variety of supported types](#a-wide-variety-of-supported-types)
+  - [Auto indent](#auto-indent)
+  - [Filename and line can be printed instead of `[dump]`](#filename-and-line-can-be-printed-instead-of-dump)
+  - [Customizable output color](#customizable-output-color)
+  - [Can print even user-defined types](#can-print-even-user-defined-types)
+- [Advanced Feature](#advanced-feature)
+  - [20+ Manipulators to change the display style](#20-manipulators-to-change-the-display-style)
+- [Requirement](#requirement)
+- [Installation](#installation)
+- [Configuration (as needed)](#configuration-as-needed)
+  - [Configuration options](#configuration-options)
+    - [`max_line_width`](#max_line_width)
+    - [`max_depth`](#max_depth)
+    - [`max_iteration_count`](#max_iteration_count)
+    - [`enable_asterisk`](#enable_asterisk)
+    - [`print_expr`](#print_expr)
+    - [`log_label_func`](#log_label_func)
+    - [`es_style`](#es_style)
+    - [`es_value`](#es_value)
+    - [`detailed_class_es`](#detailed_class_es)
+    - [`detailed_member_es`](#detailed_member_es)
+    - [`detailed_number_es`](#detailed_number_es)
+    - [`cont_indent_style`](#cont_indent_style)
+- [Usage](#usage)
+  - [Macros](#macros)
+  - [Types](#types)
+  - [Variables](#variables)
+  - [Functions](#functions)
+  - [How to print a user-defined type with cpp-dump](#how-to-print-a-user-defined-type-with-cpp-dump)
+    - [Method 1. Use CPP\_DUMP\_DEFINE\_EXPORT\_OBJECT() macro](#method-1-use-cpp_dump_define_export_object-macro)
+    - [Method 2. Use CPP\_DUMP\_DEFINE\_EXPORT\_OBJECT\_GENERIC() macro](#method-2-use-cpp_dump_define_export_object_generic-macro)
+    - [Method 3. Define `std::ostream& operator<<(std::ostream&, const T &)` operator](#method-3-define-stdostream-operatorstdostream-const-t--operator)
+  - [Customize `[dump]`](#customize-dump)
+  - [Formatting with manipulators](#formatting-with-manipulators)
+    - [How to use manipulators](#how-to-use-manipulators)
+    - [`front()`, `middle()`, `back()`, `both_ends()` manipulators](#front-middle-back-both_ends-manipulators)
+    - [`index()` manipulator](#index-manipulator)
+    - [`int_style()` manipulators](#int_style-manipulators)
+    - [`format()` manipulator](#format-manipulator)
+    - [`bw()`, `boolnum()` manipulator](#bw-boolnum-manipulator)
+    - [`stresc()` manipulator](#stresc-manipulator)
+    - [`charhex()` manipulator](#charhex-manipulator)
+    - [`addr()` manipulator](#addr-manipulator)
+    - [`map_*()` manipulators](#map_-manipulators)
+  - [Change the output destination from the standard error output](#change-the-output-destination-from-the-standard-error-output)
+  - [For competitive programming use](#for-competitive-programming-use)
+- [Supported types](#supported-types)
+  - [Display example](#display-example)
 
 ## Introduction
 
@@ -951,6 +1006,9 @@ inline void cpp_dump::write_log(std::string_view output) {
 #include "./cpp-dump/dump.hpp"
 #define dump(...) cpp_dump(__VA_ARGS__)
 namespace cp = cpp_dump;
+CPP_DUMP_SET_OPTION_GLOBAL(max_line_width, 80);
+CPP_DUMP_SET_OPTION_GLOBAL(log_label_func, cp::log_label::filename());
+CPP_DUMP_SET_OPTION_GLOBAL(enable_asterisk, true);
 #else
 #define dump(...)
 #define CPP_DUMP_SET_OPTION(...)
@@ -966,10 +1024,6 @@ namespace cp = cpp_dump;
 using namespace std;
 
 int main() {
-  CPP_DUMP_SET_OPTION(max_line_width, 80);
-  CPP_DUMP_SET_OPTION(log_label_func, cp::log_label::filename());
-  CPP_DUMP_SET_OPTION(enable_asterisk, true);
-
   int N;
   cin >> N;
 
