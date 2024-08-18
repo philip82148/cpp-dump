@@ -46,6 +46,9 @@ inline std::string number(std::string_view s) { return es::apply(options::es_val
 inline std::string character(std::string_view s) {
   return es::apply(options::es_value.character, s);
 }
+inline std::string escaped_char(std::string_view s) {
+  return es::apply(options::es_value.escaped_char, s);
+}
 inline std::string op(std::string_view s) { return es::apply(options::es_value.op, s); }
 inline std::string identifier(std::string_view s) {
   return es::apply(options::es_value.identifier, s);
@@ -60,9 +63,6 @@ inline std::string member_op(std::string_view s) {
 }
 inline std::string number_op(std::string_view s) {
   return es::apply(options::es_value.number_op, s);
-}
-inline std::string escaped_char(std::string_view s) {
-  return es::apply(options::es_value.escaped_char, s);
 }
 
 inline std::string bracket(std::string_view s, std::size_t d) {
