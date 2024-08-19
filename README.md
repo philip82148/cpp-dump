@@ -46,14 +46,14 @@ Key points:
     - [`detailed_class_es`](#detailed_class_es)
     - [`detailed_member_es`](#detailed_member_es)
     - [`detailed_number_es`](#detailed_number_es)
-- [Usage](#usage)
+- [Detailed usage](#detailed-usage)
   - [Macros](#macros)
   - [Types](#types)
   - [Variables](#variables)
   - [Functions](#functions)
   - [How to print a user-defined type with cpp-dump](#how-to-print-a-user-defined-type-with-cpp-dump)
-    - [Method 1. Use CPP_DUMP_DEFINE_EXPORT_OBJECT() macro](#method-1-use-cpp_dump_define_export_object-macro)
-    - [Method 2. Use CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC() macro](#method-2-use-cpp_dump_define_export_object_generic-macro)
+    - [Method 1. Use CPP\_DUMP\_DEFINE\_EXPORT\_OBJECT() macro](#method-1-use-cpp_dump_define_export_object-macro)
+    - [Method 2. Use CPP\_DUMP\_DEFINE\_EXPORT\_OBJECT\_GENERIC() macro](#method-2-use-cpp_dump_define_export_object_generic-macro)
     - [Method 3. Define `std::ostream& operator<<(std::ostream&, const T &)` operator](#method-3-define-stdostream-operatorstdostream-const-t--operator)
   - [Customize `[dump]`](#customize-dump)
   - [Formatting with manipulators](#formatting-with-manipulators)
@@ -412,7 +412,7 @@ If true, the `es_value.member_op` color is used for operators in members (`()`, 
 Type: `bool` Default: `false`  
 If true, the `es_value.number_op` color is used for operators in numbers (`-`, `+`, etc...).
 
-## Usage
+## Detailed usage
 
 ### Macros
 
