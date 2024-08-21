@@ -8,6 +8,7 @@ Python has `print()`, JavaScript has `console.log()`, and PHP has `var_dump()` â
 
 Key points:
 
+- cpp-dump can print a wide variety of types, including multi-D vectors, (multi)maps, (multi)sets, and tuples.
 - cpp-dump has an auto-indentation feature. The output fits into the maximum line width, and nested containers are formatted for readability.
 - The string representation of variables is similar to JavaScript, Python, and C++ syntax. The output is readable without being overloaded with information. (You can add more details using manipulators if you want.)
 - Customizable colored output is available. You can achieve syntax highlighting similar to that of IDEs.
