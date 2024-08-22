@@ -89,15 +89,35 @@ cpp_dump(my_vector);
 
 ### A wide variety of supported types
 
-cpp-dump supports a wide variety of types. Also, it supports nested containers of any combination of the types. Their string representation is similar to JavaScript, Python, and C++ syntax, which is easy to read.  
+cpp-dump supports a wide variety of types, including multi-D vectors, (multi)maps, (multi)sets, and tuples.  
+Their string representation is similar to JavaScript, Python, and C++ syntax, which is easy to read.  
 [See All Supported Types](#supported-types)  
 [See Full Example Code](./readme/supports-various-types.cpp)
 
 ```cpp
-// See the full example code for the definitions of the variables.
+bool my_bool = true; double my_double = 3.141592; int my_int = 65;
+char my_char = 'a', LF_char = '\n'; std::string my_string = "This is a string";
+int *int_ptr = &my_int; void *void_ptr = &my_int;
+std::vector<std::vector<int>> my_vector{{3, 5, 8, 9, 7}, {9, 3, 2, 3, 8}};
+std::set<char> my_set{'A', 'p', 'p', 'l', 'e'};
+std::map<int, int> my_map{{2, 6}, {4, 6}, {5, 3}};
+std::multiset<char> my_multiset{'A', 'p', 'p', 'l', 'e'};
+std::multimap<int, int> my_multimap{{2, 4}, {4, 6}, {5, 3}, {4, 7}};
+std::pair<int, char> my_pair{8, 'a'};
+std::tuple<int, double, std::string> my_tuple{7, 4.5, "This is a string."};
+std::queue<int> my_queue;
+std::priority_queue<int> my_priority_queue;
+std::stack<int> my_stack;
+for (auto v : {1, 2, 3, 4, 5}) my_queue.push(v), my_priority_queue.push(v), my_stack.push(v);
+std::bitset<8> my_bitset(0x3a);
+std::complex<double> my_complex{1.0, -1.0};
+std::optional<int> my_optional{15};
+std::variant<int, std::string> my_variant{"1"};
+std::vector<std::pair<int, std::string>> vector_of_pairs{{1, "apple"}, {3, "banana"}};
+
 std::clog << "\n// Basic Type" << std::endl;
-cpp_dump(false, 0, 0.0); cpp_dump(true, 3.14, my_int, -9265);
-cpp_dump("This is a string.", 'a', '\n'); cpp_dump(ptr, void_ptr, nullptr);
+cpp_dump(my_bool, my_double, my_int); cpp_dump(my_string, my_char, LF_char);
+cpp_dump(int_ptr, void_ptr, nullptr);
 
 std::clog << "\n// Container" << std::endl;
 cpp_dump(my_vector);
@@ -126,7 +146,9 @@ cpp_dump(vector_of_pairs);
 
 ### Auto indent
 
-cpp-dump automatically indents so that the output does not exceed the maximum width. [See Full Example Code](./readme/auto-indent.cpp)
+cpp-dump automatically indents so that the output does not exceed the maximum width.  
+(Nested containers are indented by default, but this behavior can be changed through [the settings](#cont_indent_style).)  
+[See Full Example Code](./readme/auto-indent.cpp)
 
 ```cpp
 cpp_dump(my_vector);
@@ -1116,10 +1138,10 @@ cpp_dump() prints variables recursively, so they can dump nested variables of an
 | ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- |
 | Arithmetic    | `std::is_arithmetic_v<T> == true`                                                                                                                                                                                                                                                                     | `bool`, `char`, `int`, `long`, `float`, `double`  |
 | String        | T is convertible to `std::string_view`                                                                                                                                                                                                                                                                | `std::string`, `const char *`, `std::string_view` |
-| Container     | T is compatible with the range-based for loop                                                                                                                                                                                                                                                         | `std::vector`, `std::array`, C-style arrays       |
+| Container     | T is compatible with the range-based for loop                                                                                                                                                                                                                                                         | `std::vector`, `std::list`, C-style arrays        |
 | Map           | T is either `std::map`, `std::unordered_map`, `std::multimap`, or `std::unordered_multimap`                                                                                                                                                                                                           |                                                   |
 | Set           | T is either `std::set`, `std::unordered_set`, `std::multiset`, or `std::unordered_multiset`                                                                                                                                                                                                           |                                                   |
-| Tuple         | T is compatible with `std::tuple_size_v<T>`                                                                                                                                                                                                                                                           | `std::tuple`, `std::pair`                         |
+| Tuple         | T is compatible with `std::tuple_size_v<T>`                                                                                                                                                                                                                                                           | `std::tuple`, `std::pair`, User-defined tuples    |
 | FIFO/LIFO     | T is either `std::queue`, `std::priority_queue`, or `std::stack`                                                                                                                                                                                                                                      |                                                   |
 | Pointer       | T is a pointer or smart pointer                                                                                                                                                                                                                                                                       | `int *`, `std::shared_ptr`, `std::unique_ptr`     |
 | Reference     | T is `std::reference_wrapper`                                                                                                                                                                                                                                                                         |                                                   |

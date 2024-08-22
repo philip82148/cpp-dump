@@ -1,9 +1,8 @@
 
 // Basic Type
-[dump] false => false, 0 => 0, 0.0 => 0.000000
-[dump] true => true, 3.14 => 3.140000, my_int => 15, -9265 => -9265
-[dump] "This is a string." => "This is a string.", 'a' => 'a', '\n' => '\n'
-[dump] ptr => *15, void_ptr => 0x7fffffffffff, nullptr => nullptr
+[dump] my_bool => true, my_double => 3.141592, my_int => 65
+[dump] my_string => "This is a string", my_char => 'a', LF_char => '\n'
+[dump] int_ptr => *65, void_ptr => 0x7fffffffffff, nullptr => nullptr
 
 // Container
 [dump] my_vector => [
@@ -34,7 +33,7 @@
 
 // Other
 [dump] my_bitset => 0b 0011 1010
-[dump] my_complex => 1.000000 + 1.000000i ( abs= 1.414214, arg/pi= 0.250000 )
+[dump] my_complex => 1.000000 - 1.000000i ( abs= 1.414214, arg/pi= -0.250000 )
 [dump] my_optional => ?15, std::nullopt => std::nullopt
 [dump] my_variant => |"1"
 
