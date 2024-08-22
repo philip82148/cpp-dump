@@ -273,7 +273,7 @@ Then
 #include "path/to/cpp-dump/cpp-dump.hpp"
 ```
 
-[Copy this code to test the library](./readme/supports-various-types.cpp)
+[Copy this code to test the library](./readme/test-code.cpp)
 
 ### With CMake
 
