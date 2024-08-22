@@ -147,7 +147,7 @@ cpp_dump(vector_of_pairs);
 ### Auto indent
 
 cpp-dump automatically indents so that the output does not exceed the maximum width.  
-(Nested containers are indented by default, but this behavior can be changed through [the settings](#cont_indent_style).)  
+Additionally, nested containers are indented by default (This behavior can be changed through [the settings](#cont_indent_style)).  
 [See Full Example Code](./readme/auto-indent.cpp)
 
 ```cpp
@@ -238,11 +238,19 @@ CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC(i, str());
 This library has over 20 manipulators to change the display style.  
 See [Formatting with manipulators](#formatting-with-manipulators) for details.
 
+**[Manipulator to omit part of a container](#front-middle-back-both_ends-manipulators)**
+
 ![manipulator-front-etc.png](./readme/manipulator-front-etc.png)
+
+**[Manipulator to show indexes of an array](#index-manipulator)**
 
 ![manipulator-index.png](./readme/manipulator-index.png)
 
+**[Manipulator to change the numerical base](#int_style-and-its-alias-manipulators)**
+
 ![manipulator-ubin-etc.png](./readme/manipulator-ubin-etc.png)
+
+**[Manipulator to escape strings](#stresc-manipulator)**
 
 ![manipulator-stresc.png](./readme/manipulator-stresc.png)
 
@@ -264,6 +272,8 @@ Then
 ```cpp
 #include "path/to/cpp-dump/cpp-dump.hpp"
 ```
+
+[Copy this code to test the library](./readme/supports-various-types.cpp)
 
 ### With CMake
 
