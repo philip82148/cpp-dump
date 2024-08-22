@@ -2,7 +2,7 @@
 // Basic Type
 [0m[02m[dump] [0m[36mmy_bool[0m[02m => [0mtrue[0m[02m, [0m[36mmy_double[0m[02m => [0m3.141592[0m[02m, [0m[36mmy_int[0m[02m => [0m65[0m
 [0m[02m[dump] [0m[36mmy_string[0m[02m => [0m"This is a string[0m"[0m[02m, [0m[36mmy_char[0m[02m => [0m'a'[0m[02m, [0m[36mLF_char[0m[02m => [0m'[0m[02m\n[0m'[0m
-[0m[02m[dump] [0m[36mint_ptr[0m[02m => [0m[32m*[0m65[0m[02m, [0m[36mvoid_ptr[0m[02m => [0m[32m0x7ffcc674e26c[0m[02m, [0m[36mnullptr[0m[02m => [0mnullptr[0m
+[0m[02m[dump] [0m[36mint_ptr[0m[02m => [0m[32m*[0m65[0m[02m, [0m[36mvoid_ptr[0m[02m => [0m[32m0x7fffffffffff[0m[02m, [0m[36mnullptr[0m[02m => [0mnullptr[0m
 
 // Container
 [0m[02m[dump] [0m[36mmy_vector[0m[02m => [0m[02m[[0m

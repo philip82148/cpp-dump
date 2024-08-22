@@ -27,7 +27,7 @@ execute_process(
    COMMAND "${cmd_path}" ERROR_VARIABLE error_contents COMMAND_ERROR_IS_FATAL ANY
 )
 
-set(raw_address_file supports-various-types;customizable-colors;no-es;formatting-with-manipulators)
+set(raw_address_file supports-various-types;customizable-colors;no-es;formatting-with-manipulators;test-code)
 
 if("${basename}" IN_LIST raw_address_file)
    # Do not remove escape sequences but remove raw addresses.
