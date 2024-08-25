@@ -217,6 +217,13 @@ int main(int argc, char *argv[]) {
   // Verify if CPP_DUMP_SET_OPTION_GLOBAL is working correctly.
   cpp_dump(cpp_dump::options::max_iteration_count == 100);
 
+  {
+    // Verify if expressions are executed only once.
+    int i = 0;
+    cpp_dump(++i);
+    cpp_dump(++i);
+  }
+
   // basic
   cpp_dump(false, 0, 0.0, '0', (const char *)"0", string{"0"}, string_view{"0"});
   variadic_template_func(false, 0, 0.0, '0', (const char *)"0", string{"0"}, string_view{"0"});
