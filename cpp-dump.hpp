@@ -24,6 +24,12 @@
 
 #define _p_CPP_DUMP_STRINGIFY(x) #x
 
+#define _p_CPP_DUMP_CPP_DUMP_AUX(size, exprs, ...)                                                 \
+  cpp_dump::_detail::                                                                              \
+      cpp_dump_macro<size, cpp_dump::_detail::contains_variadic_template<size>(exprs)>(            \
+          {__FILE__, __LINE__, __func__}, exprs, __VA_ARGS__                                       \
+      )
+
 /**
  * Print string representations of expressions and results to std::clog or other configurable
  * outputs.
@@ -31,11 +37,8 @@
  * This macro uses cpp_dump::export_var() internally.
  */
 #define cpp_dump(...)                                                                              \
-  cpp_dump::_detail::cpp_dump_macro<                                                               \
+  _p_CPP_DUMP_CPP_DUMP_AUX(                                                                        \
       _p_CPP_DUMP_VA_SIZE(__VA_ARGS__),                                                            \
-      cpp_dump::_detail::contains_variadic_template<_p_CPP_DUMP_VA_SIZE(__VA_ARGS__                \
-      )>({_p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_STRINGIFY, __VA_ARGS__)})>(                            \
-      {__FILE__, __LINE__, __func__},                                                              \
       {_p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_STRINGIFY, __VA_ARGS__)},                                 \
       __VA_ARGS__                                                                                  \
   )
