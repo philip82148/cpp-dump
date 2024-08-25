@@ -197,6 +197,13 @@ ostream &operator<<(ostream &os, unsupported_non_const_class &) {
 
 CPP_DUMP_SET_OPTION_GLOBAL(max_iteration_count, 100);
 
+template <typename... Args>
+void variadic_template_func(Args &&...args) {
+  cpp_dump(args...);
+  cpp_dump(args  //
+           ...);
+}
+
 int main(int argc, char *argv[]) {
   if (argc != 2) return 1;
   auto es_style_ = (array{
@@ -212,6 +219,7 @@ int main(int argc, char *argv[]) {
 
   // basic
   cpp_dump(false, 0, 0.0, '0', (const char *)"0", string{"0"}, string_view{"0"});
+  variadic_template_func(false, 0, 0.0, '0', (const char *)"0", string{"0"}, string_view{"0"});
   cpp_dump((signed char)0, (unsigned char)0, 0u, 0l, 0ul, 0ll, 0ull, 0.0f, 0.0l);
   cpp_dump(true, 3.14, 159265, "This is a test string");
   cpp_dump((signed char)3, (unsigned char)5, 8u, 9l, 7ul, 9ll, 3ull, 2.38f, 4.6l);
