@@ -8,6 +8,7 @@
 #pragma once
 
 #include <algorithm>
+#include <array>
 #include <functional>
 #include <initializer_list>
 #include <iostream>
@@ -32,9 +33,8 @@
 #define cpp_dump(...)                                                                              \
   cpp_dump::_detail::cpp_dump_macro<                                                               \
       _p_CPP_DUMP_VA_SIZE(__VA_ARGS__),                                                            \
-      cpp_dump::_detail::contains_variadic_template(                                               \
-          _p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_STRINGIFY, __VA_ARGS__)                                \
-      )>(                                                                                          \
+      cpp_dump::_detail::contains_variadic_template<_p_CPP_DUMP_VA_SIZE(__VA_ARGS__                \
+      )>({_p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_STRINGIFY, __VA_ARGS__)})>(                            \
       {__FILE__, __LINE__, __func__},                                                              \
       {_p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_STRINGIFY, __VA_ARGS__)},                                 \
       __VA_ARGS__                                                                                  \
@@ -244,13 +244,15 @@ struct _source_location {
   std::string_view function_name;
 };
 
-template <typename... ConstCharPtr>
-constexpr bool contains_variadic_template(ConstCharPtr... exprs) {
-  auto ends_with_3dots = [](std::string_view expr) {
-    return expr.size() > 3 && expr.substr(expr.size() - 3) == "...";
-  };
+// in C++17, std::initializer_list is not a literal type.
+template <std::size_t N>
+constexpr bool contains_variadic_template(std::array<std::string_view, N> exprs) {
+  // std::any_of is not a constexpr function either.
+  for (auto expr : exprs) {
+    if (expr.size() > 3 && expr.substr(expr.size() - 3) == "...") return true;
+  }
 
-  return (ends_with_3dots(exprs) || ...);
+  return false;
 }
 
 // function called by cpp_dump() macro
