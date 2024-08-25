@@ -155,7 +155,3 @@
 
 #define _p_CPP_DUMP_EXPAND_VA(func, ...)                                                           \
   _p_CPP_DUMP_EXPAND_VA_AUX(func, _p_CPP_DUMP_VA_SIZE(__VA_ARGS__), __VA_ARGS__)
-
-#define _p_CPP_DUMP_VA_HEAD_AUX(func, arg1, ...) func(arg1)
-#define _p_CPP_DUMP_VA_HEAD(func, ...)                                                             \
-  _p_CPP_DUMP_BUFFER(_p_CPP_DUMP_VA_HEAD_AUX(func, __VA_ARGS__))

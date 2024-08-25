@@ -32,8 +32,8 @@
 #define cpp_dump(...)                                                                              \
   cpp_dump::_detail::cpp_dump_macro<                                                               \
       _p_CPP_DUMP_VA_SIZE(__VA_ARGS__),                                                            \
-      cpp_dump::_detail::is_variadic_template(                                                     \
-          _p_CPP_DUMP_VA_HEAD(_p_CPP_DUMP_STRINGIFY, __VA_ARGS__)                                  \
+      cpp_dump::_detail::contains_variadic_template(                                               \
+          {_p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_STRINGIFY, __VA_ARGS__)}                              \
       )>(                                                                                          \
       {__FILE__, __LINE__, __func__},                                                              \
       {_p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_STRINGIFY, __VA_ARGS__)},                                 \
@@ -217,7 +217,7 @@ bool _dump_one(
   return true;
 }
 
-template <bool as_va_temp, typename... Args>
+template <bool is_va_temp, typename... Args>
 bool _dump(
     std::string &output,
     const std::string &log_label,
@@ -225,7 +225,7 @@ bool _dump(
     std::initializer_list<std::string_view> exprs,
     const Args &...args
 ) {
-  if constexpr (as_va_temp) {
+  if constexpr (is_va_temp) {
     std::string_view first_arg_name = *exprs.begin();
     std::size_t i = 0;
     auto expr = [&]() -> std::string {
@@ -244,18 +244,20 @@ struct _source_location {
   std::string_view function_name;
 };
 
-constexpr bool is_variadic_template(std::string_view expr) {
-  return expr.size() > 3 && expr.substr(expr.size() - 3) == "...";
+constexpr bool contains_variadic_template(std::initializer_list<std::string_view> exprs) {
+  return std::any_of(exprs.begin(), exprs.end(), [](std::string_view expr) {
+    return expr.size() > 3 && expr.substr(expr.size() - 3) == "...";
+  });
 }
 
 // function called by cpp_dump() macro
-template <std::size_t va_macro_size, bool first_arg_is_va_temp, typename... Args>
+template <std::size_t va_macro_size, bool contains_va_temp, typename... Args>
 void cpp_dump_macro(
     _source_location loc, std::initializer_list<std::string_view> exprs, const Args &...args
 ) {
-  constexpr bool as_va_temp = va_macro_size == 1 && first_arg_is_va_temp;
+  constexpr bool is_va_temp = va_macro_size == 1 && contains_va_temp;
   static_assert(
-      va_macro_size == sizeof...(args) || as_va_temp,
+      is_va_temp || (va_macro_size == sizeof...(args) && !contains_va_temp),
       "The number of expressions passed to cpp_dump(...) does not match the number of actual "
       "arguments. Please enclose the expressions that contains commas in parentheses. "
       "If you are passing variadic template arguments, do not pass any other arguments."
@@ -269,9 +271,9 @@ void cpp_dump_macro(
       options::print_expr && std::any_of(exprs.begin(), exprs.end(), has_newline);
 
   std::string output;
-  if (exprs_have_newline || !_dump<as_va_temp>(output, log_label, false, exprs, args...)) {
+  if (exprs_have_newline || !_dump<is_va_temp>(output, log_label, false, exprs, args...)) {
     output = "";
-    _dump<as_va_temp>(output, log_label, true, exprs, args...);
+    _dump<is_va_temp>(output, log_label, true, exprs, args...);
   }
 
   write_log(output);
