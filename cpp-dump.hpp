@@ -265,7 +265,7 @@ void cpp_dump_macro(
 ) {
   constexpr bool is_va_temp = va_macro_size == 1 && contains_va_temp;
   static_assert(
-      is_va_temp || (va_macro_size == sizeof...(args) && !contains_va_temp),
+      (va_macro_size == sizeof...(args) && !contains_va_temp) || is_va_temp,
       "The number of expressions passed to cpp_dump(...) does not match the number of actual "
       "arguments. Please enclose the expressions that contains commas in parentheses. "
       "If you are passing variadic template arguments, do not pass any other arguments."
