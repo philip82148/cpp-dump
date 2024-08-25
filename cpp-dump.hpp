@@ -23,6 +23,10 @@
 #include "./cpp-dump/hpp/utility.hpp"
 
 #define _p_CPP_DUMP_STRINGIFY(x) #x
+#define _p_CPP_DUMP_CONTAINS_VARIADIC_TEMPLATE(...)                                                \
+  cpp_dump::_detail::contains_variadic_template<_p_CPP_DUMP_VA_SIZE(__VA_ARGS__)>(                 \
+      {_p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_STRINGIFY, __VA_ARGS__)}                                  \
+  )
 
 /**
  * Print string representations of expressions and results to std::clog or other configurable
@@ -33,8 +37,7 @@
 #define cpp_dump(...)                                                                              \
   cpp_dump::_detail::cpp_dump_macro<                                                               \
       _p_CPP_DUMP_VA_SIZE(__VA_ARGS__),                                                            \
-      cpp_dump::_detail::contains_variadic_template<_p_CPP_DUMP_VA_SIZE(__VA_ARGS__                \
-      )>({_p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_STRINGIFY, __VA_ARGS__)})>(                            \
+      _p_CPP_DUMP_CONTAINS_VARIADIC_TEMPLATE(__VA_ARGS__)>(                                        \
       {__FILE__, __LINE__, __func__},                                                              \
       {_p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_STRINGIFY, __VA_ARGS__)},                                 \
       __VA_ARGS__                                                                                  \
