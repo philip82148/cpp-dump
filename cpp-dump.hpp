@@ -33,7 +33,7 @@
   cpp_dump::_detail::cpp_dump_macro<                                                               \
       _p_CPP_DUMP_VA_SIZE(__VA_ARGS__),                                                            \
       cpp_dump::_detail::contains_variadic_template(                                               \
-          {_p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_STRINGIFY, __VA_ARGS__)}                              \
+          _p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_STRINGIFY, __VA_ARGS__)                                \
       )>(                                                                                          \
       {__FILE__, __LINE__, __func__},                                                              \
       {_p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_STRINGIFY, __VA_ARGS__)},                                 \
@@ -244,10 +244,13 @@ struct _source_location {
   std::string_view function_name;
 };
 
-constexpr bool contains_variadic_template(std::initializer_list<std::string_view> exprs) {
-  return std::any_of(exprs.begin(), exprs.end(), [](std::string_view expr) {
+template <typename... ConstCharPtr>
+constexpr bool contains_variadic_template(ConstCharPtr... exprs) {
+  auto ends_with_3dots = [](std::string_view expr) {
     return expr.size() > 3 && expr.substr(expr.size() - 3) == "...";
-  });
+  };
+
+  return (ends_with_3dots(exprs) || ...);
 }
 
 // function called by cpp_dump() macro
