@@ -226,10 +226,10 @@ bool _dump(
     const Args &...args
 ) {
   if constexpr (as_va_temp) {
-    std::string_view arg_name = *exprs.begin();
+    std::string_view first_arg_name = *exprs.begin();
     std::size_t i = 0;
     auto expr = [&]() -> std::string {
-      return std::string(arg_name) + "[" + std::to_string(i++) + "]";
+      return std::string(first_arg_name) + "[" + std::to_string(i++) + "]";
     };
     return (_dump_one(output, log_label, always_newline_before_expr, expr(), args) && ...);
   } else {
