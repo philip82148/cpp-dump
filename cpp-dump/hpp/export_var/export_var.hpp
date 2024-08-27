@@ -34,12 +34,12 @@ namespace _detail {
 
 template <typename T>
 std::string export_var(
-    const T &value,
-    const std::string &indent,
-    std::size_t last_line_length,
-    std::size_t current_depth,
-    bool fail_on_newline,
-    const export_command &command
+    [[maybe_unused]] const T &value,
+    [[maybe_unused]] const std::string &indent,
+    [[maybe_unused]] std::size_t last_line_length,
+    [[maybe_unused]] std::size_t current_depth,
+    [[maybe_unused]] bool fail_on_newline,
+    [[maybe_unused]] const export_command &command
 ) {
   if constexpr (is_value_with_command<T>) {
     return export_var(
