@@ -51,7 +51,7 @@ inline auto export_pointer(
       return export_unsupported();
     } else {
       std::ostringstream ss;
-      ss << std::hex << pointer;
+      ss << std::hex << static_cast<const void *>(pointer);
 
       // Make the entire string an identifier
       return es::_raw_address(ss.str());
@@ -61,9 +61,9 @@ inline auto export_pointer(
       std::ostringstream ss;
 
       if constexpr (is_smart_pointer<T>) {
-        ss << std::hex << pointer.get();
+        ss << std::hex << static_cast<const void *>(pointer.get());
       } else {
-        ss << std::hex << pointer;
+        ss << std::hex << static_cast<const void *>(pointer);
       }
 
       // Make the entire string an identifier

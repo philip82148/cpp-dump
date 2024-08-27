@@ -106,7 +106,8 @@ inline auto export_set(
     std::string output = es::bracket("{ ", current_depth);
     bool is_first_elem = true;
 
-    for (const auto &[is_ellipsis, it, _] : skipped_set) {
+    for (const auto &[is_ellipsis, it, _index] : skipped_set) {
+      [[maybe_unused]] const auto &_index_unused = _index;  // for g++-7 compiler support
       const auto &elem = *it;
 
       if (is_first_elem) {
@@ -162,7 +163,8 @@ inline auto export_set(
   std::string output = es::bracket("{", current_depth);
   bool is_first_elem = true;
 
-  for (const auto &[is_ellipsis, it, _] : skipped_set) {
+  for (const auto &[is_ellipsis, it, _index] : skipped_set) {
+    [[maybe_unused]] const auto &_index_unused = _index;  // for g++-7 compiler support
     const auto &elem = *it;
 
     if (is_first_elem) {

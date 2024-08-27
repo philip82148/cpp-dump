@@ -120,8 +120,8 @@ struct export_command {
           base, digits, chunk, space_fill, make_unsigned_or_no_space_for_minus
       )) {}
 
-  explicit export_command(const char *format)
-      : _global_props(std::make_shared<global_props_t>(format)) {}
+  explicit export_command(const char *format_)
+      : _global_props(std::make_shared<global_props_t>(format_)) {}
 
   explicit export_command(bool_style_t bool_style)
       : _global_props(std::make_shared<global_props_t>(bool_style)) {}

@@ -142,7 +142,8 @@ inline auto export_map(
     std::string output = es::bracket("{ ", current_depth);
     bool is_first_elem = true;
 
-    for (const auto &[is_ellipsis, it, _] : skipped_map) {
+    for (const auto &[is_ellipsis, it, _index] : skipped_map) {
+      [[maybe_unused]] const auto &_index_unused = _index;  // for g++-7 compiler support
       const auto &[key, value] = *it;
 
       if (is_first_elem) {
@@ -228,7 +229,8 @@ inline auto export_map(
   std::string output = es::bracket("{", current_depth);
   bool is_first_elem = true;
 
-  for (const auto &[is_ellipsis, it, _] : skipped_map) {
+  for (const auto &[is_ellipsis, it, _index] : skipped_map) {
+    [[maybe_unused]] const auto &_index_unused = _index;  // for g++-7 compiler support
     const auto &[key, value] = *it;
 
     if (is_first_elem) {
