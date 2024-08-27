@@ -38,11 +38,11 @@ inline std::string _raw_address(std::string_view s) {
 template <typename T>
 inline auto export_pointer(
     const T &pointer,
-    const std::string &indent,
-    std::size_t last_line_length,
-    std::size_t current_depth,
-    bool fail_on_newline,
-    const export_command &command
+    [[maybe_unused]] const std::string &indent,
+    [[maybe_unused]] std::size_t last_line_length,
+    [[maybe_unused]] std::size_t current_depth,
+    [[maybe_unused]] bool fail_on_newline,
+    [[maybe_unused]] const export_command &command
 ) -> std::enable_if_t<is_pointer<T>, std::string> {
   if (pointer == nullptr) return es::reserved("nullptr");
 
@@ -51,7 +51,7 @@ inline auto export_pointer(
       return export_unsupported();
     } else {
       std::ostringstream ss;
-      ss << std::hex << pointer;
+      ss << std::hex << static_cast<const void *>(pointer);
 
       // Make the entire string an identifier
       return es::_raw_address(ss.str());
@@ -61,9 +61,9 @@ inline auto export_pointer(
       std::ostringstream ss;
 
       if constexpr (is_smart_pointer<T>) {
-        ss << std::hex << pointer.get();
+        ss << std::hex << static_cast<const void *>(pointer.get());
       } else {
-        ss << std::hex << pointer;
+        ss << std::hex << static_cast<const void *>(pointer);
       }
 
       // Make the entire string an identifier

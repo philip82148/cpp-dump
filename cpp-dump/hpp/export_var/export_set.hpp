@@ -38,10 +38,10 @@ struct _set_dummy_wrapper {
 template <typename T>
 struct _multiset_wrapper {
  public:
-  explicit _multiset_wrapper(const T &set) : _begin(set, set.begin()), _end(set, set.end()) {}
+  explicit _multiset_wrapper(const T &set) : _set(set) {}
 
-  auto begin() const noexcept { return _begin; }
-  auto end() const noexcept { return _end; }
+  auto begin() const noexcept { return multiset_wrapper_iterator(_set, _set.begin()); }
+  auto end() const noexcept { return multiset_wrapper_iterator(_set, _set.end()); }
 
  private:
   struct multiset_wrapper_iterator {
@@ -61,8 +61,7 @@ struct _multiset_wrapper {
     It _it;
   };
 
-  multiset_wrapper_iterator _begin;
-  multiset_wrapper_iterator _end;
+  const T &_set;
 };
 
 template <typename T>
@@ -107,7 +106,8 @@ inline auto export_set(
     std::string output = es::bracket("{ ", current_depth);
     bool is_first_elem = true;
 
-    for (const auto &[is_ellipsis, it, _] : skipped_set) {
+    for (const auto &[is_ellipsis, it, _index] : skipped_set) {
+      [[maybe_unused]] const auto &_index_unused = _index;  // for g++-7 compiler support
       const auto &elem = *it;
 
       if (is_first_elem) {
@@ -163,7 +163,8 @@ inline auto export_set(
   std::string output = es::bracket("{", current_depth);
   bool is_first_elem = true;
 
-  for (const auto &[is_ellipsis, it, _] : skipped_set) {
+  for (const auto &[is_ellipsis, it, _index] : skipped_set) {
+    [[maybe_unused]] const auto &_index_unused = _index;  // for g++-7 compiler support
     const auto &elem = *it;
 
     if (is_first_elem) {

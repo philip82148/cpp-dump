@@ -325,13 +325,12 @@ int main(int argc, char *argv[]) {
 
   // pointer
   int a = 65;
-  int *int_ptr;
-  int_ptr = &a;
+  const int *int_ptr = &a;
 
   cpp_dump(int_ptr);
   cpp_dump(*int_ptr);
 
-  char *char_ptr = (char *)&a;
+  const char *char_ptr = (char *)&a;
   cpp_dump(char_ptr);
   cpp_dump(nullptr);
   shared_ptr<int> shared_ptr1(new int(42));

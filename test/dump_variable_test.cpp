@@ -106,7 +106,7 @@ int main(int argc, char *argv[]) {
     };
     cpp_dump(unordered_multimap1);
 
-    cpp_dump((unordered_set{3, 1, 4, 1, 5}));
+    cpp_dump((unordered_set<int>{3, 1, 4, 1, 5}));
 
     unordered_multiset<int> unordered_multiset1;
     unordered_multiset1.insert(3);

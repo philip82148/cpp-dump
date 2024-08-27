@@ -38,10 +38,10 @@ struct _map_dummy_wrapper {
 template <typename T>
 struct _multimap_wrapper {
  public:
-  explicit _multimap_wrapper(const T &map) : _begin(map, map.begin()), _end(map, map.end()) {}
+  explicit _multimap_wrapper(const T &map) : _map(map) {}
 
-  auto begin() const noexcept { return _begin; }
-  auto end() const noexcept { return _end; }
+  auto begin() const noexcept { return multimap_wrapper_iterator(_map, _map.begin()); }
+  auto end() const noexcept { return multimap_wrapper_iterator(_map, _map.end()); }
 
  private:
   struct multimap_wrapper_iterator {
@@ -62,8 +62,7 @@ struct _multimap_wrapper {
     It _it;
   };
 
-  multimap_wrapper_iterator _begin;
-  multimap_wrapper_iterator _end;
+  const T &_map;
 };
 
 template <typename It>
@@ -72,8 +71,8 @@ struct _multimap_value_wrapper {
   _multimap_value_wrapper(It begin, It end) : _begin(begin), _end(end) {}
   _multimap_value_wrapper() = delete;
 
-  auto begin() const noexcept { return _begin; }
-  auto end() const noexcept { return _end; }
+  auto begin() const noexcept { return multimap_value_iterator(_begin); }
+  auto end() const noexcept { return multimap_value_iterator(_end); }
 
  private:
   struct multimap_value_iterator {
@@ -92,8 +91,8 @@ struct _multimap_value_wrapper {
     It _it;
   };
 
-  multimap_value_iterator _begin;
-  multimap_value_iterator _end;
+  It _begin;
+  It _end;
 };
 
 template <typename T>
@@ -143,7 +142,8 @@ inline auto export_map(
     std::string output = es::bracket("{ ", current_depth);
     bool is_first_elem = true;
 
-    for (const auto &[is_ellipsis, it, _] : skipped_map) {
+    for (const auto &[is_ellipsis, it, _index] : skipped_map) {
+      [[maybe_unused]] const auto &_index_unused = _index;  // for g++-7 compiler support
       const auto &[key, value] = *it;
 
       if (is_first_elem) {
@@ -229,7 +229,8 @@ inline auto export_map(
   std::string output = es::bracket("{", current_depth);
   bool is_first_elem = true;
 
-  for (const auto &[is_ellipsis, it, _] : skipped_map) {
+  for (const auto &[is_ellipsis, it, _index] : skipped_map) {
+    [[maybe_unused]] const auto &_index_unused = _index;  // for g++-7 compiler support
     const auto &[key, value] = *it;
 
     if (is_first_elem) {

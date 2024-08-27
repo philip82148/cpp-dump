@@ -147,7 +147,7 @@ inline auto export_arithmetic(
   using UnsignedT = std::make_unsigned_t<T>;
   // Let stringstream recognize the type as an integer.
   using UnsignedTOrInt =
-      std::conditional_t<std::is_same_v<UnsignedT, unsigned char>, unsigned int, UnsignedT>;
+      std::conditional_t<(sizeof(UnsignedT) > sizeof(unsigned int)), UnsignedT, unsigned int>;
 
   UnsignedTOrInt unsigned_tmp;
   if constexpr (std::is_signed_v<T>) {
