@@ -55,8 +55,8 @@ Key points:
   - [Variables](#variables)
   - [Functions](#functions)
   - [How to print a user-defined type with cpp-dump](#how-to-print-a-user-defined-type-with-cpp-dump)
-    - [Method 1. Use CPP_DUMP_DEFINE_EXPORT_OBJECT() macro](#method-1-use-cpp_dump_define_export_object-macro)
-    - [Method 2. Use CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC() macro](#method-2-use-cpp_dump_define_export_object_generic-macro)
+    - [Method 1. Use CPP\_DUMP\_DEFINE\_EXPORT\_OBJECT() macro](#method-1-use-cpp_dump_define_export_object-macro)
+    - [Method 2. Use CPP\_DUMP\_DEFINE\_EXPORT\_OBJECT\_GENERIC() macro](#method-2-use-cpp_dump_define_export_object_generic-macro)
     - [Method 3. Define `std::ostream& operator<<(std::ostream&, const T &)` operator](#method-3-define-stdostream-operatorstdostream-const-t--operator)
   - [Customize `[dump]`](#customize-dump)
   - [Formatting with manipulators](#formatting-with-manipulators)
@@ -71,6 +71,9 @@ Key points:
     - [`addr()` manipulator](#addr-manipulator)
     - [`map_*()` manipulators](#map_-manipulators)
   - [Change the output destination from the standard error output](#change-the-output-destination-from-the-standard-error-output)
+  - [How to pass complex expressions to `cpp_dump(...)`](#how-to-pass-complex-expressions-to-cpp_dump)
+    - [Expressions with commas](#expressions-with-commas)
+    - [Variadic template arguments](#variadic-template-arguments)
   - [For competitive programming use](#for-competitive-programming-use)
 - [Supported types](#supported-types)
   - [Display example](#display-example)
@@ -1091,6 +1094,30 @@ To change the output destination, define an explicit specialization of `cpp_dump
 template <>
 inline void cpp_dump::write_log(std::string_view output) {
   elsewhere << output << std::endl;
+}
+```
+
+### How to pass complex expressions to `cpp_dump(...)`
+
+#### Expressions with commas
+
+Enclose expressions that contain commas in parentheses.
+
+```cpp
+cpp_dump(std::is_same_v<T, U>); // Compile error!
+cpp_dump((std::is_same_v<T, U>)); // Correct
+```
+
+#### Variadic template arguments
+
+When passing variadic template arguments, do not pass any additional arguments.
+
+```cpp
+template <typename... Args>
+void variadic_template_func(Args &&...args) {
+  int i = 0;
+  cpp_dump(args..., i); // Compile error!
+  cpp_dump(args...), cpp_dump(i); // Correct
 }
 ```
 
