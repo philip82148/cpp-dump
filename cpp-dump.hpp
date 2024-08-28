@@ -8,6 +8,7 @@
 #pragma once
 
 #include <algorithm>
+#include <array>
 #include <functional>
 #include <initializer_list>
 #include <iostream>
@@ -21,7 +22,11 @@
 #include "./cpp-dump/hpp/options.hpp"
 #include "./cpp-dump/hpp/utility.hpp"
 
-#define _p_CPP_DUMP_EXPAND_FOR_CPP_DUMP(expr) #expr
+#define _p_CPP_DUMP_STRINGIFY(x) #x
+#define _p_CPP_DUMP_CONTAINS_VARIADIC_TEMPLATE(...)                                                \
+  cpp_dump::_detail::contains_variadic_template<_p_CPP_DUMP_VA_SIZE(__VA_ARGS__)>(                 \
+      {_p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_STRINGIFY, __VA_ARGS__)}                                  \
+  )
 
 /**
  * Print string representations of expressions and results to std::clog or other configurable
@@ -30,9 +35,11 @@
  * This macro uses cpp_dump::export_var() internally.
  */
 #define cpp_dump(...)                                                                              \
-  cpp_dump::_detail::cpp_dump_macro<_p_CPP_DUMP_VA_SIZE(__VA_ARGS__)>(                             \
+  cpp_dump::_detail::cpp_dump_macro<                                                               \
+      _p_CPP_DUMP_VA_SIZE(__VA_ARGS__),                                                            \
+      _p_CPP_DUMP_CONTAINS_VARIADIC_TEMPLATE(__VA_ARGS__)>(                                        \
       {__FILE__, __LINE__, __func__},                                                              \
-      {_p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_CPP_DUMP, __VA_ARGS__)},                       \
+      {_p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_STRINGIFY, __VA_ARGS__)},                                 \
       __VA_ARGS__                                                                                  \
   )
 
@@ -213,7 +220,7 @@ bool _dump_one(
   return true;
 }
 
-template <typename... Args>
+template <bool is_va_temp, typename... Args>
 bool _dump(
     std::string &output,
     const std::string &log_label,
@@ -221,8 +228,17 @@ bool _dump(
     std::initializer_list<std::string_view> exprs,
     const Args &...args
 ) {
-  auto it = exprs.begin();
-  return (... && _dump_one(output, log_label, always_newline_before_expr, *it++, args));
+  if constexpr (is_va_temp) {
+    std::string_view first_arg_name = *exprs.begin();
+    std::size_t i = 0;
+    auto expr = [&]() -> std::string {
+      return std::string(first_arg_name) + "[" + std::to_string(i++) + "]";
+    };
+    return (_dump_one(output, log_label, always_newline_before_expr, expr(), args) && ...);
+  } else {
+    auto it = exprs.begin();
+    return (_dump_one(output, log_label, always_newline_before_expr, *it++, args) && ...);
+  }
 }
 
 struct _source_location {
@@ -231,15 +247,28 @@ struct _source_location {
   std::string_view function_name;
 };
 
+// in C++17, std::initializer_list is not a literal type.
+template <std::size_t N>
+constexpr bool contains_variadic_template(std::array<std::string_view, N> exprs) {
+  // std::any_of is not a constexpr function either.
+  for (auto expr : exprs) {
+    if (expr.size() > 3 && expr.substr(expr.size() - 3) == "...") return true;
+  }
+
+  return false;
+}
+
 // function called by cpp_dump() macro
-template <std::size_t macro_va_size, typename... Args>
+template <std::size_t va_macro_size, bool contains_va_temp, typename... Args>
 void cpp_dump_macro(
     _source_location loc, std::initializer_list<std::string_view> exprs, const Args &...args
 ) {
+  constexpr bool is_va_temp = va_macro_size == 1 && contains_va_temp;
   static_assert(
-      macro_va_size == sizeof...(args),
+      (va_macro_size == sizeof...(args) && !contains_va_temp) || is_va_temp,
       "The number of expressions passed to cpp_dump(...) does not match the number of actual "
-      "arguments. Please enclose the expressions that contains commas in parentheses."
+      "arguments. Please enclose expressions that contain commas in parentheses. "
+      "If you are passing variadic template arguments, do not pass any additional arguments."
   );
 
   std::string log_label = options::log_label_func
@@ -250,9 +279,9 @@ void cpp_dump_macro(
       options::print_expr && std::any_of(exprs.begin(), exprs.end(), has_newline);
 
   std::string output;
-  if (exprs_have_newline || !_dump(output, log_label, false, exprs, args...)) {
+  if (exprs_have_newline || !_dump<is_va_temp>(output, log_label, false, exprs, args...)) {
     output = "";
-    _dump(output, log_label, true, exprs, args...);
+    _dump<is_va_temp>(output, log_label, true, exprs, args...);
   }
 
   write_log(output);

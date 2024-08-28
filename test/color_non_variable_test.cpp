@@ -46,6 +46,13 @@ struct non_copyable_and_non_movable_class {
 enum partially_supported_enum { supported, unsupported };
 CPP_DUMP_DEFINE_EXPORT_ENUM(partially_supported_enum, supported);
 
+template <typename... Args>
+void variadic_template_func(Args &&...args) {
+  cpp_dump(args...);
+  cpp_dump(args  //
+           ...);
+}
+
 int main(int argc, char *argv[]) {
   if (argc != 2) return 1;
   auto es_style_ = (array{
@@ -86,6 +93,7 @@ int main(int argc, char *argv[]) {
 
   // basic
   cpp_dump(false, 0, 0.0, '0', (const char *)"0", string{"0"}, string_view{"0"});
+  variadic_template_func(false, 0, 0.0, '0', (const char *)"0", string{"0"}, string_view{"0"});
   for (auto c : "\x01\x30\x7f\n\\\'\ta ") cpp_dump(c);
   cpp_dump(true, 3.14, 159265, "This is a test string");
   cpp_dump(-0, -3.14, -159265);
