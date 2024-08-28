@@ -267,8 +267,8 @@ void cpp_dump_macro(
   static_assert(
       (va_macro_size == sizeof...(args) && !contains_va_temp) || is_va_temp,
       "The number of expressions passed to cpp_dump(...) does not match the number of actual "
-      "arguments. Please enclose the expressions that contains commas in parentheses. "
-      "If you are passing variadic template arguments, do not pass any other arguments."
+      "arguments. Please enclose expressions that contain commas in parentheses. "
+      "If you are passing variadic template arguments, do not pass any additional arguments."
   );
 
   std::string log_label = options::log_label_func
