@@ -2,9 +2,10 @@ name: CTest
 
 on:
   push:
-    branches:
-      - "main"
+    branches: ["main"]
   pull_request:
+  schedule:
+    - cron: "0 2 * * 6"
 
 jobs:
   ctest:

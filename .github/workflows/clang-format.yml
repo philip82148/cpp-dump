@@ -2,9 +2,10 @@ name: Clang-Format
 
 on:
   push:
-    branches:
-      - "main"
+    branches: ["main"]
   pull_request:
+  schedule:
+    - cron: "0 2 * * 6"
 
 jobs:
   run-clang-format:
