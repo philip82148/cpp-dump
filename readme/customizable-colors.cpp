@@ -13,33 +13,30 @@
 #include <vector>
 
 #include "../cpp-dump.hpp"
-namespace cp = cpp_dump;
 
 int main() {
   // Use more colors
+  CPP_DUMP_SET_OPTION(es_value.log, "\x1b[02m");                 // log: dark
+  CPP_DUMP_SET_OPTION(es_value.expression, "\x1b[34m");          // expression: blue
+  CPP_DUMP_SET_OPTION(es_value.reserved, "\x1b[38;5;39m");       // reserved: light blue
+  CPP_DUMP_SET_OPTION(es_value.number, "\x1b[38;5;150m");        // number: light green
+  CPP_DUMP_SET_OPTION(es_value.character, "\x1b[38;5;172m");     // character: orange
+  CPP_DUMP_SET_OPTION(es_value.escaped_char, "\x1b[38;5;220m");  // escaped_char: light orange
+  CPP_DUMP_SET_OPTION(es_value.op, "\x1b[02m");                  // op: dark
+  CPP_DUMP_SET_OPTION(es_value.identifier, "\x1b[32m");          // identifier:  green
+  CPP_DUMP_SET_OPTION(es_value.member, "\x1b[96m");              // member: light cyan
+  CPP_DUMP_SET_OPTION(es_value.unsupported, "\x1b[31m");         // unsupported: red
   CPP_DUMP_SET_OPTION(
-      es_value,
-      (cp::types::es_value_t{
-          "\x1b[02m",        // log: dark
-          "\x1b[34m",        // expression: blue
-          "\x1b[38;5;39m",   // reserved: light blue
-          "\x1b[38;5;150m",  // number: light green
-          "\x1b[38;5;172m",  // character: orange
-          "\x1b[38;5;220m",  // escaped_char: light orange
-          "\x1b[02m",        // op: dark
-          "\x1b[32m",        // identifier:  green
-          "\x1b[96m",        // member: light cyan
-          "\x1b[31m",        // unsupported: red
-          {
-              "\x1b[33m",  // bracket_by_depth[0]: yellow
-              "\x1b[35m",  // bracket_by_depth[1]: magenta
-              "\x1b[36m",  // bracket_by_depth[2]: cyan
-          },
-          "\x1b[02m",  // class_op: dark
-          "\x1b[02m",  // member_op: dark
-          "",          // number_op: default
+      es_value.bracket_by_depth,
+      (std::vector<std::string>{
+          "\x1b[33m",  // bracket_by_depth[0]: yellow
+          "\x1b[35m",  // bracket_by_depth[1]: magenta
+          "\x1b[36m",  // bracket_by_depth[2]: cyan
       })
   );
+  CPP_DUMP_SET_OPTION(es_value.class_op, "\x1b[02m");   // class_op: dark
+  CPP_DUMP_SET_OPTION(es_value.member_op, "\x1b[02m");  // member_op: dark
+  CPP_DUMP_SET_OPTION(es_value.number_op, "");          // number_op: default
 
   // Use the 'class_op'/'member_op'/'number_op' color for operators
   // in class names, members, and numbers (::, <>, (), -, +, etc...).
