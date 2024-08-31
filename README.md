@@ -55,8 +55,8 @@ Key points:
   - [Variables](#variables)
   - [Functions](#functions)
   - [How to print a user-defined type with cpp-dump](#how-to-print-a-user-defined-type-with-cpp-dump)
-    - [Method 1. Use CPP\_DUMP\_DEFINE\_EXPORT\_OBJECT() macro](#method-1-use-cpp_dump_define_export_object-macro)
-    - [Method 2. Use CPP\_DUMP\_DEFINE\_EXPORT\_OBJECT\_GENERIC() macro](#method-2-use-cpp_dump_define_export_object_generic-macro)
+    - [Method 1. Use CPP_DUMP_DEFINE_EXPORT_OBJECT() macro](#method-1-use-cpp_dump_define_export_object-macro)
+    - [Method 2. Use CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC() macro](#method-2-use-cpp_dump_define_export_object_generic-macro)
     - [Method 3. Define `std::ostream& operator<<(std::ostream&, const T &)` operator](#method-3-define-stdostream-operatorstdostream-const-t--operator)
   - [Customize `[dump]`](#customize-dump)
   - [Formatting with manipulators](#formatting-with-manipulators)
@@ -194,14 +194,11 @@ CPP_DUMP_SET_OPTION(es_value.op, "\x1b[02m");                  // op: dark
 CPP_DUMP_SET_OPTION(es_value.identifier, "\x1b[32m");          // identifier:  green
 CPP_DUMP_SET_OPTION(es_value.member, "\x1b[96m");              // member: light cyan
 CPP_DUMP_SET_OPTION(es_value.unsupported, "\x1b[31m");         // unsupported: red
-CPP_DUMP_SET_OPTION(
-    es_value.bracket_by_depth,
-    (std::vector<std::string>{
-        "\x1b[33m",  // bracket_by_depth[0]: yellow
-        "\x1b[35m",  // bracket_by_depth[1]: magenta
-        "\x1b[36m",  // bracket_by_depth[2]: cyan
-    })
-);
+CPP_DUMP_SET_OPTION(es_value.bracket_by_depth, (std::vector<std::string>{
+    "\x1b[33m",  // bracket_by_depth[0]: yellow
+    "\x1b[35m",  // bracket_by_depth[1]: magenta
+    "\x1b[36m",  // bracket_by_depth[2]: cyan
+}));
 CPP_DUMP_SET_OPTION(es_value.class_op, "\x1b[02m");   // class_op: dark
 CPP_DUMP_SET_OPTION(es_value.member_op, "\x1b[02m");  // member_op: dark
 CPP_DUMP_SET_OPTION(es_value.number_op, "");          // number_op: default
