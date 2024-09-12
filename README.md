@@ -2,6 +2,8 @@
 
 ![cpp-dump.gif](./readme/cpp-dump.gif)
 
+_This is an animated GIF._
+
 [日本語記事はこちら！](https://zenn.dev/sassan/articles/19db660e4da0a4)
 
 **cpp-dump is a C++ library for printing variables of any type for debugging.**
@@ -55,8 +57,8 @@ Key points:
   - [Variables](#variables)
   - [Functions](#functions)
   - [How to print a user-defined type with cpp-dump](#how-to-print-a-user-defined-type-with-cpp-dump)
-    - [Method 1. Use CPP_DUMP_DEFINE_EXPORT_OBJECT() macro](#method-1-use-cpp_dump_define_export_object-macro)
-    - [Method 2. Use CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC() macro](#method-2-use-cpp_dump_define_export_object_generic-macro)
+    - [Method 1. Use CPP\_DUMP\_DEFINE\_EXPORT\_OBJECT() macro](#method-1-use-cpp_dump_define_export_object-macro)
+    - [Method 2. Use CPP\_DUMP\_DEFINE\_EXPORT\_OBJECT\_GENERIC() macro](#method-2-use-cpp_dump_define_export_object_generic-macro)
     - [Method 3. Define `std::ostream& operator<<(std::ostream&, const T &)` operator](#method-3-define-stdostream-operatorstdostream-const-t--operator)
   - [Customize `[dump]`](#customize-dump)
   - [Formatting with manipulators](#formatting-with-manipulators)
