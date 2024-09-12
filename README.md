@@ -1,10 +1,7 @@
 # cpp-dump <!-- omit in toc -->
 
-![cpp-dump.gif](./readme/cpp-dump.gif)
-
+![cpp-dump.gif](./readme/cpp-dump.gif)  
 _This is an animated GIF._
-
-[日本語記事はこちら！](https://zenn.dev/sassan/articles/19db660e4da0a4)
 
 **cpp-dump is a C++ library for printing variables of any type for debugging.**
 
@@ -19,6 +16,8 @@ Key points:
 - With over 20 manipulators, you can easily change the format or add information to the output.
 - By using macros, cpp-dump supports user-defined types as well. There is no need to write new functions for printing.
 - cpp-dump is a header-only library. No build or dependencies are required!
+
+[日本語記事はこちら！](https://zenn.dev/sassan/articles/19db660e4da0a4)
 
 ## Table of Contents <!-- omit in toc -->
 
