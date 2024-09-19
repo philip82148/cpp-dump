@@ -37,6 +37,15 @@ int main() {
   cpp_dump(0x3e8u | cp::hex(4, 2));
   cpp_dump(0x3e8u | cp::dec(4));
 
+  std::clog << "\n// manipulator-int-style2.png\n" << std::endl;
+
+  auto &int_vector = unsigned_int_vector;
+
+  cpp_dump(int_vector | cp::front(2) | cp::bin(8));
+  cpp_dump(int_vector | cp::front(2) | cp::oct(3));
+  cpp_dump(int_vector | cp::front(2) | cp::dec(2));
+  cpp_dump(int_vector | cp::front(2) | cp::hex(2));
+
   std::clog << "\n// manipulator-bin-etc.png\n" << std::endl;
 
   auto &signed_int_vector = some_huge_vector;

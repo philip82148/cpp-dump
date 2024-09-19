@@ -252,7 +252,7 @@ See [Formatting with manipulators](#formatting-with-manipulators) for details.
 
 **[Manipulator to change the numerical base](#int_style-and-its-alias-manipulators)**
 
-![manipulator-ubin-etc.png](./readme/manipulator-ubin-etc.png)
+![manipulator-int-style2.png](./readme/manipulator-int-style2.png)
 
 **[Manipulator to escape strings](#stresc-manipulator)**
 
