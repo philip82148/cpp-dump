@@ -4,9 +4,9 @@
 [dump] original_class() => main(int, char**)::original_class{ member_var= 5, member_func()= "This is a member_func." }
 [dump] unsupported_original_class() => Unsupported Type
 [dump] cpp_dump::options::typename_style => cpp_dump::types::typename_style_t::maximum20
-[dump] original_error1 => main(int, char**)::o{ what()= "This is an original error." }
-[dump] ns::template_class<ns::template_class<int>>() => ns::template_class<n{ member_var= 5, member_func()= "This is a member_func." }
-[dump] original_class() => main(int, char**)::o{ member_var= 5, member_func()= "This is a member_func." }
+[dump] original_error1 => main(int, char**)...{ what()= "This is an original error." }
+[dump] ns::template_class<ns::template_class<int>>() => ns::template_clas...{ member_var= 5, member_func()= "This is a member_func." }
+[dump] original_class() => main(int, char**)...{ member_var= 5, member_func()= "This is a member_func." }
 [dump] unsupported_original_class() => Unsupported Type
 [dump] cpp_dump::options::typename_style => cpp_dump::types::typename_style_t::fullname
 [dump] original_error1 => main(int, char**)::original_error{ what()= "This is an original error." }
