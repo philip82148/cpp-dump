@@ -1,4 +1,4 @@
 [dump] original_error1 => main(int, char**)::original_error{ what()= "This is an original error." }
-[dump] ns::template_class<ns::template_class<int>>() => ns::template_class<ns::template_class<int> >{ member_var= 5, member_func()= "This is a member_func." }
+[dump] ns::template_class<ns::template_class<int>>() => ns::template_class{ member_var= 5, member_func()= "This is a member_func." }
 [dump] original_class() => main(int, char**)::original_class{ member_var= 5, member_func()= "This is a member_func." }
 [dump] unsupported_original_class() => Unsupported Type
