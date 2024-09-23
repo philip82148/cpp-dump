@@ -417,6 +417,12 @@ int main(int argc, char *argv[]) {
       cp::types::cont_indent_style_t::always,
       cp::options::cont_indent_style
   );
+  cpp_dump(
+      cp::types::typename_style_t::no_temp_args,
+      cp::types::typename_style_t::fullname,
+      cp::types::typename_style_t::maximum20,
+      cp::options::typename_style
+  );
 
   // index, front, back, middle, both_ends
   array<int, 50> array50;
