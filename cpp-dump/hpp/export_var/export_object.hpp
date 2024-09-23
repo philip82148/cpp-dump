@@ -39,7 +39,7 @@
       bool fail_on_newline,                                                                        \
       const export_command &command                                                                \
   ) {                                                                                              \
-    std::string class_name = es::class_name(styled_typename_str(#TYPE));                           \
+    std::string class_name = styled_typename_str(#TYPE);                                           \
                                                                                                    \
     _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;                                                      \
                                                                                                    \

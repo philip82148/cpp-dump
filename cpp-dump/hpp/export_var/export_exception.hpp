@@ -29,7 +29,7 @@ inline auto export_exception(
     bool fail_on_newline,
     const export_command &command
 ) -> std::enable_if_t<is_exception<T>, std::string> {
-  std::string class_name = es::class_name(styled_typename<T>());
+  std::string class_name = styled_typename<T>();
 
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;
 

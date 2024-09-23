@@ -10,6 +10,7 @@
 #include <string>
 #include <string_view>
 
+#include "./escape_sequence.hpp"
 #include "./options.hpp"
 #include "./type_check.hpp"
 
@@ -61,24 +62,35 @@ std::string _get_typename() {
   return type_name;
 }
 
-inline std::string_view styled_typename_str(std::string_view type_name) {
+inline std::string styled_typename_str(std::string_view type_name) {
   switch (options::typename_style) {
     case types::typename_style_t::no_temp_args: {
-      auto lt_pos = type_name.find('<');
-      return type_name.substr(0, lt_pos);
+      std::string typename_no_arg;
+      int lt_count = 0;
+      for (auto c : type_name) {
+        if (c == '<') {
+          ++lt_count;
+        } else if (c == '>') {
+          --lt_count;
+        } else if (lt_count == 0) {
+          typename_no_arg.push_back(c);
+        }
+      }
+      return es::class_name(typename_no_arg);
     }
     case types::typename_style_t::maximum20: {
-      return type_name.substr(0, 20);
+      if (type_name.size() <= 20) return es::class_name(type_name);
+      return es::class_name(type_name.substr(0, 17)) + es::op("...");
     }
     default: {
-      return type_name;
+      return es::class_name(type_name);
     }
   }
 }
 
 // Currently, used only by export_exception() and CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC()
 template <typename T>
-inline std::string_view styled_typename() {
+inline std::string styled_typename() {
   static std::string type_name = _get_typename<T>();
   return styled_typename_str(type_name);
 }
