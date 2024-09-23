@@ -79,11 +79,11 @@ int main(int argc, char *argv[]) {
     };
 
     for (auto style :
-         {cpp_dump::types::typename_style_t::no_temp_args,
-          cpp_dump::types::typename_style_t::maximum20,
-          cpp_dump::types::typename_style_t::fullname}) {
-      CPP_DUMP_SET_OPTION(typename_style, style);
-      cpp_dump(cpp_dump::options::typename_style);
+         {cpp_dump::types::classname_style_t::no_temp_args,
+          cpp_dump::types::classname_style_t::maximum20,
+          cpp_dump::types::classname_style_t::fullname}) {
+      CPP_DUMP_SET_OPTION(classname_style, style);
+      cpp_dump(cpp_dump::options::classname_style);
       cpp_dump(original_error1);
       cpp_dump(ns::template_class<ns::template_class<int>>());
       cpp_dump(original_class());

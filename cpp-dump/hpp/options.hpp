@@ -61,7 +61,7 @@ enum class cont_indent_style_t { minimal, when_nested, when_non_tuples_nested, a
  * cpp_dump::export_var() supports this type.
  * This is an experimental feature.
  */
-enum class typename_style_t { no_temp_args, fullname, maximum20 };
+enum class classname_style_t { no_temp_args, fullname, maximum20 };
 
 /**
  * Type of cpp_dump::options::es_style.
@@ -135,7 +135,7 @@ inline types::log_label_func_t log_label_func = log_label::default_func;
  * Style of class name.
  * This is an experimental feature.
  */
-inline types::typename_style_t typename_style = types::typename_style_t::no_temp_args;
+inline types::classname_style_t classname_style = types::classname_style_t::no_temp_args;
 
 /**
  * Style of the escape sequences (output coloring).

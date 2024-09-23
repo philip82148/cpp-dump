@@ -9,11 +9,11 @@
 
 #include <string>
 
+#include "../class_name.hpp"
 #include "../escape_sequence.hpp"
 #include "../expand_va_macro.hpp"
 #include "../export_command/export_command.hpp"
 #include "../type_check.hpp"
-#include "../type_name.hpp"
 #include "./export_object_common.hpp"
 
 #define _p_CPP_DUMP_EXPAND_FOR_EXPORT_OBJECT(member) append_output(#member, value.member)
@@ -39,7 +39,7 @@
       bool fail_on_newline,                                                                        \
       const export_command &command                                                                \
   ) {                                                                                              \
-    std::string class_name = styled_typename_str(#TYPE);                                           \
+    std::string class_name = styled_classname_str(#TYPE);                                          \
                                                                                                    \
     _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;                                                      \
                                                                                                    \
