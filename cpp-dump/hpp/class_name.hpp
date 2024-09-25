@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <stack>
+#include <algorithm>
 #include <string>
 #include <string_view>
 
@@ -86,26 +86,30 @@ inline std::string styled_classname_str(std::string_view type_name) {
 
   if (options::classname_style & flags::classname_style::no_namespace) {
     std::string no_ns;
-    auto remove_namespace = [&](std::size_t begin) {
-      std::string_view partial(no_ns.c_str() + begin, no_ns.size() - begin);
-      auto colon_pos = partial.rfind(':');
-      std::string class_name(partial.substr(colon_pos == std::string::npos ? 0 : colon_pos + 1));
-      no_ns.erase(begin).append(class_name);
-    };
 
-    std::stack<std::size_t> lt_pos_stack;
-    for (auto c : styled) {
-      if (c == '<') {
-        lt_pos_stack.push(no_ns.size());
-      } else if (c == '>') {
-        if (lt_pos_stack.empty()) continue;
-        auto lt_pos = lt_pos_stack.top();
-        lt_pos_stack.pop();
-        remove_namespace(lt_pos + 1);
+    std::reverse(styled.begin(), styled.end());
+    for (std::size_t i = 0; i < styled.size(); ++i) {
+      if (styled[i] != ':') {
+        // append class name
+        no_ns.push_back(styled[i]);
+        continue;
       }
-      no_ns.push_back(c);
+
+      // skip namespace
+      int gt_count = 0;
+      for (++i; i < styled.size(); ++i) {
+        if (styled[i] == '>') {
+          ++gt_count;
+        } else if (styled[i] == '<') {
+          --gt_count;
+          if (gt_count < 0) {
+            no_ns.push_back(styled[i]);
+            break;
+          }
+        }
+      }
     }
-    remove_namespace(0);
+    std::reverse(no_ns.begin(), no_ns.end());
 
     styled.swap(no_ns);
   }
