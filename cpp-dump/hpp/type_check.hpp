@@ -383,6 +383,7 @@ std::string get_typename() {
 #if defined(_MSC_VER)
   type_name = replace_string(type_name, "struct ", "");
   type_name = replace_string(type_name, "class ", "");
+  type_name = replace_string(type_name, "enum ", "");
 #endif
 
   return type_name;
