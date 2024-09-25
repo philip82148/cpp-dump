@@ -52,7 +52,7 @@ std::string _get_classname() {
   constexpr std::size_t suffix_length = 0;
 #endif
 
-  std::string_view func_name = _get_classname_aux<_remove_cvref<T>>();
+  std::string_view func_name = _get_classname_aux<remove_cvref<T>>();
   std::string class_name(
       func_name, prefix_length, func_name.size() - prefix_length - suffix_length
   );
@@ -60,6 +60,7 @@ std::string _get_classname() {
 #if defined(_MSC_VER)
   class_name = replace_string(class_name, "struct ", "");
   class_name = replace_string(class_name, "class ", "");
+  class_name = replace_string(class_name, "enum ", "");
 #endif
 
   return class_name;
