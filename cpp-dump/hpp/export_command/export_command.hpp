@@ -451,7 +451,7 @@ template <typename T>
 inline constexpr bool _is_value_with_command<value_with_command<T>> = true;
 
 template <typename T>
-inline constexpr bool is_value_with_command = _is_value_with_command<_remove_cvref<T>>;
+inline constexpr bool is_value_with_command = _is_value_with_command<remove_cvref<T>>;
 
 }  // namespace _detail
 
