@@ -75,12 +75,12 @@ std::string export_var(
     );
   } else if constexpr (is_other_type<T>) {
     return export_other(value, indent, last_line_length, current_depth, fail_on_newline, command);
-  } else if constexpr (is_ostream<T>) {
-    return export_ostream(value, indent, last_line_length, current_depth, fail_on_newline, command);
   } else if constexpr (is_exportable_object_generic<T>) {
     return export_object_generic(
         value, indent, last_line_length, current_depth, fail_on_newline, command
     );
+  } else if constexpr (is_ostream<T>) {
+    return export_ostream(value, indent, last_line_length, current_depth, fail_on_newline, command);
   } else if constexpr (is_asterisk<T>) {
     return export_asterisk(
         value, indent, last_line_length, current_depth, fail_on_newline, command
