@@ -39,7 +39,8 @@ namespace _detail {
 template <typename T>
 using remove_cvref = std::remove_cv_t<std::remove_reference_t<T>>;
 
-// Two conditions or more can be true at the same time.
+// It is not fully guaranteed that two or more conditions won't be true at the same time.
+// For example, you can make classes that fall into both Container and Tuple categories.
 // In that case, the order of comparison in the if-else-expressions within export_var() will
 // determine the category of the type.
 
