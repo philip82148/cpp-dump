@@ -264,7 +264,7 @@ struct export_command;
 template <typename T>
 struct _is_exportable_object_generic {
   template <typename RawT>
-  static  auto check(int) -> decltype(
+  static auto check(int) -> decltype(
     export_object_generic(std::declval<RawT>(), "", 0, 0, false, std::declval<export_command>()),
     std::true_type()
     //
@@ -278,6 +278,25 @@ struct _is_exportable_object_generic {
 
 template <typename T>
 inline constexpr bool is_exportable_object_generic = _is_exportable_object_generic<T>::value;
+
+// Enum2 ------------------------------------------------------------------------------------------
+template <typename T>
+struct _is_exportable_enum_generic {
+  template <typename RawT>
+  static auto check(int) -> decltype(
+    export_enum_generic(std::declval<RawT>(), "", 0, 0, false, std::declval<export_command>()),
+    std::true_type()
+    //
+  );
+
+  template <typename RawT>
+  static std::false_type check(long);
+
+  static constexpr bool value = decltype(check<remove_cvref<T>>(0))::value;
+};
+
+template <typename T>
+inline constexpr bool is_exportable_enum_generic = _is_exportable_enum_generic<T>::value;
 
 // Ostream ----------------------------------------------------------------------------------------
 template <typename T>
@@ -318,7 +337,8 @@ template <typename T>
 inline constexpr bool is_exportable =
     is_arithmetic<T> || is_string<T> || is_map<T> || is_set<T> || is_container<T> || is_tuple<T>
     || is_xixo<T> || is_pointer<T> || is_exception<T> || is_other_type<T> || is_exportable_object<T>
-    || is_exportable_enum<T> || is_exportable_object_generic<T> || is_ostream<T> || is_asterisk<T>;
+    || is_exportable_enum<T> || is_exportable_object_generic<T> || is_exportable_enum_generic<T>
+    || is_ostream<T> || is_asterisk<T>;
 
 template <typename T>
 inline constexpr bool is_iterable_like = is_container<T> || is_map<T> || is_set<T> || is_tuple<T>;
@@ -363,6 +383,7 @@ std::string get_typename() {
 #if defined(_MSC_VER)
   type_name = replace_string(type_name, "struct ", "");
   type_name = replace_string(type_name, "class ", "");
+  type_name = replace_string(type_name, "enum ", "");
 #endif
 
   return type_name;
