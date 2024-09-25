@@ -264,7 +264,7 @@ struct export_command;
 template <typename T>
 struct _is_exportable_object_generic {
   template <typename RawT>
-  static  auto check(int) -> decltype(
+  static auto check(int) -> decltype(
     export_object_generic(std::declval<RawT>(), "", 0, 0, false, std::declval<export_command>()),
     std::true_type()
     //
@@ -283,7 +283,7 @@ inline constexpr bool is_exportable_object_generic = _is_exportable_object_gener
 template <typename T>
 struct _is_exportable_enum_generic {
   template <typename RawT>
-  static  auto check(int) -> decltype(
+  static auto check(int) -> decltype(
     export_enum_generic(std::declval<RawT>(), "", 0, 0, false, std::declval<export_command>()),
     std::true_type()
     //
