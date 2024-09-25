@@ -9,6 +9,7 @@
 [dump] long_name_original_scoped_enum::member1 => main(int, char**)::long_name_original_scoped_enum::member1, 
        long_name_original_scoped_enum::member2 => main(int, char**)::long_name_original_scoped_enum::member2, 
        long_name_original_scoped_enum::member3 => main(int, char**)::long_name_original_scoped_enum::?
+
 [dump] bool(cp::options::classname_style & cp::flags::classname_style::no_temp_args) => true
 [dump] bool(cp::options::classname_style & cp::flags::classname_style::no_namespace) => false
 [dump] bool(cp::options::classname_style & cp::flags::classname_style::max_width_20) => false
@@ -20,6 +21,7 @@
 [dump] long_name_original_scoped_enum::member1 => main(int, char**)::long_name_original_scoped_enum::member1, 
        long_name_original_scoped_enum::member2 => main(int, char**)::long_name_original_scoped_enum::member2, 
        long_name_original_scoped_enum::member3 => main(int, char**)::long_name_original_scoped_enum::?
+
 [dump] bool(cp::options::classname_style & cp::flags::classname_style::no_temp_args) => false
 [dump] bool(cp::options::classname_style & cp::flags::classname_style::no_namespace) => true
 [dump] bool(cp::options::classname_style & cp::flags::classname_style::max_width_20) => false
@@ -30,6 +32,7 @@
 [dump] long_name_original_scoped_enum::member1 => long_name_original_scoped_enum::member1, 
        long_name_original_scoped_enum::member2 => long_name_original_scoped_enum::member2, 
        long_name_original_scoped_enum::member3 => long_name_original_scoped_enum::?
+
 [dump] bool(cp::options::classname_style & cp::flags::classname_style::no_temp_args) => true
 [dump] bool(cp::options::classname_style & cp::flags::classname_style::no_namespace) => true
 [dump] bool(cp::options::classname_style & cp::flags::classname_style::max_width_20) => false
@@ -40,6 +43,7 @@
 [dump] long_name_original_scoped_enum::member1 => long_name_original_scoped_enum::member1, 
        long_name_original_scoped_enum::member2 => long_name_original_scoped_enum::member2, 
        long_name_original_scoped_enum::member3 => long_name_original_scoped_enum::?
+
 [dump] bool(cp::options::classname_style & cp::flags::classname_style::no_temp_args) => false
 [dump] bool(cp::options::classname_style & cp::flags::classname_style::no_namespace) => false
 [dump] bool(cp::options::classname_style & cp::flags::classname_style::max_width_20) => true
@@ -50,6 +54,7 @@
        original_enum::member3 => main(int, char**)...::?
 [dump] long_name_original_scoped_enum::member1 => main(int, char**)...::member1, long_name_original_scoped_enum::member2 => main(int, char**)...::member2, 
        long_name_original_scoped_enum::member3 => main(int, char**)...::?
+
 [dump] bool(cp::options::classname_style & cp::flags::classname_style::no_temp_args) => true
 [dump] bool(cp::options::classname_style & cp::flags::classname_style::no_namespace) => false
 [dump] bool(cp::options::classname_style & cp::flags::classname_style::max_width_20) => true
@@ -60,6 +65,7 @@
        original_enum::member3 => main(int, char**)...::?
 [dump] long_name_original_scoped_enum::member1 => main(int, char**)...::member1, long_name_original_scoped_enum::member2 => main(int, char**)...::member2, 
        long_name_original_scoped_enum::member3 => main(int, char**)...::?
+
 [dump] bool(cp::options::classname_style & cp::flags::classname_style::no_temp_args) => false
 [dump] bool(cp::options::classname_style & cp::flags::classname_style::no_namespace) => true
 [dump] bool(cp::options::classname_style & cp::flags::classname_style::max_width_20) => true
@@ -69,6 +75,7 @@
 [dump] original_enum::member1 => original_enum::member1, original_enum::member2 => original_enum::member2, original_enum::member3 => original_enum::?
 [dump] long_name_original_scoped_enum::member1 => long_name_origina...::member1, long_name_original_scoped_enum::member2 => long_name_origina...::member2, 
        long_name_original_scoped_enum::member3 => long_name_origina...::?
+
 [dump] bool(cp::options::classname_style & cp::flags::classname_style::no_temp_args) => true
 [dump] bool(cp::options::classname_style & cp::flags::classname_style::no_namespace) => true
 [dump] bool(cp::options::classname_style & cp::flags::classname_style::max_width_20) => true
@@ -78,4 +85,5 @@
 [dump] original_enum::member1 => original_enum::member1, original_enum::member2 => original_enum::member2, original_enum::member3 => original_enum::?
 [dump] long_name_original_scoped_enum::member1 => long_name_origina...::member1, long_name_original_scoped_enum::member2 => long_name_origina...::member2, 
        long_name_original_scoped_enum::member3 => long_name_origina...::?
+
 [dump] unsupported_original_class() => Unsupported Type

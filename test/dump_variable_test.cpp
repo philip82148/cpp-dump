@@ -100,6 +100,7 @@ int main(int argc, char *argv[]) {
           long_name_original_scoped_enum::member2,
           long_name_original_scoped_enum::member3
       );
+      clog << endl;
     }
 
     struct unsupported_original_class {

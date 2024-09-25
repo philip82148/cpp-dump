@@ -9,6 +9,7 @@
 [0m[02m[dump] [0m[38;2;86;154;214mlong_name_original_scoped_enum::member1[0m[02m => [0m[32mmain(int, char**)::long_name_original_scoped_enum[0m[38;2;150;150;150m::[0m[38;2;156;220;254mmember1[0m[02m, [0m
        [38;2;86;154;214mlong_name_original_scoped_enum::member2[0m[02m => [0m[32mmain(int, char**)::long_name_original_scoped_enum[0m[38;2;150;150;150m::[0m[38;2;156;220;254mmember2[0m[02m, [0m
        [38;2;86;154;214mlong_name_original_scoped_enum::member3[0m[02m => [0m[32mmain(int, char**)::long_name_original_scoped_enum[0m[38;2;150;150;150m::[0m[31m?[0m
+
 [0m[02m[dump] [0m[38;2;86;154;214mbool(cp::options::classname_style & cp::flags::classname_style::no_temp_args)[0m[02m => [0m[36mtrue[0m
 [0m[02m[dump] [0m[38;2;86;154;214mbool(cp::options::classname_style & cp::flags::classname_style::no_namespace)[0m[02m => [0m[36mfalse[0m
 [0m[02m[dump] [0m[38;2;86;154;214mbool(cp::options::classname_style & cp::flags::classname_style::max_width_20)[0m[02m => [0m[36mfalse[0m
@@ -20,6 +21,7 @@
 [0m[02m[dump] [0m[38;2;86;154;214mlong_name_original_scoped_enum::member1[0m[02m => [0m[32mmain(int, char**)::long_name_original_scoped_enum[0m[38;2;150;150;150m::[0m[38;2;156;220;254mmember1[0m[02m, [0m
        [38;2;86;154;214mlong_name_original_scoped_enum::member2[0m[02m => [0m[32mmain(int, char**)::long_name_original_scoped_enum[0m[38;2;150;150;150m::[0m[38;2;156;220;254mmember2[0m[02m, [0m
        [38;2;86;154;214mlong_name_original_scoped_enum::member3[0m[02m => [0m[32mmain(int, char**)::long_name_original_scoped_enum[0m[38;2;150;150;150m::[0m[31m?[0m
+
 [0m[02m[dump] [0m[38;2;86;154;214mbool(cp::options::classname_style & cp::flags::classname_style::no_temp_args)[0m[02m => [0m[36mfalse[0m
 [0m[02m[dump] [0m[38;2;86;154;214mbool(cp::options::classname_style & cp::flags::classname_style::no_namespace)[0m[02m => [0m[36mtrue[0m
 [0m[02m[dump] [0m[38;2;86;154;214mbool(cp::options::classname_style & cp::flags::classname_style::max_width_20)[0m[02m => [0m[36mfalse[0m
@@ -30,6 +32,7 @@
 [0m[02m[dump] [0m[38;2;86;154;214mlong_name_original_scoped_enum::member1[0m[02m => [0m[32mlong_name_original_scoped_enum[0m[38;2;150;150;150m::[0m[38;2;156;220;254mmember1[0m[02m, [0m
        [38;2;86;154;214mlong_name_original_scoped_enum::member2[0m[02m => [0m[32mlong_name_original_scoped_enum[0m[38;2;150;150;150m::[0m[38;2;156;220;254mmember2[0m[02m, [0m
        [38;2;86;154;214mlong_name_original_scoped_enum::member3[0m[02m => [0m[32mlong_name_original_scoped_enum[0m[38;2;150;150;150m::[0m[31m?[0m
+
 [0m[02m[dump] [0m[38;2;86;154;214mbool(cp::options::classname_style & cp::flags::classname_style::no_temp_args)[0m[02m => [0m[36mtrue[0m
 [0m[02m[dump] [0m[38;2;86;154;214mbool(cp::options::classname_style & cp::flags::classname_style::no_namespace)[0m[02m => [0m[36mtrue[0m
 [0m[02m[dump] [0m[38;2;86;154;214mbool(cp::options::classname_style & cp::flags::classname_style::max_width_20)[0m[02m => [0m[36mfalse[0m
@@ -40,6 +43,7 @@
 [0m[02m[dump] [0m[38;2;86;154;214mlong_name_original_scoped_enum::member1[0m[02m => [0m[32mlong_name_original_scoped_enum[0m[38;2;150;150;150m::[0m[38;2;156;220;254mmember1[0m[02m, [0m
        [38;2;86;154;214mlong_name_original_scoped_enum::member2[0m[02m => [0m[32mlong_name_original_scoped_enum[0m[38;2;150;150;150m::[0m[38;2;156;220;254mmember2[0m[02m, [0m
        [38;2;86;154;214mlong_name_original_scoped_enum::member3[0m[02m => [0m[32mlong_name_original_scoped_enum[0m[38;2;150;150;150m::[0m[31m?[0m
+
 [0m[02m[dump] [0m[38;2;86;154;214mbool(cp::options::classname_style & cp::flags::classname_style::no_temp_args)[0m[02m => [0m[36mfalse[0m
 [0m[02m[dump] [0m[38;2;86;154;214mbool(cp::options::classname_style & cp::flags::classname_style::no_namespace)[0m[02m => [0m[36mfalse[0m
 [0m[02m[dump] [0m[38;2;86;154;214mbool(cp::options::classname_style & cp::flags::classname_style::max_width_20)[0m[02m => [0m[36mtrue[0m
@@ -50,6 +54,7 @@
        [38;2;86;154;214moriginal_enum::member3[0m[02m => [0m[32mmain(int, char**)[0m[38;2;150;150;150m...[0m[38;2;150;150;150m::[0m[31m?[0m
 [0m[02m[dump] [0m[38;2;86;154;214mlong_name_original_scoped_enum::member1[0m[02m => [0m[32mmain(int, char**)[0m[38;2;150;150;150m...[0m[38;2;150;150;150m::[0m[38;2;156;220;254mmember1[0m[02m, [0m[38;2;86;154;214mlong_name_original_scoped_enum::member2[0m[02m => [0m[32mmain(int, char**)[0m[38;2;150;150;150m...[0m[38;2;150;150;150m::[0m[38;2;156;220;254mmember2[0m[02m, [0m
        [38;2;86;154;214mlong_name_original_scoped_enum::member3[0m[02m => [0m[32mmain(int, char**)[0m[38;2;150;150;150m...[0m[38;2;150;150;150m::[0m[31m?[0m
+
 [0m[02m[dump] [0m[38;2;86;154;214mbool(cp::options::classname_style & cp::flags::classname_style::no_temp_args)[0m[02m => [0m[36mtrue[0m
 [0m[02m[dump] [0m[38;2;86;154;214mbool(cp::options::classname_style & cp::flags::classname_style::no_namespace)[0m[02m => [0m[36mfalse[0m
 [0m[02m[dump] [0m[38;2;86;154;214mbool(cp::options::classname_style & cp::flags::classname_style::max_width_20)[0m[02m => [0m[36mtrue[0m
@@ -60,6 +65,7 @@
        [38;2;86;154;214moriginal_enum::member3[0m[02m => [0m[32mmain(int, char**)[0m[38;2;150;150;150m...[0m[38;2;150;150;150m::[0m[31m?[0m
 [0m[02m[dump] [0m[38;2;86;154;214mlong_name_original_scoped_enum::member1[0m[02m => [0m[32mmain(int, char**)[0m[38;2;150;150;150m...[0m[38;2;150;150;150m::[0m[38;2;156;220;254mmember1[0m[02m, [0m[38;2;86;154;214mlong_name_original_scoped_enum::member2[0m[02m => [0m[32mmain(int, char**)[0m[38;2;150;150;150m...[0m[38;2;150;150;150m::[0m[38;2;156;220;254mmember2[0m[02m, [0m
        [38;2;86;154;214mlong_name_original_scoped_enum::member3[0m[02m => [0m[32mmain(int, char**)[0m[38;2;150;150;150m...[0m[38;2;150;150;150m::[0m[31m?[0m
+
 [0m[02m[dump] [0m[38;2;86;154;214mbool(cp::options::classname_style & cp::flags::classname_style::no_temp_args)[0m[02m => [0m[36mfalse[0m
 [0m[02m[dump] [0m[38;2;86;154;214mbool(cp::options::classname_style & cp::flags::classname_style::no_namespace)[0m[02m => [0m[36mtrue[0m
 [0m[02m[dump] [0m[38;2;86;154;214mbool(cp::options::classname_style & cp::flags::classname_style::max_width_20)[0m[02m => [0m[36mtrue[0m
@@ -69,6 +75,7 @@
 [0m[02m[dump] [0m[38;2;86;154;214moriginal_enum::member1[0m[02m => [0m[32moriginal_enum[0m[38;2;150;150;150m::[0m[38;2;156;220;254mmember1[0m[02m, [0m[38;2;86;154;214moriginal_enum::member2[0m[02m => [0m[32moriginal_enum[0m[38;2;150;150;150m::[0m[38;2;156;220;254mmember2[0m[02m, [0m[38;2;86;154;214moriginal_enum::member3[0m[02m => [0m[32moriginal_enum[0m[38;2;150;150;150m::[0m[31m?[0m
 [0m[02m[dump] [0m[38;2;86;154;214mlong_name_original_scoped_enum::member1[0m[02m => [0m[32mlong_name_origina[0m[38;2;150;150;150m...[0m[38;2;150;150;150m::[0m[38;2;156;220;254mmember1[0m[02m, [0m[38;2;86;154;214mlong_name_original_scoped_enum::member2[0m[02m => [0m[32mlong_name_origina[0m[38;2;150;150;150m...[0m[38;2;150;150;150m::[0m[38;2;156;220;254mmember2[0m[02m, [0m
        [38;2;86;154;214mlong_name_original_scoped_enum::member3[0m[02m => [0m[32mlong_name_origina[0m[38;2;150;150;150m...[0m[38;2;150;150;150m::[0m[31m?[0m
+
 [0m[02m[dump] [0m[38;2;86;154;214mbool(cp::options::classname_style & cp::flags::classname_style::no_temp_args)[0m[02m => [0m[36mtrue[0m
 [0m[02m[dump] [0m[38;2;86;154;214mbool(cp::options::classname_style & cp::flags::classname_style::no_namespace)[0m[02m => [0m[36mtrue[0m
 [0m[02m[dump] [0m[38;2;86;154;214mbool(cp::options::classname_style & cp::flags::classname_style::max_width_20)[0m[02m => [0m[36mtrue[0m
@@ -78,4 +85,5 @@
 [0m[02m[dump] [0m[38;2;86;154;214moriginal_enum::member1[0m[02m => [0m[32moriginal_enum[0m[38;2;150;150;150m::[0m[38;2;156;220;254mmember1[0m[02m, [0m[38;2;86;154;214moriginal_enum::member2[0m[02m => [0m[32moriginal_enum[0m[38;2;150;150;150m::[0m[38;2;156;220;254mmember2[0m[02m, [0m[38;2;86;154;214moriginal_enum::member3[0m[02m => [0m[32moriginal_enum[0m[38;2;150;150;150m::[0m[31m?[0m
 [0m[02m[dump] [0m[38;2;86;154;214mlong_name_original_scoped_enum::member1[0m[02m => [0m[32mlong_name_origina[0m[38;2;150;150;150m...[0m[38;2;150;150;150m::[0m[38;2;156;220;254mmember1[0m[02m, [0m[38;2;86;154;214mlong_name_original_scoped_enum::member2[0m[02m => [0m[32mlong_name_origina[0m[38;2;150;150;150m...[0m[38;2;150;150;150m::[0m[38;2;156;220;254mmember2[0m[02m, [0m
        [38;2;86;154;214mlong_name_original_scoped_enum::member3[0m[02m => [0m[32mlong_name_origina[0m[38;2;150;150;150m...[0m[38;2;150;150;150m::[0m[31m?[0m
+
 [0m[02m[dump] [0m[38;2;86;154;214munsupported_original_class()[0m[02m => [0m[31mUnsupported Type[0m
