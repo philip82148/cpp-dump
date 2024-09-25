@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <algorithm>
 #include <string>
 #include <string_view>
 
@@ -65,29 +66,48 @@ std::string _get_classname() {
 }
 
 inline std::string styled_classname_str(std::string_view type_name) {
-  switch (options::classname_style) {
-    case types::classname_style_t::no_temp_args: {
-      std::string typename_no_arg;
-      int lt_count = 0;
-      for (auto c : type_name) {
-        if (c == '<') {
-          ++lt_count;
-        } else if (c == '>') {
-          --lt_count;
-        } else if (lt_count == 0) {
-          typename_no_arg.push_back(c);
+  std::string styled(type_name);
+
+  if (options::classname_style & flags::classname_style::no_namespace) {
+    std::string no_ns;
+    no_ns.swap(styled);
+    std::reverse(no_ns.begin(), no_ns.end());
+    int gt_count = 0;
+    for (std::size_t i = 0; i < no_ns.size(); ++i) {
+      if (no_ns[i] == '>') {
+        ++gt_count;
+      } else if (no_ns[i] == '<') {
+        --gt_count;
+      } else if (gt_count == 0) {
+        if (no_ns[i] == ':') {
+          no_ns.erase(i);
+          break;
         }
       }
-      return es::class_name(typename_no_arg);
     }
-    case types::classname_style_t::maximum20: {
-      if (type_name.size() <= 20) return es::class_name(type_name);
-      return es::class_name(type_name.substr(0, 17)) + es::op("...");
-    }
-    default: {
-      return es::class_name(type_name);
-    }
+    std::reverse(no_ns.begin(), no_ns.end());
+    styled.swap(no_ns);
   }
+
+  if (options::classname_style & flags::classname_style::no_temp_args) {
+    std::string no_args;
+    int lt_count = 0;
+    for (auto c : styled) {
+      if (c == '<') {
+        ++lt_count;
+      } else if (c == '>') {
+        --lt_count;
+      } else if (lt_count == 0) {
+        no_args.push_back(c);
+      }
+    }
+    styled.swap(no_args);
+  }
+
+  if (options::classname_style & flags::classname_style::max_width_20 && styled.size() > 20)
+    return es::class_name(styled.substr(0, 17)) + es::op("...");
+
+  return es::class_name(styled);
 }
 
 // Currently, used only by export_exception() and CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC()

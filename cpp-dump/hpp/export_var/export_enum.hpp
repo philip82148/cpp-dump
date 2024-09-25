@@ -70,9 +70,3 @@ CPP_DUMP_DEFINE_EXPORT_ENUM(
     cpp_dump::types::cont_indent_style_t::when_non_tuples_nested,
     cpp_dump::types::cont_indent_style_t::always
 );
-CPP_DUMP_DEFINE_EXPORT_ENUM(
-    cpp_dump::types::classname_style_t,
-    cpp_dump::types::classname_style_t::no_temp_args,
-    cpp_dump::types::classname_style_t::fullname,
-    cpp_dump::types::classname_style_t::maximum20
-);

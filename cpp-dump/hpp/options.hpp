@@ -57,13 +57,6 @@ namespace types {
 enum class cont_indent_style_t { minimal, when_nested, when_non_tuples_nested, always };
 
 /**
- * Type of cpp_dump::options::classname_style.
- * cpp_dump::export_var() supports this type.
- * This is an experimental feature.
- */
-enum class classname_style_t { no_temp_args, fullname, maximum20 };
-
-/**
  * Type of cpp_dump::options::es_style.
  * cpp_dump::export_var() supports this type.
  */
@@ -91,6 +84,19 @@ struct es_value_t {
 };
 
 }  // namespace types
+
+namespace flags {
+
+namespace classname_style {
+
+inline constexpr unsigned int fullname = 0;
+inline constexpr unsigned int no_temp_args = 1u << 0;
+inline constexpr unsigned int no_namespace = 1u << 1;
+inline constexpr unsigned int max_width_20 = 1u << 2;
+
+};  // namespace classname_style
+
+}  // namespace flags
 
 namespace options {
 
@@ -135,7 +141,7 @@ inline types::log_label_func_t log_label_func = log_label::default_func;
  * Style of class name.
  * This is an experimental feature.
  */
-inline types::classname_style_t classname_style = types::classname_style_t::no_temp_args;
+inline unsigned int classname_style = flags::classname_style::no_temp_args;
 
 /**
  * Style of the escape sequences (output coloring).
