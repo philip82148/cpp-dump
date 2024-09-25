@@ -116,7 +116,8 @@ inline std::string styled_classname_str(std::string_view type_name) {
   return es::class_name(styled);
 }
 
-// Currently, used only by export_exception() and CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC()
+// Currently, used only by export_exception(), CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC(), and
+// CPP_DUMP_DEFINE_EXPORT_ENUM_GENERIC()
 template <typename T>
 inline std::string styled_classname() {
   static std::string class_name = _get_classname<T>();
