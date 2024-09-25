@@ -852,7 +852,7 @@ cpp_dump(some_huge_vector | cp::dec(2) | cp::index());
 
 ![manipulator-index.png](./readme/manipulator-index.png)
 
-There are also many other manipulators, such as [the int_style manipulators](#int_style-manipulators).  
+There are also many other manipulators, such as [the int_style manipulators](#int_style-and-its-alias-manipulators).  
 [See Full Example Code](./readme/formatting-with-manipulators.cpp)
 
 ```cpp
