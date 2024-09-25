@@ -87,8 +87,7 @@ inline std::string styled_classname_str(std::string_view type_name) {
   if (options::classname_style & flags::classname_style::no_namespace) {
     std::string no_ns;
 
-    std::reverse(styled.begin(), styled.end());
-    for (std::size_t i = 0; i < styled.size(); ++i) {
+    for (int i = static_cast<int>(styled.size() - 1); i >= 0; --i) {
       if (styled[i] != ':') {
         // append class name
         no_ns.push_back(styled[i]);
@@ -97,7 +96,7 @@ inline std::string styled_classname_str(std::string_view type_name) {
 
       // skip namespace
       int gt_count = 0;
-      for (++i; i < styled.size(); ++i) {
+      for (--i; i >= 0; --i) {
         if (styled[i] == '>') {
           ++gt_count;
         } else if (styled[i] == '<') {
