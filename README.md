@@ -227,13 +227,13 @@ CPP_DUMP_SET_OPTION(es_style, cp::types::es_style_t::no_es);
 ### Can print even user-defined types
 
 If you want to print a user-defined type, you can enable the library to print it by using macros or defining an operator. The following is an example of the use of macros. See [How to print a user-defined type with cpp-dump](#how-to-print-a-user-defined-type-with-cpp-dump) for details.  
-[See Full Example Code](./readme/user-defined-class2.cpp)
+[See Full Example Code](./readme/user-defined-class-generic.cpp)
 
 ```cpp
 CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC(i, str());
 ```
 
-![user-defined-class2.png](./readme/user-defined-class2.png)
+![user-defined-class-generic.png](./readme/user-defined-class-generic.png)
 
 ## Advanced Feature
 
@@ -727,7 +727,7 @@ This macro doesn't require the user type to be accessible from the global scope 
 
 If you use this macro two or more times, you need to be careful of ambiguous function call compile errors.  
 If such an error occurs, it won't be reported due to SFINAE, and the user-defined type will remain unsupported.  
-[See Full Example Code](./readme/user-defined-class2.cpp)
+[See Full Example Code](./readme/user-defined-class-generic.cpp)
 
 ```cpp
 // In the global scope
@@ -745,7 +745,7 @@ class_A my_class_A{10};
 cpp_dump(my_class_A);
 ```
 
-![user-defined-class2.png](./readme/user-defined-class2.png)
+![user-defined-class-generic.png](./readme/user-defined-class-generic.png)
 
 For enums, use `CPP_DUMP_DEFINE_EXPORT_ENUM_GENERIC()` macro.  
 [See Full Example Code](./readme/user-defined-enum-generic.cpp)
@@ -768,7 +768,7 @@ cpp_dump(my_enum_A);
 #### Method 3. Define `std::ostream& operator<<(std::ostream&, const T &)` operator
 
 The last way is to define the operator `std::ostream& operator<<(std::ostream&, const T &)`.  
-[See Full Example Code](./readme/user-defined-class3.cpp)
+[See Full Example Code](./readme/user-defined-class-ostream.cpp)
 
 ```cpp
 // Somewhere accessible from the global scope (not private or defined in a function)
@@ -788,7 +788,7 @@ class_A my_class_A{10};
 cpp_dump(my_class_A);
 ```
 
-![user-defined-class3.png](./readme/user-defined-class3.png)
+![user-defined-class-ostream.png](./readme/user-defined-class-ostream.png)
 
 ### Customize `[dump]`
 
