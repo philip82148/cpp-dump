@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <algorithm>
+#include <stack>
 #include <string>
 #include <string_view>
 
@@ -69,27 +69,6 @@ std::string _get_classname() {
 inline std::string styled_classname_str(std::string_view type_name) {
   std::string styled(type_name);
 
-  if (options::classname_style & flags::classname_style::no_namespace) {
-    std::string no_ns;
-    no_ns.swap(styled);
-    std::reverse(no_ns.begin(), no_ns.end());
-    int gt_count = 0;
-    for (std::size_t i = 0; i < no_ns.size(); ++i) {
-      if (no_ns[i] == '>') {
-        ++gt_count;
-      } else if (no_ns[i] == '<') {
-        --gt_count;
-      } else if (gt_count == 0) {
-        if (no_ns[i] == ':') {
-          no_ns.erase(i);
-          break;
-        }
-      }
-    }
-    std::reverse(no_ns.begin(), no_ns.end());
-    styled.swap(no_ns);
-  }
-
   if (options::classname_style & flags::classname_style::no_temp_args) {
     std::string no_args;
     int lt_count = 0;
@@ -103,6 +82,32 @@ inline std::string styled_classname_str(std::string_view type_name) {
       }
     }
     styled.swap(no_args);
+  }
+
+  if (options::classname_style & flags::classname_style::no_namespace) {
+    std::string no_ns;
+    auto remove_namespace = [&](std::size_t begin) {
+      std::string_view partial(no_ns.c_str() + begin, no_ns.size() - begin);
+      auto colon_pos = partial.rfind(':');
+      std::string class_name(partial.substr(colon_pos == std::string::npos ? 0 : colon_pos + 1));
+      no_ns.erase(begin).append(class_name);
+    };
+
+    std::stack<std::size_t> lt_pos_stack;
+    for (auto c : styled) {
+      if (c == '<') {
+        lt_pos_stack.push(no_ns.size());
+      } else if (c == '>') {
+        if (lt_pos_stack.empty()) continue;
+        auto lt_pos = lt_pos_stack.top();
+        lt_pos_stack.pop();
+        remove_namespace(lt_pos + 1);
+      }
+      no_ns.push_back(c);
+    }
+    remove_namespace(0);
+
+    styled.swap(no_ns);
   }
 
   if (options::classname_style & flags::classname_style::max_width_20 && styled.size() > 20)
