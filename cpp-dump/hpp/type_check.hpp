@@ -64,7 +64,7 @@ inline constexpr bool is_vector_bool_reference = _is_vector_bool_reference<T>::v
 // https://stackoverflow.com/questions/48041618/why-does-cppreference-define-type-traits-xxx-v-shortcuts-as-inline-constexpr-and
 template <typename T>
 inline constexpr bool is_arithmetic =
-    std::is_arithmetic_v<_remove_cvref<T>> || is_vector_bool_reference<_remove_cvref<T>>;
+    std::is_arithmetic_v<_remove_cvref<T>> || is_vector_bool_reference<T>;
 
 // String -----------------------------------------------------------------------------------------
 template <typename T>
