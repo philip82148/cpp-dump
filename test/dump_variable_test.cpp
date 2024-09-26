@@ -12,6 +12,7 @@ using namespace std;
 namespace cp = cpp_dump;
 
 CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC(member_var, member_func());
+CPP_DUMP_DEFINE_EXPORT_ENUM_GENERIC(member1, member2);
 
 namespace ns {
 
@@ -73,14 +74,30 @@ int main(int argc, char *argv[]) {
       std::string member_func() const { return "This is a member_func."; }
     };
 
+    enum original_enum { member1, member2, member3 };
+    enum class original_scoped_enum { member1, member2, member3 };
+
     struct unsupported_original_class {
       int member_var = 5;
       std::string member_func() { return "This is a member_func."; }
     };
 
+    cpp_dump::_detail::export_enum_generic(
+        original_scoped_enum::member1,
+        "",
+        0,
+        0,
+        false,
+        cpp_dump::_detail::export_command::default_command
+    );
+
     cpp_dump(original_error1);
     cpp_dump(ns::template_class<ns::template_class<int>>());
     cpp_dump(original_class());
+    cpp_dump(original_enum::member1, original_enum::member2, original_enum::member3);
+    cpp_dump(
+        original_scoped_enum::member1, original_scoped_enum::member2, original_scoped_enum::member3
+    );
     cpp_dump(unsupported_original_class());
   } else {
     // pointer

@@ -56,8 +56,8 @@ Key points:
   - [Variables](#variables)
   - [Functions](#functions)
   - [How to print a user-defined type with cpp-dump](#how-to-print-a-user-defined-type-with-cpp-dump)
-    - [Method 1. Use CPP\_DUMP\_DEFINE\_EXPORT\_OBJECT() macro](#method-1-use-cpp_dump_define_export_object-macro)
-    - [Method 2. Use CPP\_DUMP\_DEFINE\_EXPORT\_OBJECT\_GENERIC() macro](#method-2-use-cpp_dump_define_export_object_generic-macro)
+    - [Method 1. Use `CPP_DUMP_DEFINE_EXPORT_OBJECT()` macro](#method-1-use-cpp_dump_define_export_object-macro)
+    - [Method 2. Use `CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC()` macro](#method-2-use-cpp_dump_define_export_object_generic-macro)
     - [Method 3. Define `std::ostream& operator<<(std::ostream&, const T &)` operator](#method-3-define-stdostream-operatorstdostream-const-t--operator)
   - [Customize `[dump]`](#customize-dump)
   - [Formatting with manipulators](#formatting-with-manipulators)
@@ -227,13 +227,13 @@ CPP_DUMP_SET_OPTION(es_style, cp::types::es_style_t::no_es);
 ### Can print even user-defined types
 
 If you want to print a user-defined type, you can enable the library to print it by using macros or defining an operator. The following is an example of the use of macros. See [How to print a user-defined type with cpp-dump](#how-to-print-a-user-defined-type-with-cpp-dump) for details.  
-[See Full Example Code](./readme/user-defined-class2.cpp)
+[See Full Example Code](./readme/user-defined-class-generic.cpp)
 
 ```cpp
 CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC(i, str());
 ```
 
-![user-defined-class2.png](./readme/user-defined-class2.png)
+![user-defined-class-generic.png](./readme/user-defined-class-generic.png)
 
 ## Advanced Feature
 
@@ -340,9 +340,10 @@ CPP_DUMP_SET_OPTION_GLOBAL(max_line_width, 100);
 // To ensure proper instantiation of templates,
 // include these in at least one translation unit where cpp_dump(...) prints each type.
 // One way is to write them in a header file and then include it wherever needed.
-CPP_DUMP_DEFINE_EXPORT_ENUM(my_enum, my_enum::a, my_enum::b, my_enum::c);
 CPP_DUMP_DEFINE_EXPORT_OBJECT(my_class, member1, member2());
 CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC(member3, member4());
+CPP_DUMP_DEFINE_EXPORT_ENUM(my_enum, my_enum::a, my_enum::b, my_enum::c);
+CPP_DUMP_DEFINE_EXPORT_ENUM_GENERIC(member_a, member_b, member_c);
 #else
 #define cpp_dump(...)
 #define CPP_DUMP_SET_OPTION(...)
@@ -478,6 +479,12 @@ If true, the `es_value.number_op` color is used for operators in numbers (`-`, `
  * Make cpp_dump::export_var() support enum T.
  */
 #define CPP_DUMP_DEFINE_EXPORT_ENUM(T, members...)
+
+/**
+ * Make cpp_dump::export_var() support every enum type that has the specified members.
+ * Compile errors in this macro, such as ambiguous function calls, are never reported due to SFINAE.
+ */
+#define CPP_DUMP_DEFINE_EXPORT_ENUM_GENERIC(members...)
 
 /**
  * Set a value to a variable in cpp_dump::options namespace.
@@ -672,7 +679,7 @@ types::log_label_func_t fixed_length(int min_width, int max_width,
 
 There are three ways to enable the library to print a user type.
 
-#### Method 1. Use CPP_DUMP_DEFINE_EXPORT_OBJECT() macro
+#### Method 1. Use `CPP_DUMP_DEFINE_EXPORT_OBJECT()` macro
 
 This macro requires the user type to be accessible from the global scope, but it is the safest and easiest way to enable `cpp_dump()` to print a user type.  
 [See Full Example Code](./readme/user-defined-class.cpp)
@@ -695,32 +702,32 @@ cpp_dump(my_class_A);
 
 ![user-defined-class.png](./readme/user-defined-class.png)
 
-For enums, use CPP_DUMP_DEFINE_EXPORT_ENUM() macro.  
+For enums, use `CPP_DUMP_DEFINE_EXPORT_ENUM()` macro.  
 [See Full Example Code](./readme/user-defined-enum.cpp)
 
 ```cpp
 // Somewhere accessible from the global scope (not private or defined in a function)
-enum class enum_A { a, b, c };
+enum class enum_A { member_a, member_b, member_c };
 
 // In the global scope
 // CPP_DUMP_DEFINE_EXPORT_ENUM(enum_name, members...)
-CPP_DUMP_DEFINE_EXPORT_ENUM(enum_A, enum_A::a, enum_A::b, enum_A::c);
+CPP_DUMP_DEFINE_EXPORT_ENUM(enum_A, enum_A::member_a, enum_A::member_b, enum_A::member_c);
 
 // In a function
-enum_A my_enum_A = enum_A::c;
+enum_A my_enum_A = enum_A::member_c;
 cpp_dump(my_enum_A);
 ```
 
 ![user-defined-enum.png](./readme/user-defined-enum.png)
 
-#### Method 2. Use CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC() macro
+#### Method 2. Use `CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC()` macro
 
 This macro enables `cpp_dump()` to print any type with specified members.  
 This macro doesn't require the user type to be accessible from the global scope (or need even the type name).
 
 If you use this macro two or more times, you need to be careful of ambiguous function call compile errors.  
 If such an error occurs, it won't be reported due to SFINAE, and the user-defined type will remain unsupported.  
-[See Full Example Code](./readme/user-defined-class2.cpp)
+[See Full Example Code](./readme/user-defined-class-generic.cpp)
 
 ```cpp
 // In the global scope
@@ -738,12 +745,30 @@ class_A my_class_A{10};
 cpp_dump(my_class_A);
 ```
 
-![user-defined-class2.png](./readme/user-defined-class2.png)
+![user-defined-class-generic.png](./readme/user-defined-class-generic.png)
+
+For enums, use `CPP_DUMP_DEFINE_EXPORT_ENUM_GENERIC()` macro.  
+[See Full Example Code](./readme/user-defined-enum-generic.cpp)
+
+```cpp
+// In the global scope
+// CPP_DUMP_DEFINE_EXPORT_ENUM_GENERIC(members...)
+CPP_DUMP_DEFINE_EXPORT_ENUM(member_a, member_b, member_c);
+
+// Anywhere
+enum class enum_A { member_a, member_b, member_c };
+
+// In a function
+enum_A my_enum_A = enum_A::member_c;
+cpp_dump(my_enum_A);
+```
+
+![user-defined-enum-generic.png](./readme/user-defined-enum-generic.png)
 
 #### Method 3. Define `std::ostream& operator<<(std::ostream&, const T &)` operator
 
 The last way is to define the operator `std::ostream& operator<<(std::ostream&, const T &)`.  
-[See Full Example Code](./readme/user-defined-class3.cpp)
+[See Full Example Code](./readme/user-defined-class-ostream.cpp)
 
 ```cpp
 // Somewhere accessible from the global scope (not private or defined in a function)
@@ -763,7 +788,7 @@ class_A my_class_A{10};
 cpp_dump(my_class_A);
 ```
 
-![user-defined-class3.png](./readme/user-defined-class3.png)
+![user-defined-class-ostream.png](./readme/user-defined-class-ostream.png)
 
 ### Customize `[dump]`
 
@@ -827,7 +852,7 @@ cpp_dump(some_huge_vector | cp::dec(2) | cp::index());
 
 ![manipulator-index.png](./readme/manipulator-index.png)
 
-There are also many other manipulators, such as [the int_style manipulators](#int_style-manipulators).  
+There are also many other manipulators, such as [the int_style manipulators](#int_style-and-its-alias-manipulators).  
 [See Full Example Code](./readme/formatting-with-manipulators.cpp)
 
 ```cpp
@@ -1134,8 +1159,9 @@ CPP_DUMP_SET_OPTION_GLOBAL(enable_asterisk, true);
 #define dump(...)
 #define CPP_DUMP_SET_OPTION(...)
 #define CPP_DUMP_DEFINE_EXPORT_OBJECT(...)
-#define CPP_DUMP_DEFINE_EXPORT_ENUM(...)
 #define CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC(...)
+#define CPP_DUMP_DEFINE_EXPORT_ENUM(...)
+#define CPP_DUMP_DEFINE_EXPORT_ENUM_GENERIC(...)
 #endif
 
 #include <bits/stdc++.h>
@@ -1187,8 +1213,9 @@ clang++ ./main.cpp -D DEFINED_ONLY_IN_LOCAL
 | Other         | T is either `std::bitset`, `std::complex`, `std::optional`, `std::variant`, `std::type_info`, `std::type_index` or `std::source_location`(C++20 or higher and g++ and MSVC only)                                                                                                                      |                                                    |
 | User-defined  | `CPP_DUMP_DEFINE_EXPORT_OBJECT(T, members...);` is in the global scope and the member functions to be displayed is const.                                                                                                                                                                             |                                                    |
 | Enum          | `CPP_DUMP_DEFINE_EXPORT_ENUM(T, members...);` is in the global scope.                                                                                                                                                                                                                                 |                                                    |
-| Ostream       | All of the above are not satisfied, `std::is_function_v<T> == false && std::is_member_pointer_v<T> == false`, and the function `std::ostream& operator<<(std::ostream&, const T &)` is defined. **The string representation of T must not be an empty string** (This makes manipulators unsupported). |                                                    |
 | User-defined2 | All of the above are not satisfied, T has all members specified by just one `CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC(members...);` at top level, and the member functions to be displayed is const.                                                                                                     |                                                    |
+| Enum2         | All of the above are not satisfied, and T has all members specified by just one `CPP_DUMP_DEFINE_EXPORT_ENUM_GENERIC(members...);` at top level.                                                                                                                                                      |                                                    |
+| Ostream       | All of the above are not satisfied, `std::is_function_v<T> == false && std::is_member_pointer_v<T> == false`, and the function `std::ostream& operator<<(std::ostream&, const T &)` is defined. **The string representation of T must not be an empty string** (This makes manipulators unsupported). |                                                    |
 | Asterisk      | All of the above are not satisfied, `cpp_dump::options::enable_asterisk == true` and the function `TypeExceptT operator*(const T &)` or the const member function `TypeExceptT T::operator*() const` is defined.                                                                                      | Iterators                                          |
 
 ### Display example

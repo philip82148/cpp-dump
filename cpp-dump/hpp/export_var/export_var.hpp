@@ -15,6 +15,7 @@
 #include "./export_asterisk.hpp"
 #include "./export_container.hpp"
 #include "./export_enum.hpp"
+#include "./export_enum_generic.hpp"
 #include "./export_exception.hpp"
 #include "./export_map.hpp"
 #include "./export_object.hpp"
@@ -75,12 +76,16 @@ std::string export_var(
     );
   } else if constexpr (is_other_type<T>) {
     return export_other(value, indent, last_line_length, current_depth, fail_on_newline, command);
-  } else if constexpr (is_ostream<T>) {
-    return export_ostream(value, indent, last_line_length, current_depth, fail_on_newline, command);
   } else if constexpr (is_exportable_object_generic<T>) {
     return export_object_generic(
         value, indent, last_line_length, current_depth, fail_on_newline, command
     );
+  } else if constexpr (is_exportable_enum_generic<T>) {
+    return export_enum_generic(
+        value, indent, last_line_length, current_depth, fail_on_newline, command
+    );
+  } else if constexpr (is_ostream<T>) {
+    return export_ostream(value, indent, last_line_length, current_depth, fail_on_newline, command);
   } else if constexpr (is_asterisk<T>) {
     return export_asterisk(
         value, indent, last_line_length, current_depth, fail_on_newline, command
