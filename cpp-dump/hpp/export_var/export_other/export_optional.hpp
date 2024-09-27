@@ -24,7 +24,7 @@ namespace _detail {
 
 inline std::string
 export_optional(const std::nullopt_t &, const std::string &, std::size_t, std::size_t, bool, const export_command &) {
-  return styled_class_name_str("std::nullopt");
+  return style_class_name("std::nullopt");
 }
 
 namespace es {
@@ -44,7 +44,7 @@ inline auto export_optional(
     bool fail_on_newline,
     const export_command &command
 ) -> std::enable_if_t<is_optional<T>, std::string> {
-  if (!optional) return styled_class_name_str("std::nullopt");
+  if (!optional) return style_class_name("std::nullopt");
 
   return es::_optional_question("?")
          + export_var(

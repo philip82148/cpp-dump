@@ -36,7 +36,7 @@
           decltype(_p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_EXPORT_ENUM_GENERIC, __VA_ARGS__), std::string())> { \
     static const std::unordered_map<T, std::string_view> enum_to_string{                                             \
         _p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_EXPORT_ENUM_GENERIC2, __VA_ARGS__)};                            \
-    return styled_class_name<T>() + es::op("::")                                                                     \
+    return style_class_name_auto<T>() + es::op("::")                                                                 \
            + (enum_to_string.count(value) ? es::member(enum_to_string.at(value))                                     \
                                           : es::unsupported("?"));                                                   \
   }                                                                                                                  \

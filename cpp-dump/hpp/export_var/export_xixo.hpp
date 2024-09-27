@@ -29,7 +29,7 @@ inline std::string export_xixo(
     bool fail_on_newline,
     const export_command &command
 ) {
-  std::string class_name = styled_class_name_str("std::queue");
+  std::string class_name = style_class_name("std::queue");
 
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;
 
@@ -51,7 +51,7 @@ inline std::string export_xixo(
     bool fail_on_newline,
     const export_command &command
 ) {
-  std::string class_name = styled_class_name_str("std::priority_queue");
+  std::string class_name = style_class_name("std::priority_queue");
 
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;
 
@@ -70,7 +70,7 @@ inline std::string export_xixo(
     bool fail_on_newline,
     const export_command &command
 ) {
-  std::string class_name = styled_class_name_str("std::stack");
+  std::string class_name = style_class_name("std::stack");
 
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;
 
