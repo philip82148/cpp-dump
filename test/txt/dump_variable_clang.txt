@@ -1,6 +1,6 @@
-[dump] bool(cp::options::classname_style & cp::flags::classname_style::no_temp_args) => false
-[dump] bool(cp::options::classname_style & cp::flags::classname_style::no_namespace) => false
-[dump] bool(cp::options::classname_style & cp::flags::classname_style::max_width_20) => false
+[dump] bool(cp::options::class_name_style & cp::flags::class_name_style::no_temp_args) => false
+[dump] bool(cp::options::class_name_style & cp::flags::class_name_style::no_namespace) => false
+[dump] bool(cp::options::class_name_style & cp::flags::class_name_style::max_width_20) => false
 [dump] original_error1 => original_error{ what()= "This is an original error." }
 [dump] ns::template_class<ns::template_class<int>>() => ns::template_class<ns::template_class<int>>{ member_var= 5, member_func()= "This is a member_func." }
 [dump] long_name_original_class() => long_name_original_class{ member_var= 5, member_func()= "This is a member_func." }
@@ -9,9 +9,9 @@
        long_name_original_scoped_enum::member2 => long_name_original_scoped_enum::member2, 
        long_name_original_scoped_enum::member3 => long_name_original_scoped_enum::?
 
-[dump] bool(cp::options::classname_style & cp::flags::classname_style::no_temp_args) => true
-[dump] bool(cp::options::classname_style & cp::flags::classname_style::no_namespace) => false
-[dump] bool(cp::options::classname_style & cp::flags::classname_style::max_width_20) => false
+[dump] bool(cp::options::class_name_style & cp::flags::class_name_style::no_temp_args) => true
+[dump] bool(cp::options::class_name_style & cp::flags::class_name_style::no_namespace) => false
+[dump] bool(cp::options::class_name_style & cp::flags::class_name_style::max_width_20) => false
 [dump] original_error1 => original_error{ what()= "This is an original error." }
 [dump] ns::template_class<ns::template_class<int>>() => ns::template_class{ member_var= 5, member_func()= "This is a member_func." }
 [dump] long_name_original_class() => long_name_original_class{ member_var= 5, member_func()= "This is a member_func." }
@@ -20,9 +20,9 @@
        long_name_original_scoped_enum::member2 => long_name_original_scoped_enum::member2, 
        long_name_original_scoped_enum::member3 => long_name_original_scoped_enum::?
 
-[dump] bool(cp::options::classname_style & cp::flags::classname_style::no_temp_args) => false
-[dump] bool(cp::options::classname_style & cp::flags::classname_style::no_namespace) => true
-[dump] bool(cp::options::classname_style & cp::flags::classname_style::max_width_20) => false
+[dump] bool(cp::options::class_name_style & cp::flags::class_name_style::no_temp_args) => false
+[dump] bool(cp::options::class_name_style & cp::flags::class_name_style::no_namespace) => true
+[dump] bool(cp::options::class_name_style & cp::flags::class_name_style::max_width_20) => false
 [dump] original_error1 => original_error{ what()= "This is an original error." }
 [dump] ns::template_class<ns::template_class<int>>() => template_class<template_class<int>>{ member_var= 5, member_func()= "This is a member_func." }
 [dump] long_name_original_class() => long_name_original_class{ member_var= 5, member_func()= "This is a member_func." }
@@ -31,9 +31,9 @@
        long_name_original_scoped_enum::member2 => long_name_original_scoped_enum::member2, 
        long_name_original_scoped_enum::member3 => long_name_original_scoped_enum::?
 
-[dump] bool(cp::options::classname_style & cp::flags::classname_style::no_temp_args) => true
-[dump] bool(cp::options::classname_style & cp::flags::classname_style::no_namespace) => true
-[dump] bool(cp::options::classname_style & cp::flags::classname_style::max_width_20) => false
+[dump] bool(cp::options::class_name_style & cp::flags::class_name_style::no_temp_args) => true
+[dump] bool(cp::options::class_name_style & cp::flags::class_name_style::no_namespace) => true
+[dump] bool(cp::options::class_name_style & cp::flags::class_name_style::max_width_20) => false
 [dump] original_error1 => original_error{ what()= "This is an original error." }
 [dump] ns::template_class<ns::template_class<int>>() => template_class{ member_var= 5, member_func()= "This is a member_func." }
 [dump] long_name_original_class() => long_name_original_class{ member_var= 5, member_func()= "This is a member_func." }
@@ -42,9 +42,9 @@
        long_name_original_scoped_enum::member2 => long_name_original_scoped_enum::member2, 
        long_name_original_scoped_enum::member3 => long_name_original_scoped_enum::?
 
-[dump] bool(cp::options::classname_style & cp::flags::classname_style::no_temp_args) => false
-[dump] bool(cp::options::classname_style & cp::flags::classname_style::no_namespace) => false
-[dump] bool(cp::options::classname_style & cp::flags::classname_style::max_width_20) => true
+[dump] bool(cp::options::class_name_style & cp::flags::class_name_style::no_temp_args) => false
+[dump] bool(cp::options::class_name_style & cp::flags::class_name_style::no_namespace) => false
+[dump] bool(cp::options::class_name_style & cp::flags::class_name_style::max_width_20) => true
 [dump] original_error1 => original_error{ what()= "This is an original error." }
 [dump] ns::template_class<ns::template_class<int>>() => ns::template_clas...{ member_var= 5, member_func()= "This is a member_func." }
 [dump] long_name_original_class() => long_name_origina...{ member_var= 5, member_func()= "This is a member_func." }
@@ -52,9 +52,9 @@
 [dump] long_name_original_scoped_enum::member1 => long_name_origina...::member1, long_name_original_scoped_enum::member2 => long_name_origina...::member2, 
        long_name_original_scoped_enum::member3 => long_name_origina...::?
 
-[dump] bool(cp::options::classname_style & cp::flags::classname_style::no_temp_args) => true
-[dump] bool(cp::options::classname_style & cp::flags::classname_style::no_namespace) => false
-[dump] bool(cp::options::classname_style & cp::flags::classname_style::max_width_20) => true
+[dump] bool(cp::options::class_name_style & cp::flags::class_name_style::no_temp_args) => true
+[dump] bool(cp::options::class_name_style & cp::flags::class_name_style::no_namespace) => false
+[dump] bool(cp::options::class_name_style & cp::flags::class_name_style::max_width_20) => true
 [dump] original_error1 => original_error{ what()= "This is an original error." }
 [dump] ns::template_class<ns::template_class<int>>() => ns::template_class{ member_var= 5, member_func()= "This is a member_func." }
 [dump] long_name_original_class() => long_name_origina...{ member_var= 5, member_func()= "This is a member_func." }
@@ -62,9 +62,9 @@
 [dump] long_name_original_scoped_enum::member1 => long_name_origina...::member1, long_name_original_scoped_enum::member2 => long_name_origina...::member2, 
        long_name_original_scoped_enum::member3 => long_name_origina...::?
 
-[dump] bool(cp::options::classname_style & cp::flags::classname_style::no_temp_args) => false
-[dump] bool(cp::options::classname_style & cp::flags::classname_style::no_namespace) => true
-[dump] bool(cp::options::classname_style & cp::flags::classname_style::max_width_20) => true
+[dump] bool(cp::options::class_name_style & cp::flags::class_name_style::no_temp_args) => false
+[dump] bool(cp::options::class_name_style & cp::flags::class_name_style::no_namespace) => true
+[dump] bool(cp::options::class_name_style & cp::flags::class_name_style::max_width_20) => true
 [dump] original_error1 => original_error{ what()= "This is an original error." }
 [dump] ns::template_class<ns::template_class<int>>() => template_class<te...{ member_var= 5, member_func()= "This is a member_func." }
 [dump] long_name_original_class() => long_name_origina...{ member_var= 5, member_func()= "This is a member_func." }
@@ -72,9 +72,9 @@
 [dump] long_name_original_scoped_enum::member1 => long_name_origina...::member1, long_name_original_scoped_enum::member2 => long_name_origina...::member2, 
        long_name_original_scoped_enum::member3 => long_name_origina...::?
 
-[dump] bool(cp::options::classname_style & cp::flags::classname_style::no_temp_args) => true
-[dump] bool(cp::options::classname_style & cp::flags::classname_style::no_namespace) => true
-[dump] bool(cp::options::classname_style & cp::flags::classname_style::max_width_20) => true
+[dump] bool(cp::options::class_name_style & cp::flags::class_name_style::no_temp_args) => true
+[dump] bool(cp::options::class_name_style & cp::flags::class_name_style::no_namespace) => true
+[dump] bool(cp::options::class_name_style & cp::flags::class_name_style::max_width_20) => true
 [dump] original_error1 => original_error{ what()= "This is an original error." }
 [dump] ns::template_class<ns::template_class<int>>() => template_class{ member_var= 5, member_func()= "This is a member_func." }
 [dump] long_name_original_class() => long_name_origina...{ member_var= 5, member_func()= "This is a member_func." }

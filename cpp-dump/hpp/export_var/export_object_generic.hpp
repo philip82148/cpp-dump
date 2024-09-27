@@ -37,7 +37,7 @@
       bool fail_on_newline,                                                                                        \
       const export_command &command                                                                                \
   ) -> decltype(_p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_EXPORT_OBJECT_GENERIC, __VA_ARGS__), std::string()) { \
-    std::string class_name = styled_classname<T>();                                                                \
+    std::string class_name = styled_class_name<T>();                                                               \
                                                                                                                    \
     _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;                                                                      \
                                                                                                                    \

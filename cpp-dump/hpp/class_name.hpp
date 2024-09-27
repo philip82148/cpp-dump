@@ -19,10 +19,10 @@ namespace cpp_dump {
 
 namespace _detail {
 
-inline std::string styled_classname_str(std::string_view class_name) {
+inline std::string styled_class_name_str(std::string_view class_name) {
   std::string styled(class_name);
 
-  if (options::classname_style & flags::classname_style::no_temp_args) {
+  if (options::class_name_style & flags::class_name_style::no_temp_args) {
     std::string no_args;
     int lt_count = 0;
     for (auto c : styled) {
@@ -37,7 +37,7 @@ inline std::string styled_classname_str(std::string_view class_name) {
     styled.swap(no_args);
   }
 
-  if (options::classname_style & flags::classname_style::no_namespace) {
+  if (options::class_name_style & flags::class_name_style::no_namespace) {
     std::string no_ns;
 
     for (int i = static_cast<int>(styled.size() - 1); i >= 0; --i) {
@@ -66,7 +66,7 @@ inline std::string styled_classname_str(std::string_view class_name) {
     styled.swap(no_ns);
   }
 
-  if (options::classname_style & flags::classname_style::max_width_20 && styled.size() > 20)
+  if (options::class_name_style & flags::class_name_style::max_width_20 && styled.size() > 20)
     return es::class_name(styled.substr(0, 17)) + es::op("...");
 
   return es::class_name(styled);
@@ -74,7 +74,7 @@ inline std::string styled_classname_str(std::string_view class_name) {
 
 // The return type must be a built-in type, otherwise we don't know how it will be stringified.
 template <typename T>
-const char* _get_classname_aux() {
+const char* _get_class_name_aux() {
 #if defined(__GNUC__) && !defined(__clang__)
   return __PRETTY_FUNCTION__;
 #elif defined(__clang__)
@@ -87,25 +87,25 @@ const char* _get_classname_aux() {
 }
 
 template <typename T>
-std::string _get_classname() {
+std::string _get_class_name() {
 #if defined(__GNUC__) && !defined(__clang__)
   constexpr std::size_t prefix_length =
-      std::string_view("const char* cpp_dump::_detail::_get_classname_aux() [with T = ").size();
+      std::string_view("const char* cpp_dump::_detail::_get_class_name_aux() [with T = ").size();
   constexpr std::size_t suffix_length = std::string_view("]").size();
 #elif defined(__clang__)
   constexpr std::size_t prefix_length =
-      std::string_view("const char *cpp_dump::_detail::_get_classname_aux() [T = ").size();
+      std::string_view("const char *cpp_dump::_detail::_get_class_name_aux() [T = ").size();
   constexpr std::size_t suffix_length = std::string_view("]").size();
 #elif defined(_MSC_VER)
   constexpr std::size_t prefix_length =
-      std::string_view("const char *__cdecl cpp_dump::_detail::_get_classname_aux<").size();
+      std::string_view("const char *__cdecl cpp_dump::_detail::_get_class_name_aux<").size();
   constexpr std::size_t suffix_length = std::string_view(">(void)").size();
 #else
   constexpr std::size_t prefix_length = 0;
   constexpr std::size_t suffix_length = 0;
 #endif
 
-  std::string_view func_name = _get_classname_aux<remove_cvref<T>>();
+  std::string_view func_name = _get_class_name_aux<remove_cvref<T>>();
   std::string class_name(
       func_name, prefix_length, func_name.size() - prefix_length - suffix_length
   );
@@ -122,9 +122,9 @@ std::string _get_classname() {
 // Currently, used only by export_exception(), CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC(), and
 // CPP_DUMP_DEFINE_EXPORT_ENUM_GENERIC()
 template <typename T>
-inline std::string styled_classname() {
-  static std::string class_name = _get_classname<T>();
-  return styled_classname_str(class_name);
+inline std::string styled_class_name() {
+  static std::string class_name = _get_class_name<T>();
+  return styled_class_name_str(class_name);
 }
 
 }  // namespace _detail

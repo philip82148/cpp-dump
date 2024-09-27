@@ -34,7 +34,7 @@ inline auto export_type_info(
     bool fail_on_newline,
     const export_command &command
 ) -> std::enable_if_t<is_type_info<T>, std::string> {
-  std::string class_name = styled_classname_str(
+  std::string class_name = styled_class_name_str(
       std::is_same_v<T, std::type_info> ? "std::type_info" : "std::type_index"
   );
 
