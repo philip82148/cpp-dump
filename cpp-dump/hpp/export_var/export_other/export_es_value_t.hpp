@@ -11,6 +11,7 @@
 #include <string_view>
 #include <vector>
 
+#include "../../class_name.hpp"
 #include "../../escape_sequence.hpp"
 #include "../../export_command/export_command.hpp"
 #include "../../options.hpp"
@@ -117,7 +118,7 @@ inline std::string export_es_value_t(
     bool fail_on_newline,
     const export_command &command
 ) {
-  std::string class_name = es::class_name("cpp_dump::types::es_value_t");
+  std::string class_name = styled_classname_str("cpp_dump::types::es_value_t");
 
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1_1;
 

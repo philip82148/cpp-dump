@@ -17,7 +17,7 @@
 
 #endif
 
-#include "../../escape_sequence.hpp"
+#include "../../class_name.hpp"
 #include "../../expand_va_macro.hpp"
 #include "../../export_command/export_command.hpp"
 #include "../../type_check.hpp"
@@ -42,7 +42,7 @@
       bool fail_on_newline,                                                                        \
       const export_command &command                                                                \
   ) {                                                                                              \
-    std::string class_name = es::class_name(#TYPE);                                                \
+    std::string class_name = styled_classname_str(#TYPE);                                          \
                                                                                                    \
     _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;                                                      \
                                                                                                    \

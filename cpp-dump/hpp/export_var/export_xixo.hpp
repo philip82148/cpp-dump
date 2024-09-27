@@ -11,6 +11,7 @@
 #include <stack>
 #include <string>
 
+#include "../class_name.hpp"
 #include "../escape_sequence.hpp"
 #include "../export_command/export_command.hpp"
 #include "./export_object_common.hpp"
@@ -28,7 +29,7 @@ inline std::string export_xixo(
     bool fail_on_newline,
     const export_command &command
 ) {
-  std::string class_name = es::class_name("std::queue");
+  std::string class_name = styled_classname_str("std::queue");
 
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;
 
@@ -50,7 +51,7 @@ inline std::string export_xixo(
     bool fail_on_newline,
     const export_command &command
 ) {
-  std::string class_name = es::class_name("std::priority_queue");
+  std::string class_name = styled_classname_str("std::priority_queue");
 
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;
 
@@ -69,7 +70,7 @@ inline std::string export_xixo(
     bool fail_on_newline,
     const export_command &command
 ) {
-  std::string class_name = es::class_name("std::stack");
+  std::string class_name = styled_classname_str("std::stack");
 
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;
 

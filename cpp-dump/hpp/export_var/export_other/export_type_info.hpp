@@ -15,7 +15,10 @@
 #include <cxxabi.h>
 #endif
 
+#include "../../class_name.hpp"
+#include "../../escape_sequence.hpp"
 #include "../../export_command/export_command.hpp"
+#include "../../type_check.hpp"
 #include "../export_object_common.hpp"
 
 namespace cpp_dump {
@@ -31,8 +34,9 @@ inline auto export_type_info(
     bool fail_on_newline,
     const export_command &command
 ) -> std::enable_if_t<is_type_info<T>, std::string> {
-  std::string class_name =
-      es::class_name(std::is_same_v<T, std::type_info> ? "std::type_info" : "std::type_index");
+  std::string class_name = styled_classname_str(
+      std::is_same_v<T, std::type_info> ? "std::type_info" : "std::type_index"
+  );
 
 #if defined(__GNUC__)
   int status = 0;
