@@ -102,7 +102,7 @@ Their string representation is similar to JavaScript, Python, and C++ syntax, wh
 
 ```cpp
 bool my_bool = true; double my_double = 3.141592; int my_int = 65;
-char my_char = 'a', LF_char = '\n'; std::string my_string = "This is a string";
+char my_char = 'a', LF_char = '\n'; std::string my_string = "This is a string.";
 int *int_ptr = &my_int; void *void_ptr = &my_int;
 std::vector<std::vector<int>> my_vector{{3, 5, 8, 9, 7}, {9, 3, 2, 3, 8}};
 std::set<char> my_set{'A', 'p', 'p', 'l', 'e'};
@@ -118,7 +118,7 @@ for (auto v : {1, 2, 3, 4, 5}) my_queue.push(v), my_priority_queue.push(v), my_s
 std::bitset<8> my_bitset(0x3a);
 std::complex<double> my_complex{1.0, -1.0};
 std::optional<int> my_optional{15};
-std::variant<int, std::string> my_variant{"1"};
+std::variant<int, std::string> my_variant{"This is a string."};
 std::vector<std::pair<int, std::string>> vector_of_pairs{{1, "apple"}, {3, "banana"}};
 
 std::clog << "\n// Basic Type" << std::endl;

@@ -1,7 +1,7 @@
 
 // Basic Type
 [0m[02m[dump] [0m[34mmy_bool[0m[02m => [0m[38;5;39mtrue[0m[02m, [0m[34mmy_double[0m[02m => [0m[38;5;150m3.141592[0m[02m, [0m[34mmy_int[0m[02m => [0m[38;5;150m65[0m
-[0m[02m[dump] [0m[34mmy_string[0m[02m => [0m[38;5;172m"This is a string[0m[38;5;172m"[0m[02m, [0m[34mmy_char[0m[02m => [0m[38;5;172m'a'[0m[02m, [0m[34mLF_char[0m[02m => [0m[38;5;172m'[0m[38;5;220m\n[0m[38;5;172m'[0m
+[0m[02m[dump] [0m[34mmy_string[0m[02m => [0m[38;5;172m"This is a string.[0m[38;5;172m"[0m[02m, [0m[34mmy_char[0m[02m => [0m[38;5;172m'a'[0m[02m, [0m[34mLF_char[0m[02m => [0m[38;5;172m'[0m[38;5;220m\n[0m[38;5;172m'[0m
 [0m[02m[dump] [0m[34mint_ptr[0m[02m => [0m[32m*[0m[38;5;150m65[0m[02m, [0m[34mvoid_ptr[0m[02m => [0m[32m0x7fffffffffff[0m[02m, [0m[34mnullptr[0m[02m => [0m[38;5;39mnullptr[0m
 
 // Container
@@ -35,7 +35,7 @@
 [0m[02m[dump] [0m[34mmy_bitset[0m[02m => [0m[32m0b 0011 1010[0m
 [0m[02m[dump] [0m[34mmy_complex[0m[02m => [0m[32m1.000000 - 1.000000i [0m[33m( [0m[96mabs[0m[02m= [0m[38;5;150m1.414214[0m[02m, [0m[96marg[0m[02m/[0m[96mpi[0m[02m= [0m-[0m[38;5;150m0.250000[0m[33m )[0m
 [0m[02m[dump] [0m[34mmy_optional[0m[02m => [0m[32m?[0m[38;5;150m15[0m[02m, [0m[34mstd::nullopt[0m[02m => [0m[32mstd[0m[02m::[0m[32mnullopt[0m
-[0m[02m[dump] [0m[34mmy_variant[0m[02m => [0m[32m|[0m[38;5;172m"1[0m[38;5;172m"[0m
+[0m[02m[dump] [0m[34mmy_variant[0m[02m => [0m[32m|[0m[38;5;172m"This is a string.[0m[38;5;172m"[0m
 
 // Combination
 [0m[02m[dump] [0m[34mvector_of_pairs[0m[02m => [0m[33m[[0m
