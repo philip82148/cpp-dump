@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 
 #include "../cpp-dump.hpp"
 
