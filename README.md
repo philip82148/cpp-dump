@@ -216,6 +216,10 @@ CPP_DUMP_SET_OPTION(detailed_number_es, true);
 
 ![customizable-colors.png](./readme/customizable-colors.png)
 
+[For Light Theme](https://gist.github.com/philip82148/9684321c37ba6ae18fb101b586a7bd00), the output will be like this.
+
+![customizable-colors-light-plus](./readme/customizable-colors-light-plus.png)
+
 To turn off output coloring, use the following code.  
 [See Full Example Code](./readme/no-es.cpp)
 
