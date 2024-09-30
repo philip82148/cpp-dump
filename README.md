@@ -216,7 +216,7 @@ CPP_DUMP_SET_OPTION(detailed_number_es, true);
 
 ![customizable-colors.png](./readme/customizable-colors.png)
 
-[For Light Theme](https://gist.github.com/philip82148/9684321c37ba6ae18fb101b586a7bd00), the output will be like this.
+For [the light theme](https://gist.github.com/philip82148/9684321c37ba6ae18fb101b586a7bd00), the output will be like this.
 
 ![customizable-colors-light-plus](./readme/customizable-colors-light-plus.png)
 
