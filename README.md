@@ -969,7 +969,21 @@ The parameter `base` of `int_style()` supports values of 2, 8, 10, 16. For other
 `chunk` supports values of `chunk` >= 0. For other values, it is treated as `chunk` = 0.
 
 Like the `index()` manipulators, the `int_style()` manipulator acts on all integers in the variable. (The order is irrelevant.)  
-The `bin(...)`, `oct(...)`, `hex(...)`, `ubin(...)`, `uoct(...)`, `uhex(...)`, `dec(...)`, `udec(...)`, are aliases of `int_style(...)`
+The `bin(...)`, `oct(...)`, `hex(...)`, `ubin(...)`, `uoct(...)`, `uhex(...)`, `dec(...)`, `udec(...)`, are aliases of `int_style(...)`.  
+[See Full Example Code](./readme/formatting-with-manipulators.cpp)
+
+```cpp
+// Show integers in binary, minimum 16 digits, separated by every 4 characters.
+cpp_dump(0x3e8u | cp::bin(16, 4));
+// Show integers in octal, minimum 6 digits, separated by every 3 characters.
+cpp_dump(0x3e8u | cp::oct(6, 3));
+// Show integers in hexadecimal, minimum 4 digits, separated by every 2 characters.
+cpp_dump(0x3e8u | cp::hex(4, 2));
+// Show integers in minimum 4 digits.
+cpp_dump(0x3e8u | cp::dec(4));
+```
+
+![manipulator-int-style.png](./readme/manipulator-int-style.png)
 
 For signed integer types, the `bin()`, `oct()`, `hex()`, and `dec()` manipulators will add an extra space for positive values and a minus sign for negative values.  
 For unsigned integer types, these manipulators will not add any extra space or minus sign.  
