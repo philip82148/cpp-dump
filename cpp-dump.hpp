@@ -280,7 +280,7 @@ void cpp_dump_macro(
 
   std::string output;
   if (exprs_have_newline || !_dump<is_va_temp>(output, log_label, false, exprs, args...)) {
-    output = "";
+    output.clear();
     _dump<is_va_temp>(output, log_label, true, exprs, args...);
   }
 

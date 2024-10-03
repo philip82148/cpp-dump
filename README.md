@@ -366,6 +366,8 @@ int main() {
 
 If you want to configure the library within a function, use `CPP_DUMP_SET_OPTION()` instead.
 
+`main.cpp`
+
 ```cpp
 #include "path/to/custom-cpp-dump.hpp"
 
