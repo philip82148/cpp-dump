@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <map>
 #include <string>
 #include <type_traits>
 
@@ -34,7 +35,7 @@
       -> std::enable_if_t<                                                                                           \
           std::is_enum_v<T>,                                                                                         \
           decltype(_p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_EXPORT_ENUM_GENERIC, __VA_ARGS__), std::string())> { \
-    static const std::unordered_map<T, std::string_view> enum_to_string{                                             \
+    static const std::map<T, std::string_view> enum_to_string{                                                       \
         _p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_EXPORT_ENUM_GENERIC2, __VA_ARGS__)};                            \
     return es::class_name(get_typename<T>()) + es::op("::")                                                          \
            + (enum_to_string.count(value) ? es::member(enum_to_string.at(value))                                     \

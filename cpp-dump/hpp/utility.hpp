@@ -9,9 +9,9 @@
 
 #include <algorithm>
 #include <cctype>
+#include <map>
 #include <string>
 #include <string_view>
-#include <unordered_map>
 
 #include "./escape_sequence.hpp"
 
@@ -82,7 +82,7 @@ inline std::string replace_string(
 }
 
 inline std::string escape_non_printable_char(char c) {
-  static const std::unordered_map<char, std::string_view> char_to_escaped{
+  static const std::map<char, std::string_view> char_to_escaped{
       {'\0', "\\0"},  // null
       {'\a', "\\a"},  // bell
       {'\b', "\\b"},  // backspace

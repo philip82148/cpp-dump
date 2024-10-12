@@ -7,9 +7,9 @@
 
 #pragma once
 
+#include <map>
 #include <string>
 #include <string_view>
-#include <unordered_map>
 
 #include "../escape_sequence.hpp"
 #include "../expand_va_macro.hpp"
@@ -34,7 +34,7 @@
   template <>                                                                                                        \
   inline std::string                                                                                                 \
   export_enum(const TYPE &enum_const, const std::string &, std::size_t, std::size_t, bool, const export_command &) { \
-    static const std::unordered_map<TYPE, std::string_view> enum_to_string{                                          \
+    static const std::map<TYPE, std::string_view> enum_to_string{                                                    \
         _p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_EXPORT_ENUM, __VA_ARGS__)};                                     \
     return enum_to_string.count(enum_const)                                                                          \
                ? es::enumerator(enum_to_string.at(enum_const))                                                       \
