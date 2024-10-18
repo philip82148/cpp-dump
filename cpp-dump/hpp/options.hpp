@@ -85,6 +85,19 @@ struct es_value_t {
 
 }  // namespace types
 
+namespace flags {
+
+namespace class_name_style {
+
+inline constexpr unsigned int fullname = 0;
+inline constexpr unsigned int no_temp_args = 1u << 0;
+inline constexpr unsigned int no_namespace = 1u << 1;
+inline constexpr unsigned int max_width_20 = 1u << 2;
+
+};  // namespace class_name_style
+
+}  // namespace flags
+
 namespace options {
 
 /**
@@ -123,6 +136,12 @@ inline bool print_expr = true;
  * Function that returns the label that cpp_dump() prints at the beginning of the output.
  */
 inline types::log_label_func_t log_label_func = log_label::default_func;
+
+/**
+ * Style of class name.
+ * This is an experimental feature.
+ */
+inline unsigned int class_name_style = flags::class_name_style::no_temp_args;
 
 /**
  * Style of the escape sequences (output coloring).
