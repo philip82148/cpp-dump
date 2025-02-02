@@ -316,9 +316,6 @@ FetchContent_Declare(cpp-dump
     GIT_TAG main
 )
 FetchContent_MakeAvailable(cpp-dump)
-
-# Link cpp-dump to your app
-target_link_libraries(MyApp PRIVATE cpp-dump)
 ```
 
 Then
