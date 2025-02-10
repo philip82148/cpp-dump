@@ -88,9 +88,9 @@ int main(int argc, char *argv[]) {
 
     rep(style, 1 << 3) {
       CPP_DUMP_SET_OPTION(class_name_format, style);
-      cpp_dump(bool(cp::options::class_name_format & cp::flags::class_name_format::no_temp_args));
-      cpp_dump(bool(cp::options::class_name_format & cp::flags::class_name_format::no_namespace));
-      cpp_dump(bool(cp::options::class_name_format & cp::flags::class_name_format::max_width_20));
+      cpp_dump(bool(cp::options::class_name_format & cp::types::class_name_format_f::no_temp_args));
+      cpp_dump(bool(cp::options::class_name_format & cp::types::class_name_format_f::no_namespace));
+      cpp_dump(bool(cp::options::class_name_format & cp::types::class_name_format_f::max_width_20));
       cpp_dump(original_error1);
       cpp_dump(ns::template_class<ns::template_class<int>>());
       cpp_dump(long_name_original_class());

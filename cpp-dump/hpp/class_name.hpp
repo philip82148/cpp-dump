@@ -21,7 +21,7 @@ namespace _detail {
 
 inline std::string format_class_name(std::string_view class_name) {
   std::string raw_output(class_name);
-  if (options::class_name_format & flags::class_name_format::no_temp_args) {
+  if (options::class_name_format & types::class_name_format_f::no_temp_args) {
     std::string raw_output_wo_arg;
     int lt_count = 0;
     for (auto c : raw_output) {
@@ -35,7 +35,7 @@ inline std::string format_class_name(std::string_view class_name) {
     }
     raw_output.swap(raw_output_wo_arg);
   }
-  if (options::class_name_format & flags::class_name_format::no_namespace) {
+  if (options::class_name_format & types::class_name_format_f::no_namespace) {
     std::string raw_output_wo_namespace;
     for (int i = static_cast<int>(raw_output.size() - 1); i >= 0; --i) {
       if (raw_output[i] != ':') {
@@ -61,7 +61,7 @@ inline std::string format_class_name(std::string_view class_name) {
     std::reverse(raw_output_wo_namespace.begin(), raw_output_wo_namespace.end());
     raw_output.swap(raw_output_wo_namespace);
   }
-  if (options::class_name_format & flags::class_name_format::max_width_20
+  if (options::class_name_format & types::class_name_format_f::max_width_20
       && raw_output.size() > 20) {
     return es::class_name(raw_output.substr(0, 17)) + es::op("...");
   }

@@ -83,20 +83,17 @@ struct es_value_t {
   std::string number_op{};                                // default
 };
 
+/**
+ * Type that holds the flags for class_name_format.
+ */
+struct class_name_format_f {
+  static constexpr unsigned int unset = 0;
+  static constexpr unsigned int no_temp_args = 1u << 0;
+  static constexpr unsigned int no_namespace = 1u << 1;
+  static constexpr unsigned int max_width_20 = 1u << 2;
+};
+
 }  // namespace types
-
-namespace flags {
-
-namespace class_name_format {
-
-inline constexpr unsigned int fullname = 0;
-inline constexpr unsigned int no_temp_args = 1u << 0;
-inline constexpr unsigned int no_namespace = 1u << 1;
-inline constexpr unsigned int max_width_20 = 1u << 2;
-
-};  // namespace class_name_format
-
-}  // namespace flags
 
 namespace options {
 
@@ -138,10 +135,10 @@ inline bool print_expr = true;
 inline types::log_label_func_t log_label_func = log_label::default_func;
 
 /**
- * Style of class name.
+ * Format of the class name when printing objects.
  * This is an experimental feature.
  */
-inline unsigned int class_name_format = flags::class_name_format::no_temp_args;
+inline unsigned int class_name_format = types::class_name_format_f::no_temp_args;
 
 /**
  * Style of the escape sequences (output coloring).
