@@ -59,7 +59,6 @@ inline auto export_pointer(
   } else {
     if (current_depth >= command.addr_depth()) {
       std::ostringstream ss;
-
       if constexpr (is_smart_pointer<T>) {
         ss << std::hex << static_cast<const void *>(pointer.get());
       } else {
@@ -69,9 +68,9 @@ inline auto export_pointer(
       // Make the entire string an identifier
       return es::_raw_address(ss.str());
     }
-
-    if (current_depth >= options::max_depth) return es::_ptr_asterisk("*") + es::op("...");
-
+    if (current_depth >= options::max_depth) {
+      return es::_ptr_asterisk("*") + es::op("...");
+    }
     return es::_ptr_asterisk("*")
            + export_var(
                *pointer, indent, last_line_length + 1, current_depth + 1, fail_on_newline, command
@@ -81,7 +80,7 @@ inline auto export_pointer(
 
 template <typename... Args>
 inline std::string export_pointer(
-    const std::weak_ptr<Args...> &pointer,
+    const std::weak_ptr<Args...> &wk_ptr,
     const std::string &indent,
     std::size_t last_line_length,
     std::size_t current_depth,
@@ -89,7 +88,7 @@ inline std::string export_pointer(
     const export_command &command
 ) {
   return export_pointer(
-      pointer.lock(), indent, last_line_length, current_depth, fail_on_newline, command
+      wk_ptr.lock(), indent, last_line_length, current_depth, fail_on_newline, command
   );
 }
 

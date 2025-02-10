@@ -39,10 +39,12 @@ inline auto export_asterisk(
     bool fail_on_newline,
     const export_command &command
 ) -> std::enable_if_t<is_asterisk<T>, std::string> {
-  if (!options::enable_asterisk) return export_unsupported();
-
-  if (current_depth >= options::max_depth) return es::_asterisk_asterisk("*") + es::op("...");
-
+  if (!options::enable_asterisk) {
+    return export_unsupported();
+  }
+  if (current_depth >= options::max_depth) {
+    return es::_asterisk_asterisk("*") + es::op("...");
+  }
   return es::_asterisk_asterisk("*")
          + export_var(
              *value, indent, last_line_length + 1, current_depth + 1, fail_on_newline, command

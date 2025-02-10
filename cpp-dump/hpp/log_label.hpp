@@ -40,10 +40,14 @@ inline std::string default_func(std::string_view, std::size_t, std::string_view)
 inline types::log_label_func_t line(bool show_func = false, int min_width = 0) {
   return [=](std::string_view, std::size_t line, std::string_view func_name) -> std::string {
     std::string output = "[:" + std::to_string(line);
-    if (show_func) output.append(" (").append(func_name).append(")");
+    if (show_func) {
+      output.append(" (").append(func_name).append(")");
+    }
 
     int space_len = (min_width - 2) - static_cast<int>(output.size());
-    if (space_len > 0) output.append(space_len, ' ');
+    if (space_len > 0) {
+      output.append(space_len, ' ');
+    }
 
     output += "] ";
     return output;
@@ -58,19 +62,28 @@ inline types::log_label_func_t basename(bool show_func = false, int min_width = 
   return
       [=](std::string_view fullpath, std::size_t line, std::string_view func_name) -> std::string {
         auto slash_pos = fullpath.find_last_of("/\\");
-        if (slash_pos == std::string::npos) slash_pos = 0;
-        else ++slash_pos;
-        std::string filename_(fullpath.substr(slash_pos));
+        if (slash_pos == std::string::npos) {
+          slash_pos = 0;
+        } else {
+          ++slash_pos;
+        }
+        std::string filename(fullpath.substr(slash_pos));
 
-        auto dot_pos = filename_.rfind('.');
-        if (dot_pos == std::string::npos) dot_pos = filename_.length();
-        std::string basename = filename_.substr(0, dot_pos);
+        auto dot_pos = filename.rfind('.');
+        if (dot_pos == std::string::npos) {
+          dot_pos = filename.length();
+        }
+        std::string basename = filename.substr(0, dot_pos);
 
         std::string output = "[" + basename + ":" + std::to_string(line);
-        if (show_func) output.append(" (").append(func_name).append(")");
+        if (show_func) {
+          output.append(" (").append(func_name).append(")");
+        }
 
         int space_len = (min_width - 2) - static_cast<int>(output.size());
-        if (space_len > 0) output.append(space_len, ' ');
+        if (space_len > 0) {
+          output.append(space_len, ' ');
+        }
 
         output += "] ";
         return output;
@@ -85,15 +98,22 @@ inline types::log_label_func_t filename(bool show_func = false, int min_width = 
   return
       [=](std::string_view fullpath, std::size_t line, std::string_view func_name) -> std::string {
         auto slash_pos = fullpath.find_last_of("/\\");
-        if (slash_pos == std::string::npos) slash_pos = 0;
-        else ++slash_pos;
+        if (slash_pos == std::string::npos) {
+          slash_pos = 0;
+        } else {
+          ++slash_pos;
+        }
         std::string filename(fullpath.substr(slash_pos));
 
         std::string output = "[" + filename + ":" + std::to_string(line);
-        if (show_func) output.append(" (").append(func_name).append(")");
+        if (show_func) {
+          output.append(" (").append(func_name).append(")");
+        }
 
         int space_len = (min_width - 2) - static_cast<int>(output.size());
-        if (space_len > 0) output.append(space_len, ' ');
+        if (space_len > 0) {
+          output.append(space_len, ' ');
+        }
 
         output += "] ";
         return output;
@@ -113,10 +133,14 @@ inline types::log_label_func_t fullpath(
         output.append(fullpath.substr(std::min<std::size_t>(substr_start, fullpath.length())));
         output.append(":").append(std::to_string(line));
 
-        if (show_func) output.append(" (").append(func_name).append(")");
+        if (show_func) {
+          output.append(" (").append(func_name).append(")");
+        }
 
         int space_len = (min_width - 2) - static_cast<int>(output.size());
-        if (space_len > 0) output.append(space_len, ' ');
+        if (space_len > 0) {
+          output.append(space_len, ' ');
+        }
 
         output += "] ";
         return output;
@@ -136,13 +160,18 @@ inline types::log_label_func_t fixed_length(
         output.append(fullpath.substr(std::min<std::size_t>(substr_start, fullpath.length())));
         output.append(":").append(std::to_string(line));
 
-        if (show_func) output.append(" (").append(func_name).append(")");
+        if (show_func) {
+          output.append(" (").append(func_name).append(")");
+        }
 
         int space_len = (min_width - 2) - static_cast<int>(output.size());
-        if (space_len > 0) output.append(space_len, ' ');
+        if (space_len > 0) {
+          output.append(space_len, ' ');
+        }
 
-        if (max_width > 2 && output.length() > static_cast<std::size_t>(max_width - 2))
+        if (max_width > 2 && output.length() > static_cast<std::size_t>(max_width - 2)) {
           output = "[.. " + output.substr(output.length() - std::max(max_width - 6, 0));
+        }
 
         output += "] ";
         return output;

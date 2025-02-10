@@ -59,7 +59,6 @@ struct skip_iterator {
   }
   skip_iterator &operator++() noexcept {
     std::size_t skip_size = calc_skip_size();
-
     if (skip_size == static_cast<std::size_t>(-1)) {
       _done = true;
     } else if (skip_size == 0) {
@@ -69,7 +68,6 @@ struct skip_iterator {
       iterator_advance(it, skip_size);
       _index += skip_size;
     }
-
     return *this;
   }
 
@@ -117,7 +115,9 @@ struct skip_container {
 
   std::optional<std::size_t> _orig_size_cache;
   const std::function<std::size_t()> _orig_size_func = [this] {
-    if (!_orig_size_cache) _orig_size_cache = iterable_size(_original);
+    if (!_orig_size_cache) {
+      _orig_size_cache = iterable_size(_original);
+    }
     return _orig_size_cache.value();
   };
 };

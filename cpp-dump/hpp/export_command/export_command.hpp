@@ -69,9 +69,12 @@ struct export_command {
         default:
           return;
       }
-      if (digits < 0) digits = std::numeric_limits<int>::max();
-      if (chunk < 0) chunk = 0;
-
+      if (digits < 0) {
+        digits = std::numeric_limits<int>::max();
+      }
+      if (chunk < 0) {
+        chunk = 0;
+      }
       int_style = {
           static_cast<unsigned int>(base),
           static_cast<unsigned int>(digits),
@@ -153,13 +156,15 @@ struct export_command {
 
   const export_command &next() const {
     if (_child) {
-      if (_global_props && !_child->_global_props) _child->_global_props = _global_props;
+      if (_global_props && !_child->_global_props) {
+        _child->_global_props = _global_props;
+      }
     } else {
-      if (!_global_props) return default_command;
-
+      if (!_global_props) {
+        return default_command;
+      }
       _child = std::make_unique<export_command>(_global_props);
     }
-
     return *_child;
   }
 
@@ -209,14 +214,16 @@ struct export_command {
 
   template <typename T>
   auto format(T value) const -> std::enable_if_t<is_arithmetic<T>, std::string> {
-    if (!_global_props || _global_props->format == nullptr) return "";
-
-    int sz = std::snprintf(nullptr, 0, _global_props->format, value);
-    if (sz < 0) return "";
-
-    std::vector<char> buffer(sz + 1);
+    if (!_global_props || _global_props->format == nullptr) {
+      return "";
+    }
+    int length = std::snprintf(nullptr, 0, _global_props->format, value);
+    if (length < 0) {
+      return "";
+    }
+    std::vector<char> buffer(length + 1);
     std::snprintf(buffer.data(), buffer.size(), _global_props->format, value);
-    return {buffer.data(), static_cast<std::size_t>(sz)};
+    return {buffer.data(), static_cast<std::size_t>(length)};
   }
 
   std::size_t addr_depth() const {
@@ -233,19 +240,29 @@ struct export_command {
 
   export_command(const export_command &c)
       : _global_props(c._global_props), _skip_size_func(c._skip_size_func) {
-    if (c._child) _child = std::make_unique<export_command>(*c._child);
-    if (c._map_key_child) _map_key_child = std::make_unique<export_command>(*c._map_key_child);
-    if (c._map_value_child)
+    if (c._child) {
+      _child = std::make_unique<export_command>(*c._child);
+    }
+    if (c._map_key_child) {
+      _map_key_child = std::make_unique<export_command>(*c._map_key_child);
+    }
+    if (c._map_value_child) {
       _map_value_child = std::make_unique<export_command>(*c._map_value_child);
+    }
   }
 
   export_command &operator=(const export_command &c) {
     _global_props = c._global_props;
     _skip_size_func = c._skip_size_func;
-    if (c._child) _child = std::make_unique<export_command>(*c._child);
-    if (c._map_key_child) _child = std::make_unique<export_command>(*c._map_key_child);
-    if (c._map_value_child) _child = std::make_unique<export_command>(*c._map_value_child);
-
+    if (c._child) {
+      _child = std::make_unique<export_command>(*c._child);
+    }
+    if (c._map_key_child) {
+      _child = std::make_unique<export_command>(*c._map_key_child);
+    }
+    if (c._map_value_child) {
+      _child = std::make_unique<export_command>(*c._map_value_child);
+    }
     return *this;
   }
 
@@ -283,7 +300,6 @@ struct export_command {
         _global_props.swap(g);
       }
     }
-
     // Here, g == nullptr
   }
 
@@ -299,7 +315,6 @@ struct export_command {
         } else {
           _child = std::make_unique<export_command>(std::move(command));
         }
-
         return;
       }
 
@@ -310,7 +325,9 @@ struct export_command {
       return;
     }
 
-    if (!(command._map_key_child || command._map_value_child)) return;
+    if (!(command._map_key_child || command._map_value_child)) {
+      return;
+    }
 
     // in the case of {map_key_child || map_value_child}
     // jump to the node whose child has no skip_size_func.
@@ -319,8 +336,12 @@ struct export_command {
       return;
     }
 
-    if (command._map_key_child) _map_key_child = std::move(command._map_key_child);
-    if (command._map_value_child) _map_value_child = std::move(command._map_value_child);
+    if (command._map_key_child) {
+      _map_key_child = std::move(command._map_key_child);
+    }
+    if (command._map_value_child) {
+      _map_value_child = std::move(command._map_value_child);
+    }
   }
 };
 
@@ -590,8 +611,9 @@ inline auto index() { return _detail::export_command(_detail::export_command::in
 inline auto front(std::size_t iteration_count = options::max_iteration_count) {
   return _detail::export_command(
       [=](std::size_t index, const std::function<std::size_t()> &) -> std::size_t {
-        if (index >= iteration_count) return static_cast<std::size_t>(-1);  // skip to the end
-
+        if (index >= iteration_count) {
+          return static_cast<std::size_t>(-1);  // skip to the end
+        }
         return 0;  // increment normally
       }
   );
@@ -607,8 +629,9 @@ inline auto back(std::size_t iteration_count = options::max_iteration_count) {
         std::size_t size = cont_size();
         std::size_t first = size >= iteration_count ? size - iteration_count : 0;
 
-        if (index < first) return first - index;  // skip to the first
-
+        if (index < first) {
+          return first - index;  // skip to the first
+        }
         return 0;  // increment normally
       }
   );
@@ -625,9 +648,9 @@ inline auto both_ends(std::size_t half_iteration_count = options::max_iteration_
         std::size_t latter_half_first =
             size >= half_iteration_count ? size - half_iteration_count : 0;
 
-        if (index >= half_iteration_count && index < latter_half_first)
+        if (index >= half_iteration_count && index < latter_half_first) {
           return latter_half_first - index;  // skip to the latter_half_first
-
+        }
         return 0;  // increment normally
       }
   );
@@ -644,9 +667,12 @@ inline auto middle(std::size_t iteration_count = options::max_iteration_count) {
         std::size_t first = size >= iteration_count ? (size - iteration_count) / 2 : 0;
         std::size_t last = first + iteration_count;
 
-        if (index < first) return first - index;                 // skip to the first
-        if (index >= last) return static_cast<std::size_t>(-1);  // skip to the end
-
+        if (index < first) {
+          return first - index;  // skip to the first
+        }
+        if (index >= last) {
+          return static_cast<std::size_t>(-1);  // skip to the end
+        }
         return 0;  // increment normally
       }
   );

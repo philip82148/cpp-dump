@@ -35,7 +35,9 @@ inline std::string export_xixo(
   append_output("size()", queue.size());
   if (!queue.empty()) {
     append_output("front()", queue.front());
-    if (queue.size() >= 2) append_output("back()", queue.back());
+    if (queue.size() >= 2) {
+      append_output("back()", queue.back());
+    }
   }
 
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2;
@@ -55,7 +57,9 @@ inline std::string export_xixo(
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;
 
   append_output("size()", pq.size());
-  if (!pq.empty()) append_output("top()", pq.top());
+  if (!pq.empty()) {
+    append_output("top()", pq.top());
+  }
 
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2;
 }
@@ -74,7 +78,9 @@ inline std::string export_xixo(
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;
 
   append_output("size()", stack.size());
-  if (!stack.empty()) append_output("top()", stack.top());
+  if (!stack.empty()) {
+    append_output("top()", stack.top());
+  }
 
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2;
 }

@@ -67,17 +67,17 @@ namespace _detail {
 template <typename T>
 bool _dump_one(
     std::string &output,
-    const std::string &log_label,
+    const std::string &label,
     bool always_newline_before_expr,
     std::string_view expr,
     const T &value
 ) {
-  const std::string initial_indent(get_last_line_length(log_label), ' ');
+  const std::string initial_indent(get_last_line_length(label), ' ');
   const std::string second_indent = initial_indent + "  ";
   const bool fail_on_newline_in_value = !always_newline_before_expr;
 
   if (output.length() == 0) {
-    output = es::reset() + es::log(log_label);
+    output = es::reset() + es::log(label);
   } else {
     if (always_newline_before_expr) {
       output += es::log(",\n") + initial_indent;
@@ -92,12 +92,10 @@ bool _dump_one(
     bool value_str_has_newline;
     bool over_max_line_width;
   };
-
   auto make_prefix_and_value_str = [&, fail_on_newline_in_value](
                                        const std::string &prefix, const std::string &indent
                                    ) -> prefix_and_value_str {
     auto last_line_length = get_last_line_length(output + prefix);
-
     std::string value_str = export_var(
         value,
         indent,
@@ -106,12 +104,9 @@ bool _dump_one(
         fail_on_newline_in_value,
         export_command::default_command
     );
-
     bool value_str_has_newline = has_newline(value_str);
-
     bool over_max_line_width =
         last_line_length + get_first_line_length(value_str) > options::max_line_width;
-
     return {prefix, value_str, value_str_has_newline, over_max_line_width};
   };
 
@@ -120,102 +115,83 @@ bool _dump_one(
   };
 
   if (!options::print_expr) {
-    prefix_and_value_str pattern1 = make_prefix_and_value_str("", initial_indent);
-
-    if (!fail_on_newline_in_value) {
+    auto pattern1 = make_prefix_and_value_str("", initial_indent);
+    if (!(fail_on_newline_in_value
+          && (pattern1.value_str_has_newline || pattern1.over_max_line_width))) {
       append_output(pattern1);
       return true;
     }
 
-    if (!(pattern1.value_str_has_newline || pattern1.over_max_line_width)) {
-      append_output(pattern1);
-      return true;
+    if (get_last_line_length(output) <= initial_indent.length()) {
+      return false;
     }
 
-    if (get_last_line_length(output) <= initial_indent.length()) return false;
-
-    prefix_and_value_str pattern2 =
-        make_prefix_and_value_str("\n" + initial_indent, initial_indent);
-
-    if (!(pattern2.value_str_has_newline || pattern2.over_max_line_width)) {
-      append_output(pattern2);
-      return true;
+    auto pattern2 = make_prefix_and_value_str("\n" + initial_indent, initial_indent);
+    if (pattern2.value_str_has_newline || pattern2.over_max_line_width) {
+      return false;
     }
-
-    return false;
+    append_output(pattern2);
+    return true;
   }
 
   auto expr_with_es = es::expression(expr);
 
   if (fail_on_newline_in_value) {
-    prefix_and_value_str pattern1a =
-        make_prefix_and_value_str(expr_with_es + es::log(" => "), initial_indent);
-
+    auto pattern1a = make_prefix_and_value_str(expr_with_es + es::log(" => "), initial_indent);
     if (!(pattern1a.value_str_has_newline || pattern1a.over_max_line_width)) {
       append_output(pattern1a);
       return true;
     }
 
     if (get_last_line_length(output) <= initial_indent.length()) {
-      prefix_and_value_str pattern1b = make_prefix_and_value_str(
+      auto pattern1b = make_prefix_and_value_str(
           expr_with_es + "\n" + second_indent + es::log("=> "), second_indent
       );
-
-      if (!pattern1b.value_str_has_newline) {
-        append_output(pattern1b);
-        return true;
+      if (pattern1b.value_str_has_newline) {
+        return false;
       }
-
-      return false;
+      append_output(pattern1b);
+      return true;
     }
 
-    prefix_and_value_str pattern2a = make_prefix_and_value_str(
+    auto pattern2a = make_prefix_and_value_str(
         "\n" + initial_indent + expr_with_es + es::log(" => "), initial_indent
     );
-
     if (!(pattern2a.value_str_has_newline || pattern2a.over_max_line_width)) {
       append_output(pattern2a);
       return true;
     }
 
-    prefix_and_value_str pattern2b = make_prefix_and_value_str(
+    auto pattern2b = make_prefix_and_value_str(
         "\n" + initial_indent + expr_with_es + "\n" + second_indent + es::log("=> "), second_indent
     );
-
-    if (!pattern2b.value_str_has_newline) {
-      append_output(pattern2b);
-      return true;
+    if (pattern2b.value_str_has_newline) {
+      return false;
     }
-
-    return false;
+    append_output(pattern2b);
+    return true;
   }
 
-  prefix_and_value_str pattern1a =
-      make_prefix_and_value_str(expr_with_es + es::log(" => "), initial_indent);
-
-  if (!pattern1a.over_max_line_width) {
-    if (!pattern1a.value_str_has_newline) {
-      append_output(pattern1a);
-      return true;
-    }
-
-    prefix_and_value_str pattern1b = make_prefix_and_value_str(
+  auto pattern1a = make_prefix_and_value_str(expr_with_es + es::log(" => "), initial_indent);
+  if (pattern1a.over_max_line_width) {
+    auto pattern1b = make_prefix_and_value_str(
         expr_with_es + "\n" + second_indent + es::log("=> "), second_indent
     );
-
-    if (!pattern1b.value_str_has_newline) {
-      append_output(pattern1b);
-      return true;
-    }
-
+    append_output(pattern1b);
+    return true;
+  }
+  if (!pattern1a.value_str_has_newline) {
     append_output(pattern1a);
     return true;
   }
 
-  prefix_and_value_str pattern1b = make_prefix_and_value_str(
+  auto pattern1b = make_prefix_and_value_str(
       expr_with_es + "\n" + second_indent + es::log("=> "), second_indent
   );
-
+  if (pattern1b.value_str_has_newline) {
+    append_output(pattern1a);
+    return true;
+  }
   append_output(pattern1b);
   return true;
 }
@@ -223,7 +199,7 @@ bool _dump_one(
 template <bool is_va_temp, typename... Args>
 bool _dump(
     std::string &output,
-    const std::string &log_label,
+    const std::string &label,
     bool always_newline_before_expr,
     std::initializer_list<std::string_view> exprs,
     const Args &...args
@@ -234,18 +210,12 @@ bool _dump(
     auto expr = [&]() -> std::string {
       return std::string(first_arg_name) + "[" + std::to_string(i++) + "]";
     };
-    return (_dump_one(output, log_label, always_newline_before_expr, expr(), args) && ...);
+    return (_dump_one(output, label, always_newline_before_expr, expr(), args) && ...);
   } else {
     auto it = exprs.begin();
-    return (_dump_one(output, log_label, always_newline_before_expr, *it++, args) && ...);
+    return (_dump_one(output, label, always_newline_before_expr, *it++, args) && ...);
   }
 }
-
-struct _source_location {
-  std::string_view file_name;
-  std::size_t line;
-  std::string_view function_name;
-};
 
 // in C++17, std::initializer_list is not a literal type.
 template <std::size_t N>
@@ -254,9 +224,14 @@ constexpr bool contains_variadic_template(std::array<std::string_view, N> exprs)
   for (auto expr : exprs) {
     if (expr.size() > 3 && expr.substr(expr.size() - 3) == "...") return true;
   }
-
   return false;
 }
+
+struct _source_location {
+  std::string_view file_name;
+  std::size_t line;
+  std::string_view function_name;
+};
 
 // function called by cpp_dump() macro
 template <std::size_t va_macro_size, bool contains_va_temp, typename... Args>
@@ -271,19 +246,18 @@ void cpp_dump_macro(
       "If you are passing variadic template arguments, do not pass any additional arguments."
   );
 
-  std::string log_label = options::log_label_func
-                              ? options::log_label_func(loc.file_name, loc.line, loc.function_name)
-                              : "";
-
+  std::string label;
+  if (options::log_label_func) {
+    label = options::log_label_func(loc.file_name, loc.line, loc.function_name);
+  }
   bool exprs_have_newline =
       options::print_expr && std::any_of(exprs.begin(), exprs.end(), has_newline);
 
   std::string output;
-  if (exprs_have_newline || !_dump<is_va_temp>(output, log_label, false, exprs, args...)) {
+  if (exprs_have_newline || !_dump<is_va_temp>(output, label, false, exprs, args...)) {
     output.clear();
-    _dump<is_va_temp>(output, log_label, true, exprs, args...);
+    _dump<is_va_temp>(output, label, true, exprs, args...);
   }
-
   write_log(output);
 }
 

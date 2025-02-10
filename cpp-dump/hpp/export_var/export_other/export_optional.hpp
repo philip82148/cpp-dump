@@ -43,8 +43,9 @@ inline auto export_optional(
     bool fail_on_newline,
     const export_command &command
 ) -> std::enable_if_t<is_optional<T>, std::string> {
-  if (!optional) return es::class_name("std::nullopt");
-
+  if (optional == std::nullopt) {
+    return es::class_name("std::nullopt");
+  }
   return es::_optional_question("?")
          + export_var(
              optional.value(), indent, last_line_length + 1, current_depth, fail_on_newline, command
