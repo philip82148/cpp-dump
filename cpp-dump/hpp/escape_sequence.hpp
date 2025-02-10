@@ -32,9 +32,8 @@ inline std::string apply(std::string_view es, std::string_view s) {
     std::string retval(es);
     retval.append(s).append(_reset_es);
     return retval;
-  } else {
-    return std::string(s);
   }
+  return std::string(s);
 }
 
 inline std::string log(std::string_view s) { return es::apply(options::es_value.log, s); }
@@ -66,14 +65,17 @@ inline std::string number_op(std::string_view s) {
 }
 
 inline std::string bracket(std::string_view s, std::size_t d) {
-  auto sz = options::es_value.bracket_by_depth.size();
-  if (sz == 0) return std::string(s);
-
-  return es::apply(options::es_value.bracket_by_depth[d % sz], s);
+  auto size = options::es_value.bracket_by_depth.size();
+  if (size == 0) {
+    return std::string(s);
+  }
+  return es::apply(options::es_value.bracket_by_depth[d % size], s);
 }
 
 inline std::string type_name(std::string_view s) {
-  if (!use_es()) return std::string(s);
+  if (!use_es()) {
+    return std::string(s);
+  }
 
   auto is_operator = [](char c) {
     return !(std::isalnum(static_cast<unsigned char>(c)) || c == '_');
@@ -85,34 +87,40 @@ inline std::string type_name(std::string_view s) {
   while ((end = std::find_if(begin, s.end(), is_operator)) != s.end()) {
     output += es::identifier({&*begin, static_cast<std::size_t>(end - begin)});
     begin = end;
-
     end = std::find_if_not(begin, s.end(), is_operator);
     output += es::class_op({&*begin, static_cast<std::size_t>(end - begin)});
-
-    if (end == s.end()) return output;
+    if (end == s.end()) {
+      return output;
+    }
     begin = end;
   }
   output += es::identifier({&*begin, static_cast<std::size_t>(s.end() - begin)});
-
   return output;
 }
 
 inline std::string class_name(std::string_view s) {
-  if (!use_es()) return std::string(s);
-  if (!options::detailed_class_es) return es::identifier(s);
-
+  if (!use_es()) {
+    return std::string(s);
+  }
+  if (!options::detailed_class_es) {
+    return es::identifier(s);
+  }
   return es::type_name(s);
 }
 
 inline std::string enumerator(std::string_view s) {
-  if (!use_es()) return std::string(s);
+  if (!use_es()) {
+    return std::string(s);
+  }
 
   auto is_operator = [](char c) {
     return !(std::isalnum(static_cast<unsigned char>(c)) || c == '_');
   };
 
   auto op_rbegin = std::find_if(s.rbegin(), s.rend(), is_operator);
-  if (op_rbegin == s.rend()) return es::member(s);
+  if (op_rbegin == s.rend()) {
+    return es::member(s);
+  }
   auto op_end = op_rbegin.base();
 
   auto op_rend = std::find_if_not(op_rbegin, s.rend(), is_operator);
@@ -128,8 +136,12 @@ inline std::string enumerator(std::string_view s) {
 }
 
 inline std::string class_member(std::string_view s) {
-  if (!use_es()) return std::string(s);
-  if (!options::detailed_member_es) return es::member(s);
+  if (!use_es()) {
+    return std::string(s);
+  }
+  if (!options::detailed_member_es) {
+    return es::member(s);
+  }
 
   auto is_operator = [](char c) {
     return !(std::isalnum(static_cast<unsigned char>(c)) || c == '_');
@@ -141,21 +153,24 @@ inline std::string class_member(std::string_view s) {
   while ((end = std::find_if(begin, s.end(), is_operator)) != s.end()) {
     output += es::member({&*begin, static_cast<std::size_t>(end - begin)});
     begin = end;
-
     end = std::find_if_not(begin, s.end(), is_operator);
     output += es::member_op({&*begin, static_cast<std::size_t>(end - begin)});
-
-    if (end == s.end()) return output;
+    if (end == s.end()) {
+      return output;
+    }
     begin = end;
   }
   output += es::member({&*begin, static_cast<std::size_t>(s.end() - begin)});
-
   return output;
 }
 
 inline std::string signed_number(std::string_view s) {
-  if (!use_es()) return std::string(s);
-  if (!options::detailed_number_es) return es::number(s);
+  if (!use_es()) {
+    return std::string(s);
+  }
+  if (!options::detailed_number_es) {
+    return es::number(s);
+  }
 
   auto is_operator = [](char c) {
     return !(std::isalnum(static_cast<unsigned char>(c)) || c == '.');
@@ -165,22 +180,25 @@ inline std::string signed_number(std::string_view s) {
   auto begin = s.begin();
   decltype(begin) end;
   while ((end = std::find_if(begin, s.end(), is_operator)) != s.end()) {
-    if (begin != end) output += es::number({&*begin, static_cast<std::size_t>(end - begin)});
+    if (begin != end) {
+      output += es::number({&*begin, static_cast<std::size_t>(end - begin)});
+    }
     begin = end;
-
     end = std::find_if_not(begin, s.end(), is_operator);
     output += es::number_op({&*begin, static_cast<std::size_t>(end - begin)});
-
-    if (end == s.end()) return output;
+    if (end == s.end()) {
+      return output;
+    }
     begin = end;
   }
   output += es::number({&*begin, static_cast<std::size_t>(s.end() - begin)});
-
   return output;
 }
 
 inline std::string escaped_str(std::string_view s) {
-  if (!use_es()) return std::string(s);
+  if (!use_es()) {
+    return std::string(s);
+  }
 
   auto is_backslash = [](char c) { return c == '\\'; };
 
@@ -188,7 +206,9 @@ inline std::string escaped_str(std::string_view s) {
   auto begin = s.begin();
   decltype(begin) end;
   while ((end = std::find_if(begin, s.end(), is_backslash)) != s.end()) {
-    if (begin != end) output += es::character({&*begin, static_cast<std::size_t>(end - begin)});
+    if (begin != end) {
+      output += es::character({&*begin, static_cast<std::size_t>(end - begin)});
+    }
     begin = end;
 
     while (*end == '\\') {
@@ -203,12 +223,12 @@ inline std::string escaped_str(std::string_view s) {
     }
 
     output += es::escaped_char({&*begin, static_cast<std::size_t>(end - begin)});
-
-    if (end == s.end()) return output;
+    if (end == s.end()) {
+      return output;
+    }
     begin = end;
   }
   output += es::character({&*begin, static_cast<std::size_t>(s.end() - begin)});
-
   return output;
 }
 

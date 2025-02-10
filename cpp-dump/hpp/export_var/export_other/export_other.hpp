@@ -81,18 +81,17 @@ export_other(const std::bitset<N> &bitset, const std::string &, std::size_t, std
   constexpr unsigned int chunk = 4;
 
   std::string bitset_str = bitset.to_string();
-  std::string output;
-  output.reserve(3 + N + (N - 1) / chunk);
-  output.append("0b ");
+  std::string spaced_output;
+  spaced_output.reserve(3 + N + (N - 1) / chunk);
+  spaced_output.append("0b ");
 
   std::size_t pos = bitset_str.length() % chunk;
-  if (pos > 0) output.append(bitset_str, 0, pos);
+  if (pos > 0) spaced_output.append(bitset_str, 0, pos);
   for (; pos < bitset_str.length(); pos += chunk) {
-    if (pos > 0) output.push_back(' ');
-    output.append(bitset_str, pos, chunk);
+    if (pos > 0) spaced_output.push_back(' ');
+    spaced_output.append(bitset_str, pos, chunk);
   }
-
-  return es::_bitset(output);
+  return es::_bitset(spaced_output);
 }
 
 namespace es {
@@ -114,14 +113,13 @@ inline std::string export_other(
     const export_command &command
 ) {
   constexpr T pi = static_cast<T>(3.141592653589793238462643383279502884L);
-
   auto to_str = [&](T value) -> std::string {
     std::string output = command.format(value);
-    if (!output.empty()) return output;
-
-    return std::to_string(value);
+    if (output.empty()) {
+      return std::to_string(value);
+    }
+    return output;
   };
-
   auto imag = std::imag(complex);
   auto imag_sign = imag >= 0 ? "+" : "-";
 

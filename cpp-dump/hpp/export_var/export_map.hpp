@@ -104,15 +104,16 @@ inline auto export_map(
     bool fail_on_newline,
     const export_command &command
 ) -> std::enable_if_t<is_map<T>, std::string> {
-  if (map.empty()) return es::bracket("{ }", current_depth);
-
-  if (current_depth >= options::max_depth)
+  if (map.empty()) {
+    return es::bracket("{ }", current_depth);
+  }
+  if (current_depth >= options::max_depth) {
     return es::bracket("{ ", current_depth) + es::op("...") + es::bracket(" }", current_depth);
+  }
 
   std::size_t next_depth = current_depth + 1;
   const auto &key_command = command.next_for_map_key();
   const auto &value_command = command.next_for_map_value();
-
   auto map_wrapper = ([&]() {
     if constexpr (is_multimap<T>) {
       return _multimap_wrapper(map);
@@ -123,7 +124,7 @@ inline auto export_map(
   })();
   auto skipped_map = command.create_skip_container(map_wrapper);
 
-  bool shift_indent;
+  bool shift_indent = false;
   if (options::cont_indent_style == types::cont_indent_style_t::always) {
     shift_indent = true;
   } else if (options::cont_indent_style == types::cont_indent_style_t::when_nested) {
@@ -134,14 +135,11 @@ inline auto export_map(
         is_multimap<T>
         || (is_iterable_like<typename T::key_type> && !is_tuple<typename T::key_type>)
         || (is_iterable_like<typename T::mapped_type> && !is_tuple<typename T::mapped_type>);
-  } else {
-    shift_indent = false;
   }
 
   if (!shift_indent) {
     std::string output = es::bracket("{ ", current_depth);
     bool is_first_elem = true;
-
     for (const auto &[is_ellipsis, it, _index] : skipped_map) {
       [[maybe_unused]] const auto &_index_unused = _index;  // for g++-7 compiler support
       const auto &[key, value] = *it;
@@ -154,13 +152,11 @@ inline auto export_map(
 
       if (is_ellipsis) {
         output += es::op("...");
-
         if (last_line_length + get_length(output) + std::string_view(" }").size()
             > options::max_line_width) {
           shift_indent = true;
           break;
         }
-
         continue;
       }
 
@@ -201,13 +197,12 @@ inline auto export_map(
         );
         elem_str = key_str + value_str;
       }
-
       if (has_newline(elem_str)) {
         shift_indent = true;
         break;
       }
-
       output += elem_str;
+
       if (last_line_length + get_length(output) + std::string_view(" }").size()
           > options::max_line_width) {
         shift_indent = true;
@@ -217,18 +212,17 @@ inline auto export_map(
 
     if (!shift_indent) {
       output += es::bracket(" }", current_depth);
-
       return output;
     }
   }
 
-  if (fail_on_newline) return "\n";
+  if (fail_on_newline) {
+    return "\n";
+  }
 
   std::string new_indent = indent + "  ";
-
   std::string output = es::bracket("{", current_depth);
   bool is_first_elem = true;
-
   for (const auto &[is_ellipsis, it, _index] : skipped_map) {
     [[maybe_unused]] const auto &_index_unused = _index;  // for g++-7 compiler support
     const auto &[key, value] = *it;
@@ -257,7 +251,6 @@ inline auto export_map(
       std::string value_str = export_var(
           values, new_indent, get_last_line_length(key_str), next_depth, false, value_command
       );
-
       output += key_str + value_str;
     } else {
       std::string key_str =
@@ -267,7 +260,6 @@ inline auto export_map(
       std::string value_str = export_var(
           value, new_indent, get_last_line_length(key_str), next_depth, false, value_command
       );
-
       output += key_str + value_str;
     }
   }
