@@ -69,21 +69,16 @@ int main(int argc, char *argv[]) {
       using logic_error::logic_error;
     } original_error1("This is an original error.");
 
-    struct original_class {
+    struct long_name_original_class {
       int member_var = 5;
       std::string member_func() const { return "This is a member_func."; }
     };
 
     enum original_enum { member1, member2, member3 };
-    enum class original_scoped_enum { member1, member2, member3 };
-
-    struct unsupported_original_class {
-      int member_var = 5;
-      std::string member_func() { return "This is a member_func."; }
-    };
+    enum class long_name_original_scoped_enum { member1, member2, member3 };
 
     cpp_dump::_detail::export_enum_generic(
-        original_scoped_enum::member1,
+        long_name_original_scoped_enum::member1,
         "",
         0,
         0,
@@ -91,13 +86,28 @@ int main(int argc, char *argv[]) {
         cpp_dump::_detail::export_command::default_command
     );
 
-    cpp_dump(original_error1);
-    cpp_dump(ns::template_class<ns::template_class<int>>());
-    cpp_dump(original_class());
-    cpp_dump(original_enum::member1, original_enum::member2, original_enum::member3);
-    cpp_dump(
-        original_scoped_enum::member1, original_scoped_enum::member2, original_scoped_enum::member3
-    );
+    rep(style, 1 << 3) {
+      CPP_DUMP_SET_OPTION(class_name_format, style);
+      cpp_dump(bool(cp::options::class_name_format & cp::types::class_name_format_f::no_temp_args));
+      cpp_dump(bool(cp::options::class_name_format & cp::types::class_name_format_f::no_namespace));
+      cpp_dump(bool(cp::options::class_name_format & cp::types::class_name_format_f::max_width_20));
+      cpp_dump(original_error1);
+      cpp_dump(ns::template_class<ns::template_class<int>>());
+      cpp_dump(long_name_original_class());
+      cpp_dump(original_enum::member1, original_enum::member2, original_enum::member3);
+      cpp_dump(
+          long_name_original_scoped_enum::member1,
+          long_name_original_scoped_enum::member2,
+          long_name_original_scoped_enum::member3
+      );
+      clog << endl;
+    }
+
+    struct unsupported_original_class {
+      int member_var = 5;
+      std::string member_func() { return "This is a member_func."; }
+    };
+
     cpp_dump(unsupported_original_class());
   } else {
     // pointer

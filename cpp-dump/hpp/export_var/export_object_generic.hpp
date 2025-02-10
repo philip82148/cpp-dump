@@ -9,10 +9,10 @@
 
 #include <string>
 
+#include "../class_name.hpp"
 #include "../escape_sequence.hpp"
 #include "../expand_va_macro.hpp"
 #include "../export_command/export_command.hpp"
-#include "../type_check.hpp"
 #include "./export_object_common.hpp"
 
 #define _p_CPP_DUMP_EXPAND_FOR_EXPORT_OBJECT_GENERIC(member)  value.member
@@ -37,7 +37,7 @@
       bool fail_on_newline,                                                                                        \
       const export_command &command                                                                                \
   ) -> decltype(_p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_EXPORT_OBJECT_GENERIC, __VA_ARGS__), std::string()) { \
-    std::string class_name = es::class_name(get_typename<T>());                                                    \
+    std::string class_name = format_class_name_auto<T>();                                                          \
                                                                                                                    \
     _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;                                                                      \
                                                                                                                    \
