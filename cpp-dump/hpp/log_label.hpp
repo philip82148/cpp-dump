@@ -67,13 +67,13 @@ inline types::log_label_func_t basename(bool show_func = false, int min_width = 
         } else {
           ++slash_pos;
         }
-        std::string filename(fullpath.substr(slash_pos));
+        std::string file_name(fullpath.substr(slash_pos));
 
-        auto dot_pos = filename.rfind('.');
+        auto dot_pos = file_name.rfind('.');
         if (dot_pos == std::string::npos) {
-          dot_pos = filename.length();
+          dot_pos = file_name.length();
         }
-        std::string basename = filename.substr(0, dot_pos);
+        std::string basename = file_name.substr(0, dot_pos);
 
         std::string output = "[" + basename + ":" + std::to_string(line);
         if (show_func) {
@@ -103,9 +103,9 @@ inline types::log_label_func_t filename(bool show_func = false, int min_width = 
         } else {
           ++slash_pos;
         }
-        std::string filename(fullpath.substr(slash_pos));
+        std::string file_name(fullpath.substr(slash_pos));
 
-        std::string output = "[" + filename + ":" + std::to_string(line);
+        std::string output = "[" + file_name + ":" + std::to_string(line);
         if (show_func) {
           output.append(" (").append(func_name).append(")");
         }
