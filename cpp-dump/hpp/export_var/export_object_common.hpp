@@ -17,15 +17,14 @@
 #include "./export_var_fwd.hpp"
 
 #define _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1_1                                                 \
-  if (current_depth >= options::max_depth)                                                         \
+  if (current_depth >= options::max_depth) {                                                       \
     return class_name + es::bracket("{ ", current_depth) + es::op("...")                           \
            + es::bracket(" }", current_depth);                                                     \
+  }                                                                                                \
                                                                                                    \
   std::string new_indent = indent + "  ";                                                          \
   std::size_t next_depth = current_depth + 1;                                                      \
-                                                                                                   \
   bool shift_indent = false;                                                                       \
-                                                                                                   \
   std::string output;                                                                              \
   bool is_first;
 
@@ -36,7 +35,6 @@
     } else {                                                                                       \
       output += es::op(", ");                                                                      \
     }                                                                                              \
-                                                                                                   \
     if (shift_indent) {                                                                            \
       output += "\n" + new_indent + es::class_member(member_name) + es::op("= ");                  \
       output += export_var(                                                                        \
@@ -63,16 +61,16 @@
 #define _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2                                                   \
   if (!shift_indent) {                                                                             \
     output += es::bracket(" }", current_depth);                                                    \
-                                                                                                   \
-    if (!has_newline(output) && last_line_length + get_length(output) <= options::max_line_width)  \
+    if (!has_newline(output)                                                                       \
+        && last_line_length + get_length(output) <= options::max_line_width) {                     \
       return output;                                                                               \
-                                                                                                   \
-    if (fail_on_newline) return "\n";                                                              \
-                                                                                                   \
+    }                                                                                              \
+    if (fail_on_newline) {                                                                         \
+      return "\n";                                                                                 \
+    }                                                                                              \
     shift_indent = true;                                                                           \
     goto rollback;                                                                                 \
   }                                                                                                \
-                                                                                                   \
   output += "\n" + indent + es::bracket("}", current_depth);                                       \
                                                                                                    \
   return output;

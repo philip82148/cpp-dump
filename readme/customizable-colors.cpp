@@ -51,7 +51,7 @@ int main() {
   double my_double = 3.141592;
   int my_int = 65;
   char my_char = 'a', LF_char = '\n';
-  std::string my_string = "This is a string";
+  std::string my_string = "This is a string.";
   int *int_ptr = &my_int;
   void *void_ptr = &my_int;
   std::vector<std::vector<int>> my_vector{{3, 5, 8, 9, 7}, {9, 3, 2, 3, 8}};
@@ -68,7 +68,7 @@ int main() {
   std::bitset<8> my_bitset(0x3a);
   std::complex<double> my_complex{1.0, -1.0};
   std::optional<int> my_optional{15};
-  std::variant<int, std::string> my_variant{"1"};
+  std::variant<int, std::string> my_variant{"This is a string."};
   std::vector<std::pair<int, std::string>> vector_of_pairs{{1, "apple"}, {3, "banana"}};
 
   std::clog << "\n// Basic Type" << std::endl;

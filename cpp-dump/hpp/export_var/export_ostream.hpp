@@ -25,9 +25,8 @@ export_ostream(const T &value, const std::string &, std::size_t, std::size_t, bo
     -> std::enable_if_t<is_ostream<T>, std::string> {
   std::ostringstream ss;
   ss << value;
-
   std::string output = ss.str();
-  return output == "" ? export_unsupported() : output;
+  return output.empty() ? export_unsupported() : output;
 }
 
 }  // namespace _detail

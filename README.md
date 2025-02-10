@@ -102,7 +102,7 @@ Their string representation is similar to JavaScript, Python, and C++ syntax, wh
 
 ```cpp
 bool my_bool = true; double my_double = 3.141592; int my_int = 65;
-char my_char = 'a', LF_char = '\n'; std::string my_string = "This is a string";
+char my_char = 'a', LF_char = '\n'; std::string my_string = "This is a string.";
 int *int_ptr = &my_int; void *void_ptr = &my_int;
 std::vector<std::vector<int>> my_vector{{3, 5, 8, 9, 7}, {9, 3, 2, 3, 8}};
 std::set<char> my_set{'A', 'p', 'p', 'l', 'e'};
@@ -118,7 +118,7 @@ for (auto v : {1, 2, 3, 4, 5}) my_queue.push(v), my_priority_queue.push(v), my_s
 std::bitset<8> my_bitset(0x3a);
 std::complex<double> my_complex{1.0, -1.0};
 std::optional<int> my_optional{15};
-std::variant<int, std::string> my_variant{"1"};
+std::variant<int, std::string> my_variant{"This is a string."};
 std::vector<std::pair<int, std::string>> vector_of_pairs{{1, "apple"}, {3, "banana"}};
 
 std::clog << "\n// Basic Type" << std::endl;
@@ -216,6 +216,10 @@ CPP_DUMP_SET_OPTION(detailed_number_es, true);
 
 ![customizable-colors.png](./readme/customizable-colors.png)
 
+For [the light theme](https://gist.github.com/philip82148/9684321c37ba6ae18fb101b586a7bd00), the output will be like this.
+
+![customizable-colors-light-plus](./readme/customizable-colors-light-plus.png)
+
 To turn off output coloring, use the following code.  
 [See Full Example Code](./readme/no-es.cpp)
 
@@ -312,9 +316,6 @@ FetchContent_Declare(cpp-dump
     GIT_TAG main
 )
 FetchContent_MakeAvailable(cpp-dump)
-
-# Link cpp-dump to your app
-target_link_libraries(MyApp PRIVATE cpp-dump)
 ```
 
 Then
@@ -361,6 +362,8 @@ int main() {
 ```
 
 If you want to configure the library within a function, use `CPP_DUMP_SET_OPTION()` instead.
+
+`main.cpp`
 
 ```cpp
 #include "path/to/custom-cpp-dump.hpp"
@@ -963,7 +966,21 @@ The parameter `base` of `int_style()` supports values of 2, 8, 10, 16. For other
 `chunk` supports values of `chunk` >= 0. For other values, it is treated as `chunk` = 0.
 
 Like the `index()` manipulators, the `int_style()` manipulator acts on all integers in the variable. (The order is irrelevant.)  
-The `bin(...)`, `oct(...)`, `hex(...)`, `ubin(...)`, `uoct(...)`, `uhex(...)`, `dec(...)`, `udec(...)`, are aliases of `int_style(...)`
+The `bin(...)`, `oct(...)`, `hex(...)`, `ubin(...)`, `uoct(...)`, `uhex(...)`, `dec(...)`, `udec(...)`, are aliases of `int_style(...)`.  
+[See Full Example Code](./readme/formatting-with-manipulators.cpp)
+
+```cpp
+// Show integers in binary, minimum 16 digits, separated by every 4 characters.
+cpp_dump(0x3e8u | cp::bin(16, 4));
+// Show integers in octal, minimum 6 digits, separated by every 3 characters.
+cpp_dump(0x3e8u | cp::oct(6, 3));
+// Show integers in hexadecimal, minimum 4 digits, separated by every 2 characters.
+cpp_dump(0x3e8u | cp::hex(4, 2));
+// Show integers in minimum 4 digits.
+cpp_dump(0x3e8u | cp::dec(4));
+```
+
+![manipulator-int-style.png](./readme/manipulator-int-style.png)
 
 For signed integer types, the `bin()`, `oct()`, `hex()`, and `dec()` manipulators will add an extra space for positive values and a minus sign for negative values.  
 For unsigned integer types, these manipulators will not add any extra space or minus sign.  
