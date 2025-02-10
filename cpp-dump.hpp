@@ -222,7 +222,9 @@ template <std::size_t N>
 constexpr bool contains_variadic_template(std::array<std::string_view, N> exprs) {
   // std::any_of is not a constexpr function either.
   for (auto expr : exprs) {
-    if (expr.size() > 3 && expr.substr(expr.size() - 3) == "...") return true;
+    if (expr.size() > 3 && expr.substr(expr.size() - 3) == "...") {
+      return true;
+    }
   }
   return false;
 }

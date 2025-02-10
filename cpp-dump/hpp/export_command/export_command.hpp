@@ -26,7 +26,9 @@ namespace _detail {
 const std::function<std::size_t(std::size_t, const std::function<std::size_t()> &)>
     _default_skip_size_func(
         [](std::size_t index, const std::function<std::size_t()> &) -> std::size_t {
-          if (index >= options::max_iteration_count) return static_cast<std::size_t>(-1);
+          if (index >= options::max_iteration_count) {
+            return static_cast<std::size_t>(-1);
+          }
           return 0;
         }
     );
@@ -169,8 +171,9 @@ struct export_command {
   }
 
   const export_command &next_for_map_key() const {
-    if (!_skip_size_func) return next();  // this is 0th dim.
-    if (!_map_key_child) return next();
+    if (!(_skip_size_func && _map_key_child)) {
+      return next();
+    }
 
     if (_global_props) {
       if (_map_key_child->_global_props) {
@@ -184,8 +187,9 @@ struct export_command {
   }
 
   const export_command &next_for_map_value() const {
-    if (!_skip_size_func) return next();  // this is 0th dim.
-    if (!_map_value_child) return next();
+    if (!(_skip_size_func && _map_value_child)) {
+      return next();
+    }
 
     if (_global_props) {
       if (_map_value_child->_global_props) {
@@ -200,7 +204,9 @@ struct export_command {
 
   template <typename T>
   skip_container<T> create_skip_container(const T &container) const {
-    if (_skip_size_func) return skip_container<T>(container, _skip_size_func);
+    if (_skip_size_func) {
+      return skip_container<T>(container, _skip_size_func);
+    }
     return skip_container<T>(container, _default_skip_size_func);
   }
 

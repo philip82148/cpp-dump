@@ -40,7 +40,6 @@ inline std::string _export_es_value_vector(
   bool shift_indent = options::cont_indent_style == types::cont_indent_style_t::always;
   std::string output = es::bracket("[ ", current_depth);
   bool is_first_elem = true;
-
   for (const auto &[is_ellipsis, it, index_] : skip_cont) {
     const std::string &es = *it;
 
@@ -77,7 +76,9 @@ inline std::string _export_es_value_vector(
     return output;
   }
 
-  if (fail_on_newline) return "\n";
+  if (fail_on_newline) {
+    return "\n";
+  }
 
   std::string new_indent = indent + "  ";
   output = es::bracket("[", current_depth);

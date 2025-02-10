@@ -223,7 +223,9 @@ inline std::string escaped_str(std::string_view s) {
     }
 
     output += es::escaped_char({&*begin, static_cast<std::size_t>(end - begin)});
-    if (end == s.end()) return output;
+    if (end == s.end()) {
+      return output;
+    }
     begin = end;
   }
   output += es::character({&*begin, static_cast<std::size_t>(s.end() - begin)});

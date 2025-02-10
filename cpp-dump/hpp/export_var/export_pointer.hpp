@@ -44,8 +44,9 @@ inline auto export_pointer(
     [[maybe_unused]] bool fail_on_newline,
     [[maybe_unused]] const export_command &command
 ) -> std::enable_if_t<is_pointer<T>, std::string> {
-  if (pointer == nullptr) return es::reserved("nullptr");
-
+  if (pointer == nullptr) {
+    return es::reserved("nullptr");
+  }
   if constexpr (is_null_pointer<T> || !is_exportable<remove_pointer<T>>) {
     if constexpr (std::is_function_v<remove_pointer<T>>) {
       return export_unsupported();
