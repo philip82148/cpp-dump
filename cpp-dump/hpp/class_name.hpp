@@ -19,7 +19,7 @@ namespace cpp_dump {
 
 namespace _detail {
 
-inline std::string style_class_name(std::string_view class_name) {
+inline std::string format_class_name(std::string_view class_name) {
   std::string raw_output(class_name);
   if (options::class_name_style & flags::class_name_style::no_temp_args) {
     std::string raw_output_wo_arg;
@@ -117,9 +117,9 @@ std::string _get_class_name() {
 // Currently, used only by export_exception(), CPP_DUMP_DEFINE_EXPORT_OBJECT_GENERIC(), and
 // CPP_DUMP_DEFINE_EXPORT_ENUM_GENERIC()
 template <typename T>
-inline std::string style_class_name_auto() {
+inline std::string format_class_name_auto() {
   static std::string class_name = _get_class_name<T>();
-  return style_class_name(class_name);
+  return format_class_name(class_name);
 }
 
 }  // namespace _detail

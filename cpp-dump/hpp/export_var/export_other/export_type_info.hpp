@@ -35,7 +35,7 @@ inline auto export_type_info(
     const export_command &command
 ) -> std::enable_if_t<is_type_info<T>, std::string> {
   std::string class_name =
-      style_class_name(std::is_same_v<T, std::type_info> ? "std::type_info" : "std::type_index");
+      format_class_name(std::is_same_v<T, std::type_info> ? "std::type_info" : "std::type_index");
 
 #if defined(__GNUC__)
   int status = 0;
