@@ -63,7 +63,7 @@ inline std::string format_class_name(std::string_view class_name) {
   }
   if (options::class_name_format & types::class_name_format_f::max_width_20
       && raw_output.size() > 20) {
-    return es::class_name(raw_output.substr(0, 17)) + es::op("...");
+    return es::class_name(raw_output.substr(0, 17) + "...");
   }
   return es::class_name(raw_output);
 }
