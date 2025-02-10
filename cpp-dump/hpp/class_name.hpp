@@ -20,56 +20,51 @@ namespace cpp_dump {
 namespace _detail {
 
 inline std::string style_class_name(std::string_view class_name) {
-  std::string styled(class_name);
-
+  std::string raw_output(class_name);
   if (options::class_name_style & flags::class_name_style::no_temp_args) {
-    std::string no_args;
+    std::string raw_output_wo_arg;
     int lt_count = 0;
-    for (auto c : styled) {
+    for (auto c : raw_output) {
       if (c == '<') {
         ++lt_count;
       } else if (c == '>') {
         --lt_count;
       } else if (lt_count == 0) {
-        no_args.push_back(c);
+        raw_output_wo_arg.push_back(c);
       }
     }
-    styled.swap(no_args);
+    raw_output.swap(raw_output_wo_arg);
   }
-
   if (options::class_name_style & flags::class_name_style::no_namespace) {
-    std::string no_ns;
-
-    for (int i = static_cast<int>(styled.size() - 1); i >= 0; --i) {
-      if (styled[i] != ':') {
+    std::string raw_output_wo_namespace;
+    for (int i = static_cast<int>(raw_output.size() - 1); i >= 0; --i) {
+      if (raw_output[i] != ':') {
         // append class name
-        no_ns.push_back(styled[i]);
+        raw_output_wo_namespace.push_back(raw_output[i]);
         continue;
       }
 
       // skip namespace
       int gt_count = 0;
       for (--i; i >= 0; --i) {
-        if (styled[i] == '>') {
+        if (raw_output[i] == '>') {
           ++gt_count;
-        } else if (styled[i] == '<') {
+        } else if (raw_output[i] == '<') {
           --gt_count;
           if (gt_count < 0) {
-            no_ns.push_back(styled[i]);
+            raw_output_wo_namespace.push_back(raw_output[i]);
             break;
           }
         }
       }
     }
-    std::reverse(no_ns.begin(), no_ns.end());
-
-    styled.swap(no_ns);
+    std::reverse(raw_output_wo_namespace.begin(), raw_output_wo_namespace.end());
+    raw_output.swap(raw_output_wo_namespace);
   }
-
-  if (options::class_name_style & flags::class_name_style::max_width_20 && styled.size() > 20)
-    return es::class_name(styled.substr(0, 17)) + es::op("...");
-
-  return es::class_name(styled);
+  if (options::class_name_style & flags::class_name_style::max_width_20 && raw_output.size() > 20) {
+    return es::class_name(raw_output.substr(0, 17)) + es::op("...");
+  }
+  return es::class_name(raw_output);
 }
 
 // The return type must be a built-in type, otherwise we don't know how it will be stringified.
