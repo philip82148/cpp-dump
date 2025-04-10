@@ -22,13 +22,11 @@ namespace cpp_dump {
 
 namespace _detail {
 
-namespace es {
+namespace _export_asterisk {
 
-inline std::string _asterisk_asterisk(std::string_view s) {
+inline std::string _es_asterisk(std::string_view s) {
   return options::es_style == types::es_style_t::original ? es::identifier(s) : es::op(s);
 }
-
-}  // namespace es
 
 template <typename T>
 inline auto export_asterisk(
@@ -43,15 +41,19 @@ inline auto export_asterisk(
     return export_unsupported();
   }
   if (current_depth >= options::max_depth) {
-    return es::_asterisk_asterisk("*") + es::op("...");
+    return _es_asterisk("*") + es::op("...");
   }
 
   // We increase depth just in case so that *value won't enter an infinite loop.
-  return es::_asterisk_asterisk("*")
+  return _es_asterisk("*")
          + export_var(
              *value, indent, last_line_length + 1, current_depth + 1, fail_on_newline, command
          );
 }
+
+}  // namespace _export_asterisk
+
+using _export_asterisk::export_asterisk;
 
 }  // namespace _detail
 

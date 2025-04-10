@@ -22,6 +22,8 @@ namespace cpp_dump {
 
 namespace _detail {
 
+namespace _export_map {
+
 template <typename T>
 struct _map_dummy_wrapper {
  public:
@@ -280,6 +282,10 @@ inline auto export_map(
 
   return output;
 }
+
+}  // namespace _export_map
+
+using _export_map::export_map;
 
 }  // namespace _detail
 

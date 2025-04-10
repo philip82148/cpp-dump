@@ -22,6 +22,8 @@ namespace cpp_dump {
 
 namespace _detail {
 
+namespace _export_set {
+
 template <typename T>
 struct _set_dummy_wrapper {
  public:
@@ -197,6 +199,10 @@ inline auto export_set(
 
   return output;
 }
+
+}  // namespace _export_set
+
+using _export_set::export_set;
 
 }  // namespace _detail
 

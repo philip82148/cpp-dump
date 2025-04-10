@@ -25,6 +25,8 @@ namespace cpp_dump {
 
 namespace _detail {
 
+namespace _export_arithmetic {
+
 inline std::string export_arithmetic(
     bool bool_value,
     const std::string &,
@@ -108,9 +110,7 @@ inline std::string export_arithmetic(
   return output;
 }
 
-namespace _arithmetic {
-
-// helper for get_max_digits
+// helper for _get_max_digits
 template <typename UnsignedT>
 constexpr unsigned int _get_max_digits_aux(UnsignedT num, unsigned int base) {
   return num == 0 ? 0 : 1 + _get_max_digits_aux(num / base, base);
@@ -119,7 +119,7 @@ constexpr unsigned int _get_max_digits_aux(UnsignedT num, unsigned int base) {
 // helper for export_arithmetic(T)
 // Get the maximum digits of the T with base as the radix.
 template <typename T>
-unsigned int get_max_digits(unsigned int base) {
+unsigned int _get_max_digits(unsigned int base) {
   using UnsignedT = std::make_unsigned_t<T>;
   constexpr UnsignedT T_max =
       std::max<UnsignedT>(std::numeric_limits<T>::max(), std::numeric_limits<T>::min());
@@ -146,7 +146,7 @@ unsigned int get_max_digits(unsigned int base) {
 // helper for export_arithmetic(T)
 // Convert the absolute integer to a reversed string.
 template <typename UnsignedTOrInt>
-std::string abs_to_reversed_str(UnsignedTOrInt abs, unsigned int base) {
+std::string _abs_to_reversed_str(UnsignedTOrInt abs, unsigned int base) {
   std::string reversed;
   if (base == 10) {
     reversed = std::to_string(abs);
@@ -172,7 +172,7 @@ std::string abs_to_reversed_str(UnsignedTOrInt abs, unsigned int base) {
 
 // helper for export_arithmetic(T)
 // Add spaces between chunks.
-inline std::string chunk_string(std::string_view input, int base, int chunk) {
+inline std::string _chunk_string(std::string_view input, int base, int chunk) {
   std::string output;
   output.reserve(input.size() * 2);
   for (std::size_t pos = 0; pos < input.size(); pos += chunk) {
@@ -186,7 +186,7 @@ inline std::string chunk_string(std::string_view input, int base, int chunk) {
 }
 
 // helper for export_arithmetic(T)
-inline const char *get_reversed_prefix(int base) {
+inline const char *_get_reversed_prefix(int base) {
   // base == 10 is handled before this function.
   if (base == 2) {
     return "b0";
@@ -196,8 +196,6 @@ inline const char *get_reversed_prefix(int base) {
     return "x0";
   }
 }
-
-}  // namespace _arithmetic
 
 template <typename T>
 inline auto export_arithmetic(
@@ -222,7 +220,7 @@ inline auto export_arithmetic(
   // Style the integer with int_style.
 
   // Declare variables.
-  unsigned int max_digits = _arithmetic::get_max_digits<T>(base);
+  unsigned int max_digits = _get_max_digits<T>(base);
   if (digits > max_digits) {
     digits = max_digits;
   }
@@ -246,7 +244,7 @@ inline auto export_arithmetic(
   }
 
   // Create a (reversed) string of the abs with base as the radix
-  std::string output = _arithmetic::abs_to_reversed_str<UnsignedTOrInt>(abs, base);
+  std::string output = _abs_to_reversed_str<UnsignedTOrInt>(abs, base);
 
   // Add a minus before filling when needed
   const bool need_minus = !make_unsigned && value < 0;
@@ -263,12 +261,12 @@ inline auto export_arithmetic(
   const bool length_was_below_digits = output.size() <= digits;
   // Add a space between chunks
   if (chunk > 0) {
-    output = _arithmetic::chunk_string(output, base, chunk);
+    output = _chunk_string(output, base, chunk);
   }
 
   // Add prefix.
   if (base != 10) {
-    output.append(_arithmetic::get_reversed_prefix(base));
+    output.append(_get_reversed_prefix(base));
   }
 
   // Add a minus after filling when needed
@@ -298,6 +296,10 @@ inline auto export_arithmetic(
   }
   return es::signed_number(output);
 }
+
+}  // namespace _export_arithmetic
+
+using _export_arithmetic::export_arithmetic;
 
 }  // namespace _detail
 

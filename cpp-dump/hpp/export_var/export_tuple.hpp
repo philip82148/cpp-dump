@@ -22,7 +22,7 @@ namespace cpp_dump {
 
 namespace _detail {
 
-namespace _tuple {
+namespace _export_tuple {
 
 template <std::size_t i, typename T>
 inline auto get(const T &tuple, int) -> decltype(tuple.template get<i>()) {
@@ -35,22 +35,23 @@ inline auto get(const T &tuple, long) -> decltype(get<i>(tuple)) {
 }
 
 template <std::size_t i, std::size_t size, typename T>
-inline auto export_tuple_in_one_line(
+inline auto _export_tuple_in_one_line(
     const T &tuple,
     const std::string &indent,
     std::size_t last_line_length,
     std::size_t next_depth,
     const export_command &command
 ) -> std::enable_if_t<is_tuple<T>, std::string> {
-  std::string output =
-      export_var(_tuple::get<i>(tuple, 0), indent, last_line_length, next_depth, true, command);
+  std::string output = export_var(
+      _export_tuple::get<i>(tuple, 0), indent, last_line_length, next_depth, true, command
+  );
   if (has_newline(output)) {
     return "\n";
   }
 
   if constexpr (i < size - 1) {
     return output + es::op(", ")
-           + export_tuple_in_one_line<i + 1, size>(
+           + _export_tuple_in_one_line<i + 1, size>(
                tuple, indent, get_length(output) + 2, next_depth, command
            );
   } else {
@@ -59,21 +60,20 @@ inline auto export_tuple_in_one_line(
 }
 
 template <std::size_t i, std::size_t size, typename T>
-inline auto export_tuple_in_lines(
+inline auto _export_tuple_in_lines(
     const T &tuple, const std::string &indent, std::size_t next_depth, const export_command &command
 ) -> std::enable_if_t<is_tuple<T>, std::string> {
-  std::string output =
-      export_var(_tuple::get<i>(tuple, 0), indent, get_length(indent), next_depth, false, command);
+  std::string output = export_var(
+      _export_tuple::get<i>(tuple, 0), indent, get_length(indent), next_depth, false, command
+  );
 
   if constexpr (i < size - 1) {
     return output + es::op(",\n") + indent
-           + export_tuple_in_lines<i + 1, size>(tuple, indent, next_depth, command);
+           + _export_tuple_in_lines<i + 1, size>(tuple, indent, next_depth, command);
   } else {
     return output;
   }
 }
-
-}  // namespace _tuple
 
 template <typename T>
 inline auto export_tuple(
@@ -96,7 +96,7 @@ inline auto export_tuple(
     // Try exporting on one line.
     std::size_t next_depth = current_depth + 1;
     std::string output = es::bracket("( ", current_depth)
-                         + _tuple::export_tuple_in_one_line<0, tuple_size>(
+                         + _export_tuple_in_one_line<0, tuple_size>(
                              tuple, indent, last_line_length + 2, next_depth, command
                          )
                          + es::bracket(" )", current_depth);
@@ -111,10 +111,14 @@ inline auto export_tuple(
     // Try exporting on multiple lines.
     std::string new_indent = indent + "  ";
     return es::bracket("(\n", current_depth) + new_indent
-           + _tuple::export_tuple_in_lines<0, tuple_size>(tuple, new_indent, next_depth, command)
-           + "\n" + indent + es::bracket(")", current_depth);
+           + _export_tuple_in_lines<0, tuple_size>(tuple, new_indent, next_depth, command) + "\n"
+           + indent + es::bracket(")", current_depth);
   }
 }
+
+}  // namespace _export_tuple
+
+using _export_tuple::export_tuple;
 
 }  // namespace _detail
 

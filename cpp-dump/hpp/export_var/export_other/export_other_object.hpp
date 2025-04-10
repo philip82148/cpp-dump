@@ -30,6 +30,8 @@
                                                                                                    \
   namespace _detail {                                                                              \
                                                                                                    \
+  namespace _export_other {                                                                        \
+                                                                                                   \
   template <>                                                                                      \
   inline constexpr bool _is_other_object<TYPE> = true;                                             \
                                                                                                    \
@@ -51,6 +53,8 @@
     _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2;                                                      \
   }                                                                                                \
                                                                                                    \
+  } /* namespace _export_other */                                                                  \
+                                                                                                   \
   } /* namespace _detail */                                                                        \
                                                                                                    \
   }  // namespace cpp_dump
@@ -59,9 +63,13 @@ namespace cpp_dump {
 
 namespace _detail {
 
+namespace _export_other {
+
 template <typename T>
 inline std::string
 export_other_object(const T &, const std::string &, std::size_t, std::size_t, bool, const export_command &);
+
+}  // namespace _export_other
 
 }  // namespace _detail
 

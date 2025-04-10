@@ -22,6 +22,8 @@ namespace cpp_dump {
 
 namespace _detail {
 
+namespace _export_other {
+
 template <typename T>
 inline auto export_type_info(
     const T &type_info,
@@ -55,6 +57,8 @@ inline auto export_type_info(
 
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2;
 }
+
+}  // namespace _export_other
 
 }  // namespace _detail
 

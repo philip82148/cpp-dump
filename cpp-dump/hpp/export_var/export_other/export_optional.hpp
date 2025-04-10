@@ -21,18 +21,16 @@ namespace cpp_dump {
 
 namespace _detail {
 
+namespace _export_other {
+
 inline std::string
 export_optional(const std::nullopt_t &, const std::string &, std::size_t, std::size_t, bool, const export_command &) {
   return es::class_name("std::nullopt");
 }
 
-namespace es {
-
-inline std::string _optional_question(std::string_view s) {
+inline std::string _es_optional_question(std::string_view s) {
   return options::es_style == types::es_style_t::original ? es::identifier(s) : es::op(s);
 }
-
-}  // namespace es
 
 template <typename T>
 inline auto export_optional(
@@ -46,11 +44,13 @@ inline auto export_optional(
   if (optional == std::nullopt) {
     return es::class_name("std::nullopt");
   }
-  return es::_optional_question("?")
+  return _es_optional_question("?")
          + export_var(
              optional.value(), indent, last_line_length + 1, current_depth, fail_on_newline, command
          );
 }
+
+}  // namespace _export_other
 
 }  // namespace _detail
 

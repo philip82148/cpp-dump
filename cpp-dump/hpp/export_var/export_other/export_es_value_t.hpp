@@ -21,6 +21,8 @@ namespace cpp_dump {
 
 namespace _detail {
 
+namespace _export_other {
+
 inline std::string _export_es_value_vector(
     const std::vector<std::string> &es_vec,
     const std::string &indent,
@@ -179,6 +181,8 @@ inline std::string export_es_value_t(
 
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON2;
 }
+
+}  // namespace _export_other
 
 }  // namespace _detail
 

@@ -23,17 +23,15 @@ namespace cpp_dump {
 
 namespace _detail {
 
-namespace es {
+namespace _export_pointer {
 
-inline std::string _ptr_asterisk(std::string_view s) {
+inline std::string _es_ptr_asterisk(std::string_view s) {
   return options::es_style == types::es_style_t::original ? es::identifier(s) : es::op(s);
 }
 
-inline std::string _raw_address(std::string_view s) {
+inline std::string _es_raw_address(std::string_view s) {
   return options::es_style == types::es_style_t::original ? es::identifier(s) : es::number(s);
 }
-
-}  // namespace es
 
 template <typename T>
 inline auto export_pointer(
@@ -56,7 +54,7 @@ inline auto export_pointer(
       ss << std::hex << static_cast<const void *>(pointer);
 
       // Make the entire string an identifier
-      return es::_raw_address(ss.str());
+      return _es_raw_address(ss.str());
     }
   } else {
     // If the depth exceeds addr_depth, export the address.
@@ -69,14 +67,14 @@ inline auto export_pointer(
       }
 
       // Make the entire string an identifier
-      return es::_raw_address(ss.str());
+      return _es_raw_address(ss.str());
     }
     // In case the depth exceeds `max_depth`.
     if (current_depth >= options::max_depth) {
-      return es::_ptr_asterisk("*") + es::op("...");
+      return _es_ptr_asterisk("*") + es::op("...");
     }
     // Export *value.
-    return es::_ptr_asterisk("*")
+    return _es_ptr_asterisk("*")
            + export_var(
                *pointer, indent, last_line_length + 1, current_depth + 1, fail_on_newline, command
            );
@@ -96,6 +94,10 @@ inline std::string export_pointer(
       wk_ptr.lock(), indent, last_line_length, current_depth, fail_on_newline, command
   );
 }
+
+}  // namespace _export_pointer
+
+using _export_pointer::export_pointer;
 
 }  // namespace _detail
 
