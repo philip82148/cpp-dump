@@ -30,10 +30,10 @@
                                                                                                    \
   namespace _detail {                                                                              \
                                                                                                    \
-  namespace _export_other {                                                                        \
-                                                                                                   \
   template <>                                                                                      \
   inline constexpr bool _is_other_object<TYPE> = true;                                             \
+                                                                                                   \
+  namespace _export_other {                                                                        \
                                                                                                    \
   template <>                                                                                      \
   inline std::string export_other_object(                                                          \
