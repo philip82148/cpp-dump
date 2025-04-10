@@ -145,7 +145,7 @@ unsigned int _get_max_digits(unsigned int base) {
 
 // helper for export_arithmetic(T)
 // Convert the absolute integer to a reversed string.
-template <typename UnsignedTOrInt>
+template <typename T, typename UnsignedTOrInt>
 std::string _abs_to_reversed_str(UnsignedTOrInt abs, unsigned int base) {
   std::string reversed;
   if (base == 10) {
@@ -153,7 +153,7 @@ std::string _abs_to_reversed_str(UnsignedTOrInt abs, unsigned int base) {
     std::reverse(reversed.begin(), reversed.end());
   } else if (base == 2) {
     // +3 is for the prefix.
-    reversed.reserve(sizeof(UnsignedTOrInt) * 8 + 3);
+    reversed.reserve(sizeof(T) * 8 + 3);
     bool is_first = true;
     while (is_first || abs) {
       is_first = false;
@@ -244,7 +244,7 @@ inline auto export_arithmetic(
   }
 
   // Create a (reversed) string of the abs with base as the radix
-  std::string output = _abs_to_reversed_str<UnsignedTOrInt>(abs, base);
+  std::string output = _abs_to_reversed_str<T, UnsignedTOrInt>(abs, base);
 
   // Add a minus before filling when needed
   const bool need_minus = !make_unsigned && value < 0;
