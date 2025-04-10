@@ -11,10 +11,10 @@
 #include <string>
 #include <type_traits>
 
+#include "../class_name.hpp"
 #include "../escape_sequence.hpp"
 #include "../expand_va_macro.hpp"
 #include "../export_command/export_command.hpp"
-#include "../type_check.hpp"
 
 #define _p_CPP_DUMP_EXPAND_FOR_EXPORT_ENUM_GENERIC(member) T::member
 #define _p_CPP_DUMP_EXPAND_FOR_EXPORT_ENUM_GENERIC2(member)                                        \
@@ -37,7 +37,7 @@
           decltype(_p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_EXPORT_ENUM_GENERIC, __VA_ARGS__), std::string())> { \
     static const std::map<T, std::string_view> enum_to_string{                                                       \
         _p_CPP_DUMP_EXPAND_VA(_p_CPP_DUMP_EXPAND_FOR_EXPORT_ENUM_GENERIC2, __VA_ARGS__)};                            \
-    return es::class_name(get_typename<T>()) + es::op("::")                                                          \
+    return format_class_name_auto<T>() + es::op("::")                                                                \
            + (enum_to_string.count(value) ? es::member(enum_to_string.at(value))                                     \
                                           : es::unsupported("?"));                                                   \
   }                                                                                                                  \

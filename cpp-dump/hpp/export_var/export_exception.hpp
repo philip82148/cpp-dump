@@ -10,6 +10,7 @@
 #include <string>
 #include <type_traits>
 
+#include "../class_name.hpp"
 #include "../escape_sequence.hpp"
 #include "../export_command/export_command.hpp"
 #include "../type_check.hpp"
@@ -28,7 +29,7 @@ inline auto export_exception(
     bool fail_on_newline,
     const export_command &command
 ) -> std::enable_if_t<is_exception<T>, std::string> {
-  std::string class_name = es::class_name(get_typename<T>());
+  std::string class_name = format_class_name_auto<T>();
 
   _p_CPP_DUMP_DEFINE_EXPORT_OBJECT_COMMON1;
 
