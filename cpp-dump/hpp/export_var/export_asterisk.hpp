@@ -45,6 +45,8 @@ inline auto export_asterisk(
   if (current_depth >= options::max_depth) {
     return es::_asterisk_asterisk("*") + es::op("...");
   }
+
+  // We increase depth just in case so that *value won't enter an infinite loop.
   return es::_asterisk_asterisk("*")
          + export_var(
              *value, indent, last_line_length + 1, current_depth + 1, fail_on_newline, command

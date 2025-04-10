@@ -47,6 +47,7 @@ inline auto export_pointer(
   if (pointer == nullptr) {
     return es::reserved("nullptr");
   }
+  // If the pointer is not exportable, export the address.
   if constexpr (is_null_pointer<T> || !is_exportable<remove_pointer<T>>) {
     if constexpr (std::is_function_v<remove_pointer<T>>) {
       return export_unsupported();
@@ -58,6 +59,7 @@ inline auto export_pointer(
       return es::_raw_address(ss.str());
     }
   } else {
+    // If the depth exceeds addr_depth, export the address.
     if (current_depth >= command.addr_depth()) {
       std::ostringstream ss;
       if constexpr (is_smart_pointer<T>) {
@@ -69,9 +71,11 @@ inline auto export_pointer(
       // Make the entire string an identifier
       return es::_raw_address(ss.str());
     }
+    // In case the depth exceeds `max_depth`.
     if (current_depth >= options::max_depth) {
       return es::_ptr_asterisk("*") + es::op("...");
     }
+    // Export *value.
     return es::_ptr_asterisk("*")
            + export_var(
                *pointer, indent, last_line_length + 1, current_depth + 1, fail_on_newline, command

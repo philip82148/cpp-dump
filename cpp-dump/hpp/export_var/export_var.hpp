@@ -15,11 +15,11 @@
 #include "./export_asterisk.hpp"
 #include "./export_container.hpp"
 #include "./export_enum.hpp"
-#include "./export_enum_generic.hpp"
+#include "./export_enum_generic.hpp"  // for including macro
 #include "./export_exception.hpp"
 #include "./export_map.hpp"
 #include "./export_object.hpp"
-#include "./export_object_generic.hpp"
+#include "./export_object_generic.hpp"  // for including macro
 #include "./export_ostream.hpp"
 #include "./export_other/export_other.hpp"
 #include "./export_pointer.hpp"
@@ -33,6 +33,8 @@ namespace cpp_dump {
 
 namespace _detail {
 
+// This is the real implementation of export_var().
+// This calls itself recursively.
 template <typename T>
 std::string export_var(
     [[maybe_unused]] const T &value,

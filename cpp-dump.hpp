@@ -115,6 +115,9 @@ bool _dump_one(
   };
 
   if (!options::print_expr) {
+    // Patterns:
+    // 1=Don't insert a line break before dumping a variable.
+    // 2=Insert a line break before dumping a variable.
     auto pattern1 = make_prefix_and_value_str("", initial_indent);
     if (!(fail_on_newline_in_value
           && (pattern1.value_str_has_newline || pattern1.over_max_line_width))) {
@@ -135,6 +138,12 @@ bool _dump_one(
   }
 
   auto expr_with_es = es::expression(expr);
+
+  // Patterns:
+  // 1=Don't insert a line break before `expr`.
+  // 2=Insert a line break before `expr`.
+  // a=Don't insert a line break between `expr` and " => ".
+  // b=Insert a line break between `expr` and " => ".
 
   if (fail_on_newline_in_value) {
     auto pattern1a = make_prefix_and_value_str(expr_with_es + es::log(" => "), initial_indent);
@@ -248,6 +257,7 @@ void cpp_dump_macro(
       "If you are passing variadic template arguments, do not pass any additional arguments."
   );
 
+  // label is the part of "[dump] ".
   std::string label;
   if (options::log_label_func) {
     label = options::log_label_func(loc.file_name, loc.line, loc.function_name);
@@ -255,6 +265,8 @@ void cpp_dump_macro(
   bool exprs_have_newline =
       options::print_expr && std::any_of(exprs.begin(), exprs.end(), has_newline);
 
+  // First, try dumping with always_newline_before_expr=false
+  // On error, dump with always_newline_before_expr=true
   std::string output;
   if (exprs_have_newline || !_dump<is_va_temp>(output, label, false, exprs, args...)) {
     output.clear();

@@ -29,69 +29,87 @@ inline std::string _export_es_value_vector(
     bool fail_on_newline,
     const export_command &command
 ) {
+  // In case the container is empty.
   if (es_vec.empty()) {
     return es::bracket("[ ]", current_depth);
   }
+  // In case the depth exceeds max_depth.
   if (current_depth >= options::max_depth) {
     return es::bracket("[ ", current_depth) + es::op("...") + es::bracket(" ]", current_depth);
   }
 
+  // Declare variables.
   auto skip_cont = command.create_skip_container(es_vec);
   bool shift_indent = options::cont_indent_style == types::cont_indent_style_t::always;
-  std::string output = es::bracket("[ ", current_depth);
-  bool is_first_elem = true;
-  for (const auto &[is_ellipsis, it, index_] : skip_cont) {
-    const std::string &es = *it;
 
-    if (is_first_elem) {
-      is_first_elem = false;
-    } else {
-      output += es::op(", ");
-    }
+  // Try printing on one line.
+  if (!shift_indent) {
+    std::string output = es::bracket("[ ", current_depth);
+    bool is_first_elem = true;
+    for (const auto &[is_ellipsis, it, index_] : skip_cont) {
+      const std::string &es = *it;
 
-    if (is_ellipsis) {
-      output += es::op("...");
+      // Add comma.
+      if (is_first_elem) {
+        is_first_elem = false;
+      } else {
+        output += es::op(", ");
+      }
+
+      // If the `elem` is an ellipsis, skip it.
+      if (is_ellipsis) {
+        output += es::op("...");
+        if (last_line_length + get_length(output) + std::string_view(" ]").size()
+            > options::max_line_width) {
+          shift_indent = true;
+          break;
+        }
+        continue;
+      }
+
+      // Add the index if needed.
+      if (command.show_index()) {
+        output += es::member(std::to_string(index_)) + es::op(": ");
+      }
+
+      // Add the stringified `es`.
+      output += es::apply(es, escape_string(es));
+
+      // If the line length exceeds, stop the iteration.
       if (last_line_length + get_length(output) + std::string_view(" ]").size()
           > options::max_line_width) {
         shift_indent = true;
         break;
       }
-      continue;
     }
 
-    if (command.show_index()) {
-      output += es::member(std::to_string(index_)) + es::op(": ");
-    }
-
-    output += es::apply(es, escape_string(es));
-    if (last_line_length + get_length(output) + std::string_view(" ]").size()
-        > options::max_line_width) {
-      shift_indent = true;
-      break;
+    if (!shift_indent) {
+      output += es::bracket(" ]", current_depth);
+      return output;
     }
   }
 
-  if (!shift_indent) {
-    output += es::bracket(" ]", current_depth);
-    return output;
-  }
+  // Print on multiple lines.
 
   if (fail_on_newline) {
     return "\n";
   }
 
+  // Declare variables.
   std::string new_indent = indent + "  ";
-  output = es::bracket("[", current_depth);
-  is_first_elem = true;
+  std::string output = es::bracket("[", current_depth);
+  bool is_first_elem = true;
   for (const auto &[is_ellipsis, it, index_] : skip_cont) {
     const std::string &es = *it;
 
+    // Add comma.
     if (is_first_elem) {
       is_first_elem = false;
     } else {
       output += es::op(",");
     }
 
+    // If the `elem` is an ellipsis, skip it.
     if (is_ellipsis) {
       output += "\n" + new_indent + es::op("...");
       continue;
@@ -99,10 +117,12 @@ inline std::string _export_es_value_vector(
 
     output += "\n" + new_indent;
 
+    // Add the index if needed.
     if (command.show_index()) {
       output += es::member(std::to_string(index_)) + es::op(": ");
     }
 
+    // Add the stringified `es`.
     output += es::apply(es, escape_string(es));
   }
   output += "\n" + indent + es::bracket("]", current_depth);

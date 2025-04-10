@@ -81,17 +81,17 @@ export_other(const std::bitset<N> &bitset, const std::string &, std::size_t, std
   constexpr unsigned int chunk = 4;
 
   std::string bitset_str = bitset.to_string();
-  std::string spaced_output;
-  spaced_output.reserve(3 + N + (N - 1) / chunk);
-  spaced_output.append("0b ");
+  std::string output;
+  output.reserve(3 + N + (N - 1) / chunk);
+  output.append("0b ");
 
   std::size_t pos = bitset_str.length() % chunk;
-  if (pos > 0) spaced_output.append(bitset_str, 0, pos);
+  if (pos > 0) output.append(bitset_str, 0, pos);
   for (; pos < bitset_str.length(); pos += chunk) {
-    if (pos > 0) spaced_output.push_back(' ');
-    spaced_output.append(bitset_str, pos, chunk);
+    if (pos > 0) output.push_back(' ');
+    output.append(bitset_str, pos, chunk);
   }
-  return es::_bitset(spaced_output);
+  return es::_bitset(output);
 }
 
 namespace es {
